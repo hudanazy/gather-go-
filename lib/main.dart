@@ -91,3 +91,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+
+class Login extends State<MyStatefulWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            Image.asset('images/Pisture1.png'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.amber[600]
+              ),
+              child: Text('Login'),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
