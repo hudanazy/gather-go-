@@ -101,9 +101,7 @@ class Login extends State<MyStatefulWidget> {
           children: [
             Image.asset('images/Pisture1.png'),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.amber[600]
-              ),
+              style: ElevatedButton.styleFrom(primary: Colors.amber[600]),
               child: Text('Login'),
               onPressed: () {},
             ),
@@ -113,3 +111,41 @@ class Login extends State<MyStatefulWidget> {
     );
   }
 }
+
+
+
+/* 
+//class SignUp extends State<MyStatefulWidget> {
+ // @override
+ // Widget build(BuildContext context) {
+  //  return Scaffold(
+   //   body:Column(children:<Widget >[ Container(child:Stack(children: [Container(padding: EdgeInsets.fromLTRB(10.0, 90, 0.0, 0.0),
+     child: Text('Sign Up',style: TextStyle(fontSize: 50,color:Colors.amber[600]),//textS 
+       ),
+       )
+        ],
+       )
+       )
+       ],
+       ),
+       
+      body: Center(
+        child: Column(
+
+          children:<Widget> [
+            Image.asset('images/Pisture1.png'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.amber[600]
+              ),
+              
+              child: Text('Sign Up'),
+              onPressed: () {},
+              
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}  */ 
