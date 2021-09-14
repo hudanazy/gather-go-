@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/authenticate/register.dart';
 import 'package:gather_go/services/auth.dart';
 
 class SignIn extends StatefulWidget {
@@ -25,7 +26,7 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.amber[100],
         elevation: 0.0,
         title: Text(
-          "Sign in to Gather Go",
+          "Login to Gather Go",
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -51,13 +52,6 @@ class _SignInState extends State<SignIn> {
               ElevatedButton(
                 child: Text("Login"),
                 onPressed: () async {
-                // dynamic result = await _auth.signInAnon();
-                // if (result == null) {
-                // print("signing in error");
-                // } else {
-                //   print("signed in successfully");
-                //   print(result);
-                // }
                 if (_fromkey.currentState!.validate()){
                   dynamic result = await _auth.SignInWithUsernameAndPassword(username, password);
                   if (result == null)
@@ -66,7 +60,12 @@ class _SignInState extends State<SignIn> {
                 },
               ),
               Text('Don’t have an account?'),
-              Text('Register now'),
+              ElevatedButton(
+                child: Text('Register now'),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+                },
+                ),
               SizedBox(height: 12.0,),
               Text(
                 error,

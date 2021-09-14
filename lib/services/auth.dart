@@ -43,5 +43,14 @@ Future SignInWithUsernameAndPassword(String username, String password) async{
 }
 //register
 //sign out
+Future SignOut() async{
+  try {
+
+    return await _auth.signOut();
+  }catch(e) {
+    print(e.toString());
+    return null;
+  }
+}
 
 }
