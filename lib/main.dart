@@ -55,10 +55,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       'Logging out',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
   ];
 
   void _onItemTapped(int index) {
@@ -70,6 +66,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Try", style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white12,
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
