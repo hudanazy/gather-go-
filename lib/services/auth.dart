@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
+import 'package:gather_go/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,6 +52,10 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+
+      // create a new doc for the uesr with the uid
+      // tutorial write damy data
+      // await DatabaseService(uid: user.uid).updateUesrData();
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
