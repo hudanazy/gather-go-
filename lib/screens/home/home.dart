@@ -8,10 +8,39 @@ import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/user_list.dart';
 import 'package:gather_go/Models/UserOnScreen.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
 
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +80,70 @@ class Home extends StatelessWidget {
                 label: Text("Logout"),
               ),
             ]),
-        body: UserList(), //events from database
+        body: UserList(),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   type: BottomNavigationBarType.fixed,
+        //   items: const <BottomNavigationBarItem>[
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.home),
+        //       label: 'Home',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.search),
+        //       label: 'Search',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.add_box_outlined),
+        //       label: 'Add',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.person),
+        //       label: 'Profile',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.logout),
+        //       label: 'Logout',
+        //     ),
+        //   ],
+        //   currentIndex: _selectedIndex,
+        //   selectedItemColor: Colors.amber[800],
+        //   onTap: _onItemTapped,
+        // ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Colors.red,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+              backgroundColor: Colors.green,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_box_outlined),
+              label: 'Add',
+              backgroundColor: Colors.purple,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+              backgroundColor: Colors.pink,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.logout),
+              label: 'Logout',
+              backgroundColor: Colors.pink,
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+        ),
+
+        ////events from database
         /////to create event
         // floatingActionButton: FloatingActionButton(
         // onPressed: ()  {
