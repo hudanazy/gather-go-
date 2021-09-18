@@ -22,7 +22,8 @@ class _RegisterState extends State<Register> {
   String username = '';
   String password = '';
   String error = '';
-
+  String Confirm = '';
+  String email = '';
   @override
   Widget build(BuildContext context) {
     return loading
@@ -51,6 +52,15 @@ class _RegisterState extends State<Register> {
                     key: _fromkey,
                     child: Column(
                       children: [
+                        TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Username"),
+                          validator: (value) =>
+                              value!.isEmpty ? 'Enter your Username' : null,
+                          onChanged: (value) {
+                            setState(() => username = value);
+                          },
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -80,8 +90,22 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
+                        TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Confirm Password "),
+                          obscureText: true,
+                          validator: (value) => value != password
+                              ? 'Enter Confirm Password'
+                              : null,
+                          onChanged: (value) {
+                            setState(() => password = value);
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         ElevatedButton(
-                          child: Text("Register"),
+                          child: Text("SignUp"),
                           onPressed: () async {
                             if (_fromkey.currentState!.validate()) {
                               setState(() {
@@ -90,7 +114,7 @@ class _RegisterState extends State<Register> {
                               //firebase register here and in auth.dart
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
-                                      username, password);
+                                      username, email, password, Confirm);
                               if (result == null)
                                 setState(() {
                                   error = 'Email or password is incorrect';
