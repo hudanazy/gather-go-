@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:gather_go/Models/UesrInfo.dart';
 
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 
@@ -9,8 +10,11 @@ class DatabaseService {
 
   final CollectionReference profileCollection =
       FirebaseFirestore.instance.collection('profiles');
+
   final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('events');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('uesrInfo');
 
   Future updateProfileData(String name, String bio) async {
     return await profileCollection.doc(uid).set({
@@ -56,5 +60,28 @@ class DatabaseService {
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),
     );
+  }
+
+  Future updateUesrData(String uesrname, String email, String password) async {
+    return await userCollection.doc(uid).set({
+      'uesrname': uesrname,
+      'email': email,
+      'password': password,
+    });
+  }
+
+  Stream<List<UesrInfo>> get users {
+    return userCollection.snapshots().map(_userInfoListFromSnapshot);
+  }
+
+  //uesr list from snopshot
+  List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UesrInfo(
+          // snapshot.data['uesrname']
+          uesrname: doc.get('uesrname') ?? '',
+          email: doc.get('email') ?? '',
+          password: doc.get('password') ?? '');
+    }).toList();
   }
 }

@@ -29,6 +29,7 @@ class _RegisterState extends State<Register> {
     return loading
         ? Loading() //
         : Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
@@ -58,7 +59,7 @@ class _RegisterState extends State<Register> {
                           validator: (value) =>
                               value!.isEmpty ? 'Enter your Username' : null,
                           onChanged: (value) {
-                            setState(() => username = value);
+                            setState(() => email = value);
                           },
                         ),
                         SizedBox(
