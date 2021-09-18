@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/Models/UserOnScreen.dart';
+import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -22,10 +22,10 @@ class _ProfileFormState extends State<ProfileForm> {
     final user = Provider.of<NewUser?>(
         context); //storing user (before we made snapshot method in database class
     //then made userData class(in UserOnScreen file) then access user data snapshot here in form) tut.25
-    UserData? userData;
+    ProfileData? userData;
 
-    return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user?.uid).userData,
+    return StreamBuilder<ProfileData>(
+        stream: DatabaseService(uid: user?.uid).profileData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             userData = snapshot.data;
@@ -68,7 +68,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     onPressed: () async {
                       //update db here using stream provider and database class
                       if (_formKey.currentState!.validate()) {
-                        await DatabaseService(uid: user?.uid).updateUserData(
+                        await DatabaseService(uid: user?.uid).updateProfileData(
                             _currentName ?? userData!.name,
                             _currentBio ?? userData!.bio);
                       }

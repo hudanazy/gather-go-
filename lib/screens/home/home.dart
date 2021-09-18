@@ -6,7 +6,7 @@ import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/user_list.dart';
-import 'package:gather_go/Models/UserOnScreen.dart';
+import 'package:gather_go/Models/ProfileOnScreen.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -55,8 +55,8 @@ class _HomeState extends State<Home> {
           });
     }
 
-    return StreamProvider<List<UserOnScreen>?>.value(
-      value: DatabaseService().users,
+    return StreamProvider<List<ProfileOnScreen>?>.value(
+      value: DatabaseService().profiles,
       initialData: null,
       child: Scaffold(
         backgroundColor: Colors.brown[50],
@@ -81,34 +81,7 @@ class _HomeState extends State<Home> {
               ),
             ]),
         body: UserList(),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   type: BottomNavigationBarType.fixed,
-        //   items: const <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.home),
-        //       label: 'Home',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.search),
-        //       label: 'Search',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.add_box_outlined),
-        //       label: 'Add',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.person),
-        //       label: 'Profile',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.logout),
-        //       label: 'Logout',
-        //     ),
-        //   ],
-        //   currentIndex: _selectedIndex,
-        //   selectedItemColor: Colors.amber[800],
-        //   onTap: _onItemTapped,
-        // ),
+
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
           items: const <BottomNavigationBarItem>[

@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-import 'package:gather_go/Models/UserOnScreen.dart';
+import 'package:gather_go/Models/ProfileOnScreen.dart';
 
 class DatabaseService {
   final String? uid;
   DatabaseService({this.uid});
 
-  final CollectionReference userCollection =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference profileCollection =
+      FirebaseFirestore.instance.collection('profiles');
   final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('events');
 
-  Future updateUserData(String name, String bio) async {
-    return await userCollection.doc(uid).set({
+  Future updateProfileData(String name, String bio) async {
+    return await profileCollection.doc(uid).set({
       "name": name,
       "bio": bio,
     });
@@ -27,14 +27,14 @@ class DatabaseService {
   }
 
 //get user stream
-  Stream<List<UserOnScreen>?> get users {
-    return userCollection.snapshots().map(_userListFromSnapshot);
+  Stream<List<ProfileOnScreen>?> get profiles {
+    return profileCollection.snapshots().map(_profileListFromSnapshot);
   }
 
   //user list from snapshot
-  List<UserOnScreen> _userListFromSnapshot(QuerySnapshot snapshot) {
+  List<ProfileOnScreen> _profileListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return UserOnScreen(doc.get('name') ?? '', doc.get('bio') ?? '');
+      return ProfileOnScreen(doc.get('name') ?? '', doc.get('bio') ?? '');
     }).toList();
   }
 
@@ -44,14 +44,14 @@ class DatabaseService {
   }
 
 //get user doc stream
-  Stream<UserData> get userData {
-    return userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  Stream<ProfileData> get profileData {
+    return profileCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
   }
 
   //user data from snapshot
 
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return UserData(
+  ProfileData _profileDataFromSnapshot(DocumentSnapshot snapshot) {
+    return ProfileData(
       uid: snapshot.get('uid'),
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),

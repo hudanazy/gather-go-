@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/Models/UserOnScreen.dart';
+import 'package:gather_go/Models/ProfileOnScreen.dart';
 
 class UserTile extends StatelessWidget {
   //const UserTile({ Key? key }) : super(key: key);
-  final UserOnScreen? user;
+  final ProfileOnScreen? user;
 
   UserTile({this.user});
 
