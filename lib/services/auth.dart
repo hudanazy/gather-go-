@@ -55,7 +55,8 @@ class AuthService {
 
       // create a new doc for the uesr with the uid
       // tutorial write damy data
-      // await DatabaseService(uid: user.uid).updateUesrData();
+      await DatabaseService(uid: user!.uid)
+          .updateUesrData("shahad", email, password);
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

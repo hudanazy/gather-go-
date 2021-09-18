@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gather_go/Models/UesrInfo.dart';
 
 class DatabaseService {
   final String uid;
 
   DatabaseService(
-      {this.uid}); // if i  put required will not ba an error as uid cant be null!! , when i add it it make error in home.dart !
+      {required this.uid}); // if i  put required will not ba an error as uid cant be null!! , when i add it it make error in home.dart !
 
   // collection reference
 
@@ -20,7 +21,18 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot> get users {
-    return gatherGoCollection.snapshots();
+  Stream<List<UesrInfo>> get users {
+    return gatherGoCollection.snapshots().map(_userInfoListFromSnapshot);
+  }
+
+  //uesr list from snopshot
+  List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UesrInfo(
+          // snapshot.data['uesrname']
+          uesrname: doc.get('uesrname') ?? '',
+          email: doc.get('email') ?? '',
+          password: doc.get('password') ?? '');
+    }).toList();
   }
 }
