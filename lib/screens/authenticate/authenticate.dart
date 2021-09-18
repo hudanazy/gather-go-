@@ -10,29 +10,44 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+  bool showSignIn = true;
+  void toggleView() {
+    setState(() => showSignIn = !showSignIn);
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (showSignIn) {
+      return SignIn(toggleView);
+    } else {
+      return Register(toggleView);
+    }
 
-    return Scaffold(
-
-      body: 
-      Column(
-        children: [
-          ElevatedButton(
-                child: Text('Register'),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
-                },
-                ),
-          ElevatedButton(
-                child: Text('Login'),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
-                },
-                ),
-        ],
-      ),
-    );
+    // return Scaffold(
+    //   body: Column(
+    //     children: [
+    //       ElevatedButton(
+    //         child: Text('Register'),
+    //         onPressed: () {
+    //           Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                   builder: (context) =>
+    //                       Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+    //         },
+    //       ),
+    //       ElevatedButton(
+    //         child: Text('Login'),
+    //         onPressed: () {
+    //           Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                   builder: (context) =>
+    //                       SignIn())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+    //         },
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
