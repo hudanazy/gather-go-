@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/home/createEvent.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
+import 'package:gather_go/screens/home/createEvent.dart';
 
 class MyBottomBarDemo extends StatefulWidget {
   @override
@@ -12,8 +12,11 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   PageController? _pageController;
 
   List<Widget> tabPages = [
-    createEveant(),
+    Text("ffs"),
+    Text("ffs"),
+    createEvent(),
     ProfileForm(),
+    Text("ffs")
   ];
 
   @override
@@ -35,12 +38,32 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
         currentIndex: _pageIndex,
         onTap: onTabTapped,
         backgroundColor: Colors.white,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.mail), title: Text("Messages")),
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.red,
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text("Profile")),
+            icon: Icon(Icons.search),
+            label: 'Search',
+            backgroundColor: Colors.green,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_outlined),
+            label: 'Add',
+            backgroundColor: Colors.purple,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+            backgroundColor: Colors.pink,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Logout',
+            backgroundColor: Colors.pink,
+          ),
         ],
       ),
       body: PageView(
