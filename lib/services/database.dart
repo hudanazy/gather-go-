@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
+import 'package:gather_go/Models/EventInfo.dart';
 
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 
@@ -24,12 +25,13 @@ class DatabaseService {
     });
   }
 
-  Future updateEventData(
-      String title, String description, DateTime date, DateTime time) async {
+  Future updateEventData(String title, String description, DateTime date,
+      DateTime time, GeoPoint location) async {
     return await eventCollection.doc(uid).set({
       "title": title,
       "description": description,
-      "date": date
+      "date": date,
+      "location": location
     }); // may need to change date and time format
   }
 
@@ -85,6 +87,17 @@ class DatabaseService {
           uesrname: doc.get('uesrname') ?? '',
           email: doc.get('email') ?? '',
           password: doc.get('password') ?? '');
+    }).toList();
+  }
+
+  List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return EventInfo(
+          // snapshot.data['uesrname']
+          name: doc.get('name') ?? '',
+          description: doc.get('description') ?? '',
+          date: doc.get('date') ?? '',
+          location: doc.get('location') ?? '');
     }).toList();
   }
 }
