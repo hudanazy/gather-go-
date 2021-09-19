@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
-class createEveant extends StatefulWidget {
+class createEvent extends StatefulWidget {
   @override
   _Eventform createState() => _Eventform();
 }
 
-class _Eventform extends State<createEveant> {
+class _Eventform extends State<createEvent> {
   int _currentStep = 0;
   DateTime _dateTime = DateTime.now();
   TextEditingController EventName = TextEditingController();

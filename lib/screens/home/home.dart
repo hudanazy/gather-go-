@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
       'Index 0: Home',
       style: optionStyle,
     ),
-    createEveant(),
+    createEvent(),
     Text(
       'Index 2: School',
       style: optionStyle,
