@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 
@@ -24,10 +25,12 @@ class DatabaseService {
   }
 
   Future updateEventData(
-      String title, String description, DateTime date) async {
-    return await eventCollection
-        .doc(uid)
-        .set({"title": title, "description": description, "date": date});
+      String title, String description, DateTime date, DateTime time) async {
+    return await eventCollection.doc(uid).set({
+      "title": title,
+      "description": description,
+      "date": date
+    }); // may need to change date and time format
   }
 
 //get user stream
