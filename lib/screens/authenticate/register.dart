@@ -36,7 +36,7 @@ class _RegisterState extends State<Register> {
               elevation: 0.0,
               title: Text(
                 "Signup to Gather Go",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -68,8 +68,17 @@ class _RegisterState extends State<Register> {
                         TextFormField(
                           decoration:
                               textInputDecoration.copyWith(hintText: "Email"),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter your email' : null,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter your email";
+                            }
+                            if (!RegExp(
+                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                .hasMatch(value)) {
+                              return "Enter valid email ";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() => username = value);
                           },
@@ -118,7 +127,8 @@ class _RegisterState extends State<Register> {
                                       username, email, password, Confirm);
                               if (result == null)
                                 setState(() {
-                                  error = 'Email or password is incorrect';
+                                  error =
+                                      'The email and username are registered';
                                   loading = false;
                                 });
                             }
