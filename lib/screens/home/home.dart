@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/services/database.dart';
@@ -54,8 +55,8 @@ class _HomeState extends State<Home> {
           });
     }
 
-    return StreamProvider<List<ProfileOnScreen>?>.value(
-      value: DatabaseService().profiles,
+    return StreamProvider<List<EventInfo>?>.value(
+      value: DatabaseService().eventss,
       initialData: null,
       child: Scaffold(
         backgroundColor: Colors.brown[50],

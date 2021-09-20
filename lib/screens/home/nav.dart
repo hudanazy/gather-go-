@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
+import 'package:gather_go/services/auth.dart';
 
 class MyBottomBarDemo extends StatefulWidget {
   @override
@@ -12,11 +14,11 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   PageController? _pageController;
 
   List<Widget> tabPages = [
-    Text("ffs"),
+    EventList(),
     Text("ffs"),
     createEvent(),
     ProfileForm(),
-    Text("ffs")
+    Text("Logout"),
   ];
 
   @override

@@ -72,7 +72,7 @@ class _ProfileFormState extends State<ProfileForm> {
                             _currentName ?? userData!.name,
                             _currentBio ?? userData!.bio);
                       }
-                      Navigator.pop(context);
+                      //   Navigator.pop(context);
                     },
                   ),
                 ],
