@@ -25,13 +25,25 @@ class DatabaseService {
     });
   }
 
-  Future updateEventData(String title, String description, DateTime date,
-      DateTime time, GeoPoint location) async {
+  Future updateEventData(String? title, String? description, String? date,
+      String? time /*, GeoPoint location*/) async {
     return await eventCollection.doc(uid).set({
       "title": title,
       "description": description,
       "date": date,
-      "location": location
+      "time": time,
+      /* "location": location*/
+    }); // may need to change date and time format
+  }
+
+  addEventData(String title, String description, Timestamp date,
+      Timestamp time /*, GeoPoint location*/) {
+    eventCollection.add({
+      "title": title,
+      "description": description,
+      "date": date,
+      "time": time,
+      /* "location": location*/
     }); // may need to change date and time format
   }
 
@@ -48,8 +60,12 @@ class DatabaseService {
   }
 
 //get events stream
-  Stream<QuerySnapshot?> get events {
-    return eventCollection.snapshots();
+  Stream<EventInfo> get events {
+    return eventCollection.doc(uid).snapshots().map(_eventDataFromSnapshot);
+  }
+
+  Stream<List<EventInfo>> get eventss {
+    return profileCollection.snapshots().map(_eventInfoListFromSnapshot);
   }
 
 //get user doc stream
@@ -64,6 +80,16 @@ class DatabaseService {
       uid: snapshot.get('uid'),
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),
+    );
+  }
+
+  EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
+    return EventInfo(
+      //  uid: snapshot.get('uid'),
+      name: snapshot.get('name'),
+      description: snapshot.get('description'),
+      date: snapshot.get('date'),
+      time: snapshot.get('time'),
     );
   }
 
@@ -93,11 +119,13 @@ class DatabaseService {
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return EventInfo(
-          // snapshot.data['uesrname']
-          name: doc.get('name') ?? '',
-          description: doc.get('description') ?? '',
-          date: doc.get('date') ?? '',
-          location: doc.get('location') ?? '');
+        // snapshot.data['uesrname']
+        name: doc.get('name') ?? '',
+        description: doc.get('description') ?? '',
+        date: doc.get('date') ?? '',
+        time: doc.get('time') ?? '',
+        /* location: doc.get('location') ?? ''*/
+      );
     }).toList();
   }
 }
