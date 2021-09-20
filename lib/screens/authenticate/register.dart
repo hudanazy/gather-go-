@@ -17,7 +17,8 @@ class _RegisterState extends State<Register> {
 
   final _fromkey = GlobalKey<FormState>();
   bool loading = false;
-
+  final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
 //textfield state
   String username = '';
   String password = '';
@@ -56,8 +57,11 @@ class _RegisterState extends State<Register> {
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               hintText: "Username"),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter your Username' : null,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter your Username';
+                            }
+                          },
                           onChanged: (value) {
                             setState(() => email = value);
                           },
@@ -87,6 +91,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
+                          controller: _pass,
                           decoration: textInputDecoration.copyWith(
                               hintText: "Password"),
                           obscureText: true,
@@ -101,12 +106,19 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
+                          controller: _confirmPass,
                           decoration: textInputDecoration.copyWith(
                               hintText: "Confirm Password "),
                           obscureText: true,
-                          validator: (value) => value != password
-                              ? 'Enter Confirm Password'
-                              : null,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter Confirm Password';
+                            }
+                            if (value != _pass.text) {
+                              return 'password Not Match';
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() => password = value);
                           },
