@@ -57,9 +57,18 @@ class _RegisterState extends State<Register> {
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               hintText: "Username"),
-                          validator: (value) {
+                          /* validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter your Username';
+                            }
+                          }, */
+
+                          validator: (value) {
+                            if (value!.length < 2 || value.isEmpty) {
+                              return "Username is too short";
+                            }
+                            if (value.length > 12) {
+                              return "username is too long";
                             }
                           },
                           onChanged: (value) {
@@ -139,11 +148,19 @@ class _RegisterState extends State<Register> {
                                       username, email, password, Confirm);
                               if (result == null)
                                 setState(() {
-                                  error =
-                                      'The email and username are registered';
+                                  error = 'The email are registered'; //user
                                   loading = false;
                                 });
                             }
+                            /* dynamic resultuser =
+                                await _auth.UsernameCheck(username);
+                                if(!resultuser){
+                                  //username exists
+
+                                }
+                                else if(_fromkey.currentState!.validate()){
+                                      //save
+                                } */
                           },
                           style: ButtonStyle(
                               backgroundColor:
