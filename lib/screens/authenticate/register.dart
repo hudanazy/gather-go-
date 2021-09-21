@@ -17,24 +17,27 @@ class _RegisterState extends State<Register> {
 
   final _fromkey = GlobalKey<FormState>();
   bool loading = false;
-
+  final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
 //textfield state
   String username = '';
   String password = '';
   String error = '';
-
+  String Confirm = '';
+  String email = '';
   @override
   Widget build(BuildContext context) {
     return loading
         ? Loading() //
         : Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
                 "Signup to Gather Go",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -51,14 +54,44 @@ class _RegisterState extends State<Register> {
                     key: _fromkey,
                     child: Column(
                       children: [
+                        TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Username"),
+                          /* validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter your Username';
+                            }
+                          }, */
+
+                          validator: (value) {
+                            if (value!.length < 2 || value.isEmpty) {
+                              return "Username is too short";
+                            }
+                            if (value.length > 12) {
+                              return "username is too long";
+                            }
+                          },
+                          onChanged: (value) {
+                            setState(() => email = value);
+                          },
+                        ),
                         SizedBox(
                           height: 20,
                         ),
                         TextFormField(
                           decoration:
                               textInputDecoration.copyWith(hintText: "Email"),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter your email' : null,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter your email";
+                            }
+                            if (!RegExp(
+                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                .hasMatch(value)) {
+                              return "Enter valid email ";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() => username = value);
                           },
@@ -67,6 +100,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
+                          controller: _pass,
                           decoration: textInputDecoration.copyWith(
                               hintText: "Password"),
                           obscureText: true,
@@ -80,8 +114,29 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
+                        TextFormField(
+                          controller: _confirmPass,
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Confirm Password "),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter Confirm Password';
+                            }
+                            if (value != _pass.text) {
+                              return 'password Not Match';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() => password = value);
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         ElevatedButton(
-                          child: Text("Register"),
+                          child: Text("SignUp"),
                           onPressed: () async {
                             if (_fromkey.currentState!.validate()) {
                               setState(() {
@@ -90,13 +145,22 @@ class _RegisterState extends State<Register> {
                               //firebase register here and in auth.dart
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
-                                      username, password);
+                                      username, email, password, Confirm);
                               if (result == null)
                                 setState(() {
-                                  error = 'Email or password is incorrect';
+                                  error = 'The email are registered'; //user
                                   loading = false;
                                 });
                             }
+                            /* dynamic resultuser =
+                                await _auth.UsernameCheck(username);
+                                if(!resultuser){
+                                  //username exists
+
+                                }
+                                else if(_fromkey.currentState!.validate()){
+                                      //save
+                                } */
                           },
                           style: ButtonStyle(
                               backgroundColor:

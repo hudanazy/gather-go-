@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
@@ -45,7 +48,8 @@ class AuthService {
   }
 
 //sign up w/ email password
-  Future signUpWithUsernameAndPassword(String username, String password) async {
+  Future signUpWithUsernameAndPassword(
+      String username, String emial, String password, String Confirm) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: username, password: password);
@@ -53,7 +57,7 @@ class AuthService {
 
       //create a new document for a user with uid
       await DatabaseService(uid: user!.uid)
-          .updateProfileData("Sara", "SWE Student at KSU");
+          .updateUesrData(emial, username, password);
 
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
@@ -61,6 +65,16 @@ class AuthService {
       return null;
     }
   }
+
+  /* Future<bool> UsernameCheck(String username) async {
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
+
+    return result.docs.isEmpty;
+  } */
+  //check
 
   //   Future createEvent(String title, String description, DateTime date) async {
   //   try {
