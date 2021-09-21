@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -23,6 +24,7 @@ class _ProfileFormState extends State<ProfileForm> {
         context); //storing user (before we made snapshot method in database class
     //then made userData class(in UserOnScreen file) then access user data snapshot here in form) tut.25
     ProfileData? userData;
+    final AuthService _auth = AuthService();
 
     return StreamBuilder<ProfileData>(
         stream: DatabaseService(uid: user?.uid).profileData,
@@ -75,6 +77,13 @@ class _ProfileFormState extends State<ProfileForm> {
                       //   Navigator.pop(context);
                     },
                   ),
+                  TextButton.icon(
+                    onPressed: () async {
+                      await _auth.SignOut();
+                    },
+                    icon: Icon(Icons.logout_rounded),
+                    label: Text("Logout"),
+                  )
                 ],
               ));
           // } else {

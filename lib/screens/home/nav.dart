@@ -61,11 +61,11 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
             label: 'Profile',
             backgroundColor: Colors.pink,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Logout',
-            backgroundColor: Colors.pink,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.logout),
+          //   label: 'Logout',
+          //   backgroundColor: Colors.pink,
+          // ),
         ],
       ),
       body: PageView(
