@@ -8,6 +8,7 @@ import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
 
+// ignore: camel_case_types
 class createEvent extends StatefulWidget {
   @override
   _Eventform createState() => _Eventform();

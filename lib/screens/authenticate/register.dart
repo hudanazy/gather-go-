@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/authenticate/sign_in.dart';
+//import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -23,7 +23,7 @@ class _RegisterState extends State<Register> {
   String username = '';
   String password = '';
   String error = '';
-  String Confirm = '';
+  String confirm = '';
   String email = '';
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class _RegisterState extends State<Register> {
                               //firebase register here and in auth.dart
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
-                                      username, email, password, Confirm);
+                                      username, email, password, confirm);
                               if (result == null)
                                 setState(() {
                                   error = 'The email are registered'; //user

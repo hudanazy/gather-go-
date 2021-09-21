@@ -1,6 +1,6 @@
-import 'dart:html';
+//import 'dart:html';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
