@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/EventInfo.dart';
@@ -10,6 +12,7 @@ import 'package:gather_go/screens/home/user_list.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
 import 'package:gather_go/screens/home/nav.dart';
+import 'package:gather_go/shared/gradient_app_bar.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -55,54 +58,57 @@ class _HomeState extends State<Home> {
           });
     }
 
-    return StreamProvider<List<EventInfo>?>.value(
-      value: DatabaseService().eventss,
-      initialData: null,
-      child: Scaffold(
-        backgroundColor: Colors.brown[50],
-        appBar: AppBar(
-            title: Text("Events"),
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-            actions: <Widget>[
-              TextButton.icon(
-                onPressed: () {
-                  _showSettingsPanel();
-                },
-                icon: Icon(Icons.person),
-                label: Text("Profile"),
-              ),
-              TextButton.icon(
-                onPressed: () async {
-                  await _auth.SignOut();
-                },
-                icon: Icon(Icons.logout_rounded),
-                label: Text("Logout"),
-              ),
-            ]),
-        //body: UserList(),
-
-        bottomNavigationBar: MyBottomBarDemo(),
-
-        ////events from database
-        /////to create event
-        // floatingActionButton: FloatingActionButton(
-        // onPressed: ()  {
-        //   widget.creatEvent();//method in auth.dart
-        // },
-        //   child: const Icon(Icons.navigation),
-        //   backgroundColor: Colors.green,
-        // ),
-
-        //home UI goes here
-
-        // ElevatedButton(
-        //   child: Text('Log out'),
-        //   onPressed: () async {
-        //     //await _auth.SignOut();
-        //   },
-        //   )
-      ),
+    return Scaffold(
+      // resizeToAvoidBottomInset: false,
+      //body: EventList(),
+      bottomNavigationBar: MyBottomBarDemo(),
     );
+
+    //StreamProvider<List<EventInfo>?>.value(
+    //   value: DatabaseService().eventss,
+    //   initialData: null,
+    //   child: Scaffold(
+    //     backgroundColor: Colors.brown[50],
+    //     appBar: AppBar(
+    //         title: Text("Events"),
+    //         backgroundColor: Colors.white,
+    //         elevation: 0.0,
+    //         actions: <Widget>[
+    //           TextButton.icon(
+    //             onPressed: () {
+    //               _showSettingsPanel();
+    //             },
+    //             icon: Icon(Icons.person),
+    //             label: Text("Profile"),
+    //           ),
+    //           TextButton.icon(
+    //             onPressed: () async {
+    //               await _auth.SignOut();
+    //             },
+    //             icon: Icon(Icons.logout_rounded),
+    //             label: Text("Logout"),
+    //           ),
+    //         ]),
+    //     body: EventList(),
+
+    ////events from database
+    /////to create event
+    // floatingActionButton: FloatingActionButton(
+    // onPressed: ()  {
+    //   widget.creatEvent();//method in auth.dart
+    // },
+    //   child: const Icon(Icons.navigation),
+    //   backgroundColor: Colors.green,
+    // ),
+
+    //home UI goes here
+
+    // ElevatedButton(
+    //   child: Text('Log out'),
+    //   onPressed: () async {
+    //     //await _auth.SignOut();
+    //   },
+    //   )
+    //  ),
   }
 }

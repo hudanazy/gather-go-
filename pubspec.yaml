@@ -36,6 +36,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.2.62
   flutter_time_picker_spinner: ^2.0.0
   intl: ^0.17.0
+  material_design_icons_flutter: ^4.0.5345
+  cached_network_image: ^2.2.0+1
+  numberpicker: ^2.0.1
 
 
 dev_dependencies:

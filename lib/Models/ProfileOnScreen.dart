@@ -1,8 +1,10 @@
 class ProfileOnScreen {
   final String name;
   final String bio;
+  final String imageUrl;
 
-  ProfileOnScreen(this.name, this.bio);
+  ProfileOnScreen(
+      {required this.name, required this.bio, required this.imageUrl});
 }
 
 class ProfileData {

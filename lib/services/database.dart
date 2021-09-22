@@ -36,13 +36,24 @@ class DatabaseService {
     }); // may need to change date and time format
   }
 
-  addEventData(String title, String description, Timestamp date,
-      Timestamp time /*, GeoPoint location*/) {
+  addEventData(
+      String uid,
+      String name,
+      String description,
+      String timePosted,
+      int attendees,
+      String date,
+      String time,
+      bool approved /*, GeoPoint location*/) {
     eventCollection.add({
-      "title": title,
+      "uid": uid,
+      "name": name,
       "description": description,
+      "timePosted": timePosted,
+      "attendees": attendees,
       "date": date,
       "time": time,
+      "approved": approved,
       /* "location": location*/
     }); // may need to change date and time format
   }
@@ -55,17 +66,21 @@ class DatabaseService {
   //user list from snapshot
   List<ProfileOnScreen> _profileListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return ProfileOnScreen(doc.get('name') ?? '', doc.get('bio') ?? '');
+      return ProfileOnScreen(
+          name: doc.get('name') ?? '',
+          bio: doc.get('bio') ?? '',
+          imageUrl: doc.get('imageUrl') ?? '');
     }).toList();
   }
 
 //get events stream
-  Stream<EventInfo> get events {
+  Stream<EventInfo> get eventss {
     return eventCollection.doc(uid).snapshots().map(_eventDataFromSnapshot);
+    //  return eventCollection.doc(uid).snapshots().map(_eventDataFromSnapshot);
   }
 
-  Stream<List<EventInfo>> get eventss {
-    return profileCollection.snapshots().map(_eventInfoListFromSnapshot);
+  Stream<List<EventInfo>> get events {
+    return eventCollection.snapshots().map(_eventInfoListFromSnapshot);
   }
 
 //get user doc stream
@@ -85,12 +100,17 @@ class DatabaseService {
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
-      //  uid: snapshot.get('uid'),
-      name: snapshot.get('name'),
-      description: snapshot.get('description'),
-      date: snapshot.get('date'),
-      time: snapshot.get('time'),
-    );
+        //  uid: snapshot.get('uid'),
+        uid: snapshot.get('uid'),
+        name: snapshot.get('name'),
+        description: snapshot.get('description'),
+        timePosted: snapshot.get('timePosted'),
+        //  imageUrl: snapshot.get('imageUrl'),
+        attendees: snapshot.get('attendees'),
+        // comments: snapshot.get('comments'),
+        date: snapshot.get('date'),
+        time: snapshot.get('time'),
+        approved: snapshot.get('approved'));
   }
 
   Future updateUesrData(String uesrname, String email, String password) async {
@@ -119,13 +139,18 @@ class DatabaseService {
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return EventInfo(
-        // snapshot.data['uesrname']
-        name: doc.get('name') ?? '',
-        description: doc.get('description') ?? '',
-        date: doc.get('date') ?? '',
-        time: doc.get('time') ?? '',
-        /* location: doc.get('location') ?? ''*/
-      );
+          // snapshot.data['uesrname']
+          uid: doc.get('uid') ?? '',
+          name: doc.get('name') ?? '',
+          description: doc.get('description') ?? '',
+          timePosted: doc.get('timePosted') ?? '',
+          // imageUrl: doc.get('imageUrl') ?? '',
+          attendees: doc.get('attendees') ?? 0,
+          // comments: doc.get('comments') ?? 0,
+          date: doc.get('date') ?? '',
+          time: doc.get('time') ?? '',
+          /* location: doc.get('location') ?? ''*/
+          approved: doc.get('approved') ?? '');
     }).toList();
   }
 }
