@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:gather_go/services/database.dart';
@@ -128,7 +129,7 @@ class _Eventform extends State<createEvent> {
                       NumberPicker(
                         value: _currentValue,
                         minValue: 1,
-                        maxValue: 100,
+                        maxValue: 500,
                         onChanged: (value) =>
                             setState(() => _currentValue = value),
                       ),
@@ -139,12 +140,15 @@ class _Eventform extends State<createEvent> {
                           label: Text(
                             "Set event date",
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Colors.deepPurple,
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          icon: Icon(Icons.calendar_today_outlined),
+                          icon: Icon(
+                            Icons.calendar_today_outlined,
+                            color: Colors.purpleAccent,
+                          ),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size.fromHeight(40),
                             primary: Colors.white,
@@ -167,12 +171,16 @@ class _Eventform extends State<createEvent> {
                           label: Text(
                             "Set event time",
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Colors.deepPurple,
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          icon: Icon(Icons.hourglass_bottom_outlined),
+                          icon: Icon(
+                            Icons.hourglass_bottom_outlined,
+                            textDirection: TextDirection.ltr,
+                            color: Colors.purpleAccent,
+                          ),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size.fromHeight(40),
                             primary: Colors.white,
@@ -186,7 +194,8 @@ class _Eventform extends State<createEvent> {
                         width: 180,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            shadowColor: Colors.blue[800],
+                            primary: Colors.purple[500],
+                            shadowColor: Colors.purple[800],
 
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
