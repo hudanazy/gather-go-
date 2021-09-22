@@ -4,6 +4,7 @@ import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/screens/home/user_list.dart';
+import 'package:gather_go/shared/gradient_app_bar.dart';
 
 class MyBottomBarDemo extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
   List<Widget> tabPages = [
     EventList(),
-    Text("ffs"),
+    Scaffold(),
     createEvent(),
     ProfileForm(),
   ];
@@ -36,6 +37,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: GradientAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
         onTap: onTabTapped,
