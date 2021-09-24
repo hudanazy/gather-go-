@@ -6,13 +6,15 @@ class EventInfo {
   final String description;
   final String date;
   final String time;
+  final bool approved;
   //final GeoPoint location;
 
   EventInfo(
       {required this.name,
       required this.description,
       required this.date,
-      required this.time /*,
+      required this.time,
+      required this.approved /*,
       required this.location*/
       });
 }

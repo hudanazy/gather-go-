@@ -26,23 +26,25 @@ class DatabaseService {
   }
 
   Future updateEventData(String? title, String? description, String? date,
-      String? time /*, GeoPoint location*/) async {
+      String? time /*, GeoPoint location*/, bool approved) async {
     return await eventCollection.doc(uid).set({
       "title": title,
       "description": description,
       "date": date,
       "time": time,
+      "approved": approved,
       /* "location": location*/
     }); // may need to change date and time format
   }
 
   addEventData(String title, String description, Timestamp date,
-      Timestamp time /*, GeoPoint location*/) {
+      Timestamp time /*, GeoPoint location*/, bool approved) {
     eventCollection.add({
       "title": title,
       "description": description,
       "date": date,
       "time": time,
+      "approved": approved,
       /* "location": location*/
     }); // may need to change date and time format
   }
@@ -65,7 +67,8 @@ class DatabaseService {
   }
 
   Stream<List<EventInfo>> get eventss {
-    return profileCollection.snapshots().map(_eventInfoListFromSnapshot);
+    // return profileCollection.snapshots().map(_eventInfoListFromSnapshot);
+    return eventCollection.snapshots().map(_eventInfoListFromSnapshot);
   }
 
 //get user doc stream
@@ -90,6 +93,7 @@ class DatabaseService {
       description: snapshot.get('description'),
       date: snapshot.get('date'),
       time: snapshot.get('time'),
+      approved: snapshot.get('approved'),
     );
   }
 
@@ -124,6 +128,7 @@ class DatabaseService {
         description: doc.get('description') ?? '',
         date: doc.get('date') ?? '',
         time: doc.get('time') ?? '',
+        approved: doc.get('approved') ?? '',
         /* location: doc.get('location') ?? ''*/
       );
     }).toList();
