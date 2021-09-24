@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/admin/eventDetails.dart';
 import 'package:gather_go/screens/home/EventTile.dart';
 
 import 'package:provider/provider.dart';
@@ -18,27 +19,74 @@ class _adminEvent extends State<adminEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('events').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return Text("No new events");
-          }
-          return ListView(
-            children: snapshot.data.docs.map<Widget>((document) {
-              return Padding(
-                  padding: EdgeInsets.only(top: (8.0)),
-                  child: Card(
-                      margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                      color: Colors.deepPurple[50],
-                      child: ListTile(
-                        title: Text(document['name']),
-                        subtitle: Text(document['description']),
-                      )));
-            }).toList(),
-          );
-        },
-      ),
-    );
+        body: Column(
+      children: [
+        AppBar(
+            backgroundColor: Colors.white,
+            title: Text(
+              "All New Events",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.deepOrange,
+                  fontFamily: 'Comfortaa',
+                  fontSize: 18),
+            )),
+        Expanded(
+            child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('events')
+              .where('approved', isEqualTo: false)
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                  child: Text(
+                "No New Events",
+                textAlign: TextAlign.center,
+              ));
+            }
+            return ListView(
+              children: snapshot.data.docs.map<Widget>((document) {
+                DocumentSnapshot uid = document;
+                return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Card(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        color: Colors.grey[200],
+                        child: ListTile(
+                          title: Center(
+                              child: Text(
+                            document['name'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontFamily: 'Comfortaa',
+                                fontSize: 16),
+                          )),
+                          subtitle: Text(
+                            document['description'],
+                            style: TextStyle(
+                                color: Colors.grey[800],
+                                fontFamily: 'Comfortaa',
+                                fontSize: 14),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => eventDetails(
+                                          event: uid,
+                                        )));
+                          },
+                        )));
+              }).toList(),
+            );
+          },
+        )),
+      ],
+    ));
   }
 }

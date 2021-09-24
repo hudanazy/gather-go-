@@ -40,7 +40,7 @@ class DatabaseService {
   addEventData(String title, String description, Timestamp date,
       Timestamp time /*, GeoPoint location*/, bool approved) {
     eventCollection.add({
-      "title": title,
+      "name": title, // dont call it title (in firestore)
       "description": description,
       "date": date,
       "time": time,
