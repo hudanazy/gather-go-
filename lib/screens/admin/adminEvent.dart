@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
-import 'package:gather_go/screens/home/EventTile.dart';
-
-import 'package:provider/provider.dart';
-
-import 'package:gather_go/Models/EventInfo.dart';
 
 // ignore: camel_case_types
 class adminEvent extends StatefulWidget {
@@ -31,8 +26,7 @@ class _adminEvent extends State<adminEvent> {
                   fontFamily: 'Comfortaa',
                   fontSize: 18),
             )),
-        Expanded(
-            child: StreamBuilder(
+        StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('events')
               .where('approved', isEqualTo: false)
@@ -45,47 +39,50 @@ class _adminEvent extends State<adminEvent> {
                 textAlign: TextAlign.center,
               ));
             }
-            return ListView(
-              children: snapshot.data.docs.map<Widget>((document) {
-                DocumentSnapshot uid = document;
-                return Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Card(
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        color: Colors.grey[200],
-                        child: ListTile(
-                          title: Center(
-                              child: Text(
-                            document['name'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.deepOrange,
-                                fontFamily: 'Comfortaa',
-                                fontSize: 16),
-                          )),
-                          subtitle: Text(
-                            document['description'],
-                            style: TextStyle(
-                                color: Colors.grey[800],
-                                fontFamily: 'Comfortaa',
-                                fontSize: 14),
-                          ),
-                          trailing: Icon(
-                            Icons.arrow_forward,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => eventDetails(
-                                          event: uid,
-                                        )));
-                          },
-                        )));
-              }).toList(),
-            );
+            return Container(
+                height: 550,
+                width: 500,
+                child: ListView(
+                  children: snapshot.data.docs.map<Widget>((document) {
+                    DocumentSnapshot uid = document;
+                    return Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Card(
+                            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            color: Colors.grey[200],
+                            child: ListTile(
+                              title: Center(
+                                  child: Text(
+                                document['name'],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.deepOrange,
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 16),
+                              )),
+                              subtitle: Text(
+                                document['description'],
+                                style: TextStyle(
+                                    color: Colors.grey[800],
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 14),
+                              ),
+                              trailing: Icon(
+                                Icons.arrow_forward,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => eventDetails(
+                                              event: uid,
+                                            )));
+                              },
+                            )));
+                  }).toList(),
+                ));
           },
-        )),
+        ),
       ],
     ));
   }

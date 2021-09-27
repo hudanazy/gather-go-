@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:gather_go/screens/home/EventTile.dart';
@@ -16,11 +17,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   int _pageIndex = 0;
   PageController? _pageController;
 
-  List<Widget> tabPages = [
-    adminEvent(),
-    Text("shhhhhhahah"),
-    Text("shhhhhhahah")
-  ]; //EventList()
+  List<Widget> tabPages = [adminEvent(), Text('data'), logout()]; //EventList()
 
   @override
   void initState() {
@@ -76,5 +73,21 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   void onTabTapped(int index) {
     this._pageController?.animateToPage(index,
         duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+}
+
+class logout extends StatelessWidget {
+  const logout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+        },
+        child: Text('logout'),
+      ),
+    );
   }
 }
