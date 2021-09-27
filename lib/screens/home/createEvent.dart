@@ -78,8 +78,9 @@ class _Eventform extends State<createEvent> {
                           initialValue: eventData?.name,
                           decoration: textInputDecoration.copyWith(
                               hintText: "What is the event ?"),
-                          validator: (val) =>
-                              val!.isEmpty ? "" : eventData?.name,
+                          validator: (val) => val!.isEmpty
+                              ? "The event needs a name."
+                              : eventData?.name,
                           onChanged: (val) => setState(() => Name = val),
                         ),
                       ),
@@ -106,8 +107,9 @@ class _Eventform extends State<createEvent> {
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(
                               hintText: "Tell us more about your event..."),
-                          validator: (val) =>
-                              val!.isEmpty ? "" : eventData?.description,
+                          validator: (val) => val!.isEmpty
+                              ? "Description can't be empty."
+                              : eventData?.description,
                           onChanged: (val) => setState(() => Description = val),
                         ),
                       ),
@@ -242,11 +244,13 @@ class _Eventform extends State<createEvent> {
   }
 
   Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
+    final initialDate = DateTime.now().add(Duration(days: 1));
     final newDate = await showDatePicker(
+      // enablePastDates: false,
       context: context,
       initialDate: dateo ?? initialDate,
-      firstDate: DateTime(DateTime.now().year - 5),
+      firstDate: DateTime.now().add(Duration(days: 1)),
+      //   DateTime(DateTime.now().day + 1),
       lastDate: DateTime(DateTime.now().year + 5),
     );
 
@@ -259,7 +263,8 @@ class _Eventform extends State<createEvent> {
     final initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
       context: context,
-      initialTime: ttime ?? initialTime,
+      initialTime: TimeOfDay.now() //ttime ?? initialTime
+      ,
     );
 
     if (newTime == null) return;
