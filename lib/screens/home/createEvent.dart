@@ -242,11 +242,13 @@ class _Eventform extends State<createEvent> {
   }
 
   Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
+    final initialDate = DateTime.now().add(Duration(days: 1));
     final newDate = await showDatePicker(
+      // enablePastDates: false,
       context: context,
       initialDate: dateo ?? initialDate,
-      firstDate: DateTime(DateTime.now().year - 5),
+      firstDate: DateTime.now().add(Duration(days: 1)),
+      //   DateTime(DateTime.now().day + 1),
       lastDate: DateTime(DateTime.now().year + 5),
     );
 
