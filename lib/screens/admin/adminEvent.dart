@@ -11,6 +11,11 @@ class adminEvent extends StatefulWidget {
 // here i want to show all new event (not approved yet -> in DB approved = false)
 // ignore: camel_case_types
 class _adminEvent extends State<adminEvent> {
+  Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
+      .collection('events')
+      .orderBy("timePosted")
+      .where('approved', isEqualTo: false)
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +32,12 @@ class _adminEvent extends State<adminEvent> {
                   fontSize: 18),
             )),
         StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('events')
-              .where('approved', isEqualTo: false)
-              .snapshots(),
+          stream: snap,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (!snapshot.hasData) {
               return Center(
                   child: Text(
-                "No New Events",
+                "No New Events", // may be change it to loading , itis appear for a second every time
                 textAlign: TextAlign.center,
               ));
             }

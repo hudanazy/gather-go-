@@ -37,6 +37,15 @@ class DatabaseService {
     }); // may need to change date and time format
   }
 
+  Future approveEvent(bool approved) async {
+    eventCollection.add({
+      'adminCheck': true,
+    });
+    return await eventCollection.doc(uid).set({
+      "approved": approved,
+    });
+  }
+
   addEventData(String title, String description, Timestamp date,
       Timestamp time /*, GeoPoint location*/, bool approved) {
     eventCollection.add({

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
+import 'package:gather_go/services/database.dart';
+import 'package:intl/intl.dart';
+import 'package:date_format/date_format.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -15,6 +18,15 @@ class eventDetails extends StatefulWidget {
 class _eventDetails extends State<eventDetails> {
   @override
   Widget build(BuildContext context) {
+    int attendeeNum = widget.event?.get('attendees');
+    String userID = widget.event?.get('uid');
+    // String _textFromFile = ""; // for uesr name
+
+    // var eventCreatorName = eventCreator(userID).then((result) {
+    //   setState(() {
+    //     if (result is String) _textFromFile = result.toString();
+    //   });
+    // });
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -46,8 +58,10 @@ class _eventDetails extends State<eventDetails> {
               children: [
                 Icon(Icons.access_time),
                 Text("   " +
-                    widget.event?.get('date') +
-                    '                                                '), // we may need to change it as i dont think this the right time !!
+                    widget.event?.get('date').substring(0, 10) +
+                    "  " +
+                    widget.event?.get('time').substring(10, 15) +
+                    '                                                           '), // we may need to change it as i dont think this the right time !!
               ],
             ),
             Wrap(
@@ -58,6 +72,18 @@ class _eventDetails extends State<eventDetails> {
                     "   to be added later                                                              "),
               ],
             ),
+            Row(children: <Widget>[
+              Text("        "),
+              Icon(Icons.people_alt_rounded),
+              Text("   Max attendee number is $attendeeNum  widget.event?.id ")
+            ]),
+            // Row(children: <Widget>[
+            //   Text("        "),
+            //   Icon(
+            //     Icons.person_rounded,
+            //   ),
+            //   Text("   by ")
+            // ]),
             Row(
               children: [
                 Expanded(
@@ -79,7 +105,14 @@ class _eventDetails extends State<eventDetails> {
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
                         child: Text('approve'),
-                        onPressed: () {},
+                        onPressed: () async {
+                          //  // var result = await showMyDialog(context);
+                          //   if (result == true) {
+                          //     dynamic db =
+                          //         await DatabaseService(uid: widget.event?.id)
+                          //             .approveEvent(true);
+                          //}
+                        },
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.purple[300]),
@@ -96,6 +129,17 @@ class _eventDetails extends State<eventDetails> {
       ),
     );
   }
+
+  // Future<String> eventCreator(String uid) async {
+  //   String uesrName = " ";
+  //   DocumentSnapshot documentList;
+  //   documentList =
+  //       await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
+
+  //   uesrName = documentList['uesrname'];
+
+  //   return uesrName;
+  // }
 }
 
 class Edescription extends StatelessWidget {
@@ -171,4 +215,4 @@ class ArcClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-// res https://iiro.dev/from-design-to-flutter-movie-details-page/ 
+// res https://iiro.dev/from-design-to-flutter-movie-details-page/
