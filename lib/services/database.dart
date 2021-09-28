@@ -28,7 +28,7 @@ class DatabaseService {
   Future updateEventData(String? title, String? description, String? date,
       String? time /*, GeoPoint location*/) async {
     return await eventCollection.doc(uid).set({
-      "title": title,
+      "name": title,
       "description": description,
       "date": date,
       "time": time,
@@ -44,7 +44,9 @@ class DatabaseService {
       int attendees,
       String date,
       String time,
-      bool approved /*, GeoPoint location*/) {
+      bool approved,
+      bool adminCheck,
+    /*, GeoPoint location*/) {
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -54,6 +56,7 @@ class DatabaseService {
       "date": date,
       "time": time,
       "approved": approved,
+      "adminCheck": adminCheck,
       /* "location": location*/
     }); // may need to change date and time format
   }
