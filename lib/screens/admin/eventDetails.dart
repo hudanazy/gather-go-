@@ -4,6 +4,7 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
+import 'package:gather_go/shared/dialogs.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -75,7 +76,7 @@ class _eventDetails extends State<eventDetails> {
             Row(children: <Widget>[
               Text("        "),
               Icon(Icons.people_alt_rounded),
-              Text("   Max attendee number is $attendeeNum  widget.event?.id ")
+              Text("   Max attendee number is $attendeeNum  ")
             ]),
             // Row(children: <Widget>[
             //   Text("        "),
@@ -91,7 +92,25 @@ class _eventDetails extends State<eventDetails> {
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
                           child: Text('disapprove'),
-                          onPressed: () {},
+                          onPressed: () async {
+                            var result = await showDispproveDialog(context);
+                            if (result == true) {
+                              FirebaseFirestore.instance
+                                  .collection('events')
+                                  .doc(widget.event?.id)
+                                  .set({
+                                "uid": userID,
+                                "name": widget.event?.get('name'),
+                                "description": widget.event?.get('description'),
+                                "timePosted": widget.event?.get('timePosted'),
+                                "attendees": attendeeNum,
+                                "date": widget.event?.get('date'),
+                                "time": widget.event?.get('time'),
+                                'approved': false,
+                                "adminCheck": true /* "location": location*/
+                              });
+                            }
+                          },
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.orange[300]),
@@ -106,12 +125,34 @@ class _eventDetails extends State<eventDetails> {
                       child: ElevatedButton(
                         child: Text('approve'),
                         onPressed: () async {
-                          //  // var result = await showMyDialog(context);
-                          //   if (result == true) {
-                          //     dynamic db =
-                          //         await DatabaseService(uid: widget.event?.id)
-                          //             .approveEvent(true);
-                          //}
+                          var result = await showApproveDialog(context);
+                          if (result == true) {
+                            FirebaseFirestore.instance
+                                .collection('events')
+                                .doc(widget.event?.id)
+                                .set({
+                              "uid": userID,
+                              "name": widget.event?.get('name'),
+                              "description": widget.event?.get('description'),
+                              "timePosted": widget.event?.get('timePosted'),
+                              "attendees": attendeeNum,
+                              "date": widget.event?.get('date'),
+                              "time": widget.event?.get('time'),
+                              'approved': true,
+                              "adminCheck": true /* "location": location*/
+                            });
+                            // await DatabaseService(uid: widget.event?.id)
+                            //     .updateEventData(
+                            //         userID,
+                            //         widget.event?.get('name'),
+                            //         widget.event?.get('description'),
+                            //         widget.event?.get('date'),
+                            //         widget.event?.get('timePosted'),
+                            //         attendeeNum,
+                            //         widget.event?.get('time'),
+                            //         true,
+                            //         true);
+                          }
                         },
                         style: ButtonStyle(
                             backgroundColor:

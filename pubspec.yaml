@@ -37,6 +37,7 @@ dependencies:
   flutter_time_picker_spinner: ^2.0.0
   intl: ^0.17.0
   date_format: ^2.0.4
+  numberpicker: ^2.0.1
 
 dev_dependencies:
   flutter_test:

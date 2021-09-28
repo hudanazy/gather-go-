@@ -15,6 +15,7 @@ class _adminEvent extends State<adminEvent> {
       .collection('events')
       .orderBy("timePosted")
       .where('approved', isEqualTo: false)
+      .where('adminCheck', isEqualTo: false)
       .snapshots();
   @override
   Widget build(BuildContext context) {
