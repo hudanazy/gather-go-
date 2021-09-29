@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.17.0
   date_format: ^2.0.4
   numberpicker: ^2.0.1
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

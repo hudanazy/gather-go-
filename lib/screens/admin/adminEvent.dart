@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
 
+import 'package:flutter/material.dart';
+import 'package:gather_go/shared/loading.dart';
+
 // ignore: camel_case_types
 class adminEvent extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class _adminEvent extends State<adminEvent> {
       .where('approved', isEqualTo: false)
       .where('adminCheck', isEqualTo: false)
       .snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +41,12 @@ class _adminEvent extends State<adminEvent> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                  child: Text(
-                "No New Events", // may be change it to loading , itis appear for a second every time
-                textAlign: TextAlign.center,
-              ));
+                child: Loading(),
+                //     child: Text(
+                //   "No New Events", // may be change it to loading , itis appear for a second every time
+                //   textAlign: TextAlign.center,
+                // )
+              );
             }
             return Container(
                 height: 550,
@@ -51,6 +57,8 @@ class _adminEvent extends State<adminEvent> {
                     return Padding(
                         padding: const EdgeInsets.all(8),
                         child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
                             margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             color: Colors.grey[200],
                             child: ListTile(
@@ -71,7 +79,7 @@ class _adminEvent extends State<adminEvent> {
                                     fontSize: 14),
                               ),
                               trailing: Icon(
-                                Icons.arrow_forward,
+                                Icons.arrow_forward_ios,
                               ),
                               onTap: () {
                                 Navigator.push(

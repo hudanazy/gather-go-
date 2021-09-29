@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:gather_go/services/database.dart';
-import 'package:intl/intl.dart';
-import 'package:date_format/date_format.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -21,13 +20,13 @@ class _eventDetails extends State<eventDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-    // String _textFromFile = ""; // for uesr name
+    String _textFromFile = ""; // for uesr name
+    _StatefulWidgetDemoState() async {
+      eventCreator(userID).then((val) => setState(() {
+            _textFromFile = val;
+          }));
+    }
 
-    // var eventCreatorName = eventCreator(userID).then((result) {
-    //   setState(() {
-    //     if (result is String) _textFromFile = result.toString();
-    //   });
-    // });
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -83,7 +82,7 @@ class _eventDetails extends State<eventDetails> {
             //   Icon(
             //     Icons.person_rounded,
             //   ),
-            //   Text("   by ")
+            //   Text("   by  ")
             // ]),
             Row(
               children: [
@@ -95,20 +94,41 @@ class _eventDetails extends State<eventDetails> {
                           onPressed: () async {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .set({
-                                "uid": userID,
-                                "name": widget.event?.get('name'),
-                                "description": widget.event?.get('description'),
-                                "timePosted": widget.event?.get('timePosted'),
-                                "attendees": attendeeNum,
-                                "date": widget.event?.get('date'),
-                                "time": widget.event?.get('time'),
-                                'approved': false,
-                                "adminCheck": true /* "location": location*/
-                              });
+                              try {
+                                FirebaseFirestore.instance
+                                    .collection('events')
+                                    .doc(widget.event?.id)
+                                    .set({
+                                  "uid": userID,
+                                  "name": widget.event?.get('name'),
+                                  "description":
+                                      widget.event?.get('description'),
+                                  "timePosted": widget.event?.get('timePosted'),
+                                  "attendees": attendeeNum,
+                                  "date": widget.event?.get('date'),
+                                  "time": widget.event?.get('time'),
+                                  'approved': false,
+                                  "adminCheck": true /* "location": location*/
+                                });
+                                // success msg + redirect to adminEvent
+
+                                Fluttertoast.showToast(
+                                  msg: widget.event?.get('name') +
+                                      " dispproved successfully",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => adminEvent()));
+                              } catch (e) {
+                                // fail msg
+                                Fluttertoast.showToast(
+                                  msg: "somthing went wrong ",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                );
+                              }
                             }
                           },
                           style: ButtonStyle(
@@ -127,31 +147,37 @@ class _eventDetails extends State<eventDetails> {
                         onPressed: () async {
                           var result = await showApproveDialog(context);
                           if (result == true) {
-                            FirebaseFirestore.instance
-                                .collection('events')
-                                .doc(widget.event?.id)
-                                .set({
-                              "uid": userID,
-                              "name": widget.event?.get('name'),
-                              "description": widget.event?.get('description'),
-                              "timePosted": widget.event?.get('timePosted'),
-                              "attendees": attendeeNum,
-                              "date": widget.event?.get('date'),
-                              "time": widget.event?.get('time'),
-                              'approved': true,
-                              "adminCheck": true /* "location": location*/
-                            });
-                            // await DatabaseService(uid: widget.event?.id)
-                            //     .updateEventData(
-                            //         userID,
-                            //         widget.event?.get('name'),
-                            //         widget.event?.get('description'),
-                            //         widget.event?.get('date'),
-                            //         widget.event?.get('timePosted'),
-                            //         attendeeNum,
-                            //         widget.event?.get('time'),
-                            //         true,
-                            //         true);
+                            try {
+                              FirebaseFirestore.instance
+                                  .collection('events')
+                                  .doc(widget.event?.id)
+                                  .set({
+                                "uid": userID,
+                                "name": widget.event?.get('name'),
+                                "description": widget.event?.get('description'),
+                                "timePosted": widget.event?.get('timePosted'),
+                                "attendees": attendeeNum,
+                                "date": widget.event?.get('date'),
+                                "time": widget.event?.get('time'),
+                                'approved': true,
+                                "adminCheck": true /* "location": location*/
+                              });
+                              Fluttertoast.showToast(
+                                msg: widget.event?.get('name') +
+                                    " approved successfully",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                              Navigator.pop(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => adminEvent()));
+                            } catch (e) {
+                              // fail msg
+                              Fluttertoast.showToast(
+                                msg: "Somthing went wrong ",
+                                toastLength: Toast.LENGTH_SHORT,
+                              );
+                            }
                           }
                         },
                         style: ButtonStyle(
@@ -171,16 +197,17 @@ class _eventDetails extends State<eventDetails> {
     );
   }
 
-  // Future<String> eventCreator(String uid) async {
-  //   String uesrName = " ";
-  //   DocumentSnapshot documentList;
-  //   documentList =
-  //       await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
+  Future<String> eventCreator(String uid) async {
+    String uesrName = " ";
+    DocumentSnapshot documentList;
+    documentList =
+        await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
 
-  //   uesrName = documentList['uesrname'];
+    uesrName = documentList['uesrname'];
+    print(uesrName);
 
-  //   return uesrName;
-  // }
+    return uesrName;
+  }
 }
 
 class Edescription extends StatelessWidget {
