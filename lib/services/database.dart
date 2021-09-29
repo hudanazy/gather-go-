@@ -37,16 +37,17 @@ class DatabaseService {
   }
 
   addEventData(
-      String uid,
-      String name,
-      String description,
-      String timePosted,
-      int attendees,
-      String date,
-      String time,
-      bool approved,
-      bool adminCheck,
-    /*, GeoPoint location*/) {
+    String uid,
+    String name,
+    String description,
+    String timePosted,
+    int attendees,
+    String date,
+    String time,
+    bool approved,
+    bool adminCheck,
+    /*, GeoPoint location*/
+  ) {
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -61,6 +62,24 @@ class DatabaseService {
     }); // may need to change date and time format
   }
 
+  addProfileData(
+    String uid,
+    String name,
+    String bio,
+    String email,
+    String imageUrl,
+  ) {
+    profileCollection.add({
+      "uid": uid,
+      "name": name,
+      "bio": bio,
+      "email": email,
+      "imageUrl": imageUrl,
+
+      /* "location": location*/
+    }); // may need to change date and time format
+  }
+
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
     return profileCollection.snapshots().map(_profileListFromSnapshot);
@@ -70,9 +89,11 @@ class DatabaseService {
   List<ProfileOnScreen> _profileListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ProfileOnScreen(
-          name: doc.get('name') ?? '',
-          bio: doc.get('bio') ?? '',
-          imageUrl: doc.get('imageUrl') ?? '');
+        name: doc.get('name') ?? '',
+        bio: doc.get('bio') ?? '',
+        email: doc.get('email') ?? '',
+        imageUrl: doc.get('imageUrl') ?? '',
+      );
     }).toList();
   }
 
@@ -98,6 +119,8 @@ class DatabaseService {
       uid: snapshot.get('uid'),
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),
+      email: snapshot.get('email') ?? '',
+      imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
 

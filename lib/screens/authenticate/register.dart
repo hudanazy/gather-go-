@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
@@ -124,7 +125,7 @@ class _RegisterState extends State<Register> {
                               return 'Enter Confirm Password';
                             }
                             if (value != _pass.text) {
-                              return 'password Not Match';
+                              return 'Password does not match';
                             }
                             return null;
                           },
@@ -146,9 +147,11 @@ class _RegisterState extends State<Register> {
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
                                       username, email, password, Confirm);
+
                               if (result == null)
                                 setState(() {
-                                  error = 'The email are registered'; //user
+                                  error =
+                                      'The email is already registered'; //user
                                   loading = false;
                                 });
                             }
