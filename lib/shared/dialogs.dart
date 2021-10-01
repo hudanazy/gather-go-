@@ -23,6 +23,57 @@ Future<bool> showMyDialog(BuildContext context) async {
       ],
     ),
   );
+}
+
+Future<bool> showApproveDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Approve event"),
+      content:
+          Text("Are you sure you want to you want to approve this event ?"),
+      actions: [
+        TextButton(
+            child: Text("No",
+                //             Text('Are you sure you want to continue?"'),,
+                style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
+Future<bool> showDispproveDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Disapprove event"),
+      content:
+          Text("Are you sure you want to you want to disapprove this event ?"),
+      actions: [
+        TextButton(
+            child: Text("No",
+                //             Text('Are you sure you want to continue?"'),,
+                style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+
   // return showDialog<void>(
   //   context: context,
   //   barrierDismissible: false, // user must tap button!

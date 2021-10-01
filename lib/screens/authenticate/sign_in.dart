@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/authenticate/register.dart';
+//import 'package:gather_go/screens/authenticate/register.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -28,6 +28,7 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,

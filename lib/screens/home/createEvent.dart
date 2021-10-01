@@ -12,6 +12,7 @@ import 'package:gather_go/shared/gradient_app_bar.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:gather_go/shared/dialogs.dart';
 
+// ignore: camel_case_types
 class createEvent extends StatefulWidget {
   @override
   _Eventform createState() => _Eventform();
@@ -231,8 +232,8 @@ class _Eventform extends State<createEvent> {
                                             _currentValue,
                                             dateo.toString(),
                                             ttime.toString(),
-                                            approved ,
-                                  false/*, location!*/);
+                                            approved,
+                                            false /*, location!*/);
                               }
                             }
                           },
