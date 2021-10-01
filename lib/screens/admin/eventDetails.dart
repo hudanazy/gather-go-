@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/shared/dialogs.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -26,7 +28,7 @@ class _eventDetails extends State<eventDetails> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 100.0),
+              padding: const EdgeInsets.only(bottom: 5.0),
               child: ArcBannerImage(),
             ),
             Row(children: [
@@ -84,7 +86,12 @@ class _eventDetails extends State<eventDetails> {
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
-                          child: Text('disapprove'),
+                          child: Text('Disapprove',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 12)),
                           onPressed: () async {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
@@ -137,7 +144,12 @@ class _eventDetails extends State<eventDetails> {
                   child: Align(
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
-                        child: Text('approve'),
+                        child: Text('Approve',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Comfortaa',
+                                fontSize: 12)),
                         onPressed: () async {
                           var result = await showApproveDialog(context);
                           if (result == true) {
@@ -259,7 +271,7 @@ class ArcClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    path.lineTo(0.0, size.height - 30);
+    path.lineTo(0.0, size.height);
 
     var firstControlPoint = Offset(size.width / 4, size.height);
     var firstPoint = Offset(size.width / 2, size.height);

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/admin/adminNav.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
 
 import 'package:flutter/material.dart';
@@ -35,7 +37,23 @@ class _adminEvent extends State<adminEvent> {
                   color: Colors.deepOrange,
                   fontFamily: 'Comfortaa',
                   fontSize: 18),
-            )),
+            ),
+            actions: [
+              Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
+                ElevatedButton.icon(
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    },
+                    icon: Icon(Icons.logout, color: Colors.deepOrange),
+                    label: Text('Log Out',
+                        style: TextStyle(
+                          color: Colors.deepOrange,
+                        )),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                    )),
+              ])
+            ]),
         StreamBuilder(
           stream: snap,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

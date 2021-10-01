@@ -144,7 +144,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
             currentIndex: _pageIndex,
             // onTap: onTabTapped,
 
-            showSelectedLabels: false,
+            showSelectedLabels: true,
             showUnselectedLabels: false,
             items: [
               BottomNavigationBarItem(
@@ -157,11 +157,11 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
                 label: 'Comments',
                 backgroundColor: Colors.green,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: 'Log Out',
-                backgroundColor: Colors.pink,
-              )
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.logout),
+              //   label: 'Log Out',
+              //   backgroundColor: Colors.pink,
+              // )
             ],
             onTap: (index) {
               onTabTapped(index);
@@ -198,7 +198,10 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), Text('data'), logout()].elementAt(index);
+        return [
+          adminEvent(),
+          Text('data'),
+        ].elementAt(index);
       },
     };
   }

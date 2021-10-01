@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+import 'package:gather_go/screens/admin/adminNav.dart';
 import 'package:gather_go/screens/home/editProfile.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/services/database.dart';
@@ -49,6 +50,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     //     builder: (context) => EditProfilePage()));
                   },
                 ),
+
                 // ElevatedButton(
                 //   style: ElevatedButton.styleFrom(
                 //     primary: Colors.purple[500],
@@ -176,7 +178,7 @@ class _ProfileFormState extends State<ProfileForm> {
         child: Column(
           children: [
             Text(
-              "About",
+              "About ",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             const SizedBox(
@@ -187,7 +189,30 @@ class _ProfileFormState extends State<ProfileForm> {
                   'I\'m a senior software engineering student at king Saud University. Our SWE group is currently developing this app.',
               style: TextStyle(fontSize: 16, height: 1.4),
             ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              icon: Icon(Icons.logout_outlined),
+              label: Text('Log out'),
+            ),
           ],
         ),
       );
 }
+
+// class logout extends StatelessWidget {
+//   const logout({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: ElevatedButton(
+//         onPressed: () async {
+//           await FirebaseAuth.instance.signOut();
+//         },
+//         child: Text('logout'),
+//       ),
+//     );
+//   }
+// }

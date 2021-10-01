@@ -267,11 +267,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-<<<<<<< HEAD
     version: "0.12.11"
-=======
-    version: "0.12.10"
   material_design_icons_flutter:
     dependency: "direct main"
     description:
@@ -279,10 +275,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.5955"
->>>>>>> 2f6e328ecbd5c535260d075be996c7802e72e5d4
-=======
-    version: "0.12.11"
->>>>>>> admin-Features
   meta:
     dependency: transitive
     description:
@@ -304,7 +296,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-<<<<<<< HEAD
   octo_image:
     dependency: transitive
     description:
@@ -312,8 +303,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
-=======
->>>>>>> admin-Features
   path:
     dependency: transitive
     description:
@@ -530,9 +519,5 @@ packages:
     source: hosted
     version: "5.1.2"
 sdks:
-<<<<<<< HEAD
-  dart: ">=2.12.0 <3.0.0"
-=======
   dart: ">=2.13.0 <3.0.0"
->>>>>>> 2f6e328ecbd5c535260d075be996c7802e72e5d4
   flutter: ">=2.0.0"
