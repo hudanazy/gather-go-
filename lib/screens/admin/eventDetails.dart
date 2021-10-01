@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
-import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -20,12 +19,7 @@ class _eventDetails extends State<eventDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-    String _textFromFile = ""; // for uesr name
-    _StatefulWidgetDemoState() async {
-      eventCreator(userID).then((val) => setState(() {
-            _textFromFile = val;
-          }));
-    }
+    Future<String> eventCreatorName = eventCreator(userID);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -77,13 +71,13 @@ class _eventDetails extends State<eventDetails> {
               Icon(Icons.people_alt_rounded),
               Text("   Max attendee number is $attendeeNum  ")
             ]),
-            // Row(children: <Widget>[
-            //   Text("        "),
-            //   Icon(
-            //     Icons.person_rounded,
-            //   ),
-            //   Text("   by  ")
-            // ]),
+            Row(children: <Widget>[
+              Text("        "),
+              Icon(
+                Icons.person_rounded,
+              ),
+              Text("   Created by   $_textFromFile")
+            ]),
             Row(
               children: [
                 Expanded(
@@ -197,6 +191,8 @@ class _eventDetails extends State<eventDetails> {
     );
   }
 
+  String _textFromFile = "";
+  // will return eventCreator name
   Future<String> eventCreator(String uid) async {
     String uesrName = " ";
     DocumentSnapshot documentList;
@@ -204,7 +200,8 @@ class _eventDetails extends State<eventDetails> {
         await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
 
     uesrName = documentList['uesrname'];
-    print(uesrName);
+
+    setState(() => _textFromFile = uesrName);
 
     return uesrName;
   }
