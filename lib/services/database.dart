@@ -1,20 +1,146 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
+import 'package:gather_go/Models/EventInfo.dart';
+
+import 'package:gather_go/Models/ProfileOnScreen.dart';
 
 class DatabaseService {
-  final String uid;
+  final String? uid;
+  DatabaseService({this.uid});
 
-  DatabaseService(
-      {required this.uid}); // if i  put required will not ba an error as uid cant be null!! , when i add it it make error in home.dart !
+  final CollectionReference profileCollection =
+      FirebaseFirestore.instance.collection('profiles');
 
-  // collection reference
+  final CollectionReference eventCollection =
+      FirebaseFirestore.instance.collection('events');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('uesrInfo');
 
-  final CollectionReference gatherGoCollection =
-      FirebaseFirestore.instance.collection('uesr');
+  Future updateProfileData(String name, String bio) async {
+    return await profileCollection.doc(uid).set({
+      "name": name,
+      "bio": bio,
+    });
+  }
+
+  Future updateEventData(String? title, String? description, String? date,
+      String? time /*, GeoPoint location*/) async {
+    return await eventCollection.doc(uid).set({
+      "name": title,
+      "description": description,
+      "date": date,
+      "time": time,
+      /* "location": location*/
+    }); // may need to change date and time format
+  }
+
+  addEventData(
+    String uid,
+    String name,
+    String description,
+    String timePosted,
+    int attendees,
+    String date,
+    String time,
+    bool approved,
+    bool adminCheck,
+    /*, GeoPoint location*/
+  ) {
+    eventCollection.add({
+      "uid": uid,
+      "name": name,
+      "description": description,
+      "timePosted": timePosted,
+      "attendees": attendees,
+      "date": date,
+      "time": time,
+      "approved": approved,
+      "adminCheck": adminCheck,
+      /* "location": location*/
+    }); // may need to change date and time format
+  }
+
+  addProfileData(
+    String uid,
+    String name,
+    String bio,
+    String email,
+    String imageUrl,
+  ) {
+    profileCollection.add({
+      "uid": uid,
+      "name": name,
+      "bio": bio,
+      "email": email,
+      "imageUrl": imageUrl,
+
+      /* "location": location*/
+    }); // may need to change date and time format
+  }
+
+//get user stream
+  Stream<List<ProfileOnScreen>?> get profiles {
+    return profileCollection.snapshots().map(_profileListFromSnapshot);
+  }
+
+  //user list from snapshot
+  List<ProfileOnScreen> _profileListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ProfileOnScreen(
+        name: doc.get('name') ?? '',
+        bio: doc.get('bio') ?? '',
+        email: doc.get('email') ?? '',
+        imageUrl: doc.get('imageUrl') ?? '',
+      );
+    }).toList();
+  }
+
+//get events stream
+  Stream<EventInfo> get eventss {
+    return eventCollection.doc(uid).snapshots().map(_eventDataFromSnapshot);
+    //  return eventCollection.doc(uid).snapshots().map(_eventDataFromSnapshot);
+  }
+
+  Stream<List<EventInfo>> get events {
+    return eventCollection.snapshots().map(_eventInfoListFromSnapshot);
+  }
+
+//get user doc stream
+  Stream<ProfileData> get profileData {
+    return profileCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
+  }
+
+  //user data from snapshot
+
+  ProfileData _profileDataFromSnapshot(DocumentSnapshot snapshot) {
+    return ProfileData(
+      uid: snapshot.get('uid'),
+      name: snapshot.get('name'),
+      bio: snapshot.get('bio'),
+      email: snapshot.get('email') ?? '',
+      imageUrl: snapshot.get('imageUrl') ?? '',
+    );
+  }
+
+  EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
+    return EventInfo(
+        //  uid: snapshot.get('uid'),
+        uid: snapshot.get('uid'),
+        name: snapshot.get('name'),
+        description: snapshot.get('description'),
+        timePosted: snapshot.get('timePosted'),
+        //  imageUrl: snapshot.get('imageUrl'),
+        attendees: snapshot.get('attendees'),
+        // comments: snapshot.get('comments'),
+        date: snapshot.get('date'),
+        time: snapshot.get('time'),
+        approved: snapshot.get('approved'));
+  }
 
   Future updateUesrData(String uesrname, String email, String password) async {
-    return await gatherGoCollection.doc(uid).set({
+    return await userCollection.doc(uid).set({
       'uesrname': uesrname,
       'email': email,
       'password': password,
@@ -22,7 +148,7 @@ class DatabaseService {
   }
 
   Stream<List<UesrInfo>> get users {
-    return gatherGoCollection.snapshots().map(_userInfoListFromSnapshot);
+    return userCollection.snapshots().map(_userInfoListFromSnapshot);
   }
 
   //uesr list from snopshot
@@ -33,6 +159,24 @@ class DatabaseService {
           uesrname: doc.get('uesrname') ?? '',
           email: doc.get('email') ?? '',
           password: doc.get('password') ?? '');
+    }).toList();
+  }
+
+  List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return EventInfo(
+          // snapshot.data['uesrname']
+          uid: doc.get('uid') ?? '',
+          name: doc.get('name') ?? '',
+          description: doc.get('description') ?? '',
+          timePosted: doc.get('timePosted') ?? '',
+          // imageUrl: doc.get('imageUrl') ?? '',
+          attendees: doc.get('attendees') ?? 0,
+          // comments: doc.get('comments') ?? 0,
+          date: doc.get('date') ?? '',
+          time: doc.get('time') ?? '',
+          /* location: doc.get('location') ?? ''*/
+          approved: doc.get('approved') ?? '');
     }).toList();
   }
 }

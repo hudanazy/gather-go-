@@ -1,3 +1,4 @@
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
@@ -31,9 +32,8 @@ class AuthService {
       return null;
   }
 
-//sign in anonymously method
-//sign in w/ email password
-  Future SignInWithUsernameAndPassword(String username, String password) async {
+//sign in with email and password
+  Future signInWithUsernameAndPassword(String username, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: username, password: password);
@@ -45,18 +45,18 @@ class AuthService {
     }
   }
 
-//register user name email password
-  Future registerWithEmailAndUsernameAndPassword(
-      String email, String password) async {
+//sign up w/ email password
+  Future signUpWithUsernameAndPassword(
+      String username, String emial, String password, String Confirm) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: username, password: password);
       User? user = result.user;
 
-      // create a new doc for the uesr with the uid
-      // tutorial write damy data
+      //create a new document for a user with uid
       await DatabaseService(uid: user!.uid)
-          .updateUesrData("shahad", email, password);
+          .updateUesrData(emial, username, password);
+
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -64,6 +64,29 @@ class AuthService {
     }
   }
 
+  /* Future<bool> UsernameCheck(String username) async {
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
+
+    return result.docs.isEmpty;
+  } */
+  //check
+
+  //   Future createEvent(String title, String description, DateTime date) async {
+  //   try {
+
+  //     await DatabaseService()
+  //           .updateEventData("Bowling", "Indoors", DateTime.now());
+
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
+
+//register
 //sign out
   Future SignOut() async {
     try {

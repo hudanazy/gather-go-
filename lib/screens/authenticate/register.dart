@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
+import 'package:gather_go/services/database.dart';
+import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  final VoidCallback toggleView;
+  Register(this.toggleView);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -16,117 +19,193 @@ class _RegisterState extends State<Register> {
   String error = '';
   bool loading = false;
 
-  // text field state
-  String email = '';
-  String password = '';
+  final _fromkey = GlobalKey<FormState>();
+  // bool loading = false;
+  final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
+//textfield state
   String username = '';
-  String confirmPass = '';
-  // final __passwordControl = TextEditingController();
-  // final __passwordconfirm = TextEditingController();
+  String password = '';
+  //String error = '';
+  String Confirm = '';
+  String email = '';
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? Loading() //
         : Scaffold(
-            backgroundColor: Colors.amber[100],
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: Colors.amber[100],
+              backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
-                "Register to Gather Go",
-                style: TextStyle(color: Colors.black),
+                "Signup to Gather Go",
+                style: TextStyle(color: Colors.orangeAccent),
+                textAlign: TextAlign.center,
               ),
             ),
+            // actions: <Widget>[
+            //   TextButton.icon(
+            //       onPressed: () {},
+            //       icon: Icon(Icons.person),
+            //       label: Text("Register"))
+            // ]),
             body: Container(
+                width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                 child: Form(
-                    key: _formKey,
+                    key: _fromkey,
                     child: Column(
                       children: [
                         TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Username',
-                          ),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter your username' : null,
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Username"),
+                          /* validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter your Username';
+                            }
+                          }, */
+
+                          validator: (value) {
+                            if (value!.length < 2 || value.isEmpty) {
+                              return "Username is too short";
+                            }
+                            if (value.length > 12) {
+                              return "username is too long";
+                            }
+                          },
+                          onChanged: (value) {
+                            setState(() => email = value);
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          decoration:
+                              textInputDecoration.copyWith(hintText: "Email"),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter your email";
+                            }
+                            if (!RegExp(
+                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                .hasMatch(value)) {
+                              return "Enter valid email ";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() => username = value);
                           },
                         ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'email',
-                          ),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Enter your email' : null,
-                          onChanged: (value) {
-                            setState(() => email = value);
-                          }, //email
+                        SizedBox(
+                          height: 20,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(labelText: ' password'),
+                          controller: _pass,
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Password"),
                           obscureText: true,
-                          validator: (value) => value!.length < 6
-                              ? 'Enter your passord 6+ chars long'
+                          validator: (value) => value!.length < 8
+                              ? 'Enter a password 8+ chars long.'
                               : null,
                           onChanged: (value) {
                             setState(() => password = value);
                           },
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         TextFormField(
-                          //controller: __passwordconfirm,
-                          decoration:
-                              InputDecoration(labelText: 'Confirm password'),
+                          controller: _confirmPass,
+                          decoration: textInputDecoration.copyWith(
+                              hintText: "Confirm Password "),
                           obscureText: true,
-                          validator: (value) =>
-                              value != password ? ' Confirm password ' : (null),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter Confirm Password';
+                            }
+                            if (value != _pass.text) {
+                              return 'Password does not match';
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() => password = value);
                           },
                         ),
-                        //confirm pass
+                        SizedBox(
+                          height: 20,
+                        ),
                         ElevatedButton(
-                          child: Text("Register"),
+                          child: Text("SignUp"),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
+                            if (_fromkey.currentState!.validate()) {
                               setState(() {
-                                // to show loading icon
                                 loading = true;
                               });
-                              dynamic result = await _auth
-                                  .registerWithEmailAndUsernameAndPassword(
-                                      email, password);
+                              //firebase register here and in auth.dart
+                              dynamic result =
+                                  await _auth.signUpWithUsernameAndPassword(
+                                      username, email, password, Confirm);
+
                               if (result == null)
                                 setState(() {
-                                  error = 'pleas supply a valid email  ';
-                                  loading = true;
+                                  error =
+                                      'The email is already registered'; //user
+                                  loading = false;
                                 });
                             }
+                            /* dynamic resultuser =
+                                await _auth.UsernameCheck(username);
+                                if(!resultuser){
+                                  //username exists
+
+                                }
+                                else if(_fromkey.currentState!.validate()){
+                                      //save
+                                } */
                           },
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.amber),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.white)),
                         ),
-                        Text('Alraedy have an account?'),
+                        Text('Have an account?'),
                         ElevatedButton(
                           child: Text('Login now'),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SignIn())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+                            widget.toggleView();
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
                           },
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.purple[300]),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.white)),
                         ),
                         SizedBox(
                           height: 12.0,
                         ),
-                        Text(
-                          error,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 18.0,
-                          ),
-                        )
+                        Text(error, style: TextStyle(color: Colors.red))
                       ],
                     ))),
           );
+
+    //Text('Alraedy have an account?'),
+    // body:
+    //         ElevatedButton(
+    //           child: Text('Login now'),
+    //           onPressed: () {
+    //             Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+    //           },),
+    // );
   }
 }
