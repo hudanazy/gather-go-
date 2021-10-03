@@ -122,8 +122,8 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>()
+    // GlobalKey<NavigatorState>(),
+    // GlobalKey<NavigatorState>()
   ];
 
   @override
@@ -177,7 +177,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
             children: [
               _buildOffstageNavigator(0),
               _buildOffstageNavigator(1),
-              _buildOffstageNavigator(2),
+              // _buildOffstageNavigator(2),
               //_buildOffstageNavigator(3),
             ],
           ),

@@ -21,6 +21,9 @@ class _eventDetails extends State<eventDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
+
+    String category = widget.event?.get('category');
+
     Future<String> eventCreatorName = eventCreator(userID);
 
     return Scaffold(
@@ -39,11 +42,20 @@ class _eventDetails extends State<eventDetails> {
                       MaterialPageRoute(builder: (context) => adminEvent()));
                 },
               ),
-              Text(widget.event?.get('name'),
-                  style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontFamily: 'Comfortaa',
-                      fontSize: 18)),
+              Flexible(
+                child: Text(widget.event?.get('name') + '   ',
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontFamily: 'Comfortaa',
+                        fontSize: 18)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text(category, style: TextStyle(color: Colors.black)),
+                  backgroundColor: Colors.deepOrange[100],
+                ),
+              )
             ]),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -108,6 +120,7 @@ class _eventDetails extends State<eventDetails> {
                                   "attendees": attendeeNum,
                                   "date": widget.event?.get('date'),
                                   "time": widget.event?.get('time'),
+                                  //"category": widget.event?.get('category'),
                                   'approved': false,
                                   "adminCheck": true /* "location": location*/
                                 });

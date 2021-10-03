@@ -330,7 +330,7 @@ class _Eventform extends State<createEvent> {
                                   ttime.toString(),
                                   approved,
                                   false,
-                                  StringLatLng!,
+                                  StringLatLng,
                                 );
                                 Fluttertoast.showToast(
                                   msg: "Event successfully sent to admin.",
