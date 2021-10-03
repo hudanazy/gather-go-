@@ -19,7 +19,7 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: <Color>[Colors.amber, Colors.purpleAccent])),
+              colors: <Color>[Colors.blue, Colors.purpleAccent])),
       child: Text(
         "Gather Go",
         style: TextStyle(
