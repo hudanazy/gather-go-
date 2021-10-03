@@ -254,11 +254,25 @@ class _Eventform extends State<createEvent> {
                           onPressed: () => pickTime(context),
                         ),
                       ),
+
                       SizedBox(height: 40),
-                      SizedBox(height: 40),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50),
+                        child: Text(
+                          "Location",
+                          style: TextStyle(
+                            color: Colors.lightBlue,
+                            letterSpacing: 5,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
                       SizedBox(
-                        height: 350,
-                        width: 300,
+                        height: 400,
+                        width: 350,
                         child: GoogleMap(
                           initialCameraPosition:
                               CameraPosition(target: _initialcameraposition),
@@ -269,6 +283,7 @@ class _Eventform extends State<createEvent> {
                           onTap: _handleTap,
                         ),
                       ),
+                      SizedBox(height: 40),
 
                       SizedBox(
                         height: 50,
