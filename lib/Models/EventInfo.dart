@@ -5,6 +5,7 @@ import 'package:gather_go/Models/ProfileOnScreen.dart';
 class EventInfo {
   final String uid;
   final String name;
+  final String category;
   final String description;
   final String timePosted;
   //final String imageUrl;
@@ -18,6 +19,7 @@ class EventInfo {
   EventInfo(
       {required this.uid,
       required this.name,
+      required this.category,
       required this.description,
       required this.timePosted,
       //  required this.imageUrl,

@@ -19,6 +19,21 @@ class createEvent extends StatefulWidget {
 }
 
 class _Eventform extends State<createEvent> {
+  final category = [
+    'Educational',
+    'Sports',
+    'Arts',
+    'Academic',
+    'Culture',
+    'Video Games',
+    'Activities',
+    'Beauty',
+    'Health',
+    'Career',
+    'Personal Growth'
+  ];
+  String? item;
+
   final _formKey = GlobalKey<FormState>();
 
   DateTime _dateTime = DateTime.now();
@@ -61,9 +76,9 @@ class _Eventform extends State<createEvent> {
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
                         child: Text(
-                          "Event",
+                          "Event Name",
                           style: TextStyle(
-                            color: Colors.deepOrange,
+                            color: Colors.purpleAccent,
                             letterSpacing: 5,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -75,10 +90,10 @@ class _Eventform extends State<createEvent> {
                         width: 320,
                         child: TextFormField(
                           controller: EventName,
-                          maxLines: 2,
+                          maxLines: 1,
                           initialValue: eventData?.name,
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "What is the event ?"),
+                          decoration:
+                              textInputDecoration.copyWith(hintText: ""),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
                               : eventData?.name,
@@ -90,9 +105,44 @@ class _Eventform extends State<createEvent> {
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
                         child: Text(
+                          "Event Category",
+                          style: TextStyle(
+                            color: Colors.deepOrangeAccent,
+                            letterSpacing: 5,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        width: 320,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                color: Colors.amberAccent, width: 2)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: item,
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.black),
+                            items: category.map(buildMenuItem).toList(),
+                            onChanged: (value) =>
+                                setState(() => this.item = value),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50),
+                        child: Text(
                           "Description",
                           style: TextStyle(
-                            color: Colors.purpleAccent,
+                            color: Colors.lightBlue,
                             letterSpacing: 5,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -227,6 +277,7 @@ class _Eventform extends State<createEvent> {
                                         .addEventData(
                                             user!.uid,
                                             Name!,
+                                            item!,
                                             Description!,
                                             timeAgo!,
                                             _currentValue,
@@ -273,4 +324,9 @@ class _Eventform extends State<createEvent> {
 
     setState(() => ttime = newTime);
   }
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+      value: item,
+      child: Text(item,
+          style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
 }
