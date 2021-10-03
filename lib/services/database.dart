@@ -5,6 +5,7 @@ import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DatabaseService {
   final String? uid;
@@ -48,7 +49,7 @@ class DatabaseService {
     String time,
     bool approved,
     bool adminCheck,
-    /*, GeoPoint location*/
+    String location,
   ) {
     eventCollection.add({
       "uid": uid,
@@ -61,7 +62,7 @@ class DatabaseService {
       "time": time,
       "approved": approved,
       "adminCheck": adminCheck,
-      /* "location": location*/
+      "location": location,
     }); // may need to change date and time format
   }
 

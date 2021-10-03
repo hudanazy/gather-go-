@@ -16,6 +16,8 @@ import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -58,6 +60,12 @@ class _Eventform extends State<createEvent> {
   String? timeAgo;
   int _currentValue = 5;
   bool approved = false;
+  LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
+  late GoogleMapController _controller;
+  Location _location = Location();
+  List<Marker> myMarker = [];
+  LatLng? saveLatLng;
+  String StringLatLng = "one";
 
   //DateTime date;
   @override
@@ -247,6 +255,21 @@ class _Eventform extends State<createEvent> {
                         ),
                       ),
                       SizedBox(height: 40),
+                      SizedBox(height: 40),
+                      SizedBox(
+                        height: 350,
+                        width: 300,
+                        child: GoogleMap(
+                          initialCameraPosition:
+                              CameraPosition(target: _initialcameraposition),
+                          mapType: MapType.normal,
+                          onMapCreated: _onMapCreated,
+                          myLocationEnabled: true,
+                          markers: Set.from(myMarker),
+                          onTap: _handleTap,
+                        ),
+                      ),
+
                       SizedBox(
                         height: 50,
                         width: 180,
@@ -297,16 +320,18 @@ class _Eventform extends State<createEvent> {
                                 dynamic db =
                                     await DatabaseService(uid: user?.uid)
                                         .addEventData(
-                                            user!.uid,
-                                            Name!,
-                                            item!,
-                                            Description!,
-                                            timeAgo!,
-                                            _currentValue,
-                                            dateo.toString(),
-                                            ttime.toString(),
-                                            approved,
-                                            false /*, location!*/);
+                                  user!.uid,
+                                  Name!,
+                                  item!,
+                                  Description!,
+                                  timeAgo!,
+                                  _currentValue,
+                                  dateo.toString(),
+                                  ttime.toString(),
+                                  approved,
+                                  false,
+                                  StringLatLng!,
+                                );
                                 Fluttertoast.showToast(
                                   msg: "Event successfully sent to admin.",
                                   toastLength: Toast.LENGTH_LONG,
@@ -322,6 +347,32 @@ class _Eventform extends State<createEvent> {
                     ],
                   )));
         });
+  }
+
+  void _onMapCreated(GoogleMapController _cntlr) {
+    _controller = _cntlr;
+    _location.onLocationChanged.listen((l) {
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
+        ),
+      );
+    });
+  }
+
+  void _handleTap(LatLng tappedPoint) {
+    setState(() {
+      myMarker = [];
+      myMarker.add(Marker(
+          markerId: MarkerId(tappedPoint.toString()),
+          position: tappedPoint,
+          draggable: true,
+          onDragEnd: (dragEndPosition) {
+            print(dragEndPosition);
+          }));
+      saveLatLng = tappedPoint;
+      StringLatLng = tappedPoint.toString();
+    });
   }
 
   Future pickDate(BuildContext context) async {
