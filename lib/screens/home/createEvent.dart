@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/event_list.dart';
+import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
@@ -11,6 +13,9 @@ import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/gradient_app_bar.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/home/home.dart';
+import 'package:gather_go/screens/home/nav.dart';
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -266,7 +271,24 @@ class _Eventform extends State<createEvent> {
                           ),
                           onPressed: () async {
                             //update db here using stream provider and database class
-
+                            if (name == null) {
+                              Fluttertoast.showToast(
+                                msg: "Name field can't be empty.",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                            }
+                            if (item == null) {
+                              Fluttertoast.showToast(
+                                msg: "Category field can't be empty.",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                            }
+                            if (description == null) {
+                              Fluttertoast.showToast(
+                                msg: "Description field can't be empty.",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                            }
                             timeAgo = DateTime.now().toString();
                             if (_formKey.currentState!.validate()) {
                               // print(ttime);
@@ -285,6 +307,12 @@ class _Eventform extends State<createEvent> {
                                             ttime.toString(),
                                             approved,
                                             false /*, location!*/);
+                                Fluttertoast.showToast(
+                                  msg: "Event successfully sent to admin.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => MyBottomBarDemo()));
                               }
                             }
                           },
@@ -310,6 +338,10 @@ class _Eventform extends State<createEvent> {
     if (newDate == null) return;
 
     setState(() => dateo = newDate);
+    Fluttertoast.showToast(
+      msg: "Date selected.",
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 
   Future pickTime(BuildContext context) async {
@@ -323,6 +355,10 @@ class _Eventform extends State<createEvent> {
     if (newTime == null) return;
 
     setState(() => ttime = newTime);
+    Fluttertoast.showToast(
+      msg: "Time selected.",
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
