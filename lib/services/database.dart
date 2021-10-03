@@ -40,6 +40,7 @@ class DatabaseService {
   addEventData(
     String uid,
     String name,
+    String category,
     String description,
     String timePosted,
     int attendees,
@@ -52,6 +53,7 @@ class DatabaseService {
     eventCollection.add({
       "uid": uid,
       "name": name,
+      "category": category,
       "description": description,
       "timePosted": timePosted,
       "attendees": attendees,
@@ -130,6 +132,7 @@ class DatabaseService {
         //  uid: snapshot.get('uid'),
         uid: snapshot.get('uid'),
         name: snapshot.get('name'),
+        category: snapshot.get('category'),
         description: snapshot.get('description'),
         timePosted: snapshot.get('timePosted'),
         //  imageUrl: snapshot.get('imageUrl'),
@@ -169,6 +172,7 @@ class DatabaseService {
           // snapshot.data['uesrname']
           uid: doc.get('uid') ?? '',
           name: doc.get('name') ?? '',
+          category: doc.get('category') ?? '',
           description: doc.get('description') ?? '',
           timePosted: doc.get('timePosted') ?? '',
           // imageUrl: doc.get('imageUrl') ?? '',
