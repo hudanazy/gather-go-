@@ -143,19 +143,24 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
             //currentIndex: _selectedIndex,
             currentIndex: _pageIndex,
             // onTap: onTabTapped,
+            backgroundColor: Colors.grey[200],
+            selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
+            selectedItemColor: Colors.deepOrange[400],
+            //unselectedItemColor: Colors.green,
+            type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,
             showUnselectedLabels: false,
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Events',
-                backgroundColor: Colors.red,
+                //backgroundColor: Colors.red,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.comment),
                 label: 'Comments',
-                backgroundColor: Colors.green,
+                // backgroundColor: Colors.green,
               ),
               // BottomNavigationBarItem(
               //   icon: Icon(Icons.logout),
