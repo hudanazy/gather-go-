@@ -41,7 +41,7 @@ class _Eventform extends State<createEvent> {
     'Personal Growth',
     'Other'
   ];
-  String? item;
+  String? item = 'Other';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -404,30 +404,49 @@ class _Eventform extends State<createEvent> {
                             } else {
                               timeAgo = DateTime.now().toString();
                               if (_formKey.currentState!.validate()) {
-                                // print(ttime);
-                                var result = await showMyDialog(context);
-                                if (result == true) {
-                                  dynamic db =
-                                      await DatabaseService(uid: user?.uid)
-                                          .addEventData(
-                                    user!.uid,
-                                    Name!,
-                                    item!,
-                                    Description!,
-                                    timeAgo!,
-                                    _currentValue,
-                                    dateo.toString(),
-                                    ttime.toString(),
-                                    approved,
-                                    false,
-                                    StringLatLng,
-                                  );
+                                if (dateo == null && ttime == null) {
                                   Fluttertoast.showToast(
-                                    msg: "Event successfully sent to admin.",
+                                    msg: "Date and time have to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => MyBottomBarDemo()));
+                                } else if (dateo == null) {
+                                  Fluttertoast.showToast(
+                                    msg: "Date has to be selected.",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                } else if (ttime == null) {
+                                  Fluttertoast.showToast(
+                                    msg: "Time has to be selected.",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                } else {
+                                  // print(ttime);
+                                  var result = await showMyDialog(context);
+                                  if (result == true) {
+                                    dynamic db =
+                                        await DatabaseService(uid: user?.uid)
+                                            .addEventData(
+                                      user!.uid,
+                                      Name!,
+                                      item!,
+                                      Description!,
+                                      timeAgo!,
+                                      _currentValue,
+                                      dateo.toString(),
+                                      ttime.toString(),
+                                      approved,
+                                      false,
+                                      StringLatLng,
+                                    );
+                                    Fluttertoast.showToast(
+                                      msg: "Event successfully sent to admin.",
+                                      toastLength: Toast.LENGTH_LONG,
+                                    );
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyBottomBarDemo()));
+                                  }
                                 }
                               }
                             }
