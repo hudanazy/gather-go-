@@ -18,6 +18,7 @@ import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gather_go/shared/num_button.dart';
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -27,7 +28,6 @@ class createEvent extends StatefulWidget {
 
 class _Eventform extends State<createEvent> {
   final category = [
-    'Other',
     'Educational',
     'Sports',
     'Arts',
@@ -38,7 +38,8 @@ class _Eventform extends State<createEvent> {
     'Beauty',
     'Health',
     'Career',
-    'Personal Growth'
+    'Personal Growth',
+    'Other'
   ];
   String? item;
 
@@ -85,29 +86,31 @@ class _Eventform extends State<createEvent> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      // GradientAppBar(),
+                      //   GradientAppBar(),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
-                        child: Text(
-                          "Event Name",
-                          style: TextStyle(
-                            color: Colors.purpleAccent,
-                            letterSpacing: 5,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        // child: Text(
+                        //   "Event Name",
+                        //   style: TextStyle(
+                        //     color: Colors.purpleAccent,
+                        //     letterSpacing: 5,
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w700,
+                        //   ),
+                        // ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 40),
                       SizedBox(
                         width: 320,
                         child: TextFormField(
                           controller: EventName,
                           maxLines: 1,
                           initialValue: eventData?.name,
-                          decoration:
-                              textInputDecoration.copyWith(hintText: ""),
+                          decoration: textInputDecoration.copyWith(
+                            hintText: "Event name..",
+                            hintStyle: TextStyle(color: Colors.purple[300]),
+                          ),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
                               : eventData?.name,
@@ -121,13 +124,14 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Event Category",
                           style: TextStyle(
-                            color: Colors.deepOrangeAccent,
-                            letterSpacing: 5,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                            color: Colors.purple[300],
+                            letterSpacing: 2,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
+
                       SizedBox(height: 10),
                       Container(
                         width: 320,
@@ -139,10 +143,12 @@ class _Eventform extends State<createEvent> {
                                 color: Colors.amberAccent, width: 2)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: category[0],
+                            focusColor: Colors.grey,
+                            value: item,
+                            // initialValue: category[0],
                             isExpanded: true,
                             icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.black),
+                                color: Colors.blueGrey),
                             items: category.map(buildMenuItem).toList(),
                             onChanged: (value) =>
                                 setState(() => this.item = value),
@@ -153,25 +159,26 @@ class _Eventform extends State<createEvent> {
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
-                        child: Text(
-                          "Description",
-                          style: TextStyle(
-                            color: Colors.lightBlue,
-                            letterSpacing: 5,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        // child: Text(
+                        //   "Description",
+                        //   style: TextStyle(
+                        //     color: Colors.lightBlue,
+                        //     letterSpacing: 5,
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w700,
+                        //   ),
+                        // ),
                       ),
                       SizedBox(height: 10),
                       SizedBox(
                         width: 320,
                         child: TextFormField(
                           controller: EventDescription,
-                          maxLines: 7,
+                          maxLines: 5,
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(
-                              hintText: "Tell us more about your event..."),
+                              hintText: "Tell us more about your event...",
+                              hintStyle: TextStyle(color: Colors.purple[300])),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
@@ -185,44 +192,91 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
-                            color: Colors.blue,
-                            letterSpacing: 5,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                            color: Colors.purple[300],
+                            letterSpacing: 2,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
+                      // NumericStepButton(
+                      //   // value: _currentValue,
+                      //   minValue: 1,
+                      //   maxValue: 500,
+                      //   onChanged: (value) =>
+                      //       setState(() => this._currentValue = value),
+                      // ),
                       SizedBox(height: 20),
                       NumberPicker(
                         value: _currentValue,
                         minValue: 1,
                         maxValue: 500,
+                        axis: Axis.horizontal,
                         onChanged: (value) =>
                             setState(() => _currentValue = value),
                       ),
-                      Container(
-                        color: Colors.amber,
-                        width: 250,
-                        child: TextButton.icon(
-                          label: Text(
-                            "Set event date",
-                            style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                      SizedBox(height: 20),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Select date ",
+                              style: TextStyle(
+                                color: Colors.purple[400],
+                                letterSpacing: 2,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          icon: Icon(
-                            Icons.calendar_today_outlined,
-                            color: Colors.purpleAccent,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(40),
-                            primary: Colors.white,
-                          ),
-                          onPressed: () => pickDate(context),
+                            WidgetSpan(
+                              child: IconButton(
+                                // label: Text(
+                                //   "Set event date",
+                                //   style: TextStyle(
+                                //     color: Colors.deepPurple,
+                                //     fontSize: 20,
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
+                                icon: Icon(
+                                  Icons.calendar_today_rounded,
+                                  color: Colors.purple[300],
+                                  size: 50,
+                                ),
+                                // style: ElevatedButton.styleFrom(
+                                //   minimumSize: Size.fromHeight(40),
+                                //   primary: Colors.white,
+                                // ),
+                                onPressed: () => pickDate(context),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      // Container(
+                      //   // color: Colors.amber,
+                      //   width: 50,
+                      // child: IconButton(
+                      //   // label: Text(
+                      //   //   "Set event date",
+                      //   //   style: TextStyle(
+                      //   //     color: Colors.deepPurple,
+                      //   //     fontSize: 20,
+                      //   //     fontWeight: FontWeight.w500,
+                      //   //   ),
+                      //   // ),
+                      //   icon: Icon(
+                      //     Icons.calendar_today_rounded,
+                      //     color: Colors.purple[300],
+                      //     size: 50,
+                      //   ),
+                      //   // style: ElevatedButton.styleFrom(
+                      //   //   minimumSize: Size.fromHeight(40),
+                      //   //   primary: Colors.white,
+                      //   // ),
+                      //   onPressed: () => pickDate(context),
+                      // ),
+                      // ),
                       SizedBox(height: 20),
                       // SfDateRangePicker(
                       //   controller: Datee,
@@ -231,42 +285,81 @@ class _Eventform extends State<createEvent> {
                       //   onSubmit: (val) =>
                       //       setState(() => dateo = val as DateTime),
                       // ),
-                      Container(
-                        color: Colors.amber,
-                        width: 250,
-                        child: TextButton.icon(
-                          label: Text(
-                            "Set event time",
-                            style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                      // Container(
+                      //   margin: const EdgeInsets.only(right: 5.0),
+                      //   // color: Colors.amber,
+                      //   width: 50,
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Select time ",
+                              style: TextStyle(
+                                color: Colors.purple[400],
+                                letterSpacing: 2,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          icon: Icon(
-                            Icons.hourglass_bottom_outlined,
-                            textDirection: TextDirection.ltr,
-                            color: Colors.purpleAccent,
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(40),
-                            primary: Colors.white,
-                          ),
-                          onPressed: () => pickTime(context),
+                            WidgetSpan(
+                              child: IconButton(
+                                // label: Text(
+                                //   "Set event time",
+                                //   style: TextStyle(
+                                //     color: Colors.deepPurple,
+                                //     fontSize: 20,
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
+                                icon: Icon(
+                                  Icons.access_time,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.purple[300],
+                                  size: 50,
+                                ),
+                                // style: ElevatedButton.styleFrom(
+                                //   minimumSize: Size.fromHeight(40),
+                                //   primary: Colors.white,
+                                // ),
+                                onPressed: () => pickTime(context),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      // child: IconButton(
+                      //   // label: Text(
+                      //   //   "Set event time",
+                      //   //   style: TextStyle(
+                      //   //     color: Colors.deepPurple,
+                      //   //     fontSize: 20,
+                      //   //     fontWeight: FontWeight.w500,
+                      //   //   ),
+                      //   // ),
+                      //   icon: Icon(
+                      //     Icons.access_time,
+                      //     textDirection: TextDirection.ltr,
+                      //     color: Colors.purple[300],
+                      //     size: 50,
+                      //   ),
+                      //   // style: ElevatedButton.styleFrom(
+                      //   //   minimumSize: Size.fromHeight(40),
+                      //   //   primary: Colors.white,
+                      //   // ),
+                      //   onPressed: () => pickTime(context),
+                      // ),
 
                       SizedBox(height: 40),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
                         child: Text(
-                          "Location",
+                          "Select location",
                           style: TextStyle(
-                            color: Colors.lightBlue,
-                            letterSpacing: 5,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                            color: Colors.purple[300],
+                            letterSpacing: 2,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
@@ -290,17 +383,13 @@ class _Eventform extends State<createEvent> {
                         height: 50,
                         width: 180,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.purple[500],
-                            shadowColor: Colors.purple[800],
-
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            // backgroundColor:
-                            //     MaterialStateProperty.all(Colors.purple[500]),
-                            // foregroundColor:
-                            //     MaterialStateProperty.all(Colors.white),
-                          ),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.purple[300]),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
                           child: Text(
                             'Submit',
                             style: TextStyle(
@@ -310,33 +399,36 @@ class _Eventform extends State<createEvent> {
                           ),
                           onPressed: () async {
                             //update db here using stream provider and database class
-
-                            timeAgo = DateTime.now().toString();
-                            if (_formKey.currentState!.validate()) {
-                              // print(ttime);
-                              var result = await showMyDialog(context);
-                              if (result == true) {
-                                dynamic db =
-                                    await DatabaseService(uid: user?.uid)
-                                        .addEventData(
-                                  user!.uid,
-                                  Name!,
-                                  item!,
-                                  Description!,
-                                  timeAgo!,
-                                  _currentValue,
-                                  dateo.toString(),
-                                  ttime.toString(),
-                                  approved,
-                                  false,
-                                  StringLatLng,
-                                );
-                                Fluttertoast.showToast(
-                                  msg: "Event successfully sent to admin.",
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => MyBottomBarDemo()));
+                            if (item == null) {
+                              item = 'Other';
+                            } else {
+                              timeAgo = DateTime.now().toString();
+                              if (_formKey.currentState!.validate()) {
+                                // print(ttime);
+                                var result = await showMyDialog(context);
+                                if (result == true) {
+                                  dynamic db =
+                                      await DatabaseService(uid: user?.uid)
+                                          .addEventData(
+                                    user!.uid,
+                                    Name!,
+                                    item!,
+                                    Description!,
+                                    timeAgo!,
+                                    _currentValue,
+                                    dateo.toString(),
+                                    ttime.toString(),
+                                    approved,
+                                    false,
+                                    StringLatLng,
+                                  );
+                                  Fluttertoast.showToast(
+                                    msg: "Event successfully sent to admin.",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => MyBottomBarDemo()));
+                                }
                               }
                             }
                           },
@@ -386,12 +478,11 @@ class _Eventform extends State<createEvent> {
     );
 
     if (newDate == null) return;
-
-    setState(() => dateo = newDate);
     Fluttertoast.showToast(
       msg: "Date selected.",
       toastLength: Toast.LENGTH_LONG,
     );
+    setState(() => dateo = newDate);
   }
 
   Future pickTime(BuildContext context) async {

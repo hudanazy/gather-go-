@@ -5,7 +5,7 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(100);
 
-  final double _height = 100.0;
+  final double _height = 50.0;
   // String title;
   // Color gradientBegin, gradientEnd;
 
@@ -19,13 +19,13 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: <Color>[Colors.blue, Colors.purpleAccent])),
+              colors: <Color>[Colors.purple[300]!, Colors.purple[300]!])),
       child: Text(
         "Gather Go",
         style: TextStyle(
           color: Colors.white,
-          letterSpacing: 10,
-          fontSize: 30,
+          letterSpacing: 7,
+          fontSize: 20,
           fontWeight: FontWeight.w700,
         ),
       ),
