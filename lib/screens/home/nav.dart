@@ -37,7 +37,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GradientAppBar(),
+      //  appBar: GradientAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
         onTap: onTabTapped,

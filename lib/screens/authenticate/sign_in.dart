@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:gather_go/screens/admin/eventDetails.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class _SignInState extends State<SignIn> {
                     key: _fromkey,
                     child: Column(
                       children: [
+                        ArcBannerImage(),
                         SizedBox(
                           height: 20,
                         ),
