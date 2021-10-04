@@ -27,6 +27,7 @@ class createEvent extends StatefulWidget {
 
 class _Eventform extends State<createEvent> {
   final category = [
+    'Other',
     'Educational',
     'Sports',
     'Arts',
@@ -138,7 +139,7 @@ class _Eventform extends State<createEvent> {
                                 color: Colors.amberAccent, width: 2)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: item,
+                            value: category[0],
                             isExpanded: true,
                             icon: Icon(Icons.arrow_drop_down,
                                 color: Colors.black),
@@ -309,24 +310,7 @@ class _Eventform extends State<createEvent> {
                           ),
                           onPressed: () async {
                             //update db here using stream provider and database class
-                            if (name == null) {
-                              Fluttertoast.showToast(
-                                msg: "Name field can't be empty.",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                            }
-                            if (item == null) {
-                              Fluttertoast.showToast(
-                                msg: "Category field can't be empty.",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                            }
-                            if (description == null) {
-                              Fluttertoast.showToast(
-                                msg: "Description field can't be empty.",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                            }
+
                             timeAgo = DateTime.now().toString();
                             if (_formKey.currentState!.validate()) {
                               // print(ttime);
