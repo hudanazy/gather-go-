@@ -86,6 +86,21 @@ class _Eventform extends State<createEvent> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 30),
+                      AppBar(
+                        backgroundColor: Colors.white,
+                        elevation: 0.0,
+                        title: Text(
+                          "Create an event",
+                          style: TextStyle(
+                            fontFamily: 'Comfortaa',
+                            fontSize: 27,
+                            color: Colors.purple[300],
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                       //   GradientAppBar(),
                       Container(
                         alignment: Alignment.topLeft,
@@ -100,7 +115,7 @@ class _Eventform extends State<createEvent> {
                         //   ),
                         // ),
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 10),
                       SizedBox(
                         width: 320,
                         child: TextFormField(
@@ -109,7 +124,9 @@ class _Eventform extends State<createEvent> {
                           initialValue: eventData?.name,
                           decoration: textInputDecoration.copyWith(
                             hintText: "Event name..",
-                            hintStyle: TextStyle(color: Colors.purple[300]),
+                            hintStyle: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                color: Colors.purple[300]),
                           ),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
@@ -124,10 +141,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Event Category",
                           style: TextStyle(
+                            fontFamily: 'Comfortaa',
                             color: Colors.purple[300],
                             letterSpacing: 2,
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -143,16 +161,20 @@ class _Eventform extends State<createEvent> {
                                 color: Colors.amberAccent, width: 2)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            focusColor: Colors.grey,
-                            value: item,
-                            // initialValue: category[0],
-                            isExpanded: true,
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blueGrey),
-                            items: category.map(buildMenuItem).toList(),
-                            onChanged: (value) =>
-                                setState(() => this.item = value),
-                          ),
+                              focusColor: Colors.grey,
+                              value: item,
+
+                              // initialValue: category[0],
+                              isExpanded: true,
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blueGrey),
+                              items: category.map(buildMenuItem).toList(),
+                              onChanged: (value) =>
+                                  setState(() => this.item = value),
+                              style: TextStyle(
+                                color: Colors.purple[300],
+                                fontFamily: 'Comfortaa',
+                              )),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -178,7 +200,9 @@ class _Eventform extends State<createEvent> {
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(
                               hintText: "Tell us more about your event...",
-                              hintStyle: TextStyle(color: Colors.purple[300])),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Comfortaa',
+                                  color: Colors.purple[300])),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
@@ -192,10 +216,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
+                            fontFamily: 'Comfortaa',
                             color: Colors.purple[300],
                             letterSpacing: 2,
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -222,10 +247,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select date ",
                               style: TextStyle(
+                                fontFamily: 'Comfortaa',
                                 color: Colors.purple[400],
                                 letterSpacing: 2,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             WidgetSpan(
@@ -295,10 +321,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select time ",
                               style: TextStyle(
+                                fontFamily: 'Comfortaa',
                                 color: Colors.purple[400],
                                 letterSpacing: 2,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             WidgetSpan(
@@ -356,10 +383,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Select location",
                           style: TextStyle(
+                            fontFamily: 'Comfortaa',
                             color: Colors.purple[300],
                             letterSpacing: 2,
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
