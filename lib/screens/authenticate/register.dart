@@ -40,8 +40,13 @@ class _RegisterState extends State<Register> {
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
-                "Signup to Gather Go",
-                style: TextStyle(color: Colors.orangeAccent),
+                //"Signup to Gather Go",
+                //style: TextStyle(color: Colors.orangeAccent),
+                 "Register",
+                style: TextStyle(
+                  fontFamily: 'Comfortaa',
+                  fontSize: 27,
+                  color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -54,6 +59,7 @@ class _RegisterState extends State<Register> {
             body: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                height: 800,
                 child: Form(
                     key: _fromkey,
                     child: Column(
@@ -137,10 +143,10 @@ class _RegisterState extends State<Register> {
                           },
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         ElevatedButton(
-                          child: Text("SignUp"),
+                          child: Text("Register"),
                           onPressed: () async {
                             if (_fromkey.currentState!.validate()) {
                               setState(() {
@@ -172,9 +178,11 @@ class _RegisterState extends State<Register> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: 
+                              MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 115)),),
                         ),
-                        Text('Have an account?'),
+                        Text('Already have an account?'),
                         ElevatedButton(
                           child: Text('Login now'),
                           onPressed: () {
@@ -196,7 +204,14 @@ class _RegisterState extends State<Register> {
                         ),
                         Text(error, style: TextStyle(color: Colors.red))
                       ],
-                    ))),
+                    )),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:  AssetImage('images/Picture1.png'), 
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.bottomCenter,)
+                      ),
+                    ),
           );
 
     //Text('Alraedy have an account?'),

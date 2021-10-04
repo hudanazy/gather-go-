@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:gather_go/screens/admin/eventDetails.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
@@ -34,18 +35,23 @@ class _SignInState extends State<SignIn> {
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
-                "Login to Gather Go",
-                style: TextStyle(color: Colors.black),
+                "Login",
+                style: TextStyle(
+                  fontFamily: 'Comfortaa',
+                  fontSize: 27,
+                  color: Colors.amber[600]),
                 textAlign: TextAlign.center,
               ),
             ),
             body: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                height: 800,
                 child: Form(
                     key: _fromkey,
                     child: Column(
                       children: [
+                        ArcBannerImage(),
                         SizedBox(
                           height: 20,
                         ),
@@ -72,7 +78,7 @@ class _SignInState extends State<SignIn> {
                           },
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         ElevatedButton(
                           child: Text("Login"),
@@ -97,7 +103,9 @@ class _SignInState extends State<SignIn> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white),
+                                  padding: 
+                                    MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 123)),),
                         ),
                         Text('Don’t have an account?'),
                         ElevatedButton(
@@ -121,7 +129,15 @@ class _SignInState extends State<SignIn> {
                         ),
                         Text(error, style: TextStyle(color: Colors.red))
                       ],
-                    ))),
-          );
+                    )),
+                      decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:  AssetImage('images/Picture1.png'), 
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.bottomCenter,)
+                      ),
+                    ),
+        );
+          
   }
 }

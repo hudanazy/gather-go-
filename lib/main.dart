@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'Models/NewUser.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 void main() async {
   // These two lines
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,13 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: null,
       child: MaterialApp(
-        home: Wrapper(),
+        home: AnimatedSplashScreen( //Wrapper(),
+          splash: Image.asset('images/logo.PNG',),
+          splashIconSize: 490.0,
+          splashTransition: SplashTransition.fadeTransition,
+          nextScreen: Wrapper(),
+          duration: 2500,
+        ),
       ),
     );
   }
