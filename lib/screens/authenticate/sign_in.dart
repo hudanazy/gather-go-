@@ -34,11 +34,11 @@ class _SignInState extends State<SignIn> {
             appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
-              // title: Text(
-              //   "Login to Gather Go",
-              //   style: TextStyle(color: Colors.black),
-              //   textAlign: TextAlign.center,
-              // ),
+              title: Text(
+                "Login to Gather Go",
+                style: TextStyle(color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
             ),
             body: Container(
                 width: double.infinity,
