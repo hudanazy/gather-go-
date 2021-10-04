@@ -208,7 +208,7 @@ class _RegisterState extends State<Register> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image:  AssetImage('images/Picture1.png'), 
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.contain,
                         alignment: Alignment.bottomCenter,)
                       ),
                     ),

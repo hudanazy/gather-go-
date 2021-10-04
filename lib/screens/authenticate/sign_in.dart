@@ -133,7 +133,7 @@ class _SignInState extends State<SignIn> {
                       decoration: BoxDecoration(
                       image: DecorationImage(
                         image:  AssetImage('images/Picture1.png'), 
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.contain,
                         alignment: Alignment.bottomCenter,)
                       ),
                     ),
