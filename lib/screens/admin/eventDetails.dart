@@ -120,9 +120,10 @@ class _eventDetails extends State<eventDetails> {
                                   "attendees": attendeeNum,
                                   "date": widget.event?.get('date'),
                                   "time": widget.event?.get('time'),
-                                  //"category": widget.event?.get('category'),
+                                  "category": category,
                                   'approved': false,
-                                  "adminCheck": true /* "location": location*/
+                                  "adminCheck": true,
+                                  "location": widget.event?.get('location')
                                 });
                                 // success msg + redirect to adminEvent
 
@@ -177,9 +178,11 @@ class _eventDetails extends State<eventDetails> {
                                 "timePosted": widget.event?.get('timePosted'),
                                 "attendees": attendeeNum,
                                 "date": widget.event?.get('date'),
+                                "category": category,
                                 "time": widget.event?.get('time'),
                                 'approved': true,
-                                "adminCheck": true /* "location": location*/
+                                "adminCheck": true,
+                                "location": widget.event?.get('location')
                               });
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
