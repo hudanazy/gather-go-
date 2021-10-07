@@ -67,7 +67,7 @@ class _Eventform extends State<createEvent> {
   Location _location = Location();
   List<Marker> myMarker = [];
   LatLng? saveLatLng;
-  String StringLatLng = "one";
+  String? StringLatLng;
 
   //DateTime date;
   @override
@@ -432,9 +432,12 @@ class _Eventform extends State<createEvent> {
                             } else {
                               timeAgo = DateTime.now().toString();
                               if (_formKey.currentState!.validate()) {
-                                if (dateo == null && ttime == null) {
+                                if (dateo == null &&
+                                    ttime == null &&
+                                    StringLatLng == null) {
                                   Fluttertoast.showToast(
-                                    msg: "Date and time have to be selected.",
+                                    msg:
+                                        "Date and time and location have to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
                                 } else if (dateo == null) {
@@ -445,6 +448,11 @@ class _Eventform extends State<createEvent> {
                                 } else if (ttime == null) {
                                   Fluttertoast.showToast(
                                     msg: "Time has to be selected.",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                } else if (StringLatLng == null) {
+                                  Fluttertoast.showToast(
+                                    msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
                                 } else {
@@ -464,7 +472,7 @@ class _Eventform extends State<createEvent> {
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      StringLatLng,
+                                      StringLatLng!,
                                     );
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
