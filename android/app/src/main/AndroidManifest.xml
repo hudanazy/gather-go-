@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gather_go">
+    <uses-permission android:name= "android.permission.INTERNET" />
+    <uses-permission android:name= "android.permission.VIBRATE" />
+    <uses-permission android:name= "android.permission.RECEIVE_BOOT_COMPLETED" />
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <uses-permission
 android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -9,6 +12,13 @@ android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="gather_go"
         android:icon="@mipmap/ic_launcher">
+        <receiver android:name ="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+          <intent-filter>
+            <action android:name ="android.intent.action.BOOT_COMPLETED"/>
+            <action android:name ="android.intent.action.MY_PACKAGE_REPLACED"/>
+          </intent-filter>
+          </receiver>
+           <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDPdn-l7AIoVnPYqR37vXdrH9dVVHHCckM"/>
 
@@ -47,5 +57,10 @@ android:name="android.permission.ACCESS_COARSE_LOCATION" />
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <service
+            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"        
+            android:exported="false"
+            android:stopWithTask="false"/>
     </application>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>

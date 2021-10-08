@@ -19,6 +19,9 @@ import 'package:gather_go/screens/home/nav.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gather_go/shared/num_button.dart';
+import '../NotifactionManager.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -68,6 +71,14 @@ class _Eventform extends State<createEvent> {
   List<Marker> myMarker = [];
   LatLng? saveLatLng;
   String? StringLatLng;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tz.initializeTimeZones();
+  }
+
 
   //DateTime date;
   @override
@@ -459,6 +470,8 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
+                                    NotifactionManager().showNotification(1, "Reminder, " + EventName.text,
+                                    "You have upcoming event, don't forget it", dateo, ttime); //before 1 day
                                     dynamic db =
                                         await DatabaseService(uid: user?.uid)
                                             .addEventData(

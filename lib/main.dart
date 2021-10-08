@@ -18,6 +18,8 @@ void main() async {
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey(debugLabel: "Main Navigator");
   @override
   Widget build(BuildContext context) {
     return StreamProvider<NewUser?>.value(
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
           nextScreen: Wrapper(),
           duration: 2500,
         ),
+        navigatorKey: navigatorKey,
       ),
     );
   }
