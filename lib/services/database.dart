@@ -146,7 +146,7 @@ class DatabaseService {
 
   Future updateUesrData(String uesrname, String email, String password) async {
     return await userCollection.doc(uid).set({
-      'uesrname': uesrname,
+      'name': uesrname,
       'email': email,
       'password': password,
     });
