@@ -57,14 +57,17 @@ class _adminEvent extends State<adminEvent> {
         StreamBuilder(
           stream: snap,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Loading(),
-                //     child: Text(
-                //   "No New Events", // may be change it to loading , itis appear for a second every time
-                //   textAlign: TextAlign.center,
-                // )
               );
+            }
+            if (!snapshot.hasData) {
+              return Center(
+                  child: Text(
+                "No New Events", // may be change it to loading , itis appear for a second every time
+                textAlign: TextAlign.center,
+              ));
             }
             return Container(
                 height: 550,
@@ -89,13 +92,6 @@ class _adminEvent extends State<adminEvent> {
                                     fontFamily: 'Comfortaa',
                                     fontSize: 16),
                               )),
-                              subtitle: Text(
-                                document['description'],
-                                style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 14),
-                              ),
                               trailing: Icon(
                                 Icons.arrow_forward_ios,
                               ),

@@ -5,6 +5,7 @@ import 'package:gather_go/screens/home/EventTile.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/user_list.dart';
+import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/gradient_app_bar.dart';
 
 // ignore: camel_case_types
@@ -162,6 +163,11 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
                 label: 'Comments',
                 // backgroundColor: Colors.green,
               ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.logout),
+                label: 'Log out',
+                // backgroundColor: Colors.green,
+              ),
               // BottomNavigationBarItem(
               //   icon: Icon(Icons.logout),
               //   label: 'Log Out',
@@ -203,10 +209,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [
-          adminEvent(),
-          Text('data'),
-        ].elementAt(index);
+        return [adminEvent(), Text('data'), logout()].elementAt(index);
       },
     };
   }
@@ -226,22 +229,35 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
       ),
     );
   }
+
+  Future<Widget> logOutdialog() async {
+    var result = await logOutAdminDialog(context);
+    if (result == true) {
+      await FirebaseAuth.instance.signOut();
+    }
+    return Text('data');
+  }
 }
 
 // ignore: camel_case_types
 class logout extends StatelessWidget {
-  const logout({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ElevatedButton(
-        onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-        },
-        child: Text('logout'),
-      ),
-    );
+        // logOutdialog(),
+        // child: ElevatedButton.icon(
+        //     onPressed: () async {
+        //       await FirebaseAuth.instance.signOut();
+        //     },
+        //     icon: Icon(Icons.logout, color: Colors.deepOrange),
+        //     label: Text('Log Out',
+        //         style: TextStyle(
+        //           color: Colors.deepOrange,
+        //         )),
+        //     style: ElevatedButton.styleFrom(
+        //       primary: Colors.white,
+        //     )),
+        );
   }
 }
 // res https://medium.com/@theboringdeveloper/common-bottom-navigation-bar-flutter-e3693305d2d

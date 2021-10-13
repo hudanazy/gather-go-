@@ -130,18 +130,20 @@ class DatabaseService {
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
-        //  uid: snapshot.get('uid'),
-        uid: snapshot.get('uid'),
-        name: snapshot.get('name'),
-        category: snapshot.get('category'),
-        description: snapshot.get('description'),
-        timePosted: snapshot.get('timePosted'),
-        //  imageUrl: snapshot.get('imageUrl'),
-        attendees: snapshot.get('attendees'),
-        // comments: snapshot.get('comments'),
-        date: snapshot.get('date'),
-        time: snapshot.get('time'),
-        approved: snapshot.get('approved'));
+      //  uid: snapshot.get('uid'),
+      uid: snapshot.get('uid'),
+      name: snapshot.get('name'),
+      category: snapshot.get('category'),
+      description: snapshot.get('description'),
+      timePosted: snapshot.get('timePosted'),
+      //  imageUrl: snapshot.get('imageUrl'),
+      attendees: snapshot.get('attendees'),
+      // comments: snapshot.get('comments'),
+      date: snapshot.get('date'),
+      time: snapshot.get('time'),
+      approved: snapshot.get('approved'),
+      // adminCheck: snapshot.get('adminCheck'),
+    );
   }
 
   Future updateUesrData(String uesrname, String email, String password) async {
@@ -170,19 +172,21 @@ class DatabaseService {
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return EventInfo(
-          // snapshot.data['uesrname']
-          uid: doc.get('uid') ?? '',
-          name: doc.get('name') ?? '',
-          category: doc.get('category') ?? '',
-          description: doc.get('description') ?? '',
-          timePosted: doc.get('timePosted') ?? '',
-          // imageUrl: doc.get('imageUrl') ?? '',
-          attendees: doc.get('attendees') ?? 0,
-          // comments: doc.get('comments') ?? 0,
-          date: doc.get('date') ?? '',
-          time: doc.get('time') ?? '',
-          /* location: doc.get('location') ?? ''*/
-          approved: doc.get('approved') ?? '');
+        // snapshot.data['uesrname']
+        uid: doc.get('uid') ?? '',
+        name: doc.get('name') ?? '',
+        category: doc.get('category') ?? '',
+        description: doc.get('description') ?? '',
+        timePosted: doc.get('timePosted') ?? '',
+        // imageUrl: doc.get('imageUrl') ?? '',
+        attendees: doc.get('attendees') ?? 0,
+        // comments: doc.get('comments') ?? 0,
+        date: doc.get('date') ?? '',
+        time: doc.get('time') ?? '',
+        /* location: doc.get('location') ?? ''*/
+        approved: doc.get('approved') ?? '',
+        //adminCheck: doc.get('adminCheck') ?? ''
+      );
     }).toList();
   }
 }
