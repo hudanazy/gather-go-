@@ -76,7 +76,7 @@ class _Eventform extends State<createEvent> {
     final user = Provider.of<NewUser?>(context, listen: false);
 
     return StreamBuilder<Object>(
-        stream: DatabaseService(uid: user?.uid).events,
+        stream: DatabaseService(uid: user?.uid).eventss,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             eventData = snapshot.data as EventInfo;
