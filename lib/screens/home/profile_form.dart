@@ -201,18 +201,18 @@ class _ProfileFormState extends State<ProfileForm> {
       );
 }
 
-class logout extends StatelessWidget {
-  const logout({Key? key}) : super(key: key);
+// class logout extends StatelessWidget {
+//   const logout({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ElevatedButton(
-        onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-        },
-        child: Text('logout'),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: ElevatedButton(
+//         onPressed: () async {
+//           await FirebaseAuth.instance.signOut();
+//         },
+//         child: Text('logout'),
+//       ),
+//     );
+//   }
+// }

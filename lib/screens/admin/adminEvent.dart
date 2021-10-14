@@ -22,93 +22,102 @@ class _adminEvent extends State<adminEvent> {
       .where('approved', isEqualTo: false)
       .where('adminCheck', isEqualTo: false)
       .snapshots();
-
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              "All New Events",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: 'Comfortaa',
-                  fontSize: 18),
-            ),
-            actions: [
-              Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-                ElevatedButton.icon(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    icon: Icon(Icons.logout, color: Colors.deepOrange),
-                    label: Text('Log Out',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                        )),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                    )),
-              ])
-            ]),
-        StreamBuilder(
-          stream: snap,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Loading(),
-              );
-            }
-            if (!snapshot.hasData) {
-              return Center(
-                  child: Text(
-                "No New Events", // may be change it to loading , itis appear for a second every time
-                textAlign: TextAlign.center,
-              ));
-            }
-            return Container(
-                height: 550,
-                width: 500,
-                child: ListView(
-                  children: snapshot.data.docs.map<Widget>((document) {
-                    DocumentSnapshot uid = document;
-                    return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            color: Colors.grey[200],
-                            child: ListTile(
-                              title: Center(
-                                  child: Text(
-                                document['name'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 16),
-                              )),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => eventDetails(
-                                              event: uid,
-                                            )));
+    return loading
+        ? Loading()
+        : Scaffold(
+            body: Column(
+            children: [
+              AppBar(
+                  backgroundColor: Colors.white,
+                  title: Text(
+                    "All New Events",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontFamily: 'Comfortaa',
+                        fontSize: 18),
+                  ),
+                  actions: [
+                    Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
                               },
-                            )));
-                  }).toList(),
-                ));
-          },
-        ),
-      ],
-    ));
+                              icon:
+                                  Icon(Icons.logout, color: Colors.deepOrange),
+                              label: Text('Log Out',
+                                  style: TextStyle(
+                                    color: Colors.deepOrange,
+                                  )),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                              )),
+                        ])
+                  ]),
+              StreamBuilder(
+                stream: snap,
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    loading = true;
+                  }
+                  if (snapshot.connectionState == ConnectionState.done)
+                    loading = false;
+                  if (!snapshot.hasData) {
+                    return Center(
+                        child: Text(
+                      "No New Events", // may be change it to loading , itis appear for a second every time
+                      textAlign: TextAlign.center,
+                    ));
+                  }
+                  loading = false;
+                  return Container(
+                      height: 550,
+                      width: 500,
+                      child: ListView(
+                        children: snapshot.data.docs.map<Widget>((document) {
+                          DocumentSnapshot uid = document;
+                          return Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  color: Colors.grey[200],
+                                  child: ListTile(
+                                    title: Center(
+                                        child: Text(
+                                      document['name'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.deepOrange,
+                                          fontFamily: 'Comfortaa',
+                                          fontSize: 16),
+                                    )),
+                                    trailing: Icon(
+                                      Icons.arrow_forward_ios,
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  eventDetails(
+                                                    event: uid,
+                                                  )));
+                                    },
+                                  )));
+                        }).toList(),
+                      ));
+                },
+              ),
+            ],
+          ));
   }
 }
