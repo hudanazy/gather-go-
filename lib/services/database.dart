@@ -144,11 +144,14 @@ class DatabaseService {
         approved: snapshot.get('approved'));
   }
 
-  Future updateUesrData(String uesrname, String email, String password) async {
+  Future updateUesrData(
+    String uesrname,
+    String email, // String password
+  ) async {
     return await userCollection.doc(uid).set({
       'uesrname': uesrname,
       'email': email,
-      'password': password,
+      //'password': password,
     });
   }
 
@@ -160,10 +163,11 @@ class DatabaseService {
   List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UesrInfo(
-          // snapshot.data['uesrname']
-          uesrname: doc.get('uesrname') ?? '',
-          email: doc.get('email') ?? '',
-          password: doc.get('password') ?? '');
+        // snapshot.data['uesrname']
+        uesrname: doc.get('uesrname') ?? '',
+        email: doc.get('email') ?? '',
+        // password: doc.get('password') ?? ''
+      );
     }).toList();
   }
 

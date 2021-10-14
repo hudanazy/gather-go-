@@ -17,7 +17,7 @@ class _uesrListState extends State<uesrList> {
     uesrs.forEach((UesrInfo) {
       print(UesrInfo.uesrname);
       print(UesrInfo.email);
-      print(UesrInfo.password);
+      // print(UesrInfo.password);
     });
 
     return Container();
