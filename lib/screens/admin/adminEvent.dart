@@ -29,6 +29,7 @@ class _adminEvent extends State<adminEvent> {
         body: Column(
       children: [
         AppBar(
+          toolbarHeight: 100,
             backgroundColor: Colors.white,
             title: Text(
               "All New Events",
@@ -36,7 +37,7 @@ class _adminEvent extends State<adminEvent> {
               style: TextStyle(
                   color: Colors.deepOrange,
                   fontFamily: 'Comfortaa',
-                  fontSize: 18),
+                  fontSize: 24),
             ),
             actions: [
               Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
@@ -67,7 +68,7 @@ class _adminEvent extends State<adminEvent> {
               );
             }
             return Container(
-                height: 550,
+                height: 640,
                 width: 500,
                 child: ListView(
                   children: snapshot.data.docs.map<Widget>((document) {

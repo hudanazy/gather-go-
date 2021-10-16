@@ -74,15 +74,15 @@ class _RegisterState extends State<Register> {
                           }, */
 
                           validator: (value) {
-                            if (value!.length < 2 || value.isEmpty) {
+                            if (value!.trim().length < 2 || value.trim().isEmpty) {
                               return "Username is too short";
                             }
-                            if (value.length > 12) {
+                            if (value.trim().length > 12) {
                               return "username is too long";
                             }
                           },
                           onChanged: (value) {
-                            setState(() => email = value);
+                            setState(() => email = value.trim());
                           },
                         ),
                         SizedBox(
@@ -97,13 +97,13 @@ class _RegisterState extends State<Register> {
                             }
                             if (!RegExp(
                                     "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
+                                .hasMatch(value.trim())) {
                               return "Enter valid email ";
                             }
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() => username = value);
+                            setState(() => username = value.trim());
                           },
                         ),
                         SizedBox(
@@ -114,11 +114,11 @@ class _RegisterState extends State<Register> {
                           decoration: textInputDecoration.copyWith(
                               hintText: "Password"),
                           obscureText: true,
-                          validator: (value) => value!.length < 8
+                          validator: (value) => value!.trim().length < 8
                               ? 'Enter a password 8+ chars long.'
                               : null,
                           onChanged: (value) {
-                            setState(() => password = value);
+                            setState(() => password = value.trim());
                           },
                         ),
                         SizedBox(
@@ -133,13 +133,13 @@ class _RegisterState extends State<Register> {
                             if (value!.isEmpty) {
                               return 'Enter Confirm Password';
                             }
-                            if (value != _pass.text) {
+                            if (value.trim() != _pass.text.trim()) {
                               return 'Password does not match';
                             }
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() => password = value);
+                            setState(() => password = value.trim());
                           },
                         ),
                         SizedBox(
