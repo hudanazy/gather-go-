@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 //textfield state
-  String username = '';
+  String name = '';
   String password = '';
   //String error = '';
   String Confirm = '';
@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> {
                       children: [
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              hintText: "Username"),
+                              hintText: "Name"),
                           /* validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter your Username';
@@ -75,14 +75,14 @@ class _RegisterState extends State<Register> {
 
                           validator: (value) {
                             if (value!.trim().length < 2 || value.trim().isEmpty) {
-                              return "Username is too short";
+                              return "Name is too short";
                             }
                             if (value.trim().length > 12) {
-                              return "username is too long";
+                              return "Name is too long";
                             }
                           },
                           onChanged: (value) {
-                            setState(() => email = value.trim());
+                            setState(() => name = value.trim());
                           },
                         ),
                         SizedBox(
@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() => username = value.trim());
+                            setState(() => email = value.trim());
                           },
                         ),
                         SizedBox(
@@ -155,7 +155,7 @@ class _RegisterState extends State<Register> {
                               //firebase register here and in auth.dart
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
-                                      username, email, password, Confirm);
+                                      name, email, password, Confirm);
 
                               if (result == null)
                                 setState(() {

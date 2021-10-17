@@ -144,9 +144,9 @@ class DatabaseService {
         approved: snapshot.get('approved'));
   }
 
-  Future updateUesrData(String uesrname, String email, String password) async {
+  Future updateUesrData(String name, String email, String password) async {
     return await userCollection.doc(uid).set({
-      'name': uesrname,
+      'name': name,
       'email': email,
       'password': password,
     });
@@ -161,7 +161,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return UesrInfo(
           // snapshot.data['uesrname']
-          uesrname: doc.get('uesrname') ?? '',
+          name: doc.get('name') ?? '',
           email: doc.get('email') ?? '',
           password: doc.get('password') ?? '');
     }).toList();
