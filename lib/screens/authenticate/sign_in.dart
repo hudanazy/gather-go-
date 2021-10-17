@@ -80,6 +80,7 @@ class _SignInState extends State<SignIn> {
                       SizedBox(
                         height: 30,
                       ),
+                      Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
                         child: Text("Login"),
                         onPressed: () async {
@@ -87,6 +88,7 @@ class _SignInState extends State<SignIn> {
                             setState(() {
                               loading = true;
                             });
+
                             //firebase login here and in auth.dart
                             dynamic result =
                                 await _auth.signInWithUsernameAndPassword(
@@ -94,7 +96,7 @@ class _SignInState extends State<SignIn> {
                             if (result == null)
                               setState(() {
                                 error =
-                                    'Could not sign in with those credentials.';
+                                    'Wrong email or password or both. Try again';
                                 loading = false;
                               });
                           }
@@ -129,7 +131,6 @@ class _SignInState extends State<SignIn> {
                       SizedBox(
                         height: 12.0,
                       ),
-                      Text(error, style: TextStyle(color: Colors.red))
                     ],
                   )),
               decoration: BoxDecoration(
