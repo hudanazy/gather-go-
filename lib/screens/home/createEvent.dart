@@ -66,8 +66,9 @@ class _Eventform extends State<createEvent> {
   late GoogleMapController _controller;
   Location _location = Location();
   List<Marker> myMarker = [];
-  LatLng? saveLatLng;
+  //LatLng? saveLatLng;
   String? StringLatLng;
+  GeoPoint saveLatLng = GeoPoint(24.708481, 46.752108);
 
   //DateTime date;
   @override
@@ -506,7 +507,7 @@ class _Eventform extends State<createEvent> {
     });
   }
 
-  void _handleTap(LatLng tappedPoint) {
+  void _handleTap(Geo tappedPoint) {
     setState(() {
       myMarker = [];
       myMarker.add(Marker(
@@ -516,8 +517,9 @@ class _Eventform extends State<createEvent> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
+      // saveLatLng = tappedPoint;
+      // StringLatLng = saveLatLng;
       saveLatLng = tappedPoint;
-      StringLatLng = tappedPoint.toString();
     });
   }
 
