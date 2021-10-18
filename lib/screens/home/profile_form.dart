@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/screens/admin/adminNav.dart';
 import 'package:gather_go/screens/home/editProfile.dart';
+import 'package:gather_go/screens/home/edit_profile_form.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
@@ -27,6 +28,18 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    void _showProfilePanel() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: epForm(),
+            );
+          });
+    }
+
     final user = Provider.of<NewUser>(context);
     ProfileData? profileData;
     //final AuthService _auth = AuthService();
@@ -46,6 +59,7 @@ class _ProfileFormState extends State<ProfileForm> {
                       "https://picsum.photos/200/300", //random image // profileData.imageUrl
                   isEdit: false,
                   onClicked: () async {
+                    _showProfilePanel();
                     // Navigator.of(context).push(MaterialPageRoute(
                     //     builder: (context) => EditProfilePage()));
                   },
