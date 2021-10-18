@@ -25,28 +25,30 @@ class _EventListState extends State<EventList> {
     //   print(user.bio);
     // });
 
-    return StreamProvider<List<EventInfo>?>.value(
-        initialData: null,
-        value: DatabaseService().events,
-        //CustomScrollView(
-        //   slivers: [
-        //     GradientAppBar(),
-        //     SliverList(
-        //       delegate: SliverChildBuilderDelegate(
-        //         (context, index) {
-        //           final EventInfo post = events[index];
-        //           return EventTile(event: post);
-        //         },
-        //         childCount: events.length,
-        //       ),
-        //     ),
-        //   ],
+    return Container(
+        child: StreamProvider<List<EventInfo>?>.value(
+            initialData: null,
+            value: DatabaseService().events,
+            //CustomScrollView(
+            //   slivers: [
+            //     GradientAppBar(),
+            //     SliverList(
+            //       delegate: SliverChildBuilderDelegate(
+            //         (context, index) {
+            //           final EventInfo post = events[index];
+            //           return EventTile(event: post);
+            //         },
+            //         childCount: events.length,
+            //       ),
+            //     ),
+            //   ],
 
-        child: ListView.builder(
-            itemCount: events.length,
-            itemBuilder: (context, index) {
-              return EventTile(event: events[index]);
-            }));
-    // );
+            child: ListView.builder(
+                itemCount: events.length,
+                itemBuilder: (context, index) {
+                  return EventTile(event: events[index]);
+                }))
+        // );
+        );
   }
 }

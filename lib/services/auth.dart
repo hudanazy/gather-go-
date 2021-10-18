@@ -33,10 +33,10 @@ class AuthService {
   }
 
 //sign in with email and password
-  Future signInWithUsernameAndPassword(String username, String password) async {
+  Future signInWithUsernameAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: username, password: password);
+          email: email, password: password);
       User? user = result.user;
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
@@ -47,16 +47,17 @@ class AuthService {
 
 //sign up w/ email password
   Future signUpWithUsernameAndPassword(
-      String username, String emial, String password, String Confirm) async {
+      String name, String emial, String password, String Confirm) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: username, password: password);
+        email: emial, //password: password
+      );
       User? user = result.user;
 
       //create a new document for a user with uid
-      await DatabaseService(uid: user!.uid)
-          .updateUesrData(emial, username //, password
-              );
+      await DatabaseService(uid: user!.uid).updateUesrData(
+        name, emial, //password
+      );
 
       return _userInfoFromFirebaseUser(user);
     } catch (e) {

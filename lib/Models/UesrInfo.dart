@@ -1,9 +1,8 @@
 class UesrInfo {
-  final String uesrname;
+  final String name;
   final String email;
   //final String password;
 
-  UesrInfo(
-      {required this.uesrname, required this.email //, required this.password
+  UesrInfo({required this.name, required this.email //, required this.password
       });
 }

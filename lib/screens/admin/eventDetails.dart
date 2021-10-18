@@ -61,9 +61,9 @@ class _eventDetails extends State<eventDetails> {
               padding: const EdgeInsets.all(20.0),
               child: Edescription(widget.event?.get('description')),
             ),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
+            Padding( padding: const EdgeInsets.only(left: 20.0),
+              child: Row(
+              children: <Widget>[
                 Icon(Icons.access_time),
                 Text("   " +
                     widget.event?.get('date').substring(0, 10) +
@@ -72,26 +72,28 @@ class _eventDetails extends State<eventDetails> {
                     '                                                           '), // we may need to change it as i dont think this the right time !!
               ],
             ),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
+            ),
+            Padding(padding: const EdgeInsets.only(left: 20.0),
+            child:Row(children: <Widget>[
                 Icon(Icons.location_pin),
-                Text(
-                    "   to be added later                                                              "),
+                Text("   to be added later"),
               ],
             ),
-            Row(children: <Widget>[
-              Text("        "),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 20.0),
+            child: Row(children: <Widget>[
               Icon(Icons.people_alt_rounded),
               Text("   Max attendee number is $attendeeNum  ")
             ]),
-            Row(children: <Widget>[
-              Text("        "),
+            ),
+            Padding(padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
+            child: Row(children: <Widget>[
               Icon(
                 Icons.person_rounded,
               ),
               Text("   Created by   $_textFromFile")
             ]),
+            ),
             Row(
               children: [
                 Expanded(
@@ -120,9 +122,10 @@ class _eventDetails extends State<eventDetails> {
                                   "attendees": attendeeNum,
                                   "date": widget.event?.get('date'),
                                   "time": widget.event?.get('time'),
-                                  //"category": widget.event?.get('category'),
+                                  "category": category,
                                   'approved': false,
-                                  "adminCheck": true /* "location": location*/
+                                  "adminCheck": true,
+                                  "location": widget.event?.get('location')
                                 });
                                 // success msg + redirect to adminEvent
 
@@ -177,9 +180,11 @@ class _eventDetails extends State<eventDetails> {
                                 "timePosted": widget.event?.get('timePosted'),
                                 "attendees": attendeeNum,
                                 "date": widget.event?.get('date'),
+                                "category": category,
                                 "time": widget.event?.get('time'),
                                 'approved': true,
-                                "adminCheck": true /* "location": location*/
+                                "adminCheck": true,
+                                "location": widget.event?.get('location')
                               });
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +

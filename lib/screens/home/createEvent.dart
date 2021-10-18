@@ -19,6 +19,9 @@ import 'package:gather_go/screens/home/nav.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gather_go/shared/num_button.dart';
+import '../NotifactionManager.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -67,7 +70,14 @@ class _Eventform extends State<createEvent> {
   Location _location = Location();
   List<Marker> myMarker = [];
   LatLng? saveLatLng;
-  String StringLatLng = "one";
+  String? StringLatLng;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tz.initializeTimeZones();
+  }
 
   //DateTime date;
   @override
@@ -86,6 +96,21 @@ class _Eventform extends State<createEvent> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
+                      SizedBox(height: 30),
+                      AppBar(
+                        backgroundColor: Colors.white,
+                        elevation: 0.0,
+                        title: Text(
+                          "Create an event",
+                          style: TextStyle(
+                            fontFamily: 'Comfortaa',
+                            fontSize: 27,
+                            color: Colors.purple[300],
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                       //   GradientAppBar(),
                       Container(
                         alignment: Alignment.topLeft,
@@ -100,7 +125,7 @@ class _Eventform extends State<createEvent> {
                         //   ),
                         // ),
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 10),
                       SizedBox(
                         width: 320,
                         child: TextFormField(
@@ -145,16 +170,20 @@ class _Eventform extends State<createEvent> {
                                 color: Colors.amberAccent, width: 2)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            focusColor: Colors.grey,
-                            value: item,
-                            // initialValue: category[0],
-                            isExpanded: true,
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blueGrey),
-                            items: category.map(buildMenuItem).toList(),
-                            onChanged: (value) =>
-                                setState(() => this.item = value),
-                          ),
+                              focusColor: Colors.grey,
+                              value: item,
+
+                              // initialValue: category[0],
+                              isExpanded: true,
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blueGrey),
+                              items: category.map(buildMenuItem).toList(),
+                              onChanged: (value) =>
+                                  setState(() => this.item = value),
+                              style: TextStyle(
+                                color: Colors.purple[300],
+                                fontFamily: 'Comfortaa',
+                              )),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -347,7 +376,7 @@ class _Eventform extends State<createEvent> {
                       //     size: 50,
                       //   ),
                       //   // style: ElevatedButton.styleFrom(
-                      //   //   minimumSize: Size.fromHeight(40),
+                      //   //    minimumSize: Size.fromHeight(40),
                       //   //   primary: Colors.white,
                       //   // ),
                       //   onPressed: () => pickTime(context),
@@ -408,9 +437,12 @@ class _Eventform extends State<createEvent> {
                             } else {
                               timeAgo = DateTime.now().toString();
                               if (_formKey.currentState!.validate()) {
-                                if (dateo == null && ttime == null) {
+                                if (dateo == null &&
+                                    ttime == null &&
+                                    StringLatLng == null) {
                                   Fluttertoast.showToast(
-                                    msg: "Date and time have to be selected.",
+                                    msg:
+                                        "Date and time and location have to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
                                 } else if (dateo == null) {
@@ -423,10 +455,21 @@ class _Eventform extends State<createEvent> {
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
+                                } else if (StringLatLng == null) {
+                                  Fluttertoast.showToast(
+                                    msg: "Location has to be selected.",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
                                 } else {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
+                                    NotifactionManager().showNotification(
+                                        1,
+                                        "Reminder, " + EventName.text,
+                                        "You have upcoming event, don't forget it",
+                                        dateo,
+                                        ttime); //before 1 day
                                     dynamic db =
                                         await DatabaseService(uid: user?.uid)
                                             .addEventData(
@@ -440,7 +483,7 @@ class _Eventform extends State<createEvent> {
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      StringLatLng,
+                                      StringLatLng!,
                                     );
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",

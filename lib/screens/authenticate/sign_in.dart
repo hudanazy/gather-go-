@@ -35,14 +35,18 @@ class _SignInState extends State<SignIn> {
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
-                "Login to Gather Go",
-                style: TextStyle(color: Colors.black),
+                "Login",
+                style: TextStyle(
+                  fontFamily: 'Comfortaa',
+                  fontSize: 27,
+                  color: Colors.amber[600]),
                 textAlign: TextAlign.center,
               ),
             ),
             body: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                height: 800,
                 child: Form(
                     key: _fromkey,
                     child: Column(
@@ -57,7 +61,7 @@ class _SignInState extends State<SignIn> {
                           validator: (value) =>
                               value!.isEmpty ? 'Enter your email' : null,
                           onChanged: (value) {
-                            setState(() => username = value);
+                            setState(() => username = value.trim());
                           },
                         ),
                         SizedBox(
@@ -70,11 +74,11 @@ class _SignInState extends State<SignIn> {
                           validator: (value) =>
                               value!.isEmpty ? 'Enter your password' : null,
                           onChanged: (value) {
-                            setState(() => password = value);
+                            setState(() => password = value.trim());
                           },
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         ElevatedButton(
                           child: Text("Login"),
@@ -90,7 +94,7 @@ class _SignInState extends State<SignIn> {
                               if (result == null)
                                 setState(() {
                                   error =
-                                      'Could not sign in with those credentials.';
+                                      'Email or password is wrong.';
                                   loading = false;
                                 });
                             }
@@ -99,7 +103,9 @@ class _SignInState extends State<SignIn> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white),
+                                  padding: 
+                                    MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 123)),),
                         ),
                         Text('Don’t have an account?'),
                         ElevatedButton(
@@ -123,7 +129,15 @@ class _SignInState extends State<SignIn> {
                         ),
                         Text(error, style: TextStyle(color: Colors.red))
                       ],
-                    ))),
-          );
+                    )),
+                      decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:  AssetImage('images/Picture1.png'), 
+                        fit: BoxFit.contain,
+                        alignment: Alignment.bottomCenter,)
+                      ),
+                    ),
+        );
+          
   }
 }

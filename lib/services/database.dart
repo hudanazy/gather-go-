@@ -21,7 +21,6 @@ class DatabaseService {
 
   Future updateProfileData(String name, String bio) async {
     return await profileCollection.doc(uid).set({
-      "uid": uid,
       "name": name,
       "bio": bio,
     });
@@ -86,19 +85,17 @@ class DatabaseService {
   }
 
 //get user stream
-  Stream<List<ProfileData>?> get profiles {
+  Stream<List<ProfileOnScreen>?> get profiles {
     return profileCollection.snapshots().map(_profileListFromSnapshot);
   }
 
   //user list from snapshot
-  List<ProfileData> _profileListFromSnapshot(QuerySnapshot snapshot) {
+  List<ProfileOnScreen> _profileListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return ProfileData(
-        uid: doc.get('uid') ?? '',
+      return ProfileOnScreen(
         name: doc.get('name') ?? '',
         bio: doc.get('bio') ?? '',
         email: doc.get('email') ?? '',
-        status: doc.get('status') ?? '',
         imageUrl: doc.get('imageUrl') ?? '',
       );
     }).toList();
@@ -127,7 +124,6 @@ class DatabaseService {
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),
       email: snapshot.get('email') ?? '',
-      status: snapshot.get('status') ?? '',
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
@@ -168,7 +164,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return UesrInfo(
         // snapshot.data['uesrname']
-        uesrname: doc.get('uesrname') ?? '',
+        name: doc.get('name') ?? '',
         email: doc.get('email') ?? '',
         // password: doc.get('password') ?? ''
       );

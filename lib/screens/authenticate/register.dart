@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 //textfield state
-  String username = '';
+  String name = '';
   String password = '';
   //String error = '';
   String Confirm = '';
@@ -40,8 +40,13 @@ class _RegisterState extends State<Register> {
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
-                "Signup to Gather Go",
-                style: TextStyle(color: Colors.orangeAccent),
+                //"Signup to Gather Go",
+                //style: TextStyle(color: Colors.orangeAccent),
+                 "Register",
+                style: TextStyle(
+                  fontFamily: 'Comfortaa',
+                  fontSize: 27,
+                  color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -54,13 +59,14 @@ class _RegisterState extends State<Register> {
             body: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                height: 800,
                 child: Form(
                     key: _fromkey,
                     child: Column(
                       children: [
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              hintText: "Username"),
+                              hintText: "Name"),
                           /* validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter your Username';
@@ -68,15 +74,15 @@ class _RegisterState extends State<Register> {
                           }, */
 
                           validator: (value) {
-                            if (value!.length < 2 || value.isEmpty) {
-                              return "Username is too short";
+                            if (value!.trim().length < 2 || value.trim().isEmpty) {
+                              return "Name is too short";
                             }
-                            if (value.length > 12) {
-                              return "username is too long";
+                            if (value.trim().length > 12) {
+                              return "Name is too long";
                             }
                           },
                           onChanged: (value) {
-                            setState(() => email = value);
+                            setState(() => name = value.trim());
                           },
                         ),
                         SizedBox(
@@ -91,13 +97,13 @@ class _RegisterState extends State<Register> {
                             }
                             if (!RegExp(
                                     "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
+                                .hasMatch(value.trim())) {
                               return "Enter valid email ";
                             }
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() => username = value);
+                            setState(() => email = value.trim());
                           },
                         ),
                         SizedBox(
@@ -108,11 +114,11 @@ class _RegisterState extends State<Register> {
                           decoration: textInputDecoration.copyWith(
                               hintText: "Password"),
                           obscureText: true,
-                          validator: (value) => value!.length < 8
+                          validator: (value) => value!.trim().length < 8
                               ? 'Enter a password 8+ chars long.'
                               : null,
                           onChanged: (value) {
-                            setState(() => password = value);
+                            setState(() => password = value.trim());
                           },
                         ),
                         SizedBox(
@@ -127,20 +133,20 @@ class _RegisterState extends State<Register> {
                             if (value!.isEmpty) {
                               return 'Enter Confirm Password';
                             }
-                            if (value != _pass.text) {
+                            if (value.trim() != _pass.text.trim()) {
                               return 'Password does not match';
                             }
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() => password = value);
+                            setState(() => password = value.trim());
                           },
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         ElevatedButton(
-                          child: Text("SignUp"),
+                          child: Text("Register"),
                           onPressed: () async {
                             if (_fromkey.currentState!.validate()) {
                               setState(() {
@@ -149,7 +155,7 @@ class _RegisterState extends State<Register> {
                               //firebase register here and in auth.dart
                               dynamic result =
                                   await _auth.signUpWithUsernameAndPassword(
-                                      username, email, password, Confirm);
+                                      name, email, password, Confirm);
 
                               if (result == null)
                                 setState(() {
@@ -172,9 +178,11 @@ class _RegisterState extends State<Register> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: 
+                              MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 115)),),
                         ),
-                        Text('Have an account?'),
+                        Text('Already have an account?'),
                         ElevatedButton(
                           child: Text('Login now'),
                           onPressed: () {
@@ -196,7 +204,14 @@ class _RegisterState extends State<Register> {
                         ),
                         Text(error, style: TextStyle(color: Colors.red))
                       ],
-                    ))),
+                    )),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:  AssetImage('images/Picture1.png'), 
+                        fit: BoxFit.contain,
+                        alignment: Alignment.bottomCenter,)
+                      ),
+                    ),
           );
 
     //Text('Alraedy have an account?'),
