@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
                         validator: (value) =>
                             value!.isEmpty ? 'Enter your email' : null,
                         onChanged: (value) {
-                          setState(() => username = value);
+                          setState(() => username = value.trim());
                         },
                       ),
                       SizedBox(
@@ -74,7 +74,7 @@ class _SignInState extends State<SignIn> {
                         validator: (value) =>
                             value!.isEmpty ? 'Enter your password' : null,
                         onChanged: (value) {
-                          setState(() => password = value);
+                          setState(() => password = value.trim());
                         },
                       ),
                       SizedBox(
@@ -88,15 +88,13 @@ class _SignInState extends State<SignIn> {
                             setState(() {
                               loading = true;
                             });
-
                             //firebase login here and in auth.dart
                             dynamic result =
                                 await _auth.signInWithUsernameAndPassword(
                                     username, password);
                             if (result == null)
                               setState(() {
-                                error =
-                                    'Wrong email or password or both. Try again';
+                                error = 'Email or password is wrong.';
                                 loading = false;
                               });
                           }

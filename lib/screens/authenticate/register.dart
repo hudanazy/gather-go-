@@ -42,11 +42,11 @@ class _RegisterState extends State<Register> {
               title: Text(
                 //"Signup to Gather Go",
                 //style: TextStyle(color: Colors.orangeAccent),
-                 "Register",
+                "Register",
                 style: TextStyle(
-                  fontFamily: 'Comfortaa',
-                  fontSize: 27,
-                  color: Colors.orangeAccent),
+                    fontFamily: 'Comfortaa',
+                    fontSize: 27,
+                    color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -57,114 +57,115 @@ class _RegisterState extends State<Register> {
             //       label: Text("Register"))
             // ]),
             body: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-                height: 800,
-                child: Form(
-                    key: _fromkey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "Username"),
-                          /* validator: (value) {
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+              height: 800,
+              child: Form(
+                  key: _fromkey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration:
+                            textInputDecoration.copyWith(hintText: "Username"),
+                        /* validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter your Username';
                             }
                           }, */
 
-                          validator: (value) {
-                            if (value!.length < 2 || value.isEmpty) {
-                              return "Username is too short";
-                            }
-                            if (value.length > 12) {
-                              return "username is too long";
-                            }
-                          },
-                          onChanged: (value) {
-                            setState(() => email = value);
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          decoration:
-                              textInputDecoration.copyWith(hintText: "Email"),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter your email";
-                            }
-                            if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
-                              return "Enter valid email ";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() => username = value);
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: _pass,
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "Password"),
-                          obscureText: true,
-                          validator: (value) => value!.length < 8
-                              ? 'Enter a password 8+ chars long.'
-                              : null,
-                          onChanged: (value) {
-                            setState(() => password = value);
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: _confirmPass,
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "Confirm Password "),
-                          obscureText: true,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter Confirm Password';
-                            }
-                            if (value != _pass.text) {
-                              return 'Password does not match';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() => password = value);
-                          },
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        ElevatedButton(
-                          child: Text("Register"),
-                          onPressed: () async {
-                            if (_fromkey.currentState!.validate()) {
-                              setState(() {
-                                loading = true;
-                              });
-                              //firebase register here and in auth.dart
-                              dynamic result =
-                                  await _auth.signUpWithUsernameAndPassword(
-                                      username, email, password, Confirm);
+                        validator: (value) {
+                          if (value!.trim().length < 2 ||
+                              value.trim().isEmpty) {
+                            return "Username is too short";
+                          }
+                          if (value.trim().length > 12) {
+                            return "username is too long";
+                          }
+                        },
+                        onChanged: (value) {
+                          setState(() => email = value.trim());
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        decoration:
+                            textInputDecoration.copyWith(hintText: "Email"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter your email";
+                          }
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                              .hasMatch(value.trim())) {
+                            return "Enter valid email ";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() => username = value.trim());
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _pass,
+                        decoration:
+                            textInputDecoration.copyWith(hintText: "Password"),
+                        obscureText: true,
+                        validator: (value) => value!.trim().length < 8
+                            ? 'Enter a password 8+ chars long.'
+                            : null,
+                        onChanged: (value) {
+                          setState(() => password = value.trim());
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _confirmPass,
+                        decoration: textInputDecoration.copyWith(
+                            hintText: "Confirm Password "),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter Confirm Password';
+                          }
+                          if (value.trim() != _pass.text.trim()) {
+                            return 'Password does not match';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() => password = value.trim());
+                        },
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Text(error, style: TextStyle(color: Colors.red)),
+                      ElevatedButton(
+                        child: Text("Register"),
+                        onPressed: () async {
+                          if (_fromkey.currentState!.validate()) {
+                            setState(() {
+                              loading = true;
+                            });
+                            //firebase register here and in auth.dart
+                            dynamic result =
+                                await _auth.signUpWithUsernameAndPassword(
+                                    username, email, password, Confirm);
 
-                              if (result == null)
-                                setState(() {
-                                  error =
-                                      'The email is already registered'; //user
-                                  loading = false;
-                                });
-                            }
-                            /* dynamic resultuser =
+                            if (result == null)
+                              setState(() {
+                                error =
+                                    'The email is already registered'; //user
+                                loading = false;
+                              });
+                          }
+                          /* dynamic resultuser =
                                 await _auth.UsernameCheck(username);
                                 if(!resultuser){
                                   //username exists
@@ -173,45 +174,46 @@ class _RegisterState extends State<Register> {
                                 else if(_fromkey.currentState!.validate()){
                                       //save
                                 } */
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.amber),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              padding: 
-                              MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 115)),),
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.amber),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 115)),
                         ),
-                        Text('Already have an account?'),
-                        ElevatedButton(
-                          child: Text('Login now'),
-                          onPressed: () {
-                            widget.toggleView();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.purple[300]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
-                        ),
-                        SizedBox(
-                          height: 12.0,
-                        ),
-                        Text(error, style: TextStyle(color: Colors.red))
-                      ],
-                    )),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image:  AssetImage('images/Picture1.png'), 
-                        fit: BoxFit.contain,
-                        alignment: Alignment.bottomCenter,)
                       ),
-                    ),
+                      Text('Already have an account?'),
+                      ElevatedButton(
+                        child: Text('Login now'),
+                        onPressed: () {
+                          widget.toggleView();
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             Register())); //https://flutter.dev/docs/cookbook/navigation/navigation-basics
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.purple[300]),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white)),
+                      ),
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                    ],
+                  )),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage('images/Picture1.png'),
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
+              )),
+            ),
           );
 
     //Text('Alraedy have an account?'),
