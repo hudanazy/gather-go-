@@ -30,95 +30,98 @@ class _adminEvent extends State<adminEvent> {
         //     ? Loading()
         //     :
         Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Column(
-      children: [
-        AppBar(
-          toolbarHeight: 100,
-            backgroundColor: Colors.white,
-            title: Text(
-              "All New Events",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: 'Comfortaa',
-                  fontSize: 24),
-            ),
-            actions: [
-              Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-                ElevatedButton.icon(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    icon: Icon(Icons.logout, color: Colors.deepOrange),
-                    label: Text('Log Out',
-                        style: TextStyle(
+              children: [
+                AppBar(
+                    toolbarHeight: 100,
+                    backgroundColor: Colors.white,
+                    title: Text(
+                      "All New Events",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
                           color: Colors.deepOrange,
-                        )),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                    )),
-              ])
-            ]),
-        StreamBuilder(
-          stream: snap,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: Loading());
-            }
-            if (snapshot.data.size == 0) {
-              return Center(child: Text("No new events"));
-            }
-
-            // if (!snapshot.hasData) {
-            //   return Center(
-            //     child: Loading(),
-            //     //     child: Text(
-            //     //   "No New Events", // may be change it to loading , itis appear for a second every time
-            //     //   textAlign: TextAlign.center,
-            //     // )
-            //   );
-            // }
-
-            return Container(
-                height: 640,
-                width: 500,
-                child: ListView(
-                  children: snapshot.data.docs.map<Widget>((document) {
-                    DocumentSnapshot uid = document;
-                    return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            color: Colors.grey[200],
-                            child: ListTile(
-                              title: Center(
-                                  child: Text(
-                                document['name'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 16),
+                          fontFamily: 'Comfortaa',
+                          fontSize: 24),
+                    ),
+                    actions: [
+                      ElevatedButton.icon(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                          },
+                          icon: Icon(Icons.logout, color: Colors.deepOrange),
+                          label: Text('Log Out',
+                              style: TextStyle(
+                                color: Colors.deepOrange,
                               )),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => eventDetails(
-                                              event: uid,
-                                            )));
-                              },
-                            )));
-                  }).toList(),
-                ));
-          },
-        ),
-      ],
-    ));
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          )),
+                    ]),
+                StreamBuilder(
+                  stream: snap,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: Loading());
+                    }
+                    if (snapshot.data.size == 0) {
+                      return Center(child: Text("No new events"));
+                    }
+
+                    // if (!snapshot.hasData) {
+                    //   return Center(
+                    //     child: Loading(),
+                    //     //     child: Text(
+                    //     //   "No New Events", // may be change it to loading , itis appear for a second every time
+                    //     //   textAlign: TextAlign.center,
+                    //     // )
+                    //   );
+                    // }
+
+                    return Container(
+                        height: 640,
+                        width: 500,
+                        child: ListView(
+                          children: snapshot.data.docs.map<Widget>((document) {
+                            DocumentSnapshot uid = document;
+                            return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    color: Colors.grey[200],
+                                    child: ListTile(
+                                      title: Center(
+                                          child: Text(
+                                        document['name'],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.deepOrange,
+                                            fontFamily: 'Comfortaa',
+                                            fontSize: 16),
+                                      )),
+                                      trailing: Icon(
+                                        Icons.arrow_forward_ios,
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    eventDetails(
+                                                      event: uid,
+                                                    )));
+                                      },
+                                    )));
+                          }).toList(),
+                        ));
+                  },
+                ),
+              ],
+            ));
   }
 }

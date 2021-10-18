@@ -16,107 +16,6 @@ class adminBottomBarDemo extends StatefulWidget {
 
 // ignore: camel_case_types
 class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
-//   int _pageIndex = 0;
-//   PageController? _pageController;
-//   int _selectedIndex = 0;
-
-//   List<Widget> _widgetOptions = [
-//     adminEvent(),
-//     Text('data'),
-//     logout()
-//   ]; //EventList()
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _pageController = PageController(initialPage: _pageIndex);
-//   }
-
-//   @override
-//   void dispose() {
-//     _pageController?.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       bottomNavigationBar: BottomNavigationBar(
-//         currentIndex: _selectedIndex,
-//         onTap: onTabTapped,
-
-//         showSelectedLabels: false,
-//         showUnselectedLabels: false,
-//         items: [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Events',
-//             backgroundColor: Colors.red,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.comment),
-//             label: 'Comments',
-//             backgroundColor: Colors.green,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.logout),
-//             label: 'Log Out',
-//             backgroundColor: Colors.pink,
-//           )
-//         ],
-//         // onTap: (index) {
-//         //   setState(() {
-//         //     _selectedIndex = index;
-//         //   });
-//         // },
-//       ),
-//       body: PageView(
-//         children: [
-//           _buildOffstageNavigator(0),
-//           _buildOffstageNavigator(1),
-//           _buildOffstageNavigator(2),
-//         ],
-//         onPageChanged: onPageChanged,
-//         controller: _pageController,
-//       ),
-//     );
-//   }
-
-//   void onPageChanged(int page) {
-//     setState(() {
-//       this._pageIndex = page;
-//     });
-//   }
-
-//   void onTabTapped(int index) {
-//     this._pageController?.animateToPage(index,
-//         duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-//   }
-
-//   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
-//     return {
-//       '/': (context) {
-//         return [adminEvent(), Text('data'), logout()].elementAt(index);
-//       },
-//     };
-//   }
-
-//   Widget _buildOffstageNavigator(int index) {
-//     var routeBuilders = _routeBuilders(context, index);
-
-//     return Offstage(
-//       offstage: _selectedIndex != index,
-//       child: Navigator(
-//         onGenerateRoute: (routeSettings) {
-//           return MaterialPageRoute(
-//             builder: (context) => routeBuilders[routeSettings.name]!(context),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
   int _selectedIndex = 0;
   int _pageIndex = 0;
   PageController? _pageController;
@@ -138,17 +37,13 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
           return isFirstRouteInCurrentTab;
         },
         child: Scaffold(
-          //appBar: GradientAppBar(),
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
           bottomNavigationBar: BottomNavigationBar(
-            //currentIndex: _selectedIndex,
             currentIndex: _pageIndex,
-            // onTap: onTabTapped,
             backgroundColor: Colors.grey[200],
             selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
-
             selectedItemColor: Colors.deepOrange[400],
-            //unselectedItemColor: Colors.green,
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,
             showUnselectedLabels: false,
@@ -162,17 +57,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
                 icon: Icon(Icons.comment),
                 label: 'Comments',
                 // backgroundColor: Colors.green,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: 'Log out',
-                // backgroundColor: Colors.green,
-              ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.logout),
-              //   label: 'Log Out',
-              //   backgroundColor: Colors.pink,
-              // )
+              )
             ],
             onTap: (index) {
               onTabTapped(index);
@@ -209,7 +94,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), Text('data'), logout()].elementAt(index);
+        return [adminEvent(), Text('data')].elementAt(index);
       },
     };
   }
@@ -243,21 +128,18 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
 class logout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // logOutdialog(),
-        // child: ElevatedButton.icon(
-        //     onPressed: () async {
-        //       await FirebaseAuth.instance.signOut();
-        //     },
-        //     icon: Icon(Icons.logout, color: Colors.deepOrange),
-        //     label: Text('Log Out',
-        //         style: TextStyle(
-        //           color: Colors.deepOrange,
-        //         )),
-        //     style: ElevatedButton.styleFrom(
-        //       primary: Colors.white,
-        //     )),
-        );
+    return ElevatedButton.icon(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+        },
+        icon: Icon(Icons.logout, color: Colors.deepOrange),
+        label: Text('Log Out',
+            style: TextStyle(
+              color: Colors.deepOrange,
+            )),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.red,
+        ));
   }
 }
 // res https://medium.com/@theboringdeveloper/common-bottom-navigation-bar-flutter-e3693305d2d
