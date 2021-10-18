@@ -69,7 +69,7 @@ class _Eventform extends State<createEvent> {
   late GoogleMapController _controller;
   Location _location = Location();
   List<Marker> myMarker = [];
-  LatLng? saveLatLng;
+  LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
   GeoPoint saveLatLngasGeo = GeoPoint(24.708481, 46.752108);
 
@@ -517,7 +517,7 @@ class _Eventform extends State<createEvent> {
     _location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
+          CameraPosition(target: saveLatLng, zoom: 15),
         ),
       );
     });
@@ -534,6 +534,9 @@ class _Eventform extends State<createEvent> {
             print(dragEndPosition);
           }));
       saveLatLng = tappedPoint;
+
+      // double lat= tappedPoint.getLatitude();
+      // saveLatLngasGeo= GeoPoint(tappedPoint);
       StringLatLng = tappedPoint.toString();
     });
   }
