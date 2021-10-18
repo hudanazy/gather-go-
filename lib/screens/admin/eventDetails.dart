@@ -5,6 +5,8 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -21,10 +23,11 @@ class _eventDetails extends State<eventDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-
+    LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
     String category = widget.event?.get('category');
 
-    Future<String> eventCreatorName = eventCreator(userID);
+    List<Marker> myMarker = [];
+    // Future<String> eventCreatorName = eventCreator(userID);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -78,6 +81,51 @@ class _eventDetails extends State<eventDetails> {
                 Icon(Icons.location_pin),
                 Text(
                     "   to be added later                                                              "),
+                // RaisedButton(
+                //   onPressed: () {
+                //     showDialog(
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             content: Stack(
+                //               overflow: Overflow.visible,
+                //               children: <Widget>[
+                //                 Positioned(
+                //                   right: -40.0,
+                //                   top: -40.0,
+                //                   child: InkResponse(
+                //                     onTap: () {
+                //                       Navigator.of(context).pop();
+                //                     },
+                //                     child: CircleAvatar(
+                //                       child: Icon(Icons.close),
+                //                       backgroundColor: Colors.deepOrange,
+                //                     ),
+                //                   ),
+                //                 ),
+                SizedBox(
+                  height: 500,
+                  width: 450,
+                  child: GoogleMap(
+                    initialCameraPosition:
+                        CameraPosition(target: _initialcameraposition),
+                    mapType: MapType.normal,
+                    onMapCreated: _onMapCreated,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                    mapToolbarEnabled: true,
+                    trafficEnabled: true,
+                    zoomGesturesEnabled: true,
+                    markers: Set.from(myMarker),
+                  ),
+                ),
+                //               ],
+                //             ),
+                //           );
+                //         });
+                //   },
+                //   child: Text("see the location"),
+                // ),
               ],
             ),
             Row(children: <Widget>[
@@ -218,6 +266,27 @@ class _eventDetails extends State<eventDetails> {
       ),
     );
   }
+// void _updateCameraPosition(CameraPosition position) {
+//     setState(() {
+//       _location = position;
+//     });
+//   }
+
+  Location _location = Location();
+  late GoogleMapController _controller;
+
+  void _onMapCreated(GoogleMapController _cntlr) {
+    _controller = _cntlr;
+    //LatLng(24.72980172537032, 46.62342678755522)
+    _location.onLocationChanged.listen((l) {
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(24.72980172537032, 46.62342678755522), zoom: 80),
+        ),
+      );
+    });
+  }
 
   String _textFromFile = "";
   // will return eventCreator name
@@ -227,7 +296,7 @@ class _eventDetails extends State<eventDetails> {
     documentList =
         await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
 
-    uesrName = documentList['uesrname'];
+    uesrName = documentList['name'];
 
     setState(() => _textFromFile = uesrName);
 
