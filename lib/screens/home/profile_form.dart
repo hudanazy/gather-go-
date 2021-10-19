@@ -80,7 +80,11 @@ class _ProfileFormState extends State<ProfileForm> {
                 const SizedBox(
                   height: 30,
                 ),
-                buildAbout(profileData)
+                buildAbout(profileData),
+                const SizedBox(
+                  height: 24,
+                ),
+                buildEvents(profileData)
               ],
             ),
             // final user = Provider.of<NewUser?>(
@@ -196,6 +200,26 @@ class _ProfileFormState extends State<ProfileForm> {
               icon: Icon(Icons.logout_outlined),
               label: Text('Log out'),
             ),
+          ],
+        ),
+      );
+  Widget buildEvents(ProfileData? user) => Container(
+        child: Row(
+          children: [
+            SizedBox(
+              child: Text(
+                "My Events",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
+              width: 200,
+            ),
+            SizedBox(
+              child: Text(
+                "Booked Events",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
+              width: 200,
+            )
           ],
         ),
       );
