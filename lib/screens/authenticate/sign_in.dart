@@ -4,7 +4,7 @@ import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
-
+import 'package:gather_go/screens/authenticate/resetPassword.dart';
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
 
@@ -77,9 +77,13 @@ class _SignInState extends State<SignIn> {
                             setState(() => password = value.trim());
                           },
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
+                        TextButton(onPressed: () =>
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => resetPassword()))
+                        , child: Text('Forgot your password? Reset Now',
+                        style: TextStyle(color: Colors.purple[300], fontSize: 16),),),
+                        // SizedBox(
+                        //   height: 12,
+                        // ),
                         ElevatedButton(
                           child: Text("Login"),
                           onPressed: () async {
