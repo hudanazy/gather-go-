@@ -40,11 +40,11 @@ class _ProfileFormState extends State<ProfileForm> {
           });
     }
 
-    final user = Provider.of<NewUser>(context);
+    final user = Provider.of<NewUser?>(context);
     UesrInfo? profileData;
     //final AuthService _auth = AuthService();
     return StreamBuilder<UesrInfo>(
-        stream: DatabaseService(uid: user.uid).profileData,
+        stream: DatabaseService(uid: user?.uid).profileData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             profileData = snapshot.data;
