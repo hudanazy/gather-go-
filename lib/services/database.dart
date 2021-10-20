@@ -19,11 +19,10 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
 
-  Future updateProfileData(String name, String bio) async {
-    return await profileCollection.doc(uid).set({
-      "name": name,
-      "bio": bio,
-    });
+  Future updateProfileData(String name, String status, String bio) async {
+    return await userCollection
+        .doc(uid)
+        .set({"name": name, "bio": bio, "status": status});
   }
 
   Future updateEventData(String? title, String? description, String? date,
@@ -111,19 +110,20 @@ class DatabaseService {
     return eventCollection.snapshots().map(_eventInfoListFromSnapshot);
   }
 
-//get user doc stream
-  Stream<ProfileData> get profileData {
-    return profileCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
+//get profile doc stream
+  Stream<UesrInfo> get profileData {
+    return userCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
   }
 
-  //user data from snapshot
+  //profile data from snapshot
 
-  ProfileData _profileDataFromSnapshot(DocumentSnapshot snapshot) {
-    return ProfileData(
+  UesrInfo _profileDataFromSnapshot(DocumentSnapshot snapshot) {
+    return UesrInfo(
       uid: snapshot.get('uid'),
       name: snapshot.get('name'),
       bio: snapshot.get('bio'),
       email: snapshot.get('email') ?? '',
+      status: snapshot.get('status') ?? '',
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
@@ -145,22 +145,22 @@ class DatabaseService {
   }
 
   Future updateUesrData(
-    String uesrname,
+    String name,
     String email, // String password
   ) async {
     return await userCollection.doc(uid).set({
-      'uesrname': uesrname,
+      'name': name,
       'email': email,
       //'password': password,
     });
   }
 
-  Stream<List<UesrInfo>> get users {
+  /* Stream<List<UesrInfo>> get users {
     return userCollection.snapshots().map(_userInfoListFromSnapshot);
-  }
+  }*/
 
   //uesr list from snopshot
-  List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
+  /*List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UesrInfo(
         // snapshot.data['uesrname']
@@ -169,7 +169,7 @@ class DatabaseService {
         // password: doc.get('password') ?? ''
       );
     }).toList();
-  }
+  }*/
 
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

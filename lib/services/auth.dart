@@ -50,8 +50,7 @@ class AuthService {
       String name, String emial, String password, String Confirm) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: emial, //password: password
-      );
+          email: emial, password: password);
       User? user = result.user;
 
       //create a new document for a user with uid

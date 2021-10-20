@@ -41,9 +41,9 @@ class _ProfileFormState extends State<ProfileForm> {
     }
 
     final user = Provider.of<NewUser>(context);
-    ProfileData? profileData;
+    UesrInfo? profileData;
     //final AuthService _auth = AuthService();
-    return StreamBuilder<ProfileData>(
+    return StreamBuilder<UesrInfo>(
         stream: DatabaseService(uid: user.uid).profileData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -171,7 +171,7 @@ class _ProfileFormState extends State<ProfileForm> {
         });
   }
 
-  Widget buildName(ProfileData? user) => Column(
+  Widget buildName(UesrInfo? user) => Column(
         children: [
           Text(
             user?.name ?? 'Huda',
@@ -187,7 +187,7 @@ class _ProfileFormState extends State<ProfileForm> {
         ],
       );
 
-  Widget buildAbout(ProfileData? user) => Container(
+  Widget buildAbout(UesrInfo? user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           children: [
