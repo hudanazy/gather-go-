@@ -49,7 +49,8 @@ class DatabaseService {
     String time,
     bool approved,
     bool adminCheck,
-    String location,
+    String lat,
+    String long,
   ) {
     eventCollection.add({
       "uid": uid,
@@ -62,7 +63,8 @@ class DatabaseService {
       "time": time,
       "approved": approved,
       "adminCheck": adminCheck,
-      "location": location,
+      "lat": lat,
+      "long": long,
     }); // may need to change date and time format
   }
 

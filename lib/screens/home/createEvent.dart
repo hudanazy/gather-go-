@@ -1,26 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/home/event_list.dart';
-import 'package:gather_go/screens/home/profile_form.dart';
-import 'package:get/get.dart';
+// import 'package:gather_go/screens/home/event_list.dart';
+// import 'package:gather_go/screens/home/profile_form.dart';
+// import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+//import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
+//import 'package:gather_go/shared/gradient_app_bar.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gather_go/screens/home/home.dart';
+//import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:gather_go/shared/num_button.dart';
+//import 'package:gather_go/shared/num_button.dart';
 import '../NotifactionManager.dart';
-import 'package:timezone/timezone.dart' as tz;
+//import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
@@ -72,7 +72,8 @@ class _Eventform extends State<createEvent> {
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
   GeoPoint saveLatLngasGeo = GeoPoint(24.708481, 46.752108);
-
+  String saveLat = "";
+  String saveLong = "";
   @override
   void initState() {
     super.initState();
@@ -445,7 +446,8 @@ class _Eventform extends State<createEvent> {
                               if (_formKey.currentState!.validate()) {
                                 if (dateo == null &&
                                     ttime == null &&
-                                    StringLatLng == null) {
+                                    saveLat == "" &&
+                                    saveLong == "") {
                                   Fluttertoast.showToast(
                                     msg:
                                         "Date and time and location have to be selected.",
@@ -461,7 +463,7 @@ class _Eventform extends State<createEvent> {
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (StringLatLng == null) {
+                                } else if (saveLat == "" && saveLong == "") {
                                   Fluttertoast.showToast(
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
@@ -489,7 +491,8 @@ class _Eventform extends State<createEvent> {
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      StringLatLng!,
+                                      saveLat,
+                                      saveLong,
                                     );
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
@@ -517,15 +520,21 @@ class _Eventform extends State<createEvent> {
     _location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: saveLatLng, zoom: 15),
+          //CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15), //here zoom on uesr current location
+          CameraPosition(
+              target: saveLatLng,
+              zoom:
+                  15), //here zoom on location the uesr select , I think we need if statment
         ),
       );
     });
   }
 
+//LatLng LatLngPosition= LatLng(tappedPoint.latitude,tappedPoint.longitude);
   void _handleTap(LatLng tappedPoint) {
     setState(() {
       myMarker = [];
+
       myMarker.add(Marker(
           markerId: MarkerId(tappedPoint.toString()),
           position: tappedPoint,
@@ -534,10 +543,9 @@ class _Eventform extends State<createEvent> {
             print(dragEndPosition);
           }));
       saveLatLng = tappedPoint;
-
-      // double lat= tappedPoint.getLatitude();
-      // saveLatLngasGeo= GeoPoint(tappedPoint);
       StringLatLng = tappedPoint.toString();
+      saveLat = tappedPoint.latitude.toString();
+      saveLong = tappedPoint.longitude.toString();
     });
   }
 
