@@ -115,13 +115,13 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
     );
   }
 
-  Future<Widget> logOutdialog() async {
-    var result = await logOutAdminDialog(context);
-    if (result == true) {
-      await FirebaseAuth.instance.signOut();
-    }
-    return Text('data');
-  }
+  // Future<Widget> logOutdialog() async {
+  //   var result = await logOutAdminDialog(context);
+  //   if (result == true) {
+  //     await FirebaseAuth.instance.signOut();
+  //   }
+  //   return Text('data');
+  // }
 }
 
 // ignore: camel_case_types

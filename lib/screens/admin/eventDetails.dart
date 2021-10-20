@@ -1,3 +1,5 @@
+//import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+//import 'package:geocoder/geocoder.dart' as geoCo;
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -116,7 +119,7 @@ class _eventDetails extends State<eventDetails> {
                     mapToolbarEnabled: true,
                     trafficEnabled: true,
                     zoomGesturesEnabled: true,
-                    markers: Set.from(myMarker),
+                    markers: Set<Marker>.of(myMarker),
                   ),
                 ),
                 //               ],
@@ -171,7 +174,8 @@ class _eventDetails extends State<eventDetails> {
                                   "category": category,
                                   'approved': false,
                                   "adminCheck": true,
-                                  "location": widget.event?.get('location')
+                                  "lat": widget.event?.get('lat'),
+                                  "long": widget.event?.get('long'),
                                 });
                                 // success msg + redirect to adminEvent
 
@@ -230,7 +234,8 @@ class _eventDetails extends State<eventDetails> {
                                 "time": widget.event?.get('time'),
                                 'approved': true,
                                 "adminCheck": true,
-                                "location": widget.event?.get('location')
+                                "lat": widget.event?.get('lat'),
+                                "long": widget.event?.get('long'),
                               });
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
@@ -266,26 +271,50 @@ class _eventDetails extends State<eventDetails> {
       ),
     );
   }
+
 // void _updateCameraPosition(CameraPosition position) {
 //     setState(() {
 //       _location = position;
 //     });
 //   }
+  var pinLocationIcon;
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/pin.png');
+  }
 
   Location _location = Location();
   late GoogleMapController _controller;
-
+  late List<Marker> myMarker;
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    //LatLng(24.72980172537032, 46.62342678755522)
-    _location.onLocationChanged.listen((l) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(24.72980172537032, 46.62342678755522), zoom: 80),
-        ),
-      );
+    //final coordinated = new geoCo.coordinates(
+    //  widget.event?.get('lat'), widget.event?.get('long'));
+    //String markerId =(widget.event?.get('lat').toString(), widget.event?.get('long').toString())
+    LatLng markerPosition =
+        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+    print("11111111111111111111111111111111111111111111");
+    setState(() {
+      myMarker = [];
+      myMarker.add(Marker(
+          markerId: MarkerId(markerPosition.toString()),
+          position:
+              LatLng(24.791484529972546, 46.610849651216924), // markerPosition,
+          // draggable: true,
+          icon: pinLocationIcon, //BitmapDescriptor.defaultMarker,
+          onDragEnd: (dragEndPosition) {
+            print(dragEndPosition);
+          }));
     });
+    //LatLng(24.72980172537032, 46.62342678755522)
+    // _location.onLocationChanged.listen((l) {
+    //   _controller.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(
+    //           target: LatLng(24.791484529972546, 46.610849651216924), zoom: 80),
+    //     ),
+    //   );
+    // });
   }
 
   String _textFromFile = "";

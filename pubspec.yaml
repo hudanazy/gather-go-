@@ -46,6 +46,7 @@ dependencies:
   location: ^4.3.0
   flutter_local_notifications: ^8.2.0
   timezone: ^0.8.0
+  #geocoder: ^0.2.1
   #rxdart: ^0.27.2
 
 dev_dependencies:
