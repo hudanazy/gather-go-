@@ -27,6 +27,13 @@ class _resetPasswordState extends State<resetPassword> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
+              leading: IconButton(
+                color: Colors.amber,
+                icon: new Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
@@ -34,22 +41,23 @@ class _resetPasswordState extends State<resetPassword> {
                 style: TextStyle(
                   fontFamily: 'Comfortaa',
                   fontSize: 27,
-                  color: Colors.orangeAccent),
+                  color: Colors.amber[600]),
                 textAlign: TextAlign.center,
               ),
             ),
             body: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                padding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
                 height: 800,
                 child: Form(
-                    key: _formKey, //---------------------------------------
+                    key: _formKey, 
                     child: Column(
                       children: [
                         SizedBox(
                           height: 20,
                         ),
                         TextFormField(
+                          autofocus: true,
                           decoration:
                               textInputDecoration.copyWith(hintText: "Email"),
                           validator: (value) {
@@ -71,25 +79,34 @@ class _resetPasswordState extends State<resetPassword> {
                           height: 20,
                         ),
                         ElevatedButton(
-                          child: Text("Send password reset email",
+                          child: Text("Submit",
                           ),
                           onPressed: () async {
+                            setState(() {error='';});
                             if (_formKey.currentState!.validate()) {
                               setState(() {
                                 loading = true;
                               });
-                                  await _auth.sendPasswordResetEmail(email: email);
-                                  //_auth.confirmPasswordReset(code: code, newPassword: newPassword)
-                                  Fluttertoast.showToast(msg: 'Check your email, reset email sent');
-                                  emailSent= true;
-                                  Navigator.of(context).pop();
+                                  await _auth.sendPasswordResetEmail(email: email).then((value) {
+                                    if (loading)
+                                      setState(() {
+                                        loading=false;
+                                      });
+                                    Navigator.of(context).pop();
+                                    Fluttertoast.showToast(msg: 'Password reset link has been sent to $email');
+                                  }).catchError((onError){
+                                    if (onError.toString().contains("An internal error has occurred")){
+                                      setState(() {
+                                        error = onError;
+                                        loading = false;
+                                      });
+                                    }else {
+                                      setState(() {
+                                        error ='The email is not registered';
+                                        loading = false;
+                                      });}
+                                  });
                             }
-                            if (!emailSent)
-                            setState(() {
-                                  error =
-                                      'The email is not registered'; //user
-                                  loading = false;
-                                });
                           },
                           style: ButtonStyle(
                               backgroundColor:

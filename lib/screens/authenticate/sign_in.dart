@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:gather_go/screens/authenticate/register.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -79,7 +78,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         TextButton(onPressed: () =>
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => resetPassword()))
-                        , child: Text('Forgot your password? Reset Now',
+                        , child: Text('Forgot password?',
                         style: TextStyle(color: Colors.purple[300], fontSize: 16),),),
                         // SizedBox(
                         //   height: 12,
