@@ -30,8 +30,7 @@ Future<bool> showApproveDialog(BuildContext context) async {
     context: context,
     builder: (context) => AlertDialog(
       title: Text("Approve event"),
-      content:
-          Text("Are you sure you want to you want to approve this event ?"),
+      content: Text("Are you sure you want to approve this event ?"),
       actions: [
         TextButton(
             child: Text("No",
@@ -55,8 +54,7 @@ Future<bool> showDispproveDialog(BuildContext context) async {
     context: context,
     builder: (context) => AlertDialog(
       title: Text("Disapprove event"),
-      content:
-          Text("Are you sure you want to you want to disapprove this event ?"),
+      content: Text("Are you sure you want to disapprove this event ?"),
       actions: [
         TextButton(
             child: Text("No",
