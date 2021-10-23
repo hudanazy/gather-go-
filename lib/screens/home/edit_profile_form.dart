@@ -135,17 +135,14 @@ class _epFormState extends State<epForm> {
                     onPressed: () async {
                       if (_formkey.currentState!.validate()) {
                         dynamic db = await DatabaseService(uid: user?.uid)
-                            .updateProfileData(
-                                _currentName!, _currentBio!, _currentStatus!);
+                            .updateProfileData(user!.uid, _currentName!,
+                                _currentStatus!, _currentBio!);
                         Navigator.pop(context);
                         Fluttertoast.showToast(
                           msg: "Profile successfully updated.",
                           toastLength: Toast.LENGTH_LONG,
                         );
                       }
-                      print(_currentName);
-                      print(_currentBio);
-                      print(_currentStatus);
                     },
                   ),
                 ),

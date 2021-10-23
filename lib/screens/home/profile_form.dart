@@ -14,6 +14,7 @@ import 'package:gather_go/shared/build_appbar.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'dart:io';
 import 'package:gather_go/shared/profile_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -28,6 +29,20 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    UesrInfo? profileData;
+    final user = Provider.of<NewUser?>(context, listen: false);
+
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('uesrInfo')
+        .where('uid', isEqualTo: user?.uid)
+        .snapshots();
+
+    //  String userID = widget.profile?.get('uid');
+
+    // String name = widget.profile?.get('name');
+    // String status = widget.profile?.get('status');
+    // String bio = widget.profile?.get('bio');
     void _showProfilePanel() {
       showModalBottomSheet(
           isScrollControlled: true,
@@ -40,134 +55,65 @@ class _ProfileFormState extends State<ProfileForm> {
           });
     }
 
-    final user = Provider.of<NewUser?>(context);
-    UesrInfo? profileData;
     //final AuthService _auth = AuthService();
-    return StreamBuilder<UesrInfo>(
-        stream: DatabaseService(uid: user?.uid).profileData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            profileData = snapshot.data;
+    return StreamBuilder<Object>(
+        stream: snap, //DatabaseService(uid: user.uid).profileData,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Loading(),
+              //     child: Text(
+              //   "No New Events", // may be change it to loading , itis appear for a second every time
+              //   textAlign: TextAlign.center,
+              // )
+            );
           }
-          return Scaffold(
-            appBar: buildAppBar(context),
-            body: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                ProfileWidget(
-                  imagePath:
-                      "https://picsum.photos/200/300", //random image // profileData.imageUrl
-                  isEdit: false,
-                  onClicked: () async {
-                    _showProfilePanel();
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => EditProfilePage()));
-                  },
-                ),
-
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     primary: Colors.purple[500],
-                //     shadowColor: Colors.purple[800],
-
-                //     shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(25)),
-
-                //   ),
-                //   child: Text(
-                //     'Submit',
-                //     style: TextStyle(
-                //       fontSize: 20,
-                //       fontWeight: FontWeight.w700,
-                //     ),
-                //   ),
-                //   onPressed: () async {
-                //     // dynamic create_profile =
-                //     //     await DatabaseService(uid: user.uid).addProfileData(
-                //     //         user.uid, "bio", "email", "asd", "imageUrl");
-                //   },
-                // ),
-                const SizedBox(
-                  height: 24,
-                ),
-                buildName(profileData),
-                const SizedBox(
-                  height: 30,
-                ),
-                buildAbout(profileData)
-              ],
-            ),
-            // final user = Provider.of<NewUser?>(
-            //     context); //storing user (before we made snapshot method in database class
-            // //then made userData class(in UserOnScreen file) then access user data snapshot here in form) tut.25
-            // ProfileData? userData;
-            // final AuthService _auth = AuthService();
-
-            // return StreamBuilder<ProfileData>(
-            //     stream: DatabaseService(uid: user?.uid).profileData,
-            //     builder: (context, snapshot) {
-            //       if (snapshot.hasData) {
-            //         userData = snapshot.data;
-            //       }
-
-            //       return Form(
-            //           key: _formKey,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Text(
-            //                 "Edit Your Profile",
-            //                 style: TextStyle(fontSize: 18),
-            //               ),
-            //               SizedBox(height: 20),
-            //               TextFormField(
-            //                 initialValue: userData?.name,
-            //                 decoration:
-            //                     textInputDecoration.copyWith(hintText: "Username"),
-            //                 validator: (val) => val!.isEmpty
-            //                     ? "Please enter your username."
-            //                     : userData?.name,
-            //                 onChanged: (val) => setState(() => _currentName = val),
-            //               ),
-            //               SizedBox(height: 20),
-            //               TextFormField(
-            //                 initialValue: userData?.bio,
-            //                 decoration: textInputDecoration.copyWith(hintText: "Bio"),
-            //                 validator: (val) =>
-            //                     val!.isEmpty ? "Please enter your bio." : userData?.bio,
-            //                 onChanged: (val) => setState(() => _currentBio = val),
-            //               ),
-            //               SizedBox(height: 20),
-            //               ElevatedButton(
-            //                 style: ButtonStyle(
-            //                     backgroundColor:
-            //                         MaterialStateProperty.all(Colors.purple[300]),
-            //                     foregroundColor:
-            //                         MaterialStateProperty.all(Colors.white)),
-            //                 child: Text('Save changes'),
-            //                 onPressed: () async {
-            //                   //update db here using stream provider and database class
-            //                   if (_formKey.currentState!.validate()) {
-            //                     await DatabaseService(uid: user?.uid).updateProfileData(
-            //                         _currentName ?? userData!.name,
-            //                         _currentBio ?? userData!.bio);
-            //                   }
-            //                   //   Navigator.pop(context);
-            //                 },
-            //               ),
-            //               TextButton.icon(
-            //                 onPressed: () async {
-            //                   await _auth.SignOut();
-            //                 },
-            //                 icon: Icon(Icons.logout_rounded),
-            //                 label: Text("Logout"),
-            //               )
-            //             ],
-            //           ));
-            //       // } else {
-            //       //   return Loading();
-            //       // }
-            //     });
-          );
+          return Container(
+              height: 640,
+              width: 500,
+              child: ListView(
+                children: snapshot.data.docs.map<Widget>((document) {
+                  DocumentSnapshot uid = document;
+                  return Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          color: Colors.grey[200],
+                          child: SizedBox(
+                            height: 400,
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.purple[300],
+                              ),
+                              title: Center(
+                                  child: Text(
+                                document['name'],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.deepOrange,
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 16),
+                              )),
+                              subtitle: Text(
+                                document['bio'],
+                                style: TextStyle(
+                                    color: Colors.grey[800],
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 14),
+                              ),
+                              trailing: Icon(
+                                Icons.edit,
+                              ),
+                              onTap: () {
+                                _showProfilePanel();
+                              },
+                            ),
+                          )));
+                }).toList(),
+              ));
         });
   }
 

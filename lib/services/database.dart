@@ -19,10 +19,11 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
 
-  Future updateProfileData(String name, String status, String bio) async {
+  Future updateProfileData(
+      String uid, String name, String status, String bio) async {
     return await userCollection
         .doc(uid)
-        .set({"name": name, "bio": bio, "status": status});
+        .set({"uid": uid, "name": name, "bio": bio, "status": status});
   }
 
   Future updateEventData(String? title, String? description, String? date,
@@ -70,6 +71,7 @@ class DatabaseService {
     String name,
     String bio,
     String email,
+    String status,
     String imageUrl,
   ) {
     profileCollection.add({
@@ -77,6 +79,7 @@ class DatabaseService {
       "name": name,
       "bio": bio,
       "email": email,
+      "status": status,
       "imageUrl": imageUrl,
 
       /* "location": location*/
@@ -119,9 +122,9 @@ class DatabaseService {
 
   UesrInfo _profileDataFromSnapshot(DocumentSnapshot snapshot) {
     return UesrInfo(
-      uid: snapshot.get('uid'),
-      name: snapshot.get('name'),
-      bio: snapshot.get('bio'),
+      uid: snapshot.get('uid') ?? '',
+      name: snapshot.get('name') ?? '',
+      bio: snapshot.get('bio') ?? '',
       email: snapshot.get('email') ?? '',
       status: snapshot.get('status') ?? '',
       imageUrl: snapshot.get('imageUrl') ?? '',
