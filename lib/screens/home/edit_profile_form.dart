@@ -22,12 +22,13 @@ class _epFormState extends State<epForm> {
     'At School',
     'At Work',
     'In a meeting',
-    'Sleeping'
+    'Sleeping',
+    'Away'
   ];
 
   String? _currentName;
   String? _currentBio;
-  String? _currentStatus;
+  String? _currentStatus = "Available";
 
   @override
   Widget build(BuildContext context) {
