@@ -1,5 +1,5 @@
 //import 'dart:math';
-
+//import 'package:geolocation/geolocation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,9 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+//import 'package:location/location.dart' ;
+
 //import 'package:geocoder/geocoder.dart' as geoCo;
 
 // ignore: camel_case_types
@@ -30,7 +32,26 @@ class _eventDetails extends State<eventDetails> {
     String category = widget.event?.get('category');
 
     List<Marker> myMarker = [];
+    // Object for PolylinePoints
+
+    print("asdfgfds");
+    final startAddressController = TextEditingController();
     // Future<String> eventCreatorName = eventCreator(userID);
+    _createPolylines(24.814953633808596, 46.61074977772709);
+    LatLng markerPosition =
+        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+    setState(() {
+      myMarker = [];
+      myMarker.add(Marker(
+          markerId: MarkerId(markerPosition.toString()),
+          infoWindow: InfoWindow(title: widget.event?.get('name')),
+          position: markerPosition, // markerPosition,
+          // draggable: true,
+          icon: BitmapDescriptor.defaultMarker,
+          onDragEnd: (dragEndPosition) {
+            print(dragEndPosition);
+          }));
+    });
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -78,6 +99,18 @@ class _eventDetails extends State<eventDetails> {
                     '                                                           '), // we may need to change it as i dont think this the right time !!
               ],
             ),
+            Row(children: <Widget>[
+              Text("        "),
+              Icon(Icons.people_alt_rounded),
+              Text("   Max attendee number is $attendeeNum  ")
+            ]),
+            Row(children: <Widget>[
+              Text("        "),
+              Icon(
+                Icons.person_rounded,
+              ),
+              Text("   Created by   $_textFromFile")
+            ]),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
@@ -110,17 +143,33 @@ class _eventDetails extends State<eventDetails> {
                   height: 500,
                   width: 450,
                   child: GoogleMap(
-                    initialCameraPosition:
-                        CameraPosition(target: _initialcameraposition),
-                    mapType: MapType.normal,
                     onMapCreated: _onMapCreated,
+                    markers: Set.from(myMarker),
                     myLocationEnabled: true,
                     compassEnabled: true,
+                    zoomControlsEnabled: true,
                     mapToolbarEnabled: true,
                     trafficEnabled: true,
                     zoomGesturesEnabled: true,
-                    markers: Set<Marker>.of(myMarker),
+                    polylines: Set<Polyline>.of(polylines.values),
+                    initialCameraPosition: CameraPosition(
+                      target: _initialcameraposition,
+                      zoom: 10.0,
+                    ),
                   ),
+                  // GoogleMap(
+                  //   initialCameraPosition: CameraPosition(
+                  //       target: LatLng(40.69714947153292, -74.27361247497824),
+                  //       zoom: 14),
+                  //   mapType: MapType.normal,
+                  //   // onMapCreated: _onMapCreated,
+                  //   // myLocationEnabled: true,
+                  //   // compassEnabled: true,
+                  //   // mapToolbarEnabled: true,
+                  //   // trafficEnabled: true,
+                  //   // zoomGesturesEnabled: true,
+                  //   // markers: Set<Marker>.of(myMarker),
+                  // ),
                 ),
                 //               ],
                 //             ),
@@ -131,18 +180,6 @@ class _eventDetails extends State<eventDetails> {
                 // ),
               ],
             ),
-            Row(children: <Widget>[
-              Text("        "),
-              Icon(Icons.people_alt_rounded),
-              Text("   Max attendee number is $attendeeNum  ")
-            ]),
-            Row(children: <Widget>[
-              Text("        "),
-              Icon(
-                Icons.person_rounded,
-              ),
-              Text("   Created by   $_textFromFile")
-            ]),
             Row(
               children: [
                 Expanded(
@@ -282,39 +319,86 @@ class _eventDetails extends State<eventDetails> {
     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/pin.png');
   }
+//   dynamic _getAddress() async {
+//   try {
+//     // Places are retrieved using the coordinates
+//     List<Placemark> p = await placemarkFromCoordinates(
+//         markerPosition);
 
-  Location _location = Location();
+//     // Taking the most probable result
+//     Placemark place = p[0];
+
+//     setState(() {
+
+//       // Structuring the address
+//       _currentAddress =
+//           "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+
+//       // Update the text of the TextField
+//       startAddressController.text = _currentAddress;
+
+//       // Setting the user's present location as the starting address
+//       _startAddress = _currentAddress;
+//     });
+//   } catch (e) {
+//     print(e);
+//   }
+// }
+
+  // Location _location = Location();
   late GoogleMapController _controller;
   late List<Marker> myMarker;
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    //final coordinated = new geoCo.coordinates(
-    //  widget.event?.get('lat'), widget.event?.get('long'));
-    //String markerId =(widget.event?.get('lat').toString(), widget.event?.get('long').toString())
-    LatLng markerPosition =
-        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
-    print("11111111111111111111111111111111111111111111");
-    setState(() {
-      myMarker = [];
-      myMarker.add(Marker(
-          markerId: MarkerId(markerPosition.toString()),
-          position:
-              LatLng(24.791484529972546, 46.610849651216924), // markerPosition,
-          // draggable: true,
-          icon: pinLocationIcon, //BitmapDescriptor.defaultMarker,
-          onDragEnd: (dragEndPosition) {
-            print(dragEndPosition);
-          }));
-    });
-    //LatLng(24.72980172537032, 46.62342678755522)
-    // _location.onLocationChanged.listen((l) {
-    //   _controller.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(
-    //           target: LatLng(24.791484529972546, 46.610849651216924), zoom: 80),
-    //     ),
-    //   );
-    // });
+  }
+
+  double latitude = 00.00000;
+  double longitude = 00.00000;
+//Now Create Method named _getCurrentLocation with async Like Below.
+
+  late PolylinePoints polylinePoints;
+
+// List of coordinates to join
+  List<LatLng> polylineCoordinates = [];
+
+// Map storing polylines created by connecting two points
+  Map<PolylineId, Polyline> polylines = {};
+  _createPolylines(
+    double startLatitude,
+    double startLongitude,
+  ) async {
+    // Initializing PolylinePoints
+    polylinePoints = PolylinePoints();
+
+    // Generating the list of coordinates to be used for
+    // drawing the polylines
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      "AIzaSyDPdn-l7AIoVnPYqR37vXdrH9dVVHHCckM", // Google Maps API Key
+      PointLatLng(latitude, longitude),
+      PointLatLng(widget.event?.get('lat'), widget.event?.get('long')),
+      travelMode: TravelMode.transit,
+    );
+
+    // Adding the coordinates to the list
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    // Defining an ID
+    PolylineId id = PolylineId('poly');
+
+    // Initializing Polyline
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.red,
+      points: polylineCoordinates,
+      width: 3,
+    );
+
+    // Adding the polyline to the map
+    polylines[id] = polyline;
   }
 
   String _textFromFile = "";

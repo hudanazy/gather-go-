@@ -49,8 +49,8 @@ class DatabaseService {
     String time,
     bool approved,
     bool adminCheck,
-    String lat,
-    String long,
+    double lat,
+    double long,
   ) {
     eventCollection.add({
       "uid": uid,

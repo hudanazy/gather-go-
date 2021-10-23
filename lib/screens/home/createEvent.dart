@@ -72,8 +72,8 @@ class _Eventform extends State<createEvent> {
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
   GeoPoint saveLatLngasGeo = GeoPoint(24.708481, 46.752108);
-  String saveLat = "";
-  String saveLong = "";
+  double saveLat = 0;
+  double saveLong = 0;
   @override
   void initState() {
     super.initState();
@@ -411,7 +411,13 @@ class _Eventform extends State<createEvent> {
                           initialCameraPosition:
                               CameraPosition(target: _initialcameraposition),
                           mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
+                          //onMapCreated: _onMapCreated,
+                          rotateGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          zoomGesturesEnabled: true,
+                          liteModeEnabled: false,
+                          tiltGesturesEnabled: true,
                           myLocationEnabled: true,
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
@@ -446,8 +452,8 @@ class _Eventform extends State<createEvent> {
                               if (_formKey.currentState!.validate()) {
                                 if (dateo == null &&
                                     ttime == null &&
-                                    saveLat == "" &&
-                                    saveLong == "") {
+                                    saveLat == 0 &&
+                                    saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg:
                                         "Date and time and location have to be selected.",
@@ -463,7 +469,7 @@ class _Eventform extends State<createEvent> {
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (saveLat == "" && saveLong == "") {
+                                } else if (saveLat == 0 && saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
@@ -544,8 +550,8 @@ class _Eventform extends State<createEvent> {
           }));
       saveLatLng = tappedPoint;
       StringLatLng = tappedPoint.toString();
-      saveLat = tappedPoint.latitude.toString();
-      saveLong = tappedPoint.longitude.toString();
+      saveLat = tappedPoint.latitude;
+      saveLong = tappedPoint.longitude;
     });
   }
 
