@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'MyEventsDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:provider/provider.dart';
 
 // ignore: camel_case_types
 class MyEvents extends StatefulWidget {
@@ -15,15 +17,15 @@ class MyEvents extends StatefulWidget {
 // here i want to show all new event (not approved yet -> in DB approved = false)
 // ignore: camel_case_types
 class _MyEvents extends State<MyEvents> {
-  Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
-      .collection('events')
-      .orderBy("timePosted")
-      .where('approved', isEqualTo: false)
-      .where('adminCheck', isEqualTo: false)
-      .snapshots();
-
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<NewUser?>(context);
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('uid', isEqualTo: user!.uid)
+        .snapshots();
+
     return Scaffold(
         body: Column(
       children: [

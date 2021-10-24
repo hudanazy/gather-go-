@@ -99,7 +99,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Text("   Created by   $_textFromFile")
               ]),
             ),
-            Row(
+            /*Row(
               children: [
                 Expanded(
                     child: Align(
@@ -219,7 +219,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       )),
                 )
               ],
-            )
+            )*/
           ],
         ),
       ),

@@ -208,13 +208,8 @@ class _ProfileFormState extends State<ProfileForm> {
         child: Column(
           children: [
             SizedBox(
+              width: double.infinity,
               child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[300]),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      padding: MaterialStateProperty.all(
-                          EdgeInsets.fromLTRB(35, 15, 35, 15))),
                   child: Text(
                     'My Events',
                     style: TextStyle(
@@ -228,11 +223,19 @@ class _ProfileFormState extends State<ProfileForm> {
                   }),
             ),
             SizedBox(
-              child: Text(
-                "Booked Events",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              width: 200,
+              width: double.infinity,
+              child: ElevatedButton(
+                  child: Text(
+                    'Booked Events',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MyEvents()));
+                  }),
             )
           ],
         ),
