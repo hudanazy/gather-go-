@@ -13,6 +13,7 @@ import 'package:gather_go/shared/build_appbar.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'dart:io';
 import 'package:gather_go/shared/profile_widget.dart';
+import 'package:gather_go/screens/home/MyEvents.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -204,14 +205,27 @@ class _ProfileFormState extends State<ProfileForm> {
         ),
       );
   Widget buildEvents(ProfileData? user) => Container(
-        child: Row(
+        child: Column(
           children: [
             SizedBox(
-              child: Text(
-                "My Events",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              width: 200,
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey[300]),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.fromLTRB(35, 15, 35, 15))),
+                  child: Text(
+                    'My Events',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MyEvents()));
+                  }),
             ),
             SizedBox(
               child: Text(

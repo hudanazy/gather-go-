@@ -1,21 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/admin/adminNav.dart';
-import 'package:gather_go/screens/admin/eventDetails.dart';
-
+import 'package:gather_go/screens/home/profile_form.dart';
+import 'MyEventsDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/shared/loading.dart';
 
 // ignore: camel_case_types
-class adminEvent extends StatefulWidget {
+class MyEvents extends StatefulWidget {
   @override
-  _adminEvent createState() => _adminEvent();
+  _MyEvents createState() => _MyEvents();
 }
 
 // here i want to show all new event (not approved yet -> in DB approved = false)
 // ignore: camel_case_types
-class _adminEvent extends State<adminEvent> {
+class _MyEvents extends State<MyEvents> {
   Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
       .collection('events')
       .orderBy("timePosted")
@@ -29,32 +28,27 @@ class _adminEvent extends State<adminEvent> {
         body: Column(
       children: [
         AppBar(
-            toolbarHeight: 100,
-            backgroundColor: Colors.white,
-            title: Text(
-              "All New Events",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: 'Comfortaa',
-                  fontSize: 24),
+          leading: IconButton(
+            icon: new Icon(
+              Icons.arrow_back_ios,
+              color: Colors.deepOrange,
             ),
-            actions: [
-              Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-                ElevatedButton.icon(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    icon: Icon(Icons.logout, color: Colors.deepOrange),
-                    label: Text('Log Out',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                        )),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                    )),
-              ])
-            ]),
+            onPressed: () {
+              Navigator.pop(context,
+                  MaterialPageRoute(builder: (context) => ProfileForm()));
+            },
+          ),
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          title: Text(
+            "All My Events",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.deepOrange,
+                fontFamily: 'Comfortaa',
+                fontSize: 24),
+          ),
+        ),
         StreamBuilder(
           stream: snap,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -104,7 +98,7 @@ class _adminEvent extends State<adminEvent> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => eventDetails(
+                                        builder: (context) => MyEventsDetails(
                                               event: uid,
                                             )));
                               },
