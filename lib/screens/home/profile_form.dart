@@ -76,7 +76,7 @@ class _ProfileFormState extends State<ProfileForm> {
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
                   return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 48),
+                      padding: EdgeInsets.symmetric(horizontal: 62),
                       child: Column(
                           // shape: RoundedRectangleBorder(
                           //     borderRadius: BorderRadius.circular(10)),

@@ -50,7 +50,7 @@ class _epFormState extends State<epForm> {
                 Text(
                   "Edit your profile",
                   style: TextStyle(
-                      color: Colors.purple[300],
+                      color: Colors.orange[600],
                       letterSpacing: 2,
                       fontSize: 25,
                       fontWeight: FontWeight.w600,
@@ -77,7 +77,7 @@ class _epFormState extends State<epForm> {
                     decoration: textInputDecoration.copyWith(
                       hintText: "What would like us to call you?",
                       hintStyle: TextStyle(
-                          color: Colors.purple[200],
+                          color: Colors.orange[600],
                           fontSize: 14,
                           fontFamily: "Comfortaa"),
                     ),
@@ -87,7 +87,23 @@ class _epFormState extends State<epForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.only(top: 0, left: 5),
+                  child: Text(
+                    "How many attendees?",
+                    style: TextStyle(
+                        color: Colors.orange[600],
+                        letterSpacing: 2,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Comfortaa"),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 DropdownButtonFormField(
                   value: _currentStatus ?? "Available",
@@ -110,7 +126,7 @@ class _epFormState extends State<epForm> {
                     decoration: textInputDecoration.copyWith(
                       hintText: "Enter your bio.",
                       hintStyle: TextStyle(
-                          color: Colors.purple[200],
+                          color: Colors.orange[600],
                           fontSize: 14,
                           fontFamily: "Comfortaa"),
                     ),
@@ -129,7 +145,7 @@ class _epFormState extends State<epForm> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.purple[300]),
+                            MaterialStateProperty.all(Colors.orange[400]),
                         foregroundColor:
                             MaterialStateProperty.all(Colors.white),
                         padding: MaterialStateProperty.all(
