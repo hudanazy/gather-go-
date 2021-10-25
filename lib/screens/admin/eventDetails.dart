@@ -1,17 +1,15 @@
-//import 'dart:math';
-//import 'package:geolocation/geolocation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
-//import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-//import 'package:location/location.dart' ;
-
-//import 'package:geocoder/geocoder.dart' as geoCo;
+//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:location/location.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'dart:math' show cos, sqrt, asin;
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -30,27 +28,35 @@ class _eventDetails extends State<eventDetails> {
     String userID = widget.event?.get('uid');
     LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
     String category = widget.event?.get('category');
-
     List<Marker> myMarker = [];
-    // Object for PolylinePoints
 
-    print("asdfgfds");
-    final startAddressController = TextEditingController();
-    // Future<String> eventCreatorName = eventCreator(userID);
-    _createPolylines(24.814953633808596, 46.61074977772709);
+//add your lat and lng where you wants to draw polyline
+
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
     setState(() {
       myMarker = [];
       myMarker.add(Marker(
-          markerId: MarkerId(markerPosition.toString()),
-          infoWindow: InfoWindow(title: widget.event?.get('name')),
-          position: markerPosition, // markerPosition,
-          // draggable: true,
-          icon: BitmapDescriptor.defaultMarker,
-          onDragEnd: (dragEndPosition) {
-            print(dragEndPosition);
-          }));
+        markerId: MarkerId(markerPosition.toString()),
+        infoWindow: InfoWindow(title: widget.event?.get('name')),
+        position: markerPosition, // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+      myMarker.add(Marker(
+        // uesr current location
+        markerId: MarkerId(markerPosition.toString()), //to be changed to curr
+        infoWindow: InfoWindow(title: "you"),
+        position: LatLng(24.81072717400907,
+            46.59894805752124), //to be changed to curr // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      ));
+      _polylines.add(Polyline(
+          width: 10,
+          polylineId: PolylineId('polyLine'),
+          color: Color(0xFF08A5CB),
+          points: polylineCoordinates));
     });
 
     return Scaffold(
@@ -145,31 +151,19 @@ class _eventDetails extends State<eventDetails> {
                   child: GoogleMap(
                     onMapCreated: _onMapCreated,
                     markers: Set.from(myMarker),
+                    polylines: _polylines,
                     myLocationEnabled: true,
                     compassEnabled: true,
                     zoomControlsEnabled: true,
                     mapToolbarEnabled: true,
                     trafficEnabled: true,
                     zoomGesturesEnabled: true,
-                    polylines: Set<Polyline>.of(polylines.values),
+                    //onTap: setPolylines,
                     initialCameraPosition: CameraPosition(
                       target: _initialcameraposition,
                       zoom: 10.0,
                     ),
                   ),
-                  // GoogleMap(
-                  //   initialCameraPosition: CameraPosition(
-                  //       target: LatLng(40.69714947153292, -74.27361247497824),
-                  //       zoom: 14),
-                  //   mapType: MapType.normal,
-                  //   // onMapCreated: _onMapCreated,
-                  //   // myLocationEnabled: true,
-                  //   // compassEnabled: true,
-                  //   // mapToolbarEnabled: true,
-                  //   // trafficEnabled: true,
-                  //   // zoomGesturesEnabled: true,
-                  //   // markers: Set<Marker>.of(myMarker),
-                  // ),
                 ),
                 //               ],
                 //             ),
@@ -309,98 +303,20 @@ class _eventDetails extends State<eventDetails> {
     );
   }
 
-// void _updateCameraPosition(CameraPosition position) {
-//     setState(() {
-//       _location = position;
-//     });
-//   }
-  var pinLocationIcon;
-  void setCustomMapPin() async {
-    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/icon/pin.png');
-  }
-//   dynamic _getAddress() async {
-//   try {
-//     // Places are retrieved using the coordinates
-//     List<Placemark> p = await placemarkFromCoordinates(
-//         markerPosition);
-
-//     // Taking the most probable result
-//     Placemark place = p[0];
-
-//     setState(() {
-
-//       // Structuring the address
-//       _currentAddress =
-//           "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
-
-//       // Update the text of the TextField
-//       startAddressController.text = _currentAddress;
-
-//       // Setting the user's present location as the starting address
-//       _startAddress = _currentAddress;
-//     });
-//   } catch (e) {
-//     print(e);
-//   }
-// }
-
   // Location _location = Location();
   late GoogleMapController _controller;
-  late List<Marker> myMarker;
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
   }
 
-  double latitude = 00.00000;
-  double longitude = 00.00000;
-//Now Create Method named _getCurrentLocation with async Like Below.
-
-  late PolylinePoints polylinePoints;
-
-// List of coordinates to join
-  List<LatLng> polylineCoordinates = [];
-
-// Map storing polylines created by connecting two points
-  Map<PolylineId, Polyline> polylines = {};
-  _createPolylines(
-    double startLatitude,
-    double startLongitude,
-  ) async {
-    // Initializing PolylinePoints
-    polylinePoints = PolylinePoints();
-
-    // Generating the list of coordinates to be used for
-    // drawing the polylines
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyDPdn-l7AIoVnPYqR37vXdrH9dVVHHCckM", // Google Maps API Key
-      PointLatLng(latitude, longitude),
-      PointLatLng(widget.event?.get('lat'), widget.event?.get('long')),
-      travelMode: TravelMode.transit,
-    );
-
-    // Adding the coordinates to the list
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
-    // Defining an ID
-    PolylineId id = PolylineId('poly');
-
-    // Initializing Polyline
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.red,
-      points: polylineCoordinates,
-      width: 3,
-    );
-
-    // Adding the polyline to the map
-    polylines[id] = polyline;
-  }
-
+// distanceCalculation () async {
+//   double distanceInMeters = await Geolocator.bearingBetween(
+//   startLatitude,
+//   startLongitude,
+//   destinationLatitude,
+//   destinationLongitude,
+// );
+// }
   String _textFromFile = "";
   // will return eventCreator name
   Future<String> eventCreator(String uid) async {
@@ -490,4 +406,21 @@ class ArcClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
 // res https://iiro.dev/from-design-to-flutter-movie-details-page/
+Set<Polyline> _polylines = Set<Polyline>();
+List<LatLng> polylineCoordinates = [];
+PolylinePoints polylinePoints = PolylinePoints();
+
+void setPolylines(LatLng a) async {
+  PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
+      PointLatLng(24.808058743555637, 46.60225256829246),
+      PointLatLng(24.808058743555637, 46.60225256829246));
+
+  if (result.status == 'OK') {
+    result.points.forEach((PointLatLng point) {
+      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+    });
+  }
+}

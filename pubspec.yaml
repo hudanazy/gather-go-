@@ -46,9 +46,11 @@ dependencies:
   location: ^4.3.0
   flutter_local_notifications: ^8.2.0
   timezone: ^0.8.0
-  geocoding: ^2.0.0
+  #geocoding: ^2.0.0
   flutter_polyline_points: ^1.0.0
-  dio: ^4.0.0
+  #dio: ^4.0.0
+  geolocator: ^7.7.1
+
   #geocoder: ^0.2.1
   #rxdart: ^0.27.2
 

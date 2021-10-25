@@ -71,7 +71,7 @@ class _Eventform extends State<createEvent> {
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
-  GeoPoint saveLatLngasGeo = GeoPoint(24.708481, 46.752108);
+
   double saveLat = 0;
   double saveLong = 0;
   @override
@@ -526,11 +526,7 @@ class _Eventform extends State<createEvent> {
     _location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          //CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15), //here zoom on uesr current location
-          CameraPosition(
-              target: saveLatLng,
-              zoom:
-                  15), //here zoom on location the uesr select , I think we need if statment
+          CameraPosition(target: saveLatLng, zoom: 15),
         ),
       );
     });
