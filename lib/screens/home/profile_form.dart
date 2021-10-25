@@ -15,6 +15,7 @@ import 'package:gather_go/Models/UesrInfo.dart';
 import 'dart:io';
 import 'package:gather_go/shared/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gather_go/services/database.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -75,6 +76,33 @@ class _ProfileFormState extends State<ProfileForm> {
               child: ListView(
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
+                  String status = document['status'];
+                  String state;
+                  Color stateColor = Colors.grey;
+
+                  if (status == "Available") {
+                    state = "Available";
+                    stateColor = Colors.lightGreen;
+                  } else if (status == "Busy") {
+                    state = "Disapprove";
+                    stateColor = Colors.red;
+                  } else if (status == true) {
+                    state = 'At School';
+                    stateColor = Colors.yellow;
+                  } else if (status == true) {
+                    state = 'At Work';
+                    stateColor = Colors.yellow;
+                  } else if (status == true) {
+                    state = 'In a meeting';
+                    stateColor = Colors.yellow;
+                  } else if (status == true) {
+                    state = 'Sleeping';
+                    stateColor = Colors.lightGreen;
+                  } else if (status == true) {
+                    state = 'Away';
+                    stateColor = Colors.grey;
+                  }
+
                   return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 62),
                       child: Column(
