@@ -85,20 +85,20 @@ class _ProfileFormState extends State<ProfileForm> {
                     stateColor = Colors.lightGreen;
                   } else if (status == "Busy") {
                     state = "Disapprove";
-                    stateColor = Colors.red;
-                  } else if (status == true) {
+                    stateColor = Colors.red[200]!;
+                  } else if (status == 'At School') {
                     state = 'At School';
                     stateColor = Colors.yellow;
-                  } else if (status == true) {
+                  } else if (status == 'At Work') {
                     state = 'At Work';
                     stateColor = Colors.yellow;
-                  } else if (status == true) {
+                  } else if (status == 'In a meeting') {
                     state = 'In a meeting';
-                    stateColor = Colors.yellow;
-                  } else if (status == true) {
+                    stateColor = Colors.orange[300]!;
+                  } else if (status == 'Sleeping') {
                     state = 'Sleeping';
                     stateColor = Colors.lightGreen;
-                  } else if (status == true) {
+                  } else if (status == 'Away') {
                     state = 'Away';
                     stateColor = Colors.grey;
                   }
@@ -143,13 +143,24 @@ class _ProfileFormState extends State<ProfileForm> {
                               },
                             ),
                             SizedBox(
-                              height: 40,
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Chip(
+                                label: Text(status,
+                                    style: TextStyle(color: Colors.black)),
+                                backgroundColor: stateColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
                             ),
                             Text(
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey[700],
+                                  color: Colors.grey[800],
                                   fontFamily: 'Comfortaa',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 25),
@@ -157,23 +168,22 @@ class _ProfileFormState extends State<ProfileForm> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text(
-                              document['status'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.orange[400],
-                                  fontFamily: 'Comfortaa',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
+
+                            // Text(
+                            //   document['status'],
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //       color: Colors.orange[400],
+                            //       fontFamily: 'Comfortaa',
+                            //       fontWeight: FontWeight.w600,
+                            //       fontSize: 15),
+                            // ),
+
                             Text(
                               document['bio'],
                               style: TextStyle(
                                   color: Colors.grey[800],
-                                  fontFamily: 'Comfortaa',
+                                  // fontFamily: 'Comfortaa',
                                   fontSize: 18),
                             ),
                           ]));

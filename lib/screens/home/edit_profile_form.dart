@@ -93,7 +93,7 @@ class _epFormState extends State<epForm> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.only(top: 0, left: 5),
                   child: Text(
-                    "How many attendees?",
+                    "Status",
                     style: TextStyle(
                         color: Colors.orange[600],
                         letterSpacing: 2,
@@ -106,17 +106,20 @@ class _epFormState extends State<epForm> {
                   height: 10,
                 ),
                 DropdownButtonFormField(
-                  value: _currentStatus ?? "Available",
-                  decoration: textInputDecoration,
-                  items: status.map((status) {
-                    return DropdownMenuItem(
-                      value: status,
-                      child: Text(status),
-                    );
-                  }).toList(),
-                  onChanged: (val) =>
-                      setState(() => _currentStatus = val as String),
-                ),
+                    value: _currentStatus ?? "Available",
+                    decoration: textInputDecoration,
+                    items: status.map((status) {
+                      return DropdownMenuItem(
+                        value: status,
+                        child: Text(status),
+                      );
+                    }).toList(),
+                    onChanged: (val) =>
+                        setState(() => _currentStatus = val as String),
+                    style: TextStyle(
+                      color: Colors.orange[600],
+                      fontFamily: 'Comfortaa',
+                    )),
                 SizedBox(
                   height: 30,
                 ),

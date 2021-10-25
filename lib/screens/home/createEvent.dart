@@ -105,7 +105,7 @@ class _Eventform extends State<createEvent> {
                           style: TextStyle(
                             fontFamily: 'Comfortaa',
                             fontSize: 27,
-                            color: Colors.purple[300],
+                            color: Colors.orange[600],
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                             hintText: "Event name..",
                             hintStyle: TextStyle(
-                                color: Colors.purple[300],
+                                color: Colors.orange[600],
                                 fontFamily: "Comfortaa"),
                           ),
                           validator: (val) => val!.isEmpty
@@ -151,7 +151,7 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Event Category",
                           style: TextStyle(
-                              color: Colors.purple[300],
+                              color: Colors.orange[600],
                               letterSpacing: 2,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -181,7 +181,7 @@ class _Eventform extends State<createEvent> {
                               onChanged: (value) =>
                                   setState(() => this.item = value),
                               style: TextStyle(
-                                color: Colors.purple[300],
+                                color: Colors.orange[600],
                                 fontFamily: 'Comfortaa',
                               )),
                         ),
@@ -210,7 +210,7 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                               hintText: "Tell us more about your event...",
                               hintStyle: TextStyle(
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   fontFamily: "Comfortaa")),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
@@ -225,7 +225,7 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
-                              color: Colors.purple[300],
+                              color: Colors.orange[600],
                               letterSpacing: 2,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -255,7 +255,7 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select date ",
                               style: TextStyle(
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   letterSpacing: 2,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -273,7 +273,7 @@ class _Eventform extends State<createEvent> {
                                 // ),
                                 icon: Icon(
                                   Icons.calendar_today_rounded,
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   size: 50,
                                 ),
                                 // style: ElevatedButton.styleFrom(
@@ -328,7 +328,7 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select time ",
                               style: TextStyle(
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   letterSpacing: 2,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -347,7 +347,7 @@ class _Eventform extends State<createEvent> {
                                 icon: Icon(
                                   Icons.access_time,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   size: 50,
                                 ),
                                 // style: ElevatedButton.styleFrom(
@@ -389,7 +389,7 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Select location",
                           style: TextStyle(
-                              color: Colors.purple[300],
+                              color: Colors.orange[600],
                               letterSpacing: 2,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -418,7 +418,7 @@ class _Eventform extends State<createEvent> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.purple[300]),
+                                  MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
