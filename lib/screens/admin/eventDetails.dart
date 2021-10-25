@@ -43,15 +43,15 @@ class _eventDetails extends State<eventDetails> {
         // draggable: true,
         icon: BitmapDescriptor.defaultMarker,
       ));
-      myMarker.add(Marker(
-        // uesr current location
-        markerId: MarkerId(markerPosition.toString()), //to be changed to curr
-        infoWindow: InfoWindow(title: "you"),
-        position: LatLng(24.81072717400907,
-            46.59894805752124), //to be changed to curr // markerPosition,
-        // draggable: true,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-      ));
+      // myMarker.add(Marker(
+      //   // uesr current location
+      //   markerId: MarkerId(markerPosition.toString()), //to be changed to curr
+      //   infoWindow: InfoWindow(title: "you"),
+      //   position: LatLng(24.81072717400907,
+      //       46.59894805752124), //to be changed to curr // markerPosition,
+      //   // draggable: true,
+      //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      // ));
       _polylines.add(Polyline(
           width: 10,
           polylineId: PolylineId('polyLine'),
