@@ -6,6 +6,7 @@ import 'package:gather_go/shared/contants.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/shared/profile_widget.dart';
 
 class epForm extends StatefulWidget {
   const epForm({Key? key}) : super(key: key);
@@ -58,7 +59,14 @@ class _epFormState extends State<epForm> {
                 SizedBox(
                   height: 30,
                 ),
-                buildImage(),
+                ProfileWidget(
+                  imagePath: "https://picsum.photos/200/300",
+//document['name'],
+                  isEdit: true,
+                  onClicked: () async {
+                    // _showProfilePanel();
+                  },
+                ),
                 SizedBox(
                   height: 30,
                 ),

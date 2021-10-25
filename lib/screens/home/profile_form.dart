@@ -29,6 +29,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.primary;
     UesrInfo? profileData;
     final user = Provider.of<NewUser?>(context, listen: false);
 
@@ -75,43 +76,79 @@ class _ProfileFormState extends State<ProfileForm> {
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
                   return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          color: Colors.grey[200],
-                          child: SizedBox(
-                            height: 400,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.purple[300],
+                      padding: EdgeInsets.symmetric(horizontal: 48),
+                      child: Column(
+                          // shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(10)),
+                          // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          // color: Colors.grey[200],
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(left: 270, top: 40),
+//alignment: Alignment.topRight,
+                              // label: Text(
+                              //   "Set event date",
+                              //   style: TextStyle(
+                              //     color: Colors.deepPurple,
+                              //     fontSize: 20,
+                              //     fontWeight: FontWeight.w500,
+                              //   ),
+                              // ),
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
+                              },
+                              icon: Icon(
+                                Icons.logout_outlined,
+                                color: Colors.black,
+                                size: 40,
                               ),
-                              title: Center(
-                                  child: Text(
-                                document['name'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 16),
-                              )),
-                              subtitle: Text(
-                                document['bio'],
-                                style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 14),
-                              ),
-                              trailing: Icon(
-                                Icons.edit,
-                              ),
-                              onTap: () {
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            ProfileWidget(
+                              imagePath: "https://picsum.photos/200/300",
+//document['name'],
+                              isEdit: false,
+                              onClicked: () async {
                                 _showProfilePanel();
                               },
                             ),
-                          )));
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Text(
+                              document['name'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontFamily: 'Comfortaa',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              document['status'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  fontFamily: 'Comfortaa',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15),
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text(
+                              document['bio'],
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 18),
+                            ),
+                          ]));
                 }).toList(),
               ));
         });
