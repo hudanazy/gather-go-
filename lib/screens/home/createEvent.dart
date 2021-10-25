@@ -79,7 +79,6 @@ class _Eventform extends State<createEvent> {
     tz.initializeTimeZones();
   }
 
-
   //DateTime date;
   @override
   Widget build(BuildContext context) {
@@ -410,7 +409,7 @@ class _Eventform extends State<createEvent> {
                           initialCameraPosition:
                               CameraPosition(target: _initialcameraposition),
                           mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
+                          //onMapCreated: _onMapCreated,
                           myLocationEnabled: true,
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
@@ -470,8 +469,12 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
-                                    NotifactionManager().showNotification(1, "Reminder, " + EventName.text,
-                                    "You have upcoming event, don't forget it", dateo, ttime); //before 1 day
+                                    NotifactionManager().showNotification(
+                                        1,
+                                        "Reminder, " + EventName.text,
+                                        "You have upcoming event, don't forget it",
+                                        dateo,
+                                        ttime); //before 1 day
                                     dynamic db =
                                         await DatabaseService(uid: user?.uid)
                                             .addEventData(

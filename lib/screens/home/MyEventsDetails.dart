@@ -23,6 +23,21 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     String userID = widget.event?.get('uid');
 
     String category = widget.event?.get('category');
+    bool adminCheck = widget.event?.get('adminCheck');
+    bool approved = widget.event?.get('approved');
+    String state = "";
+    Color stateColor = Colors.grey;
+
+    if (adminCheck == false) {
+      state = "Wating";
+      stateColor = Colors.grey;
+    } else if (adminCheck == true && approved == false) {
+      state = "Disapprove";
+      stateColor = Colors.red;
+    } else if (adminCheck == true && approved == true) {
+      state = "Approved";
+      stateColor = Colors.lightGreen;
+    }
 
     Future<String> eventCreatorName = eventCreator(userID);
 
@@ -45,7 +60,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
               Flexible(
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
-                        color: Colors.deepOrange,
+                        color: Colors.black,
                         fontFamily: 'Comfortaa',
                         fontSize: 18)),
               ),
@@ -54,6 +69,13 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 child: Chip(
                   label: Text(category, style: TextStyle(color: Colors.black)),
                   backgroundColor: Colors.deepOrange[100],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text(state, style: TextStyle(color: Colors.black)),
+                  backgroundColor: stateColor,
                 ),
               )
             ]),
@@ -89,8 +111,8 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Icon(Icons.people_alt_rounded),
                 Text("   Max attendee number is $attendeeNum  ")
               ]),
-            ),
-            Padding(
+            )
+            /*Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
                 Icon(
@@ -99,7 +121,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Text("   Created by   $_textFromFile")
               ]),
             ),
-            /*Row(
+            Row(
               children: [
                 Expanded(
                     child: Align(

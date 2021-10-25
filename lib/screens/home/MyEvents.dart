@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'MyEventsDetails.dart';
-import 'package:flutter/material.dart';
+
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +33,7 @@ class _MyEvents extends State<MyEvents> {
           leading: IconButton(
             icon: new Icon(
               Icons.arrow_back_ios,
-              color: Colors.deepOrange,
+              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context,
@@ -46,9 +46,7 @@ class _MyEvents extends State<MyEvents> {
             "All My Events",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.deepOrange,
-                fontFamily: 'Comfortaa',
-                fontSize: 24),
+                color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
           ),
         ),
         StreamBuilder(
@@ -82,7 +80,7 @@ class _MyEvents extends State<MyEvents> {
                                 document['name'],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.deepOrange,
+                                    color: Colors.black45,
                                     fontFamily: 'Comfortaa',
                                     fontSize: 16),
                               )),

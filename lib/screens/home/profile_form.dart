@@ -195,6 +195,10 @@ class _ProfileFormState extends State<ProfileForm> {
               style: TextStyle(fontSize: 16, height: 1.4),
             ),
             ElevatedButton.icon(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.purple[300]),
+                  foregroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
               },
@@ -210,6 +214,10 @@ class _ProfileFormState extends State<ProfileForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.purple[300]),
+                      foregroundColor: MaterialStateProperty.all(Colors.white)),
                   child: Text(
                     'My Events',
                     style: TextStyle(
@@ -225,6 +233,10 @@ class _ProfileFormState extends State<ProfileForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.purple[300]),
+                      foregroundColor: MaterialStateProperty.all(Colors.white)),
                   child: Text(
                     'Booked Events',
                     style: TextStyle(
