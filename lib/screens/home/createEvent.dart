@@ -79,7 +79,6 @@ class _Eventform extends State<createEvent> {
     tz.initializeTimeZones();
   }
 
-
   //DateTime date;
   @override
   Widget build(BuildContext context) {
@@ -136,8 +135,8 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                             hintText: "Event name..",
                             hintStyle: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[300]),
+                                color: Colors.purple[300],
+                                fontFamily: "Comfortaa"),
                           ),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
@@ -152,12 +151,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Event Category",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.purple[300],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
 
@@ -212,8 +210,8 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                               hintText: "Tell us more about your event...",
                               hintStyle: TextStyle(
-                                  fontFamily: 'Comfortaa',
-                                  color: Colors.purple[300])),
+                                  color: Colors.purple[300],
+                                  fontFamily: "Comfortaa")),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
@@ -227,12 +225,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.purple[300],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
                       // NumericStepButton(
@@ -258,12 +255,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select date ",
                               style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[400],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: Colors.purple[300],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
                             ),
                             WidgetSpan(
                               child: IconButton(
@@ -332,12 +328,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select time ",
                               style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[400],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: Colors.purple[300],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
                             ),
                             WidgetSpan(
                               child: IconButton(
@@ -394,12 +389,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Select location",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.purple[300],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -432,9 +426,9 @@ class _Eventform extends State<createEvent> {
                           child: Text(
                             'Submit',
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
                             //update db here using stream provider and database class
@@ -470,8 +464,12 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
-                                    NotifactionManager().showNotification(1, "Reminder, " + EventName.text,
-                                    "You have upcoming event, don't forget it", dateo, ttime); //before 1 day
+                                    NotifactionManager().showNotification(
+                                        1,
+                                        "Reminder, " + EventName.text,
+                                        "You have upcoming event, don't forget it",
+                                        dateo,
+                                        ttime); //before 1 day
                                     dynamic db =
                                         await DatabaseService(uid: user?.uid)
                                             .addEventData(
