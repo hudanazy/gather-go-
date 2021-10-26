@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
+import 'package:gather_go/screens/admin/location.dart';
 import 'package:gather_go/screens/home/EventTile.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
 import 'package:gather_go/screens/home/event_list.dart';
@@ -73,7 +74,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
             children: [
               _buildOffstageNavigator(0),
               _buildOffstageNavigator(1),
-              // _buildOffstageNavigator(2),
+              //_buildOffstageNavigator(2),
               //_buildOffstageNavigator(3),
             ],
           ),
@@ -94,7 +95,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), Text('data')].elementAt(index);
+        return [adminEvent(), Text("dat")].elementAt(index);
       },
     };
   }

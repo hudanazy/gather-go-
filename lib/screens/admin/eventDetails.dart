@@ -31,7 +31,7 @@ class _eventDetails extends State<eventDetails> {
     List<Marker> myMarker = [];
 
 //add your lat and lng where you wants to draw polyline
-
+    eventCreator(userID);
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
     setState(() {
@@ -117,61 +117,85 @@ class _eventDetails extends State<eventDetails> {
               ),
               Text("   Created by   $_textFromFile")
             ]),
+
+            // decoration: new BoxDecoration(
+            //   color: Colors.black,
+            //   shape: BoxShape.circle,
+            //   border: Border.all(width: 5.0, color: Colors.white),
+            // ),
+
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Icon(Icons.location_pin),
-                Text(
-                    "   to be added later                                                              "),
-                // RaisedButton(
-                //   onPressed: () {
-                //     showDialog(
-                //         context: context,
-                //         builder: (BuildContext context) {
-                //           return AlertDialog(
-                //             content: Stack(
-                //               overflow: Overflow.visible,
-                //               children: <Widget>[
-                //                 Positioned(
-                //                   right: -40.0,
-                //                   top: -40.0,
-                //                   child: InkResponse(
-                //                     onTap: () {
-                //                       Navigator.of(context).pop();
-                //                     },
-                //                     child: CircleAvatar(
-                //                       child: Icon(Icons.close),
-                //                       backgroundColor: Colors.deepOrange,
-                //                     ),
-                //                   ),
-                //                 ),
-                SizedBox(
-                  height: 500,
-                  width: 450,
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    markers: Set.from(myMarker),
-                    polylines: _polylines,
-                    myLocationEnabled: true,
-                    compassEnabled: true,
-                    zoomControlsEnabled: true,
-                    mapToolbarEnabled: true,
-                    trafficEnabled: true,
-                    zoomGesturesEnabled: true,
-                    //onTap: setPolylines,
-                    initialCameraPosition: CameraPosition(
-                      target: _initialcameraposition,
-                      zoom: 10.0,
-                    ),
+                ElevatedButton.icon(
+                  icon: Icon(
+                    Icons.location_pin,
+                    color: Colors.black,
                   ),
+                  label: Text("see the location",
+                      style: TextStyle(
+                        color: Colors.black87,
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                  ),
+                  //color: Colors.deepOrange,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Stack(
+                              overflow: Overflow.visible,
+                              children: <Widget>[
+                                Positioned(
+                                  right: -40.0,
+                                  top: -40.0,
+                                  child: InkResponse(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop(
+                                                'dialog'); //do what you want here
+                                      },
+                                      child: CircleAvatar(
+                                        child: Icon(Icons.close),
+                                        backgroundColor: Colors.deepOrange,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 500,
+                                  width: 450,
+                                  child: GoogleMap(
+                                    onMapCreated: _onMapCreated,
+                                    markers: Set.from(myMarker),
+                                    polylines: Set<Polyline>.of(_polylines),
+                                    myLocationEnabled: true,
+                                    compassEnabled: true,
+                                    zoomControlsEnabled: true,
+                                    mapToolbarEnabled: true,
+                                    trafficEnabled: true,
+                                    zoomGesturesEnabled: true,
+                                    onTap: setPolylines,
+                                    initialCameraPosition: CameraPosition(
+                                      target: _initialcameraposition,
+                                      zoom: 10.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  //child: Text("see the location"),
                 ),
-                //               ],
-                //             ),
-                //           );
-                //         });
-                //   },
-                //   child: Text("see the location"),
-                // ),
               ],
             ),
             Row(
@@ -309,14 +333,6 @@ class _eventDetails extends State<eventDetails> {
     _controller = _cntlr;
   }
 
-// distanceCalculation () async {
-//   double distanceInMeters = await Geolocator.bearingBetween(
-//   startLatitude,
-//   startLongitude,
-//   destinationLatitude,
-//   destinationLongitude,
-// );
-// }
   String _textFromFile = "";
   // will return eventCreator name
   Future<String> eventCreator(String uid) async {
