@@ -6,6 +6,7 @@ import 'package:gather_go/Models/EventInfo.dart';
 
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:io';
 
 class DatabaseService {
   final String? uid;
@@ -19,8 +20,8 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
 
-  Future updateProfileData(String uid, String name, String status, String bio,
-      String imageUrl) async {
+  Future updateProfileData(
+      String uid, String name, String status, String bio, File imageUrl) async {
     return await userCollection.doc(uid).set({
       "uid": uid,
       "name": name,
@@ -76,7 +77,7 @@ class DatabaseService {
     String bio,
     String email,
     String status,
-    String imageUrl,
+    File imageUrl,
   ) {
     profileCollection.add({
       "uid": uid,
