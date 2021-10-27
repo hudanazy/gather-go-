@@ -104,7 +104,7 @@ class _ProfileFormState extends State<ProfileForm> {
                   }
 
                   return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 62),
+                      padding: EdgeInsets.symmetric(horizontal: 52),
                       child: Column(
                           // shape: RoundedRectangleBorder(
                           //     borderRadius: BorderRadius.circular(10)),
@@ -135,8 +135,7 @@ class _ProfileFormState extends State<ProfileForm> {
                               height: 25,
                             ),
                             ProfileWidget(
-                              imagePath: "https://picsum.photos/200/300",
-//document['name'],
+                              imagePath: document['imageUrl'],
                               isEdit: false,
                               onClicked: () async {
                                 _showProfilePanel();
@@ -149,7 +148,8 @@ class _ProfileFormState extends State<ProfileForm> {
                               padding: const EdgeInsets.only(right: 8.0),
                               child: Chip(
                                 label: Text(status,
-                                    style: TextStyle(color: Colors.black)),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16)),
                                 backgroundColor: stateColor,
                               ),
                             ),
@@ -183,9 +183,59 @@ class _ProfileFormState extends State<ProfileForm> {
                               document['bio'],
                               style: TextStyle(
                                   color: Colors.grey[800],
-                                  // fontFamily: 'Comfortaa',
-                                  fontSize: 18),
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 16),
                             ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Created Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    //alanoud
+                                  },
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Booked Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    //alanoud
+                                  },
+                                ))
                           ]));
                 }).toList(),
               ));

@@ -4,8 +4,7 @@ class UesrInfo {
   final String bio;
   final String email;
   final String status;
-  final String imageUrl =
-      "https://images.unsplash.com/photo-1578133671540-edad0b3d689e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80";
+  final String imageUrl = "https://picsum.photos/200/300";
 
   UesrInfo({
     required this.uid,

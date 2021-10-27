@@ -43,13 +43,15 @@ class ProfileWidget extends StatelessWidget {
           fit: BoxFit.cover,
           width: 128,
           height: 128,
-          child: InkWell(onTap: onClicked),
+          //  child: InkWell(onTap: onClicked),
         ),
       ),
     );
   }
 
-  Widget buildEditIcon(Color color) => buildCircle(
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: onClicked,
+      child: buildCircle(
         color: Colors.white,
         all: 3,
         child: buildCircle(
@@ -61,7 +63,7 @@ class ProfileWidget extends StatelessWidget {
             size: 20,
           ),
         ),
-      );
+      ));
 
   Widget buildCircle({
     required Widget child,
