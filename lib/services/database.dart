@@ -58,6 +58,7 @@ class DatabaseService {
       "description": description,
       "timePosted": timePosted,
       "attendees": attendees,
+      "bookedNumber": 0,
       "date": date,
       "time": time,
       "approved": approved,
@@ -79,7 +80,7 @@ class DatabaseService {
       "bio": bio,
       "email": email,
       "imageUrl": imageUrl,
-
+      //"bookedEvents": null,
       /* "location": location*/
     }); // may need to change date and time format
   }
@@ -127,6 +128,7 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
+  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
@@ -149,6 +151,15 @@ class DatabaseService {
       'name': name,
       'email': email,
       'password': password,
+    });
+  }
+  //user booked events
+
+  addBookedEventToProfile(
+      String uid, String eventUid
+    ) {
+    profileCollection.doc(uid).collection('bookedEvents').add({
+      "eventUid": eventUid,
     });
   }
 

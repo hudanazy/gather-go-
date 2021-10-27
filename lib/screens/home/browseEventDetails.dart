@@ -1,51 +1,57 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/admin/adminEvent.dart';
-//import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/home/home.dart';
+import 'package:gather_go/services/auth.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 
-// ignore: camel_case_types
-class eventDetails extends StatefulWidget {
-  final DocumentSnapshot? event;
-  eventDetails({required this.event});
+import '../NotifactionManager.dart';
 
+// ignore: camel_case_types
+class browseEventDetails extends StatefulWidget {
+  final DocumentSnapshot? event;
+  browseEventDetails({required this.event});
+//g6YTYBSRl9YQP19sY9VV
   @override
-  _eventDetails createState() => new _eventDetails();
+  _browseEventDetails createState() => new _browseEventDetails();
 }
 
 // ignore: camel_case_types
-class _eventDetails extends State<eventDetails> {
+class _browseEventDetails extends State<browseEventDetails> {
   @override
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
+    int bookedNum= widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
-
     String category = widget.event?.get('category');
-
+    final buttonColor;
+    if(bookedNum < attendeeNum)
+      buttonColor=Colors.amber;
+    else
+      buttonColor=Colors.grey;
     Future<String> eventCreatorName = eventCreator(userID);
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: ArcBannerImage(),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 5.0),
+            //   child: ArcBannerImage(),
+            // ),
             Row(children: [
               IconButton(
                 icon: new Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => adminEvent()));
+                  Navigator.pop(context);
                 },
               ),
               Flexible(
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
-                        color: Colors.deepOrange,
+                        color: Colors.amber,
                         fontFamily: 'Comfortaa',
                         fontSize: 18)),
               ),
@@ -94,82 +100,23 @@ class _eventDetails extends State<eventDetails> {
               Text("   Created by   $_textFromFile")
             ]),
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          child: Text('Disapprove',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 12)),
-                          onPressed: () async {
-                            var result = await showDispproveDialog(context);
-                            if (result == true) {
-                              try {
-                                FirebaseFirestore.instance
-                                    .collection('events')
-                                    .doc(widget.event?.id)
-                                    .set({
-                                  "uid": userID,
-                                  "name": widget.event?.get('name'),
-                                  "description":
-                                      widget.event?.get('description'),
-                                  "timePosted": widget.event?.get('timePosted'),
-                                  "attendees": attendeeNum,
-                                  "bookedNumber": 0,
-                                  "date": widget.event?.get('date'),
-                                  "time": widget.event?.get('time'),
-                                  "category": category,
-                                  'approved': false,
-                                  "adminCheck": true,
-                                  "location": widget.event?.get('location')
-                                });
-                                // success msg + redirect to adminEvent
-
-                                Fluttertoast.showToast(
-                                  msg: widget.event?.get('name') +
-                                      " dispproved successfully",
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-
-                                Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => adminEvent()));
-                              } catch (e) {
-                                // fail msg
-                                Fluttertoast.showToast(
-                                  msg: "somthing went wrong ",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                );
-                              }
-                            }
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[300]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              padding: MaterialStateProperty.all(
-                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                        ))),
                 Expanded(
                   child: Align(
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
-                        child: Text('Approve',
+                        child: Text('Book event',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Comfortaa',
                                 fontSize: 12)),
                         onPressed: () async {
-                          var result = await showApproveDialog(context);
+                          if (bookedNum < attendeeNum){
+                          var result = await showBookDialog(context);
                           if (result == true) {
+                            NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
+                                    widget.event?.get('name')+" event starts in 2 hours, don't forget it", 
+                                    widget.event?.get('date'), widget.event?.get('time'));
                             try {
                               FirebaseFirestore.instance
                                   .collection('events')
@@ -180,7 +127,7 @@ class _eventDetails extends State<eventDetails> {
                                 "description": widget.event?.get('description'),
                                 "timePosted": widget.event?.get('timePosted'),
                                 "attendees": attendeeNum,
-                                "bookedNumber": 0,
+                                "bookedNumber": bookedNum+1,
                                 "date": widget.event?.get('date'),
                                 "category": category,
                                 "time": widget.event?.get('time'),
@@ -188,15 +135,16 @@ class _eventDetails extends State<eventDetails> {
                                 "adminCheck": true,
                                 "location": widget.event?.get('location')
                               });
+                              DatabaseService().addBookedEventToProfile(FirebaseAuth.instance.currentUser!.uid, widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
-                                    " approved successfully",
+                                    " booked successfully, you can view it in your profile",
                                 toastLength: Toast.LENGTH_LONG,
                               );
                               Navigator.pop(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => adminEvent()));
+                                      builder: (context) => Home()));
                             } catch (e) {
                               // fail msg
                               Fluttertoast.showToast(
@@ -205,18 +153,32 @@ class _eventDetails extends State<eventDetails> {
                               );
                             }
                           }
+                          } else {
+                            AlertDialog(
+                              title: Text('Fully booked'),
+                              content: Text(
+                                'Sorry, all event\'s seats are booked.\n Please choose another event to attend.',
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text("Ok",
+                                    style: TextStyle(color: Colors.blue)),
+                                    onPressed: () {
+                                      Navigator.pop(context, false);
+                                }),
+                              ],);
+                          }
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.purple[300]),
+                                MaterialStateProperty.all(buttonColor),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(
                                 EdgeInsets.fromLTRB(35, 15, 35, 15))),
                       )),
                 )
-              ],
-            )
+            
           ],
         ),
       ),
@@ -272,20 +234,20 @@ class Edescription extends StatelessWidget {
   }
 }
 
-class ArcBannerImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: ArcClipper(),
-      child: Image.asset(
-        'images/logo1.png',
-        width: 400,
-        height: 230.0,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
+// class ArcBannerImage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ClipPath(
+//       clipper: ArcClipper(),
+//       child: Image.asset(
+//         'images/logo1.png',
+//         width: 400,
+//         height: 230.0,
+//         fit: BoxFit.cover,
+//       ),
+//     );
+//   }
+// }
 
 class ArcClipper extends CustomClipper<Path> {
   @override

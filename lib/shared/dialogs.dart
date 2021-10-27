@@ -73,7 +73,6 @@ Future<bool> showDispproveDialog(BuildContext context) async {
       ],
     ),
   );
-
   // return showDialog<void>(
   //   context: context,
   //   barrierDismissible: false, // user must tap button!
@@ -105,4 +104,28 @@ Future<bool> showDispproveDialog(BuildContext context) async {
   //     );
   //   },
   // );
+}
+
+Future<bool> showBookDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Book event"),
+      content:
+          Text("Are you sure you want to book this event ?"),
+      actions: [
+        TextButton(
+            child: Text("No",
+                style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
 }
