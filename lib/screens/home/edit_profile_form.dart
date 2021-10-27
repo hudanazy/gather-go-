@@ -112,7 +112,7 @@ class _epFormState extends State<epForm> {
                               child: buildEditIcon(Colors.blue),
                             )
                           : Positioned(
-                              bottom: 18,
+                              bottom: 15,
                               right: 15,
                               child: buildEditIcon(Colors.blue))
                     ],
@@ -262,7 +262,7 @@ class _epFormState extends State<epForm> {
           child: Icon(
             Icons.camera_alt_outlined,
             color: Colors.white,
-            size: 20,
+            size: 25,
           ),
         ),
       ));
