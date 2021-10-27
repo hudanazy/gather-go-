@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
-import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/screens/home/user_list.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
 
 class MyBottomBarDemo extends StatefulWidget {
   @override

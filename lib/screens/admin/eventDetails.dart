@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
+//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+//import 'package:location/location.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'dart:math' show cos, sqrt, asin;
 
@@ -22,24 +26,68 @@ class eventDetails extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetails> {
+  LocationData? currentLocation;
+  var location = new Location();
+  String error = "";
+
+  void initState() {
+    super.initState();
+
+    initPlatformState();
+
+    location.onLocationChanged.listen((LocationData result) {
+      setState(() {
+        currentLocation = result;
+      });
+    });
+  }
+
+  void initPlatformState() async {
+    LocationData? myLocation;
+    try {
+      myLocation = await location.getLocation();
+      error = "";
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED')
+        error = "permission denied";
+      else if (e.code == "PERMISSION_DENIED_NEVER_ASK")
+        error = "permission denied";
+      myLocation = null;
+    }
+
+    setState(() {
+      currentLocation = myLocation!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var curLat = currentLocation?.latitude ?? 0;
+    var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-    LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
+    //LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
     String category = widget.event?.get('category');
     List<Marker> myMarker = [];
-
+//DatabaseService db = DatabaseService(widget.event?.id);
 //add your lat and lng where you wants to draw polyline
     eventCreator(userID);
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+
+    setPolylines(markerPosition, curLong, curLat);
     setState(() {
-      myMarker = [];
       myMarker.add(Marker(
         markerId: MarkerId(markerPosition.toString()),
         infoWindow: InfoWindow(title: widget.event?.get('name')),
         position: markerPosition, // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+      myMarker.add(Marker(
+        markerId: MarkerId(markerPosition.toString()),
+        infoWindow: InfoWindow(title: "you"),
+        position: LatLng(curLat, curLong), // markerPosition,
         // draggable: true,
         icon: BitmapDescriptor.defaultMarker,
       ));
@@ -52,11 +100,6 @@ class _eventDetails extends State<eventDetails> {
       //   // draggable: true,
       //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
       // ));
-      _polylines.add(Polyline(
-          width: 10,
-          polylineId: PolylineId('polyLine'),
-          color: Color(0xFF08A5CB),
-          points: polylineCoordinates));
     });
 
     return Scaffold(
@@ -141,58 +184,7 @@ class _eventDetails extends State<eventDetails> {
                   ),
                   //color: Colors.deepOrange,
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Stack(
-                              overflow: Overflow.visible,
-                              children: <Widget>[
-                                Positioned(
-                                  right: -40.0,
-                                  top: -40.0,
-                                  child: InkResponse(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pop(
-                                                'dialog'); //do what you want here
-                                      },
-                                      child: CircleAvatar(
-                                        child: Icon(Icons.close),
-                                        backgroundColor: Colors.deepOrange,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 500,
-                                  width: 450,
-                                  child: GoogleMap(
-                                    onMapCreated: _onMapCreated,
-                                    markers: Set.from(myMarker),
-                                    polylines: Set<Polyline>.of(_polylines),
-                                    myLocationEnabled: true,
-                                    compassEnabled: true,
-                                    zoomControlsEnabled: true,
-                                    mapToolbarEnabled: true,
-                                    trafficEnabled: true,
-                                    zoomGesturesEnabled: true,
-                                    onTap: setPolylines,
-                                    initialCameraPosition: CameraPosition(
-                                      target: _initialcameraposition,
-                                      zoom: 10.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
+                    showMapdialog(context, myMarker, _polylines);
                   },
                   //child: Text("see the location"),
                 ),
@@ -214,24 +206,19 @@ class _eventDetails extends State<eventDetails> {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
                               try {
-                                FirebaseFirestore.instance
-                                    .collection('events')
-                                    .doc(widget.event?.id)
-                                    .set({
-                                  "uid": userID,
-                                  "name": widget.event?.get('name'),
-                                  "description":
-                                      widget.event?.get('description'),
-                                  "timePosted": widget.event?.get('timePosted'),
-                                  "attendees": attendeeNum,
-                                  "date": widget.event?.get('date'),
-                                  "time": widget.event?.get('time'),
-                                  "category": category,
-                                  'approved': false,
-                                  "adminCheck": true,
-                                  "lat": widget.event?.get('lat'),
-                                  "long": widget.event?.get('long'),
-                                });
+                                await DatabaseService(uid: widget.event?.id)
+                                    .disapproveEvent(
+                                  userID,
+                                  widget.event?.get('name'),
+                                  widget.event?.get('description'),
+                                  widget.event?.get('timePosted'),
+                                  attendeeNum,
+                                  widget.event?.get('date'),
+                                  widget.event?.get('time'),
+                                  category,
+                                  widget.event?.get('lat'),
+                                  widget.event?.get('long'),
+                                );
                                 // success msg + redirect to adminEvent
 
                                 Fluttertoast.showToast(
@@ -275,23 +262,19 @@ class _eventDetails extends State<eventDetails> {
                           var result = await showApproveDialog(context);
                           if (result == true) {
                             try {
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .set({
-                                "uid": userID,
-                                "name": widget.event?.get('name'),
-                                "description": widget.event?.get('description'),
-                                "timePosted": widget.event?.get('timePosted'),
-                                "attendees": attendeeNum,
-                                "date": widget.event?.get('date'),
-                                "category": category,
-                                "time": widget.event?.get('time'),
-                                'approved': true,
-                                "adminCheck": true,
-                                "lat": widget.event?.get('lat'),
-                                "long": widget.event?.get('long'),
-                              });
+                              await DatabaseService(uid: widget.event?.id)
+                                  .approveEvent(
+                                userID,
+                                widget.event?.get('name'),
+                                widget.event?.get('description'),
+                                widget.event?.get('timePosted'),
+                                attendeeNum,
+                                widget.event?.get('date'),
+                                widget.event?.get('time'),
+                                category,
+                                widget.event?.get('lat'),
+                                widget.event?.get('long'),
+                              );
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",
@@ -328,14 +311,14 @@ class _eventDetails extends State<eventDetails> {
   }
 
   // Location _location = Location();
-  late GoogleMapController _controller;
-  void _onMapCreated(GoogleMapController _cntlr) {
-    _controller = _cntlr;
-  }
+  // late GoogleMapController _controller;
+  // void _onMapCreated(GoogleMapController _cntlr) {
+  //   _controller = _cntlr;
+  // }
 
   String _textFromFile = "";
   // will return eventCreator name
-  Future<String> eventCreator(String uid) async {
+  void eventCreator(String uid) async {
     String uesrName = " ";
     DocumentSnapshot documentList;
     documentList =
@@ -344,99 +327,30 @@ class _eventDetails extends State<eventDetails> {
     uesrName = documentList['name'];
 
     setState(() => _textFromFile = uesrName);
-
-    return uesrName;
   }
 }
 
-class Edescription extends StatelessWidget {
-  Edescription(this.description);
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var textTheme = Theme.of(context).textTheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Event description ',
-          style: textTheme.subtitle1!.copyWith(fontSize: 18.0),
-        ),
-        SizedBox(height: 8.0),
-        Text(
-          description,
-          style: textTheme.bodyText2!.copyWith(
-            color: Colors.black45,
-            fontSize: 16.0,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-        ),
-      ],
-    );
-  }
-}
-
-class ArcBannerImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: ArcClipper(),
-      child: Image.asset(
-        'images/logo1.png',
-        width: 400,
-        height: 230.0,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-class ArcClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0.0, size.height);
-
-    var firstControlPoint = Offset(size.width / 4, size.height);
-    var firstPoint = Offset(size.width / 2, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstPoint.dx, firstPoint.dy);
-
-    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
-    var secondPoint = Offset(size.width, size.height - 30);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondPoint.dx, secondPoint.dy);
-
-    path.lineTo(size.width, 0.0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-// res https://iiro.dev/from-design-to-flutter-movie-details-page/
 Set<Polyline> _polylines = Set<Polyline>();
 List<LatLng> polylineCoordinates = [];
-PolylinePoints polylinePoints = PolylinePoints();
+PolylinePoints polylinePoints = new PolylinePoints();
 
-void setPolylines(LatLng a) async {
+void setPolylines(LatLng a, double curLat, double curLong) async {
   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
-      PointLatLng(24.808058743555637, 46.60225256829246),
-      PointLatLng(24.808058743555637, 46.60225256829246));
+    "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
+    PointLatLng(a.latitude, a.longitude),
+    PointLatLng(curLong, curLat),
+    travelMode: TravelMode.driving,
+  );
 
   if (result.status == 'OK') {
     result.points.forEach((PointLatLng point) {
       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
     });
+
+    _polylines.add(Polyline(
+        width: 5,
+        polylineId: PolylineId('polyLine'),
+        color: Colors.orangeAccent,
+        points: polylineCoordinates));
   }
 }

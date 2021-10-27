@@ -5,7 +5,6 @@ import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 
 import 'package:gather_go/Models/ProfileOnScreen.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DatabaseService {
   final String? uid;
@@ -26,16 +25,58 @@ class DatabaseService {
     });
   }
 
-  Future updateEventData(String? title, String? description, String? date,
-      String? time /*, GeoPoint location*/, bool approved) async {
+  Future disapproveEvent(
+      String? userID,
+      String? name,
+      String? description,
+      String? timePosted,
+      int? attendeeNum,
+      String? date,
+      String? time,
+      String? category,
+      double? lat,
+      double? long) async {
     return await eventCollection.doc(uid).set({
-      "name": title,
+      "uid": userID,
+      "name": name,
       "description": description,
+      "timePosted": timePosted,
+      "attendees": attendeeNum,
       "date": date,
       "time": time,
-      "approved": approved,
-      /* "location": location*/
-    }); // may need to change date and time format
+      "category": category,
+      'approved': false,
+      "adminCheck": true,
+      "lat": lat,
+      "long": long,
+    });
+  }
+
+  Future approveEvent(
+      String? userID,
+      String? name,
+      String? description,
+      String? timePosted,
+      int? attendeeNum,
+      String? date,
+      String? time,
+      String? category,
+      double? lat,
+      double? long) async {
+    return await eventCollection.doc(uid).set({
+      "uid": userID,
+      "name": name,
+      "description": description,
+      "timePosted": timePosted,
+      "attendees": attendeeNum,
+      "date": date,
+      "time": time,
+      "category": category,
+      'approved': true,
+      "adminCheck": true,
+      "lat": lat,
+      "long": long,
+    });
   }
 
   addEventData(

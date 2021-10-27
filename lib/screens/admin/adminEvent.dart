@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/admin/adminNav.dart';
+
 import 'package:gather_go/screens/admin/eventDetails.dart';
 
-import 'package:flutter/material.dart';
 import 'package:gather_go/shared/loading.dart';
 
 // ignore: camel_case_types

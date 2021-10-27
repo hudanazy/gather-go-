@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 //import 'package:gather_go/screens/authenticate/register.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:gather_go/screens/admin/eventDetails.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);

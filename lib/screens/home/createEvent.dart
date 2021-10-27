@@ -16,7 +16,7 @@ import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:gather_go/shared/num_button.dart';
 import '../NotifactionManager.dart';
@@ -48,12 +48,12 @@ class _Eventform extends State<createEvent> {
 
   final _formKey = GlobalKey<FormState>();
 
-  DateTime _dateTime = DateTime.now();
-  TextEditingController EventName = TextEditingController();
-  TextEditingController EventDescription = TextEditingController();
-  DateRangePickerController EventDate = DateRangePickerController();
+  //DateTime _dateTime = DateTime.now();
+  TextEditingController eventName = TextEditingController();
+  TextEditingController eventDescription = TextEditingController();
+  DateRangePickerController eventDate = DateRangePickerController();
 
-  int _currentStep = 0;
+  // int _currentStep = 0;
   DateTime? dateo;
   TextEditingController? name;
   TextEditingController? description;
@@ -67,7 +67,7 @@ class _Eventform extends State<createEvent> {
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
-  Location _location = Location();
+
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
@@ -131,7 +131,7 @@ class _Eventform extends State<createEvent> {
                       SizedBox(
                         width: 320,
                         child: TextFormField(
-                          controller: EventName,
+                          controller: eventName,
                           maxLines: 1,
                           initialValue: eventData?.name,
                           decoration: textInputDecoration.copyWith(
@@ -207,7 +207,7 @@ class _Eventform extends State<createEvent> {
                       SizedBox(
                         width: 320,
                         child: TextFormField(
-                          controller: EventDescription,
+                          controller: eventDescription,
                           maxLines: 5,
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(
@@ -480,7 +480,7 @@ class _Eventform extends State<createEvent> {
                                   if (result == true) {
                                     NotifactionManager().showNotification(
                                         1,
-                                        "Reminder, " + EventName.text,
+                                        "Reminder, " + eventName.text,
                                         "You have upcoming event, don't forget it",
                                         dateo,
                                         ttime); //before 1 day
@@ -523,13 +523,13 @@ class _Eventform extends State<createEvent> {
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    _location.onLocationChanged.listen((l) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: saveLatLng, zoom: 15),
-        ),
-      );
-    });
+    // _location.onLocationChanged.listen((l) {
+    //   _controller.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(target: saveLatLng, zoom: 15),
+    //     ),
+    //   );
+    // });
   }
 
 //LatLng LatLngPosition= LatLng(tappedPoint.latitude,tappedPoint.longitude);
@@ -544,8 +544,7 @@ class _Eventform extends State<createEvent> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
-      saveLatLng = tappedPoint;
-      StringLatLng = tappedPoint.toString();
+
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
     });

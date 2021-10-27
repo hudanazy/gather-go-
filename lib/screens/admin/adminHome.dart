@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminNav.dart';
 
 // to be added to adminHome.dart
+// ignore: camel_case_types
 class adminHome extends StatefulWidget {
   adminHome({Key? key}) : super(key: key);
 

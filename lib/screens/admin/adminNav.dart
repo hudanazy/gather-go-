@@ -1,13 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
-import 'package:gather_go/screens/admin/location.dart';
-import 'package:gather_go/screens/home/EventTile.dart';
-import 'package:gather_go/screens/home/createEvent.dart';
-import 'package:gather_go/screens/home/event_list.dart';
-import 'package:gather_go/screens/home/user_list.dart';
-import 'package:gather_go/shared/dialogs.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
+import 'package:gather_go/screens/admin/loc.dart';
+//import 'package:gather_go/screens/admin/location.dart';
 
 // ignore: camel_case_types
 class adminBottomBarDemo extends StatefulWidget {
@@ -17,7 +12,6 @@ class adminBottomBarDemo extends StatefulWidget {
 
 // ignore: camel_case_types
 class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
-  int _selectedIndex = 0;
   int _pageIndex = 0;
   PageController? _pageController;
   List<GlobalKey<NavigatorState>> _navigatorKeys = [
@@ -95,7 +89,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), Text("dat")].elementAt(index);
+        return [adminEvent(), currentLocation()].elementAt(index);
       },
     };
   }

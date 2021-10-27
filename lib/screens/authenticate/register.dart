@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/services/database.dart';
+
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
