@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class epForm extends StatefulWidget {
   const epForm({Key? key}) : super(key: key);
@@ -191,7 +192,7 @@ class _epFormState extends State<epForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 SizedBox(
                   height: 50,
@@ -212,10 +213,25 @@ class _epFormState extends State<epForm> {
                           fontFamily: "Comfortaa"),
                     ),
                     onPressed: () async {
+                      if (image == null) {
+                        Fluttertoast.showToast(
+                          msg: "Please pick an image.",
+                          toastLength: Toast.LENGTH_LONG,
+                        );
+                        return;
+                      }
+                      //image upload to storage
+
                       if (_formkey.currentState!.validate()) {
-                        dynamic db = await DatabaseService(uid: user?.uid)
-                            .updateProfileData(user!.uid, _currentName!,
-                                _currentStatus!, _currentBio!, _imageFile!);
+                        final ref = FirebaseStorage.instance
+                            .ref()
+                            .child('user_image')
+                            .child(user!.uid + '.jpg');
+
+                        await ref.putFile(image!);
+                        dynamic db = await DatabaseService(uid: user.uid)
+                            .updateProfileData(user.uid, _currentName!,
+                                _currentStatus!, _currentBio!);
                         Navigator.pop(context);
                         Fluttertoast.showToast(
                           msg: "Profile successfully updated.",

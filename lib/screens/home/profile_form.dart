@@ -134,13 +134,25 @@ class _ProfileFormState extends State<ProfileForm> {
                             SizedBox(
                               height: 25,
                             ),
-                            ProfileWidget(
-                              imagePath: document['imageUrl'],
-                              isEdit: false,
-                              onClicked: () async {
-                                _showProfilePanel();
-                              },
+                            Center(
+                              child: Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Image.asset(
+                                      'images/profile.png',
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      bottom: 15,
+                                      right: 15,
+                                      child: buildEditIcon(Colors.blue))
+                                ],
+                              ),
                             ),
+
                             SizedBox(
                               height: 20,
                             ),
@@ -284,7 +296,47 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
       );
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () async {
+        //imagePicker();
+        showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                child: epForm(),
+              );
+            });
+      },
+      child: buildCircle(
+        color: Colors.white,
+        all: 3,
+        child: buildCircle(
+          color: color,
+          all: 8,
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: Colors.white,
+            size: 25,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 }
+
 
 // class logout extends StatelessWidget {
 //   const logout({Key? key}) : super(key: key);

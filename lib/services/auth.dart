@@ -57,8 +57,8 @@ class AuthService {
 
       //create a new document for a user with uid
       await DatabaseService(uid: user!.uid).updateProfileData(user.uid, name,
-          "Available", "I'm new here!", File('images/profile.png') //password
-          );
+          "Available", "I'm new here!" //, File('images/profile.png'
+          ); //password
 
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
