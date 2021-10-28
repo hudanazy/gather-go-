@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
@@ -27,44 +28,8 @@ class eventDetails extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetails> {
-  LocationData? currentLocation;
-  var location = new Location();
-  String error = "";
-
-  void initState() {
-    super.initState();
-
-    initPlatformState();
-
-    location.onLocationChanged.listen((LocationData result) {
-      setState(() {
-        currentLocation = result;
-      });
-    });
-  }
-
-  void initPlatformState() async {
-    LocationData? myLocation;
-    try {
-      myLocation = await location.getLocation();
-      error = "";
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED')
-        error = "permission denied";
-      else if (e.code == "PERMISSION_DENIED_NEVER_ASK")
-        error = "permission denied";
-      myLocation = null;
-    }
-
-    setState(() {
-      currentLocation = myLocation!;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var curLat = currentLocation?.latitude ?? 0;
-    var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
     //LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
@@ -76,7 +41,6 @@ class _eventDetails extends State<eventDetails> {
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
 
-    setPolylines(markerPosition, curLong, curLat);
     setState(() {
       myMarker.add(Marker(
         markerId: MarkerId(markerPosition.toString()),
@@ -85,22 +49,6 @@ class _eventDetails extends State<eventDetails> {
         // draggable: true,
         icon: BitmapDescriptor.defaultMarker,
       ));
-      myMarker.add(Marker(
-        markerId: MarkerId(markerPosition.toString()),
-        infoWindow: InfoWindow(title: "you"),
-        position: LatLng(curLat, curLong), // markerPosition,
-        // draggable: true,
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-      // myMarker.add(Marker(
-      //   // uesr current location
-      //   markerId: MarkerId(markerPosition.toString()), //to be changed to curr
-      //   infoWindow: InfoWindow(title: "you"),
-      //   position: LatLng(24.81072717400907,
-      //       46.59894805752124), //to be changed to curr // markerPosition,
-      //   // draggable: true,
-      //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-      // ));
     });
 
     return Scaffold(
@@ -130,7 +78,7 @@ class _eventDetails extends State<eventDetails> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
                   label: Text(category, style: TextStyle(color: Colors.black)),
-                  backgroundColor: Colors.deepOrange[100],
+                  backgroundColor: Colors.grey[350],
                 ),
               )
             ]),
@@ -176,30 +124,55 @@ class _eventDetails extends State<eventDetails> {
             //   shape: BoxShape.circle,
             //   border: Border.all(width: 5.0, color: Colors.white),
             // ),
-
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  icon: Icon(
-                    Icons.location_pin,
-                    color: Colors.black,
-                  ),
-                  label: Text("see the location",
-                      style: TextStyle(
-                        color: Colors.black87,
-                      )),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                  ),
-                  //color: Colors.deepOrange,
-                  onPressed: () {
-                    showMapdialog(context, myMarker, _polylines);
-                  },
-                  //child: Text("see the location"),
-                ),
-              ],
-            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.black,
+                      ),
+                      label: Text("details",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        //showMapdialogAdmin(context, myMarker);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => eventDetailsForUesers(
+                                      event: widget.event,
+                                    )));
+                      },
+                      //child: Text("see the location"),
+                    ),
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.black,
+                      ),
+                      label: Text("see the location",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        showMapdialogAdmin(context, myMarker);
+                      },
+                      //child: Text("see the location"),
+                    ),
+                  ],
+                )),
             Row(
               children: [
                 Expanded(
@@ -337,32 +310,5 @@ class _eventDetails extends State<eventDetails> {
     uesrName = documentList['name'];
 
     setState(() => _textFromFile = uesrName);
-  }
-}
-
-Set<Polyline> _polylines = Set<Polyline>();
-List<LatLng> polylineCoordinates = [];
-PolylinePoints polylinePoints = new PolylinePoints();
-
-void setPolylines(LatLng a, double curLat, double curLong) async {
-  //LatLng cur = LatLng(curLat, curLong);
-  //getDirection(cur, a);
-  PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-    "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
-    PointLatLng(a.latitude, a.longitude),
-    PointLatLng(curLong, curLat),
-    travelMode: TravelMode.driving,
-  );
-
-  if (result.status == 'OK') {
-    result.points.forEach((PointLatLng point) {
-      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-    });
-
-    _polylines.add(Polyline(
-        width: 5,
-        polylineId: PolylineId('polyLine'),
-        color: Colors.orangeAccent,
-        points: polylineCoordinates));
   }
 }
