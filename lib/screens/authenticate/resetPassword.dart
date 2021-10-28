@@ -41,16 +41,19 @@ class _resetPasswordState extends State<resetPassword> {
                 style: TextStyle(
                   fontFamily: 'Comfortaa',
                   fontSize: 27,
-                  color: Colors.amber[600]),
+
+                             color: Colors.amber[600]),
+
                 textAlign: TextAlign.center,
               ),
             ),
             body: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
+                 padding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
                 height: 800,
                 child: Form(
-                    key: _formKey, 
+                  key: _formKey, 
+
                     child: Column(
                       children: [
                         SizedBox(
@@ -79,7 +82,7 @@ class _resetPasswordState extends State<resetPassword> {
                           height: 20,
                         ),
                         ElevatedButton(
-                          child: Text("Submit",
+                            child: Text("Submit",
                           ),
                           onPressed: () async {
                             setState(() {error='';});
@@ -87,7 +90,7 @@ class _resetPasswordState extends State<resetPassword> {
                               setState(() {
                                 loading = true;
                               });
-                                  await _auth.sendPasswordResetEmail(email: email).then((value) {
+                               await _auth.sendPasswordResetEmail(email: email).then((value) {
                                     if (loading)
                                       setState(() {
                                         loading=false;
@@ -107,7 +110,9 @@ class _resetPasswordState extends State<resetPassword> {
                                       });}
                                   });
                             }
-                          },
+
+                             },
+
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/screens/admin/adminNav.dart';
 import 'package:gather_go/screens/home/editProfile.dart';
+import 'package:gather_go/screens/home/edit_profile_form.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
@@ -13,6 +14,10 @@ import 'package:gather_go/shared/build_appbar.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'dart:io';
 import 'package:gather_go/shared/profile_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gather_go/services/database.dart';
+
+import 'MyEvents.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -27,137 +32,258 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<NewUser>(context);
-    ProfileData? profileData;
+    final color = Theme.of(context).colorScheme.primary;
+    UesrInfo? profileData;
+    final user = Provider.of<NewUser?>(context, listen: false);
+
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('uesrInfo')
+        .where('uid', isEqualTo: user?.uid)
+        .snapshots();
+
+    //  String userID = widget.profile?.get('uid');
+
+    // String name = widget.profile?.get('name');
+    // String status = widget.profile?.get('status');
+    // String bio = widget.profile?.get('bio');
+    void _showProfilePanel() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: epForm(),
+            );
+          });
+    }
+
     //final AuthService _auth = AuthService();
-    return StreamBuilder<ProfileData>(
-        stream: DatabaseService(uid: user.uid).profileData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            profileData = snapshot.data;
+    return StreamBuilder<Object>(
+        stream: snap, //DatabaseService(uid: user.uid).profileData,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Loading(),
+              //     child: Text(
+              //   "No New Events", // may be change it to loading , itis appear for a second every time
+              //   textAlign: TextAlign.center,
+              // )
+            );
           }
-          return Scaffold(
-            appBar: buildAppBar(context),
-            body: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                ProfileWidget(
-                  imagePath:
-                      "https://picsum.photos/200/300", //random image // profileData.imageUrl
-                  isEdit: false,
-                  onClicked: () async {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => EditProfilePage()));
-                  },
-                ),
+          return Container(
+              height: 640,
+              width: 500,
+              child: ListView(
+                children: snapshot.data.docs.map<Widget>((document) {
+                  DocumentSnapshot uid = document;
+                  String status = document['status'];
+                  String state;
+                  Color stateColor = Colors.grey;
 
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     primary: Colors.purple[500],
-                //     shadowColor: Colors.purple[800],
+                  if (status == "Available") {
+                    state = "Available";
+                    stateColor = Colors.lightGreen;
+                  } else if (status == "Busy") {
+                    state = "Disapprove";
+                    stateColor = Colors.red[200]!;
+                  } else if (status == 'At School') {
+                    state = 'At School';
+                    stateColor = Colors.yellow;
+                  } else if (status == 'At Work') {
+                    state = 'At Work';
+                    stateColor = Colors.yellow;
+                  } else if (status == 'In a meeting') {
+                    state = 'In a meeting';
+                    stateColor = Colors.orange[300]!;
+                  } else if (status == 'Sleeping') {
+                    state = 'Sleeping';
+                    stateColor = Colors.lightGreen;
+                  } else if (status == 'Away') {
+                    state = 'Away';
+                    stateColor = Colors.grey;
+                  }
 
-                //     shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(25)),
+                  return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 52),
+                      child: Column(
+                          // shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(10)),
+                          // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          // color: Colors.grey[200],
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(left: 270, top: 40),
+//alignment: Alignment.topRight,
+                              // label: Text(
+                              //   "Set event date",
+                              //   style: TextStyle(
+                              //     color: Colors.deepPurple,
+                              //     fontSize: 20,
+                              //     fontWeight: FontWeight.w500,
+                              //   ),
+                              // ),
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
+                              },
+                              icon: Icon(
+                                Icons.logout_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Center(
+                              child: Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: document['imageUrl'] == ''
+                                          ? Image.asset(
+                                              'images/profile.png',
+                                              width: 200,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Ink.image(
+                                              image: NetworkImage(
+                                                  document['imageUrl']),
+                                              fit: BoxFit.cover,
+                                              width: 160,
+                                              height: 160,
+                                            ),
+                                    ),
+                                  ),
+                                  document['imageUrl'] == ''
+                                      ? Positioned(
+                                          bottom: 15,
+                                          right: 15,
+                                          child: buildEditIcon(Colors.blue))
+                                      :
+                                      // child: document['imageUrl'] ??
+                                      // Image.asset(
+                                      //   'images/profile.png',
+                                      //   width: 200,
+                                      //   height: 200,
+                                      //   fit: BoxFit.cover,
+                                      // )),
+                                      Positioned(
+                                          bottom: 0,
+                                          right: 4,
+                                          child: buildEditIcon(Colors.blue))
+                                ],
+                              ),
+                            ),
 
-                //   ),
-                //   child: Text(
-                //     'Submit',
-                //     style: TextStyle(
-                //       fontSize: 20,
-                //       fontWeight: FontWeight.w700,
-                //     ),
-                //   ),
-                //   onPressed: () async {
-                //     // dynamic create_profile =
-                //     //     await DatabaseService(uid: user.uid).addProfileData(
-                //     //         user.uid, "bio", "email", "asd", "imageUrl");
-                //   },
-                // ),
-                const SizedBox(
-                  height: 24,
-                ),
-                buildName(profileData),
-                const SizedBox(
-                  height: 30,
-                ),
-                buildAbout(profileData)
-              ],
-            ),
-            // final user = Provider.of<NewUser?>(
-            //     context); //storing user (before we made snapshot method in database class
-            // //then made userData class(in UserOnScreen file) then access user data snapshot here in form) tut.25
-            // ProfileData? userData;
-            // final AuthService _auth = AuthService();
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Chip(
+                                label: Text(status,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16)),
+                                backgroundColor: stateColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              document['name'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
 
-            // return StreamBuilder<ProfileData>(
-            //     stream: DatabaseService(uid: user?.uid).profileData,
-            //     builder: (context, snapshot) {
-            //       if (snapshot.hasData) {
-            //         userData = snapshot.data;
-            //       }
+                            // Text(
+                            //   document['status'],
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //       color: Colors.orange[400],
+                            //       fontFamily: 'Comfortaa',
+                            //       fontWeight: FontWeight.w600,
+                            //       fontSize: 15),
+                            // ),
 
-            //       return Form(
-            //           key: _formKey,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Text(
-            //                 "Edit Your Profile",
-            //                 style: TextStyle(fontSize: 18),
-            //               ),
-            //               SizedBox(height: 20),
-            //               TextFormField(
-            //                 initialValue: userData?.name,
-            //                 decoration:
-            //                     textInputDecoration.copyWith(hintText: "Username"),
-            //                 validator: (val) => val!.isEmpty
-            //                     ? "Please enter your username."
-            //                     : userData?.name,
-            //                 onChanged: (val) => setState(() => _currentName = val),
-            //               ),
-            //               SizedBox(height: 20),
-            //               TextFormField(
-            //                 initialValue: userData?.bio,
-            //                 decoration: textInputDecoration.copyWith(hintText: "Bio"),
-            //                 validator: (val) =>
-            //                     val!.isEmpty ? "Please enter your bio." : userData?.bio,
-            //                 onChanged: (val) => setState(() => _currentBio = val),
-            //               ),
-            //               SizedBox(height: 20),
-            //               ElevatedButton(
-            //                 style: ButtonStyle(
-            //                     backgroundColor:
-            //                         MaterialStateProperty.all(Colors.purple[300]),
-            //                     foregroundColor:
-            //                         MaterialStateProperty.all(Colors.white)),
-            //                 child: Text('Save changes'),
-            //                 onPressed: () async {
-            //                   //update db here using stream provider and database class
-            //                   if (_formKey.currentState!.validate()) {
-            //                     await DatabaseService(uid: user?.uid).updateProfileData(
-            //                         _currentName ?? userData!.name,
-            //                         _currentBio ?? userData!.bio);
-            //                   }
-            //                   //   Navigator.pop(context);
-            //                 },
-            //               ),
-            //               TextButton.icon(
-            //                 onPressed: () async {
-            //                   await _auth.SignOut();
-            //                 },
-            //                 icon: Icon(Icons.logout_rounded),
-            //                 label: Text("Logout"),
-            //               )
-            //             ],
-            //           ));
-            //       // } else {
-            //       //   return Loading();
-            //       // }
-            //     });
-          );
+                            Text(
+                              document['bio'],
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Created Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => MyEvents()));
+                                  },
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Booked Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    MaterialPageRoute(
+                                        builder: (context) => MyEvents());
+                                  },
+                                ))
+                          ]));
+                }).toList(),
+              ));
         });
   }
 
-  Widget buildName(ProfileData? user) => Column(
+  Widget buildName(UesrInfo? user) => Column(
         children: [
           Text(
             user?.name ?? 'Huda',
@@ -173,7 +299,7 @@ class _ProfileFormState extends State<ProfileForm> {
         ],
       );
 
-  Widget buildAbout(ProfileData? user) => Container(
+  Widget buildAbout(UesrInfo? user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           children: [
@@ -199,7 +325,47 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
       );
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () async {
+        //imagePicker();
+        showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                child: epForm(),
+              );
+            });
+      },
+      child: buildCircle(
+        color: Colors.white,
+        all: 3,
+        child: buildCircle(
+          color: color,
+          all: 8,
+          child: Icon(
+            Icons.edit,
+            color: Colors.white,
+            size: 25,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 }
+
 
 // class logout extends StatelessWidget {
 //   const logout({Key? key}) : super(key: key);

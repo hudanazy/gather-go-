@@ -46,7 +46,11 @@ dependencies:
   location: ^4.3.0
   flutter_local_notifications: ^8.2.0
   timezone: ^0.8.0
+  image_picker: ^0.8.4+3
+  path_provider: ^2.0.5
+  firebase_storage: ^10.0.6
   #rxdart: ^0.27.2
+
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +71,7 @@ flutter:
     - images/
     - images/Picture1.png
     - images/logo1.png
+    - images/profile.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

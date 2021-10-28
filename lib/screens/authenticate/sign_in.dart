@@ -76,7 +76,7 @@ class _SignInState extends State<SignIn> {
                             setState(() => password = value.trim());
                           },
                         ),
-                        TextButton(onPressed: () =>
+                         TextButton(onPressed: () =>
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => resetPassword()))
                         , child: Text('Forgot password?',
                         style: TextStyle(color: Colors.purple[300], fontSize: 16),),),
