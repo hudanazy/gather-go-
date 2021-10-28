@@ -341,7 +341,7 @@ class _ProfileFormState extends State<ProfileForm> {
           color: color,
           all: 8,
           child: Icon(
-            Icons.camera_alt_outlined,
+            Icons.edit,
             color: Colors.white,
             size: 25,
           ),
