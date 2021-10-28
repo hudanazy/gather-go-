@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
-
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+import 'dart:io';
 
 class DatabaseService {
   final String? uid;
@@ -18,10 +16,14 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
 
-  Future updateProfileData(String name, String bio) async {
-    return await profileCollection.doc(uid).set({
+  Future updateProfileData(String uid, String name, String status, String bio,
+      String imageUrl) async {
+    return await userCollection.doc(uid).set({
+      "uid": uid,
       "name": name,
       "bio": bio,
+      "status": status,
+      "imageUrl": imageUrl
     });
   }
 
@@ -114,13 +116,15 @@ class DatabaseService {
     String name,
     String bio,
     String email,
-    String imageUrl,
+    String status,
+    File imageUrl,
   ) {
     profileCollection.add({
       "uid": uid,
       "name": name,
       "bio": bio,
       "email": email,
+      "status": status,
       "imageUrl": imageUrl,
 
       /* "location": location*/
@@ -154,19 +158,20 @@ class DatabaseService {
     return eventCollection.snapshots().map(_eventInfoListFromSnapshot);
   }
 
-//get user doc stream
-  Stream<ProfileData> get profileData {
-    return profileCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
+//get profile doc stream
+  Stream<UesrInfo> get profileData {
+    return userCollection.doc(uid).snapshots().map(_profileDataFromSnapshot);
   }
 
-  //user data from snapshot
+  //profile data from snapshot
 
-  ProfileData _profileDataFromSnapshot(DocumentSnapshot snapshot) {
-    return ProfileData(
-      uid: snapshot.get('uid'),
-      name: snapshot.get('name'),
-      bio: snapshot.get('bio'),
+  UesrInfo _profileDataFromSnapshot(DocumentSnapshot snapshot) {
+    return UesrInfo(
+      uid: snapshot.get('uid') ?? '',
+      name: snapshot.get('name') ?? '',
+      bio: snapshot.get('bio') ?? '',
       email: snapshot.get('email') ?? '',
+      status: snapshot.get('status') ?? '',
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
@@ -189,28 +194,36 @@ class DatabaseService {
     );
   }
 
-  Future updateUesrData(String uesrname, String email, String password) async {
+  Future updateUesrData(
+    String name,
+    String email, // String password
+  ) async {
     return await userCollection.doc(uid).set({
-      'name': uesrname,
+      'name': name,
       'email': email,
-      'password': password,
+      //'password': password,
     });
   }
 
-  Stream<List<UesrInfo>> get users {
+  /* Stream<List<UesrInfo>> get users {
     return userCollection.snapshots().map(_userInfoListFromSnapshot);
-  }
+  }*/
 
   //uesr list from snopshot
-  List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
+  /*List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UesrInfo(
           // snapshot.data['uesrname']
           name: doc.get('name') ?? '',
           email: doc.get('email') ?? '',
           password: doc.get('password') ?? '');
+        // snapshot.data['uesrname']
+        name: doc.get('name') ?? '',
+        email: doc.get('email') ?? '',
+        // password: doc.get('password') ?? ''
+      );
     }).toList();
-  }
+  }*/
 
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

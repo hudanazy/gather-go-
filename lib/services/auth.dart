@@ -2,6 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,10 +35,10 @@ class AuthService {
   }
 
 //sign in with email and password
-  Future signInWithUsernameAndPassword(String username, String password) async {
+  Future signInWithUsernameAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: username, password: password);
+          email: email, password: password);
       User? user = result.user;
       return _userInfoFromFirebaseUser(user);
     } catch (e) {
@@ -47,15 +49,15 @@ class AuthService {
 
 //sign up w/ email password
   Future signUpWithUsernameAndPassword(
-      String username, String emial, String password, String Confirm) async {
+      String name, String emial, String password, String Confirm) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: username, password: password);
+          email: emial, password: password);
       User? user = result.user;
 
       //create a new document for a user with uid
-      await DatabaseService(uid: user!.uid)
-          .updateUesrData(emial, username, password);
+      await DatabaseService(uid: user!.uid).updateProfileData(
+          user.uid, name, "Available", "I'm new here!", ''); //password
 
       return _userInfoFromFirebaseUser(user);
     } catch (e) {

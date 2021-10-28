@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
-//import 'package:gather_go/screens/authenticate/register.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:gather_go/screens/authenticate/resetPassword.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
+  //final AuthService _auth = AuthService();
   final _fromkey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -77,26 +77,27 @@ class _SignInState extends State<SignIn> {
                           setState(() => password = value.trim());
                         },
                       ),
-                      SizedBox(
-                        height: 30,
+                      TextButton(
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => resetPassword())),
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                              color: Colors.purple[300], fontSize: 16),
+                        ),
                       ),
-                      Text(error, style: TextStyle(color: Colors.red)),
+                      // SizedBox(
+                      //   height: 12,
+                      // ),
                       ElevatedButton(
                         child: Text("Login"),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
-                              loading = true;
+                              error = 'Email or password is wrong.';
+                              loading = false;
                             });
-                            //firebase login here and in auth.dart
-                            dynamic result =
-                                await _auth.signInWithUsernameAndPassword(
-                                    username, password);
-                            if (result == null)
-                              setState(() {
-                                error = 'Email or password is wrong.';
-                                loading = false;
-                              });
                           }
                         },
                         style: ButtonStyle(
