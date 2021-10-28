@@ -1,26 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/home/event_list.dart';
-import 'package:gather_go/screens/home/profile_form.dart';
-import 'package:get/get.dart';
+// import 'package:gather_go/screens/home/event_list.dart';
+// import 'package:gather_go/screens/home/profile_form.dart';
+// import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+//import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
+//import 'package:gather_go/shared/gradient_app_bar.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gather_go/screens/home/home.dart';
+//import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:gather_go/shared/num_button.dart';
+//import 'package:gather_go/shared/num_button.dart';
 import '../NotifactionManager.dart';
-import 'package:timezone/timezone.dart' as tz;
+//import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
@@ -48,12 +48,12 @@ class _Eventform extends State<createEvent> {
 
   final _formKey = GlobalKey<FormState>();
 
-  DateTime _dateTime = DateTime.now();
-  TextEditingController EventName = TextEditingController();
-  TextEditingController EventDescription = TextEditingController();
-  DateRangePickerController EventDate = DateRangePickerController();
+  //DateTime _dateTime = DateTime.now();
+  TextEditingController eventName = TextEditingController();
+  TextEditingController eventDescription = TextEditingController();
+  DateRangePickerController eventDate = DateRangePickerController();
 
-  int _currentStep = 0;
+  //int _currentStep = 0;
   DateTime? dateo;
   TextEditingController? name;
   TextEditingController? description;
@@ -67,11 +67,13 @@ class _Eventform extends State<createEvent> {
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
-  Location _location = Location();
+
   List<Marker> myMarker = [];
-  LatLng? saveLatLng;
+  LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
 
+  double saveLat = 0;
+  double saveLong = 0;
   @override
   void initState() {
     super.initState();
@@ -129,7 +131,7 @@ class _Eventform extends State<createEvent> {
                       SizedBox(
                         width: 320,
                         child: TextFormField(
-                          controller: EventName,
+                          controller: eventName,
                           maxLines: 1,
                           initialValue: eventData?.name,
                           decoration: textInputDecoration.copyWith(
@@ -204,7 +206,7 @@ class _Eventform extends State<createEvent> {
                       SizedBox(
                         width: 320,
                         child: TextFormField(
-                          controller: EventDescription,
+                          controller: eventDescription,
                           maxLines: 5,
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(
@@ -405,6 +407,12 @@ class _Eventform extends State<createEvent> {
                               CameraPosition(target: _initialcameraposition),
                           mapType: MapType.normal,
                           onMapCreated: _onMapCreated,
+                          rotateGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          zoomGesturesEnabled: true,
+                          liteModeEnabled: false,
+                          tiltGesturesEnabled: true,
                           myLocationEnabled: true,
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
@@ -439,7 +447,8 @@ class _Eventform extends State<createEvent> {
                               if (_formKey.currentState!.validate()) {
                                 if (dateo == null &&
                                     ttime == null &&
-                                    StringLatLng == null) {
+                                    saveLat == 0 &&
+                                    saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg:
                                         "Date and time and location have to be selected.",
@@ -455,7 +464,7 @@ class _Eventform extends State<createEvent> {
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (StringLatLng == null) {
+                                } else if (saveLat == 0 && saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
@@ -466,13 +475,12 @@ class _Eventform extends State<createEvent> {
                                   if (result == true) {
                                     NotifactionManager().showNotification(
                                         1,
-                                        "Reminder, " + EventName.text,
+                                        "Reminder, " + eventName.text,
                                         "You have upcoming event, don't forget it",
                                         dateo,
                                         ttime); //before 1 day
-                                    dynamic db =
-                                        await DatabaseService(uid: user?.uid)
-                                            .addEventData(
+                                    await DatabaseService(uid: user?.uid)
+                                        .addEventData(
                                       user!.uid,
                                       Name!,
                                       item!,
@@ -483,7 +491,8 @@ class _Eventform extends State<createEvent> {
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      StringLatLng!,
+                                      saveLat,
+                                      saveLong,
                                     );
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
@@ -508,13 +517,13 @@ class _Eventform extends State<createEvent> {
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    _location.onLocationChanged.listen((l) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
-        ),
-      );
-    });
+    // _location.onLocationChanged.listen((l) {
+    //   _controller.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
+    //     ),
+    //   );
+    // });
   }
 
   void _handleTap(LatLng tappedPoint) {
@@ -527,8 +536,8 @@ class _Eventform extends State<createEvent> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
-      saveLatLng = tappedPoint;
-      StringLatLng = tappedPoint.toString();
+      saveLat = tappedPoint.latitude;
+      saveLong = tappedPoint.longitude;
     });
   }
 
