@@ -106,7 +106,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-    }); // may need to change date and time format
+    });
   }
 
   addProfileData(
@@ -185,7 +185,7 @@ class DatabaseService {
       date: snapshot.get('date'),
       time: snapshot.get('time'),
       approved: snapshot.get('approved'),
-      // adminCheck: snapshot.get('adminCheck'),
+      adminCheck: snapshot.get('adminCheck'),
     );
   }
 
@@ -206,7 +206,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return UesrInfo(
           // snapshot.data['uesrname']
-          uesrname: doc.get('uesrname') ?? '',
+          name: doc.get('name') ?? '',
           email: doc.get('email') ?? '',
           password: doc.get('password') ?? '');
     }).toList();
@@ -215,21 +215,20 @@ class DatabaseService {
   List<EventInfo> _eventInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return EventInfo(
-        // snapshot.data['uesrname']
-        uid: doc.get('uid') ?? '',
-        name: doc.get('name') ?? '',
-        category: doc.get('category') ?? '',
-        description: doc.get('description') ?? '',
-        timePosted: doc.get('timePosted') ?? '',
-        // imageUrl: doc.get('imageUrl') ?? '',
-        attendees: doc.get('attendees') ?? 0,
-        // comments: doc.get('comments') ?? 0,
-        date: doc.get('date') ?? '',
-        time: doc.get('time') ?? '',
-        /* location: doc.get('location') ?? ''*/
-        approved: doc.get('approved') ?? '',
-        //adminCheck: doc.get('adminCheck') ?? ''
-      );
+          // snapshot.data['uesrname']
+          uid: doc.get('uid') ?? '',
+          name: doc.get('name') ?? '',
+          category: doc.get('category') ?? '',
+          description: doc.get('description') ?? '',
+          timePosted: doc.get('timePosted') ?? '',
+          // imageUrl: doc.get('imageUrl') ?? '',
+          attendees: doc.get('attendees') ?? 0,
+          // comments: doc.get('comments') ?? 0,
+          date: doc.get('date') ?? '',
+          time: doc.get('time') ?? '',
+          /* location: doc.get('location') ?? ''*/
+          approved: doc.get('approved') ?? '',
+          adminCheck: doc.get('adminCheck') ?? '');
     }).toList();
   }
 }
