@@ -15,7 +15,7 @@ class Wrapper extends StatelessWidget {
     if (user == null)
       return Authenticate();
     else if (user.uid ==
-        "HF0skvCuLKaHjzF26NbMXYh6x0b2") //access admin home if the admin is logged in
+        "SaMHDT84eOSNtja2mydV3Rsqxs03") //access admin home if the admin is logged in
       return adminHome();
     else
       return Home();
