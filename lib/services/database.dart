@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
@@ -80,9 +81,19 @@ class DatabaseService {
       "bio": bio,
       "email": email,
       "imageUrl": imageUrl,
-      //"bookedEvents": null,
+      "bookedEvents": null,
       /* "location": location*/
     }); // may need to change date and time format
+  }
+
+    //user booked events
+
+  addBookedEventToProfile(
+    String eventUid
+    ) {
+    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').add({
+      "eventUid": eventUid,
+    });
   }
 
 //get user stream
@@ -151,15 +162,6 @@ class DatabaseService {
       'name': name,
       'email': email,
       'password': password,
-    });
-  }
-  //user booked events
-
-  addBookedEventToProfile(
-      String uid, String eventUid
-    ) {
-    profileCollection.doc(uid).collection('bookedEvents').add({
-      "eventUid": eventUid,
     });
   }
 
