@@ -17,6 +17,8 @@ import 'package:gather_go/shared/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/services/database.dart';
 
+import 'MyEvents.dart';
+
 class ProfileForm extends StatefulWidget {
   @override
   _ProfileFormState createState() => _ProfileFormState();
@@ -244,7 +246,9 @@ class _ProfileFormState extends State<ProfileForm> {
                                     Icons.arrow_forward_ios,
                                   ),
                                   onTap: () {
-                                    //alanoud
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => MyEvents()));
                                   },
                                 )),
                             SizedBox(
@@ -269,7 +273,8 @@ class _ProfileFormState extends State<ProfileForm> {
                                     Icons.arrow_forward_ios,
                                   ),
                                   onTap: () {
-                                    //alanoud
+                                    MaterialPageRoute(
+                                        builder: (context) => MyEvents());
                                   },
                                 ))
                           ]));
