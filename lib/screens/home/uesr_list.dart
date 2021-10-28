@@ -15,7 +15,7 @@ class _uesrListState extends State<uesrList> {
   Widget build(BuildContext context) {
     final uesrs = Provider.of<List<UesrInfo>>(context);
     uesrs.forEach((UesrInfo) {
-      print(UesrInfo.uesrname);
+      print(UesrInfo.name);
       print(UesrInfo.email);
       print(UesrInfo.password);
     });
