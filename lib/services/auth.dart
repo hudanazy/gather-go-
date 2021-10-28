@@ -2,6 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -54,9 +56,8 @@ class AuthService {
       User? user = result.user;
 
       //create a new document for a user with uid
-      await DatabaseService(uid: user!.uid)
-          .updateProfileData(user.uid, name, "", "" //password
-              );
+      await DatabaseService(uid: user!.uid).updateProfileData(
+          user.uid, name, "Available", "I'm new here!", ''); //password
 
       return _userInfoFromFirebaseUser(user);
     } catch (e) {

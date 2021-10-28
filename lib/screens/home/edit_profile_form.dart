@@ -6,6 +6,16 @@ import 'package:gather_go/shared/contants.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/shared/profile_widget.dart';
+import 'package:gather_go/shared/image_picker.dart';
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class epForm extends StatefulWidget {
   const epForm({Key? key}) : super(key: key);
@@ -29,6 +39,30 @@ class _epFormState extends State<epForm> {
   String? _currentName;
   String? _currentBio;
   String? _currentStatus = "Available";
+  File? _imageFile;
+
+  File? image;
+  Future pickImage(ImageSource source) async {
+    Future<File> saveImagePermanently(String imagePath) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final name = basename(imagePath);
+      final image = File('${directory.path}/$name');
+      return File(imagePath).copy(image.path);
+    }
+
+    try {
+      final image =
+          await ImagePicker().pickImage(source: source, imageQuality: 50);
+      if (image == null) return;
+
+      // final imageTemporary = File(image.path);
+      final imagePermanent = await saveImagePermanently(image.path);
+      setState(() => this.image = imagePermanent);
+    } on PlatformException catch (e) {
+      print("Permission to access camera or gallery denied.");
+      // TODO
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +83,43 @@ class _epFormState extends State<epForm> {
                 Text(
                   "Edit your profile",
                   style: TextStyle(
-                      color: Colors.purple[300],
+                      color: Colors.orange[600],
                       letterSpacing: 2,
                       fontSize: 25,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Comfortaa"),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                buildImage(),
+                Center(
+                  child: Stack(
+                    children: [
+                      image != null
+                          ? ClipOval(
+                              child: Image.file(image!,
+                                  width: 160, height: 160, fit: BoxFit.cover))
+                          : ClipOval(
+                              child: Image.asset(
+                                'images/profile.png',
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                      image != null
+                          ? Positioned(
+                              bottom: 0,
+                              right: 4,
+                              child: buildEditIcon(Colors.blue),
+                            )
+                          : Positioned(
+                              bottom: 15,
+                              right: 15,
+                              child: buildEditIcon(Colors.blue))
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 30,
                 ),
@@ -69,7 +130,7 @@ class _epFormState extends State<epForm> {
                     decoration: textInputDecoration.copyWith(
                       hintText: "What would like us to call you?",
                       hintStyle: TextStyle(
-                          color: Colors.purple[200],
+                          color: Colors.orange[600],
                           fontSize: 14,
                           fontFamily: "Comfortaa"),
                     ),
@@ -79,20 +140,39 @@ class _epFormState extends State<epForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.only(top: 0, left: 5),
+                  child: Text(
+                    "Status",
+                    style: TextStyle(
+                        color: Colors.orange[600],
+                        letterSpacing: 2,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Comfortaa"),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 DropdownButtonFormField(
-                  value: _currentStatus ?? "Available",
-                  decoration: textInputDecoration,
-                  items: status.map((status) {
-                    return DropdownMenuItem(
-                      value: status,
-                      child: Text(status),
-                    );
-                  }).toList(),
-                  onChanged: (val) =>
-                      setState(() => _currentStatus = val as String),
-                ),
+                    value: _currentStatus ?? "Available",
+                    decoration: textInputDecoration,
+                    items: status.map((status) {
+                      return DropdownMenuItem(
+                        value: status,
+                        child: Text(status),
+                      );
+                    }).toList(),
+                    onChanged: (val) =>
+                        setState(() => _currentStatus = val as String),
+                    style: TextStyle(
+                      color: Colors.orange[600],
+                      fontFamily: 'Comfortaa',
+                    )),
                 SizedBox(
                   height: 30,
                 ),
@@ -102,7 +182,7 @@ class _epFormState extends State<epForm> {
                     decoration: textInputDecoration.copyWith(
                       hintText: "Enter your bio.",
                       hintStyle: TextStyle(
-                          color: Colors.purple[200],
+                          color: Colors.orange[600],
                           fontSize: 14,
                           fontFamily: "Comfortaa"),
                     ),
@@ -113,7 +193,7 @@ class _epFormState extends State<epForm> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 SizedBox(
                   height: 50,
@@ -121,7 +201,7 @@ class _epFormState extends State<epForm> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.purple[300]),
+                            MaterialStateProperty.all(Colors.orange[400]),
                         foregroundColor:
                             MaterialStateProperty.all(Colors.white),
                         padding: MaterialStateProperty.all(
@@ -134,10 +214,27 @@ class _epFormState extends State<epForm> {
                           fontFamily: "Comfortaa"),
                     ),
                     onPressed: () async {
+                      if (image == null) {
+                        Fluttertoast.showToast(
+                          msg: "Please pick an image.",
+                          toastLength: Toast.LENGTH_LONG,
+                        );
+                        return;
+                      }
+                      //image upload to storage
+
                       if (_formkey.currentState!.validate()) {
-                        dynamic db = await DatabaseService(uid: user?.uid)
-                            .updateProfileData(user!.uid, _currentName!,
-                                _currentStatus!, _currentBio!);
+                        final ref = FirebaseStorage.instance
+                            .ref()
+                            .child('user_image')
+                            .child(user!.uid + '.jpg');
+
+                        await ref.putFile(image!);
+                        final url = await ref.getDownloadURL();
+
+                        dynamic db = await DatabaseService(uid: user.uid)
+                            .updateProfileData(user.uid, _currentName!,
+                                _currentStatus!, _currentBio!, url);
                         Navigator.pop(context);
                         Fluttertoast.showToast(
                           msg: "Profile successfully updated.",
@@ -169,4 +266,35 @@ class _epFormState extends State<epForm> {
       ),
     );
   }
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () {
+        //imagePicker();
+        pickImage(ImageSource.gallery);
+      },
+      child: buildCircle(
+        color: Colors.white,
+        all: 3,
+        child: buildCircle(
+          color: color,
+          all: 8,
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: Colors.white,
+            size: 25,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 }

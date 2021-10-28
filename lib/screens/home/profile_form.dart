@@ -15,6 +15,7 @@ import 'package:gather_go/Models/UesrInfo.dart';
 import 'dart:io';
 import 'package:gather_go/shared/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gather_go/services/database.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.primary;
     UesrInfo? profileData;
     final user = Provider.of<NewUser?>(context, listen: false);
 
@@ -74,44 +76,203 @@ class _ProfileFormState extends State<ProfileForm> {
               child: ListView(
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
+                  String status = document['status'];
+                  String state;
+                  Color stateColor = Colors.grey;
+
+                  if (status == "Available") {
+                    state = "Available";
+                    stateColor = Colors.lightGreen;
+                  } else if (status == "Busy") {
+                    state = "Disapprove";
+                    stateColor = Colors.red[200]!;
+                  } else if (status == 'At School') {
+                    state = 'At School';
+                    stateColor = Colors.yellow;
+                  } else if (status == 'At Work') {
+                    state = 'At Work';
+                    stateColor = Colors.yellow;
+                  } else if (status == 'In a meeting') {
+                    state = 'In a meeting';
+                    stateColor = Colors.orange[300]!;
+                  } else if (status == 'Sleeping') {
+                    state = 'Sleeping';
+                    stateColor = Colors.lightGreen;
+                  } else if (status == 'Away') {
+                    state = 'Away';
+                    stateColor = Colors.grey;
+                  }
+
                   return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          color: Colors.grey[200],
-                          child: SizedBox(
-                            height: 400,
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.purple[300],
-                              ),
-                              title: Center(
-                                  child: Text(
-                                document['name'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 16),
-                              )),
-                              subtitle: Text(
-                                document['bio'],
-                                style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 14),
-                              ),
-                              trailing: Icon(
-                                Icons.edit,
-                              ),
-                              onTap: () {
-                                _showProfilePanel();
+                      padding: EdgeInsets.symmetric(horizontal: 52),
+                      child: Column(
+                          // shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(10)),
+                          // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          // color: Colors.grey[200],
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(left: 270, top: 40),
+//alignment: Alignment.topRight,
+                              // label: Text(
+                              //   "Set event date",
+                              //   style: TextStyle(
+                              //     color: Colors.deepPurple,
+                              //     fontSize: 20,
+                              //     fontWeight: FontWeight.w500,
+                              //   ),
+                              // ),
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
                               },
+                              icon: Icon(
+                                Icons.logout_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
                             ),
-                          )));
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Center(
+                              child: Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: document['imageUrl'] == ''
+                                          ? Image.asset(
+                                              'images/profile.png',
+                                              width: 200,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Ink.image(
+                                              image: NetworkImage(
+                                                  document['imageUrl']),
+                                              fit: BoxFit.cover,
+                                              width: 160,
+                                              height: 160,
+                                            ),
+                                    ),
+                                  ),
+                                  document['imageUrl'] == ''
+                                      ? Positioned(
+                                          bottom: 15,
+                                          right: 15,
+                                          child: buildEditIcon(Colors.blue))
+                                      :
+                                      // child: document['imageUrl'] ??
+                                      // Image.asset(
+                                      //   'images/profile.png',
+                                      //   width: 200,
+                                      //   height: 200,
+                                      //   fit: BoxFit.cover,
+                                      // )),
+                                      Positioned(
+                                          bottom: 0,
+                                          right: 4,
+                                          child: buildEditIcon(Colors.blue))
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Chip(
+                                label: Text(status,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16)),
+                                backgroundColor: stateColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              document['name'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+
+                            // Text(
+                            //   document['status'],
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //       color: Colors.orange[400],
+                            //       fontFamily: 'Comfortaa',
+                            //       fontWeight: FontWeight.w600,
+                            //       fontSize: 15),
+                            // ),
+
+                            Text(
+                              document['bio'],
+                              style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Created Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    //alanoud
+                                  },
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                color: Colors.grey[100],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    "Booked Events",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                  ),
+                                  onTap: () {
+                                    //alanoud
+                                  },
+                                ))
+                          ]));
                 }).toList(),
               ));
         });
@@ -159,7 +320,47 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
       );
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () async {
+        //imagePicker();
+        showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                child: epForm(),
+              );
+            });
+      },
+      child: buildCircle(
+        color: Colors.white,
+        all: 3,
+        child: buildCircle(
+          color: color,
+          all: 8,
+          child: Icon(
+            Icons.edit,
+            color: Colors.white,
+            size: 25,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 }
+
 
 // class logout extends StatelessWidget {
 //   const logout({Key? key}) : super(key: key);
