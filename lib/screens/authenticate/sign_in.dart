@@ -83,6 +83,7 @@ class _SignInState extends State<SignIn> {
                         // SizedBox(
                         //   height: 12,
                         // ),
+                        Text(error, style: TextStyle(color: Colors.red)),
                         ElevatedButton(
                           child: Text("Login"),
                           onPressed: () async {
@@ -130,7 +131,7 @@ class _SignInState extends State<SignIn> {
                         SizedBox(
                           height: 12.0,
                         ),
-                        Text(error, style: TextStyle(color: Colors.red))
+                        
                       ],
                     )),
                       decoration: BoxDecoration(
