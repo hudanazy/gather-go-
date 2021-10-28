@@ -54,7 +54,8 @@ class DatabaseService {
     String time,
     bool approved,
     bool adminCheck,
-    String location,
+    double lat,
+    double long,
   ) {
     eventCollection.add({
       "uid": uid,
@@ -67,8 +68,9 @@ class DatabaseService {
       "time": time,
       "approved": approved,
       "adminCheck": adminCheck,
-      "location": location,
-    }); // may need to change date and time format
+      "lat": lat,
+      "long": long,
+    }); 
   }
 
   addProfileData(
