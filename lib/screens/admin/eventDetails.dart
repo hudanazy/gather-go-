@@ -229,7 +229,7 @@ class _eventDetails extends State<eventDetails> {
     documentList =
         await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
 
-    uesrName = documentList['uesrname'];
+    uesrName = documentList['name'];
 
     setState(() => _textFromFile = uesrName);
 
