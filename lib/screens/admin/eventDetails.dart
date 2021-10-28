@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -335,6 +336,8 @@ List<LatLng> polylineCoordinates = [];
 PolylinePoints polylinePoints = new PolylinePoints();
 
 void setPolylines(LatLng a, double curLat, double curLong) async {
+  LatLng cur = LatLng(curLat, curLong);
+  //getDirection(cur, a);
   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
     "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
     PointLatLng(a.latitude, a.longitude),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
-import 'package:gather_go/screens/admin/loc.dart';
+
 //import 'package:gather_go/screens/admin/location.dart';
 
 // ignore: camel_case_types
@@ -89,7 +89,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), currentLocation()].elementAt(index);
+        return [adminEvent(), Text("dat")].elementAt(index);
       },
     };
   }

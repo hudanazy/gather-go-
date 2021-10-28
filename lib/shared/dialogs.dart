@@ -145,7 +145,7 @@ Future<bool> showMapdialog(BuildContext context, List<Marker> myMarker,
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   markers: Set.from(myMarker),
-                  polylines: Set<Polyline>.of(_polylines),
+                  polylines: _polylines, //Set<Polyline>.of(_polylines),
                   myLocationEnabled: false,
                   compassEnabled: true,
                   zoomControlsEnabled: true,

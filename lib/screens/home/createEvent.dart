@@ -53,7 +53,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController eventDescription = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
 
-  // int _currentStep = 0;
+  //int _currentStep = 0;
   DateTime? dateo;
   TextEditingController? name;
   TextEditingController? description;
@@ -107,7 +107,7 @@ class _Eventform extends State<createEvent> {
                           style: TextStyle(
                             fontFamily: 'Comfortaa',
                             fontSize: 27,
-                            color: Colors.purple[300],
+                            color: Colors.orange[600],
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,
@@ -137,8 +137,8 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                             hintText: "Event name..",
                             hintStyle: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[300]),
+                                color: Colors.orange[600],
+                                fontFamily: "Comfortaa"),
                           ),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
@@ -153,12 +153,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Event Category",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.orange[600],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
 
@@ -184,7 +183,7 @@ class _Eventform extends State<createEvent> {
                               onChanged: (value) =>
                                   setState(() => this.item = value),
                               style: TextStyle(
-                                color: Colors.purple[300],
+                                color: Colors.orange[600],
                                 fontFamily: 'Comfortaa',
                               )),
                         ),
@@ -213,8 +212,8 @@ class _Eventform extends State<createEvent> {
                           decoration: textInputDecoration.copyWith(
                               hintText: "Tell us more about your event...",
                               hintStyle: TextStyle(
-                                  fontFamily: 'Comfortaa',
-                                  color: Colors.purple[300])),
+                                  color: Colors.orange[600],
+                                  fontFamily: "Comfortaa")),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
@@ -228,12 +227,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.orange[600],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
                       // NumericStepButton(
@@ -259,12 +257,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select date ",
                               style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[400],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: Colors.orange[600],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
                             ),
                             WidgetSpan(
                               child: IconButton(
@@ -278,7 +275,7 @@ class _Eventform extends State<createEvent> {
                                 // ),
                                 icon: Icon(
                                   Icons.calendar_today_rounded,
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   size: 50,
                                 ),
                                 // style: ElevatedButton.styleFrom(
@@ -333,12 +330,11 @@ class _Eventform extends State<createEvent> {
                             TextSpan(
                               text: "Select time ",
                               style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                color: Colors.purple[400],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: Colors.orange[600],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
                             ),
                             WidgetSpan(
                               child: IconButton(
@@ -353,7 +349,7 @@ class _Eventform extends State<createEvent> {
                                 icon: Icon(
                                   Icons.access_time,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[600],
                                   size: 50,
                                 ),
                                 // style: ElevatedButton.styleFrom(
@@ -395,12 +391,11 @@ class _Eventform extends State<createEvent> {
                         child: Text(
                           "Select location",
                           style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            color: Colors.purple[300],
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              color: Colors.orange[600],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Comfortaa"),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -411,7 +406,7 @@ class _Eventform extends State<createEvent> {
                           initialCameraPosition:
                               CameraPosition(target: _initialcameraposition),
                           mapType: MapType.normal,
-                          //onMapCreated: _onMapCreated,
+                          onMapCreated: _onMapCreated,
                           rotateGesturesEnabled: true,
                           scrollGesturesEnabled: true,
                           zoomControlsEnabled: true,
@@ -431,7 +426,7 @@ class _Eventform extends State<createEvent> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.purple[300]),
+                                  MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -439,9 +434,9 @@ class _Eventform extends State<createEvent> {
                           child: Text(
                             'Submit',
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
                             //update db here using stream provider and database class
@@ -484,9 +479,8 @@ class _Eventform extends State<createEvent> {
                                         "You have upcoming event, don't forget it",
                                         dateo,
                                         ttime); //before 1 day
-                                    dynamic db =
-                                        await DatabaseService(uid: user?.uid)
-                                            .addEventData(
+                                    await DatabaseService(uid: user?.uid)
+                                        .addEventData(
                                       user!.uid,
                                       Name!,
                                       item!,
@@ -526,17 +520,15 @@ class _Eventform extends State<createEvent> {
     // _location.onLocationChanged.listen((l) {
     //   _controller.animateCamera(
     //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(target: saveLatLng, zoom: 15),
+    //       CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
     //     ),
     //   );
     // });
   }
 
-//LatLng LatLngPosition= LatLng(tappedPoint.latitude,tappedPoint.longitude);
   void _handleTap(LatLng tappedPoint) {
     setState(() {
       myMarker = [];
-
       myMarker.add(Marker(
           markerId: MarkerId(tappedPoint.toString()),
           position: tappedPoint,
@@ -544,7 +536,6 @@ class _Eventform extends State<createEvent> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
-
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
     });
