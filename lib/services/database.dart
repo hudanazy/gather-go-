@@ -20,15 +20,14 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
 
-  Future updateProfileData(
-      String uid, String name, String status, String bio //, File imageUrl
-      ) async {
+  Future updateProfileData(String uid, String name, String status, String bio,
+      String imageUrl) async {
     return await userCollection.doc(uid).set({
       "uid": uid,
       "name": name,
       "bio": bio,
       "status": status,
-      // "imageUrl": imageUrl
+      "imageUrl": imageUrl
     });
   }
 

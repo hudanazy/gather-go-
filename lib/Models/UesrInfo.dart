@@ -1,12 +1,10 @@
-import 'dart:io';
-
 class UesrInfo {
   final String uid;
   final String name;
   final String bio;
   final String email;
   final String status;
-  final File imageUrl;
+  final String imageUrl;
 
   UesrInfo(
       {required this.uid,

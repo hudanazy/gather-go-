@@ -138,17 +138,41 @@ class _ProfileFormState extends State<ProfileForm> {
                               child: Stack(
                                 children: [
                                   ClipOval(
-                                    child: Image.asset(
-                                      'images/profile.png',
-                                      width: 200,
-                                      height: 200,
-                                      fit: BoxFit.cover,
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: document['imageUrl'] == ''
+                                          ? Image.asset(
+                                              'images/profile.png',
+                                              width: 200,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Ink.image(
+                                              image: NetworkImage(
+                                                  document['imageUrl']),
+                                              fit: BoxFit.cover,
+                                              width: 160,
+                                              height: 160,
+                                            ),
                                     ),
                                   ),
-                                  Positioned(
-                                      bottom: 15,
-                                      right: 15,
-                                      child: buildEditIcon(Colors.blue))
+                                  document['imageUrl'] == ''
+                                      ? Positioned(
+                                          bottom: 15,
+                                          right: 15,
+                                          child: buildEditIcon(Colors.blue))
+                                      :
+                                      // child: document['imageUrl'] ??
+                                      // Image.asset(
+                                      //   'images/profile.png',
+                                      //   width: 200,
+                                      //   height: 200,
+                                      //   fit: BoxFit.cover,
+                                      // )),
+                                      Positioned(
+                                          bottom: 0,
+                                          right: 4,
+                                          child: buildEditIcon(Colors.blue))
                                 ],
                               ),
                             ),

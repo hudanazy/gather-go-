@@ -51,7 +51,8 @@ class _epFormState extends State<epForm> {
     }
 
     try {
-      final image = await ImagePicker().pickImage(source: source);
+      final image =
+          await ImagePicker().pickImage(source: source, imageQuality: 50);
       if (image == null) return;
 
       // final imageTemporary = File(image.path);
@@ -229,9 +230,11 @@ class _epFormState extends State<epForm> {
                             .child(user!.uid + '.jpg');
 
                         await ref.putFile(image!);
+                        final url = await ref.getDownloadURL();
+
                         dynamic db = await DatabaseService(uid: user.uid)
                             .updateProfileData(user.uid, _currentName!,
-                                _currentStatus!, _currentBio!);
+                                _currentStatus!, _currentBio!, url);
                         Navigator.pop(context);
                         Fluttertoast.showToast(
                           msg: "Profile successfully updated.",
