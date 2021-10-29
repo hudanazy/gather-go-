@@ -3,6 +3,7 @@ import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:gather_go/screens/admin/eventDetails.dart';
 import 'package:gather_go/screens/authenticate/resetPassword.dart';
 
 class SignIn extends StatefulWidget {
@@ -15,7 +16,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  //final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   final _fromkey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -90,14 +91,23 @@ class _SignInState extends State<SignIn> {
                       // SizedBox(
                       //   height: 12,
                       // ),
+                      Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
                         child: Text("Login"),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
-                              error = 'Email or password is wrong.';
-                              loading = false;
+                              loading = true;
                             });
+                            //firebase login here and in auth.dart
+                            dynamic result =
+                                await _auth.signInWithUsernameAndPassword(
+                                    username, password);
+                            if (result == null)
+                              setState(() {
+                                error = 'Email or password is wrong.';
+                                loading = false;
+                              });
                           }
                         },
                         style: ButtonStyle(

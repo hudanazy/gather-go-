@@ -146,7 +146,60 @@ Future<bool> showMapdialog(BuildContext context, List<Marker> myMarker,
                   onMapCreated: _onMapCreated,
                   markers: Set.from(myMarker),
                   polylines: _polylines, //Set<Polyline>.of(_polylines),
-                  myLocationEnabled: false,
+                  myLocationEnabled: true,
+                  compassEnabled: true,
+                  zoomControlsEnabled: true,
+                  mapToolbarEnabled: true,
+                  trafficEnabled: false,
+                  zoomGesturesEnabled: true,
+                  initialCameraPosition: CameraPosition(
+                    target: _initialcameraposition,
+                    zoom: 10.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+}
+
+Future<bool> showMapdialogAdmin(
+    BuildContext context, List<Marker> myMarker) async {
+  return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                right: -40.0,
+                top: -40.0,
+                child: InkResponse(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
+                  },
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pop('dialog'); //do what you want here
+                    },
+                    child: CircleAvatar(
+                      child: Icon(Icons.close),
+                      backgroundColor: Colors.deepOrange,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 500,
+                width: 450,
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  markers: Set.from(myMarker),
+                  //Set<Polyline>.of(_polylines),
+                  myLocationEnabled: true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   mapToolbarEnabled: true,
