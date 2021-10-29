@@ -13,7 +13,6 @@ import '../NotifactionManager.dart';
 class browseEventDetails extends StatefulWidget {
   final DocumentSnapshot? event;
   browseEventDetails({required this.event});
-//g6YTYBSRl9YQP19sY9VV
   @override
   _browseEventDetails createState() => new _browseEventDetails();
 }
@@ -27,6 +26,8 @@ class _browseEventDetails extends State<browseEventDetails> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
     final buttonColor;
+    //check if event already booked
+
     if(bookedNum < attendeeNum)
       buttonColor=Colors.amber;
     else
@@ -100,8 +101,7 @@ class _browseEventDetails extends State<browseEventDetails> {
               Text("   Created by   $_textFromFile")
             ]),
             ),
-                Expanded(
-                  child: Align(
+               Align(
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
                         child: Text('Book event',
@@ -112,29 +112,32 @@ class _browseEventDetails extends State<browseEventDetails> {
                                 fontSize: 12)),
                         onPressed: () async {
                           if (bookedNum < attendeeNum){
+                              var events;
+                              String eventBooked='';
+                              FirebaseFirestore.instance.collection('uesrInfo').doc(widget.event!.get('uid'))
+                              .collection('bookedEvents').get().then((value) {
+                                events= value.docs;
+                                if (events != null){
+                                for(var e in events)
+                                  if(e.eventUid==widget.event!.id)
+                                    eventBooked='true';
+
+                                if (eventBooked=='true'){
+                                  eventBookedDialog();
+                                }
+                              }});
                           var result = await showBookDialog(context);
                           if (result == true) {
+                            var eventDate= widget.event?.get('date');
+                            var eventTime = widget.event?.get('time');
                             NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
                                     widget.event?.get('name')+" event starts in 2 hours, don't forget it", 
-                                    widget.event?.get('date'), widget.event?.get('time'));
+                                    eventDate, eventTime);
                             try {
                               FirebaseFirestore.instance
                                   .collection('events')
                                   .doc(widget.event?.id)
-                                  .set({
-                                "uid": userID,
-                                "name": widget.event?.get('name'),
-                                "description": widget.event?.get('description'),
-                                "timePosted": widget.event?.get('timePosted'),
-                                "attendees": attendeeNum,
-                                "bookedNumber": bookedNum+1,
-                                "date": widget.event?.get('date'),
-                                "category": category,
-                                "time": widget.event?.get('time'),
-                                'approved': true,
-                                "adminCheck": true,
-                                "location": widget.event?.get('location')
-                              });
+                                  .update({"bookedNumber": bookedNum+1,});
                               DatabaseService().addBookedEventToProfile(widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
@@ -154,19 +157,25 @@ class _browseEventDetails extends State<browseEventDetails> {
                             }
                           }
                           } else {
-                            AlertDialog(
+                            AlertDialog alert= AlertDialog(
                               title: Text('Fully booked'),
                               content: Text(
-                                'Sorry, all event\'s seats are booked.\n Please choose another event to attend.',
+                                'Sorry, all event\'s seats are booked.\nPlease choose another event to attend.',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
                               ),
                               actions: [
                                 TextButton(
                                   child: Text("Ok",
                                     style: TextStyle(color: Colors.blue)),
                                     onPressed: () {
-                                      Navigator.pop(context, false);
+                                      Navigator.of(context, rootNavigator: true).pop();
                                 }),
                               ],);
+                              showDialog(context: context, builder: (BuildContext context){
+                                return alert;
+                              });
                           }
                         },
                         style: ButtonStyle(
@@ -177,13 +186,35 @@ class _browseEventDetails extends State<browseEventDetails> {
                             padding: MaterialStateProperty.all(
                                 EdgeInsets.fromLTRB(35, 15, 35, 15))),
                       )),
-                )
+                
             
           ],
         ),
       ),
     );
   }
+  eventBookedDialog(){
+    AlertDialog alert= AlertDialog(
+      title: Text('Fully booked'),
+      content: Text(
+        'You already booked this event.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: Text("Ok",
+          style: TextStyle(color: Colors.blue)),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          }),
+      ],);
+    showDialog(context: context, builder: (BuildContext context){
+      return alert;
+    });
+}
+
 
   String _textFromFile = "";
   // will return eventCreator name
