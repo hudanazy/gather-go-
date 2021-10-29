@@ -74,4 +74,6 @@ class Edescription extends StatelessWidget {
   }
 }
 
+
 // res https://iiro.dev/from-design-to-flutter-movie-details-page/
+
