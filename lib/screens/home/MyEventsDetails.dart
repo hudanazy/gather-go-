@@ -6,8 +6,6 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
 
-import 'MyEvents.dart';
-
 // ignore: camel_case_types
 class MyEventsDetails extends StatefulWidget {
   final DocumentSnapshot? event;
@@ -113,53 +111,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Icon(Icons.people_alt_rounded),
                 Text("   Max attendee number is $attendeeNum  ")
               ]),
-            ),
-
-//Start
-            Row(
-              children: [
-                Expanded(
-                    child: Align(
-                        alignment: Alignment.bottomCenter, //her
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.purple[300]),
-                            ),
-                            child: Text('Delete Event',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 12)),
-                            onPressed: () async {
-                              var result = await showDdeleteDialog(context);
-                              if (result == true) {
-                                try {
-                                  FirebaseFirestore.instance
-                                      .collection('events')
-                                      .doc(widget.event?.id)
-                                      .delete();
-                                  Fluttertoast.showToast(
-                                    msg: widget.event?.get('name') +
-                                        " delete successfully",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                  Navigator.pop(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyEvents()));
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                    msg: "somthing went wrong ",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                  );
-                                }
-                              }
-                            })))
-              ],
             )
-
             /*Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
