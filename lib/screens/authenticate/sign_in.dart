@@ -3,7 +3,7 @@ import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:gather_go/screens/admin/eventDetails.dart';
+
 import 'package:gather_go/screens/authenticate/resetPassword.dart';
 
 class SignIn extends StatefulWidget {

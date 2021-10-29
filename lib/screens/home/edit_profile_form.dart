@@ -9,7 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:gather_go/shared/profile_widget.dart';
 // import 'package:gather_go/shared/image_picker.dart';
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gather_go/shared/loading.dart';
 import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -36,11 +37,6 @@ class _epFormState extends State<epForm> {
     'Away'
   ];
 
-  String? _currentName;
-  String? _currentBio;
-  String? _currentStatus = "Available";
-  File? _imageFile;
-
   File? image;
   Future pickImage(ImageSource source) async {
     Future<File> saveImagePermanently(String imagePath) async {
@@ -66,187 +62,239 @@ class _epFormState extends State<epForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<NewUser?>(context);
-    return StreamBuilder<UesrInfo>(
-        stream: DatabaseService(uid: user?.uid).profileData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            UesrInfo profileData = snapshot.data as UesrInfo;
+    //  final user = Provider.of<NewUser?>(context);
+    UesrInfo? profileData;
+    final user = Provider.of<NewUser?>(context, listen: false);
+
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('uesrInfo')
+        .where('uid', isEqualTo: user?.uid)
+        .snapshots();
+
+    return StreamBuilder<Object>(
+        stream: snap, //DatabaseService(uid: user.uid).profileData,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Loading(),
+              //     child: Text(
+              //   "No New Events", // may be change it to loading , itis appear for a second every time
+              //   textAlign: TextAlign.center,
+              // )
+            );
           }
-          return Form(
-            key: _formkey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                ),
-                Text(
-                  "Edit your profile",
-                  style: TextStyle(
-                      color: Colors.orange[600],
-                      letterSpacing: 2,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "Comfortaa"),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Stack(
-                    children: [
-                      image != null
-                          ? ClipOval(
-                              child: Image.file(image!,
-                                  width: 160, height: 160, fit: BoxFit.cover))
-                          : ClipOval(
-                              child: Image.asset(
-                                'images/profile.png',
-                                width: 200,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                      image != null
-                          ? Positioned(
-                              bottom: 0,
-                              right: 4,
-                              child: buildEditIcon(Colors.blue),
-                            )
-                          : Positioned(
-                              bottom: 15,
-                              right: 15,
-                              child: buildEditIcon(Colors.blue))
+          return Container(
+              // height: 640,
+              // width: 500,
+              child: ListView(
+            children: snapshot.data.docs.map<Widget>((document) {
+              DocumentSnapshot uid = document;
+              String? _currentName = document['name'];
+              String? _currentBio = document['bio'];
+              String? _currentStatus = document['status'];
+              File? _imageFile;
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  key: _formkey,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Text(
+                        "Edit your profile",
+                        style: TextStyle(
+                            color: Colors.orange[600],
+                            letterSpacing: 2,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Comfortaa"),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: Stack(
+                          children: [
+                            ClipOval(
+                                child: Material(
+                              color: Colors.transparent,
+                              child: image != null
+                                  ? Image.file(image!,
+                                      width: 160,
+                                      height: 160,
+                                      fit: BoxFit.cover)
+                                  : document['imageUrl'] != ''
+                                      ? Ink.image(
+                                          image: NetworkImage(
+                                              document['imageUrl']),
+                                          fit: BoxFit.cover,
+                                          width: 160,
+                                          height: 160,
+                                        )
+                                      : Image.asset(
+                                          'images/profile.png',
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                            )),
+                            image != null || document['imageUrl'] != ''
+                                ? Positioned(
+                                    bottom: 0,
+                                    right: 4,
+                                    child: buildEditIcon(Colors.blue),
+                                  )
+                                : Positioned(
+                                    bottom: 15,
+                                    right: 15,
+                                    child: buildEditIcon(Colors.blue))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 320,
+                        child: TextFormField(
+                          initialValue: document['name'],
+                          decoration: textInputDecoration.copyWith(
+                            hintText: "What would like us to call you?",
+                            hintStyle: TextStyle(
+                                color: Colors.orange[600],
+                                fontSize: 14,
+                                fontFamily: "Comfortaa"),
+                          ),
+                          style: TextStyle(
+                              color: Colors.orange[600],
+                              fontSize: 14,
+                              fontFamily: "Comfortaa"),
+                          validator: (val) =>
+                              val!.isEmpty ? 'Please enter a name' : null,
+                          onChanged: (val) =>
+                              setState(() => _currentName = val),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 0, left: 5),
+                        child: Text(
+                          "Status",
+                          style: TextStyle(
+                              color: Colors.orange[600],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Comfortaa"),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      DropdownButtonFormField(
+                          value: _currentStatus,
+                          decoration: textInputDecoration,
+                          items: status.map((status) {
+                            return DropdownMenuItem(
+                              value: status,
+                              child: Text(status),
+                            );
+                          }).toList(),
+                          onChanged: (val) =>
+                              setState(() => _currentStatus = val as String),
+                          style: TextStyle(
+                            color: Colors.orange[600],
+                            fontFamily: 'Comfortaa',
+                          )),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 320,
+                        child: TextFormField(
+                          initialValue: document['bio'],
+                          decoration: textInputDecoration.copyWith(
+                            hintText: "Enter your bio.",
+                            hintStyle: TextStyle(
+                                color: Colors.orange[600],
+                                fontSize: 14,
+                                fontFamily: "Comfortaa"),
+                          ),
+                          maxLines: 4,
+                          style: TextStyle(
+                              color: Colors.orange[600],
+                              fontSize: 14,
+                              fontFamily: "Comfortaa"),
+                          validator: (val) =>
+                              val!.isEmpty ? 'Please enter a bio' : null,
+                          onChanged: (val) => setState(() => _currentBio = val),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 190,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.orange[400]),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
+                          child: Text(
+                            'Save Changes',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Comfortaa"),
+                          ),
+                          onPressed: () async {
+                            if (image == null) {
+                              Fluttertoast.showToast(
+                                msg: "Please pick an image.",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                              return;
+                            }
+                            //image upload to storage
+
+                            if (_formkey.currentState!.validate()) {
+                              final ref = FirebaseStorage.instance
+                                  .ref()
+                                  .child('user_image')
+                                  .child(user!.uid + '.jpg');
+
+                              await ref.putFile(image!);
+                              final url = await ref.getDownloadURL();
+
+                              dynamic db = await DatabaseService(uid: user.uid)
+                                  .updateProfileData(user.uid, _currentName!,
+                                      _currentStatus!, _currentBio!, url);
+                              Navigator.pop(context);
+                              Fluttertoast.showToast(
+                                msg: "Profile successfully updated.",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                            }
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 320,
-                  child: TextFormField(
-                    //initialValue: profileData.name,
-                    decoration: textInputDecoration.copyWith(
-                      hintText: "What would like us to call you?",
-                      hintStyle: TextStyle(
-                          color: Colors.orange[600],
-                          fontSize: 14,
-                          fontFamily: "Comfortaa"),
-                    ),
-                    validator: (val) =>
-                        val!.isEmpty ? 'Please enter a name' : null,
-                    onChanged: (val) => setState(() => _currentName = val),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: EdgeInsets.only(top: 0, left: 5),
-                  child: Text(
-                    "Status",
-                    style: TextStyle(
-                        color: Colors.orange[600],
-                        letterSpacing: 2,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Comfortaa"),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                DropdownButtonFormField(
-                    value: _currentStatus ?? "Available",
-                    decoration: textInputDecoration,
-                    items: status.map((status) {
-                      return DropdownMenuItem(
-                        value: status,
-                        child: Text(status),
-                      );
-                    }).toList(),
-                    onChanged: (val) =>
-                        setState(() => _currentStatus = val as String),
-                    style: TextStyle(
-                      color: Colors.orange[600],
-                      fontFamily: 'Comfortaa',
-                    )),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 320,
-                  child: TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      hintText: "Enter your bio.",
-                      hintStyle: TextStyle(
-                          color: Colors.orange[600],
-                          fontSize: 14,
-                          fontFamily: "Comfortaa"),
-                    ),
-                    maxLines: 4,
-                    validator: (val) =>
-                        val!.isEmpty ? 'Please enter a bio' : null,
-                    onChanged: (val) => setState(() => _currentBio = val),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: 190,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.orange[400]),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                    child: Text(
-                      'Save Changes',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: "Comfortaa"),
-                    ),
-                    onPressed: () async {
-                      if (image == null) {
-                        Fluttertoast.showToast(
-                          msg: "Please pick an image.",
-                          toastLength: Toast.LENGTH_LONG,
-                        );
-                        return;
-                      }
-                      //image upload to storage
-
-                      if (_formkey.currentState!.validate()) {
-                        final ref = FirebaseStorage.instance
-                            .ref()
-                            .child('user_image')
-                            .child(user!.uid + '.jpg');
-
-                        await ref.putFile(image!);
-                        final url = await ref.getDownloadURL();
-
-                        dynamic db = await DatabaseService(uid: user.uid)
-                            .updateProfileData(user.uid, _currentName!,
-                                _currentStatus!, _currentBio!, url);
-                        Navigator.pop(context);
-                        Fluttertoast.showToast(
-                          msg: "Profile successfully updated.",
-                          toastLength: Toast.LENGTH_LONG,
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
+              );
+            }).toList(),
+          ));
         });
   }
 

@@ -145,7 +145,11 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 30,
                       ),
+<<<<<<< HEAD
                       Text(error, style: TextStyle(color: Colors.red)),
+=======
+                       Text(error, style: TextStyle(color: Colors.red)),
+>>>>>>> master
                       ElevatedButton(
                         child: Text("Register"),
                         onPressed: () async {
@@ -205,6 +209,10 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 12.0,
                       ),
+<<<<<<< HEAD
+=======
+                     
+>>>>>>> master
                     ],
                   )),
               decoration: BoxDecoration(
