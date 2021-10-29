@@ -135,7 +135,7 @@ class _browseEventDetails extends State<browseEventDetails> {
                                 "adminCheck": true,
                                 "location": widget.event?.get('location')
                               });
-                              DatabaseService().addBookedEventToProfile(FirebaseAuth.instance.currentUser!.uid, widget.event!.id);
+                              DatabaseService().addBookedEventToProfile(widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " booked successfully, you can view it in your profile",
