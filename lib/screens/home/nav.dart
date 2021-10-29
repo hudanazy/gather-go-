@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
@@ -14,7 +15,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
   List<Widget> tabPages = [
     EventList(),
-    Scaffold(),
+    logout(),
     createEvent(),
     ProfileForm(),
   ];
@@ -88,6 +89,22 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   void onTabTapped(int index) {
     this._pageController?.animateToPage(index,
         duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+}
+
+class logout extends StatelessWidget {
+  const logout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+        },
+        child: Text('logout'),
+      ),
+    );
   }
 }
 //   int _selectedIndex = 0;

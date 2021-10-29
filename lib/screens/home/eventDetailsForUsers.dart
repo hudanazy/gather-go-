@@ -6,6 +6,8 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/home/profile_form.dart';
+import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -143,7 +145,27 @@ class _eventDetails extends State<eventDetailsForUesers> {
                 Icon(
                   Icons.person_rounded,
                 ),
-                Text("   Created by   $_textFromFile")
+                Text("   Created by "),
+                ElevatedButton(
+                  child: Text(" $_textFromFile ",
+                      style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontFamily: 'Comfortaa',
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                  ),
+                  //color: Colors.deepOrange,
+                  onPressed: () {
+                    // ProfileForm();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                viewProfile(user: documentList)));
+                  },
+                  //child: Text("see the location"),
+                )
               ]),
             ),
 
@@ -190,10 +212,11 @@ class _eventDetails extends State<eventDetailsForUesers> {
   // }
 
   String _textFromFile = "";
+  late DocumentSnapshot documentList;
   // will return eventCreator name
   void eventCreator(String uid) async {
     String uesrName = " ";
-    DocumentSnapshot documentList;
+
     documentList =
         await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
 
