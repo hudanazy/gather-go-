@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
@@ -129,30 +128,30 @@ class _eventDetails extends State<eventDetails> {
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    ElevatedButton.icon(
-                      icon: Icon(
-                        Icons.location_pin,
-                        color: Colors.black,
-                      ),
-                      label: Text("details",
-                          style: TextStyle(
-                            color: Colors.black87,
-                          )),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                      ),
-                      //color: Colors.deepOrange,
-                      onPressed: () {
-                        //showMapdialogAdmin(context, myMarker);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => eventDetailsForUesers(
-                                      event: widget.event,
-                                    )));
-                      },
-                      //child: Text("see the location"),
-                    ),
+                    // ElevatedButton.icon(
+                    //   icon: Icon(
+                    //     Icons.location_pin,
+                    //     color: Colors.black,
+                    //   ),
+                    //   label: Text("details",
+                    //       style: TextStyle(
+                    //         color: Colors.black87,
+                    //       )),
+                    //   style: ElevatedButton.styleFrom(
+                    //     primary: Colors.white,
+                    //   ),
+                    //   //color: Colors.deepOrange,
+                    //   onPressed: () {
+                    //     //showMapdialogAdmin(context, myMarker);
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => eventDetailsForUesers(
+                    //                   event: widget.event,
+                    //                 )));
+                    //   },
+                    //child: Text("see the location"),
+                    //),
                     ElevatedButton.icon(
                       icon: Icon(
                         Icons.location_pin,
