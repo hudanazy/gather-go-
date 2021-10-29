@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/services/database.dart';
+
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
@@ -145,7 +145,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 30,
                       ),
-                       Text(error, style: TextStyle(color: Colors.red)),
+                      Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
                         child: Text("Register"),
                         onPressed: () async {
@@ -205,7 +205,6 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                         height: 12.0,
                       ),
-                     
                     ],
                   )),
               decoration: BoxDecoration(

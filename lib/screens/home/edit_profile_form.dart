@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gather_go/Models/ProfileOnScreen.dart';
+//import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gather_go/shared/profile_widget.dart';
-import 'package:gather_go/shared/image_picker.dart';
+// import 'package:gather_go/shared/profile_widget.dart';
+// import 'package:gather_go/shared/image_picker.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/shared/loading.dart';

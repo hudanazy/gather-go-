@@ -1,10 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
-//import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+//import 'package:location/location.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'dart:math' show cos, sqrt, asin;
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -21,10 +31,24 @@ class _eventDetails extends State<eventDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-
+    //LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
     String category = widget.event?.get('category');
+    List<Marker> myMarker = [];
+//DatabaseService db = DatabaseService(widget.event?.id);
+//add your lat and lng where you wants to draw polyline
+    eventCreator(userID);
+    LatLng markerPosition =
+        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
 
-    Future<String> eventCreatorName = eventCreator(userID);
+    setState(() {
+      myMarker.add(Marker(
+        markerId: MarkerId(markerPosition.toString()),
+        infoWindow: InfoWindow(title: widget.event?.get('name')),
+        position: markerPosition, // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -53,7 +77,7 @@ class _eventDetails extends State<eventDetails> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
                   label: Text(category, style: TextStyle(color: Colors.black)),
-                  backgroundColor: Colors.deepOrange[100],
+                  backgroundColor: Colors.grey[350],
                 ),
               )
             ]),
@@ -61,39 +85,93 @@ class _eventDetails extends State<eventDetails> {
               padding: const EdgeInsets.all(20.0),
               child: Edescription(widget.event?.get('description')),
             ),
-            Padding( padding: const EdgeInsets.only(left: 20.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
               child: Row(
-              children: <Widget>[
-                Icon(Icons.access_time),
-                Text("   " +
-                    widget.event?.get('date').substring(0, 10) +
-                    "  " +
-                    widget.event?.get('time').substring(10, 15) +
-                    '                                                           '), // we may need to change it as i dont think this the right time !!
-              ],
-            ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 20.0),
-            child:Row(children: <Widget>[
-                Icon(Icons.location_pin),
-                Text("   to be added later"),
-              ],
-            ),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 20.0),
-            child: Row(children: <Widget>[
-              Icon(Icons.people_alt_rounded),
-              Text("   Max attendee number is $attendeeNum  ")
-            ]),
-            ),
-            Padding(padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
-            child: Row(children: <Widget>[
-              Icon(
-                Icons.person_rounded,
+                children: <Widget>[
+                  Icon(Icons.access_time),
+                  Text("   " +
+                      widget.event?.get('date').substring(0, 10) +
+                      "  " +
+                      widget.event?.get('time').substring(10, 15) +
+                      '                                                           '), // we may need to change it as i dont think this the right time !!
+                ],
               ),
-              Text("   Created by   $_textFromFile")
-            ]),
             ),
+            //   Padding(padding: const EdgeInsets.only(left: 20.0),
+            //  child: Row(children: <Widget>[
+            //     Text("        ")])),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Row(children: <Widget>[
+                Icon(Icons.people_alt_rounded),
+                Text("   Max attendee number is $attendeeNum  ")
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
+              child: Row(children: <Widget>[
+                Icon(
+                  Icons.person_rounded,
+                ),
+                Text("   Created by   $_textFromFile")
+              ]),
+            ),
+
+            // decoration: new BoxDecoration(
+            //   color: Colors.black,
+            //   shape: BoxShape.circle,
+            //   border: Border.all(width: 5.0, color: Colors.white),
+            // ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    // ElevatedButton.icon(
+                    //   icon: Icon(
+                    //     Icons.location_pin,
+                    //     color: Colors.black,
+                    //   ),
+                    //   label: Text("details",
+                    //       style: TextStyle(
+                    //         color: Colors.black87,
+                    //       )),
+                    //   style: ElevatedButton.styleFrom(
+                    //     primary: Colors.white,
+                    //   ),
+                    //   //color: Colors.deepOrange,
+                    //   onPressed: () {
+                    //     //showMapdialogAdmin(context, myMarker);
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => eventDetailsForUesers(
+                    //                   event: widget.event,
+                    //                 )));
+                    //   },
+                    //child: Text("see the location"),
+                    //),
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.black,
+                      ),
+                      label: Text("see the location",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        showMapdialogAdmin(context, myMarker);
+                      },
+                      //child: Text("see the location"),
+                    ),
+                  ],
+                )),
             Row(
               children: [
                 Expanded(
@@ -110,23 +188,19 @@ class _eventDetails extends State<eventDetails> {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
                               try {
-                                FirebaseFirestore.instance
-                                    .collection('events')
-                                    .doc(widget.event?.id)
-                                    .set({
-                                  "uid": userID,
-                                  "name": widget.event?.get('name'),
-                                  "description":
-                                      widget.event?.get('description'),
-                                  "timePosted": widget.event?.get('timePosted'),
-                                  "attendees": attendeeNum,
-                                  "date": widget.event?.get('date'),
-                                  "time": widget.event?.get('time'),
-                                  "category": category,
-                                  'approved': false,
-                                  "adminCheck": true,
-                                  "location": widget.event?.get('location')
-                                });
+                                await DatabaseService(uid: widget.event?.id)
+                                    .disapproveEvent(
+                                  userID,
+                                  widget.event?.get('name'),
+                                  widget.event?.get('description'),
+                                  widget.event?.get('timePosted'),
+                                  attendeeNum,
+                                  widget.event?.get('date'),
+                                  widget.event?.get('time'),
+                                  category,
+                                  widget.event?.get('lat'),
+                                  widget.event?.get('long'),
+                                );
                                 // success msg + redirect to adminEvent
 
                                 Fluttertoast.showToast(
@@ -170,22 +244,19 @@ class _eventDetails extends State<eventDetails> {
                           var result = await showApproveDialog(context);
                           if (result == true) {
                             try {
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .set({
-                                "uid": userID,
-                                "name": widget.event?.get('name'),
-                                "description": widget.event?.get('description'),
-                                "timePosted": widget.event?.get('timePosted'),
-                                "attendees": attendeeNum,
-                                "date": widget.event?.get('date'),
-                                "category": category,
-                                "time": widget.event?.get('time'),
-                                'approved': true,
-                                "adminCheck": true,
-                                "location": widget.event?.get('location')
-                              });
+                              await DatabaseService(uid: widget.event?.id)
+                                  .approveEvent(
+                                userID,
+                                widget.event?.get('name'),
+                                widget.event?.get('description'),
+                                widget.event?.get('timePosted'),
+                                attendeeNum,
+                                widget.event?.get('date'),
+                                widget.event?.get('time'),
+                                category,
+                                widget.event?.get('lat'),
+                                widget.event?.get('long'),
+                              );
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",
@@ -221,9 +292,15 @@ class _eventDetails extends State<eventDetails> {
     );
   }
 
+  // Location _location = Location();
+  // late GoogleMapController _controller;
+  // void _onMapCreated(GoogleMapController _cntlr) {
+  //   _controller = _cntlr;
+  // }
+
   String _textFromFile = "";
   // will return eventCreator name
-  Future<String> eventCreator(String uid) async {
+  void eventCreator(String uid) async {
     String uesrName = " ";
     DocumentSnapshot documentList;
     documentList =
@@ -232,82 +309,5 @@ class _eventDetails extends State<eventDetails> {
     uesrName = documentList['name'];
 
     setState(() => _textFromFile = uesrName);
-
-    return uesrName;
   }
 }
-
-class Edescription extends StatelessWidget {
-  Edescription(this.description);
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var textTheme = Theme.of(context).textTheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Event description ',
-          style: textTheme.subtitle1!.copyWith(fontSize: 18.0),
-        ),
-        SizedBox(height: 8.0),
-        Text(
-          description,
-          style: textTheme.bodyText2!.copyWith(
-            color: Colors.black45,
-            fontSize: 16.0,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-        ),
-      ],
-    );
-  }
-}
-
-class ArcBannerImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: ArcClipper(),
-      child: Image.asset(
-        'images/logo1.png',
-        width: 400,
-        height: 230.0,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-class ArcClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0.0, size.height);
-
-    var firstControlPoint = Offset(size.width / 4, size.height);
-    var firstPoint = Offset(size.width / 2, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstPoint.dx, firstPoint.dy);
-
-    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
-    var secondPoint = Offset(size.width, size.height - 30);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondPoint.dx, secondPoint.dy);
-
-    path.lineTo(size.width, 0.0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-// res https://iiro.dev/from-design-to-flutter-movie-details-page/

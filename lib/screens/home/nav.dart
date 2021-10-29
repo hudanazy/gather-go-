@@ -1,10 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
-import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/screens/home/user_list.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
 
 class MyBottomBarDemo extends StatefulWidget {
   @override
@@ -17,7 +15,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
   List<Widget> tabPages = [
     EventList(),
-    Scaffold(),
+    SignOut(),
     createEvent(),
     ProfileForm(),
   ];
@@ -91,6 +89,33 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   void onTabTapped(int index) {
     this._pageController?.animateToPage(index,
         duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+}
+
+class SignOut extends StatefulWidget {
+  @override
+  _SignOutState createState() => _SignOutState();
+}
+
+class _SignOutState extends State<SignOut> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  signOut() async {
+    await auth.signOut();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(child: RaisedButton(
+          onPressed: () {
+            signOut();
+          },
+        )),
+      ),
+    );
   }
 }
 //   int _selectedIndex = 0;
