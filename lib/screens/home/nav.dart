@@ -15,7 +15,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
   List<Widget> tabPages = [
     EventList(),
-    logout(),
+    SignOut(),
     createEvent(),
     ProfileForm(),
   ];
@@ -92,17 +92,28 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   }
 }
 
-class logout extends StatelessWidget {
-  const logout({Key? key}) : super(key: key);
+class SignOut extends StatefulWidget {
+  @override
+  _SignOutState createState() => _SignOutState();
+}
+
+class _SignOutState extends State<SignOut> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  signOut() async {
+    await auth.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ElevatedButton(
-        onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-        },
-        child: Text('logout'),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(child: RaisedButton(
+          onPressed: () {
+            signOut();
+          },
+        )),
       ),
     );
   }

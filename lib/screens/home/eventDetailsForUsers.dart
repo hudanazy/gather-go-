@@ -161,8 +161,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                viewProfile(user: documentList)));
+                            builder: (context) => viewProfile(
+                                user: documentList, event: widget.event)));
                   },
                   //child: Text("see the location"),
                 )

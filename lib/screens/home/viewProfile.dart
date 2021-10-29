@@ -1,28 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/Models/ProfileOnScreen.dart';
-import 'package:gather_go/screens/admin/adminNav.dart';
-import 'package:gather_go/screens/home/editProfile.dart';
-import 'package:gather_go/screens/home/edit_profile_form.dart';
-import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/services/database.dart';
-import 'package:gather_go/shared/contants.dart';
-import 'package:gather_go/shared/loading.dart';
-import 'package:provider/provider.dart';
-import 'package:gather_go/Models/NewUser.dart';
-import 'package:gather_go/shared/build_appbar.dart';
-import 'package:gather_go/Models/UesrInfo.dart';
-import 'dart:io';
-import 'package:gather_go/shared/profile_widget.dart';
+
+import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gather_go/services/database.dart';
+import 'package:gather_go/screens/home/viewEventCreatorEvents.dart';
+import 'package:gather_go/shared/loading.dart';
 
 import 'MyEvents.dart';
 
 // ignore: camel_case_types
 class viewProfile extends StatefulWidget {
   final DocumentSnapshot? user;
-  viewProfile({required this.user});
+  final DocumentSnapshot? event;
+  viewProfile({required this.user, required this.event});
   @override
   _viewProfile createState() => _viewProfile();
 }
@@ -37,7 +27,12 @@ class _viewProfile extends State<viewProfile> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
-
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('uid', isEqualTo: widget.user?.get('uid'))
+        .where('approved', isEqualTo: true)
+        .snapshots();
     String status = widget.user?.get('status');
     String UserName = widget.user?.get('name');
     //DatabaseService(uid: user.uid).profileData,
@@ -65,105 +60,195 @@ class _viewProfile extends State<viewProfile> {
       state = 'Away';
       stateColor = Colors.grey;
     }
-    return Container(
-        height: 640,
-        width: 500,
-        child: ListView(children: [
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 52),
-              child: Column(children: [
-                SizedBox(
-                  height: 25,
-                ),
-                Center(
-                  child: Stack(
-                    children: [
-                      ClipOval(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: widget.user?.get('imageUrl') == ''
-                              ? Image.asset(
-                                  'images/profile.png',
-                                  width: 200,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                )
-                              : Ink.image(
-                                  image: NetworkImage(
-                                      widget.user?.get('imageUrl')),
-                                  fit: BoxFit.cover,
-                                  width: 160,
-                                  height: 160,
-                                ),
+    return Scaffold(
+        body: Column(children: [
+      AppBar(
+        leading: IconButton(
+          icon: new Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        eventDetailsForUesers(event: widget.event)));
+          },
+        ),
+        toolbarHeight: 110,
+        backgroundColor: Colors.white,
+        title: Text(
+          "Profile",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
+        ),
+      ),
+      Container(
+          height: 640,
+          width: 500,
+          child: ListView(children: [
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 52),
+                child: Column(children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: Stack(
+                      children: [
+                        ClipOval(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: widget.user?.get('imageUrl') == ''
+                                ? Image.asset(
+                                    'images/profile.png',
+                                    width: 200,
+                                    height: 200,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Ink.image(
+                                    image: NetworkImage(
+                                        widget.user?.get('imageUrl')),
+                                    fit: BoxFit.cover,
+                                    width: 160,
+                                    height: 160,
+                                  ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Chip(
-                    label: Text(status,
-                        style: TextStyle(color: Colors.black, fontSize: 16)),
-                    backgroundColor: stateColor,
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  UserName,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.grey[800],
-                      fontFamily: 'Comfortaa',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 25),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  widget.user?.get('bio'),
-                  style: TextStyle(
-                      color: Colors.grey[800],
-                      fontFamily: 'Comfortaa',
-                      fontSize: 16),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.grey[100],
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "  $UserName Events",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 16),
-                      )),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyEvents()));
-                      },
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-              ]))
-        ]));
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Chip(
+                      label: Text(status,
+                          style: TextStyle(color: Colors.black, fontSize: 16)),
+                      backgroundColor: stateColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    UserName,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.grey[800],
+                        fontFamily: 'Comfortaa',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 25),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    widget.user?.get('bio'),
+                    style: TextStyle(
+                        color: Colors.grey[800],
+                        fontFamily: 'Comfortaa',
+                        fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  StreamBuilder(
+                    stream: snap,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: Loading(),
+                          //     child: Text(
+                          //   "No New Events", // may be change it to loading , itis appear for a second every time
+                          //   textAlign: TextAlign.center,
+                          // )
+                        );
+                      }
+                      return Container(
+                          height: 640,
+                          width: 500,
+                          child: ListView(
+                            children:
+                                snapshot.data.docs.map<Widget>((document) {
+                              DocumentSnapshot uid = document;
+                              return Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
+                                      color: Colors.grey[200],
+                                      child: ListTile(
+                                        title: Center(
+                                            child: Text(
+                                          document['name'],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontFamily: 'Comfortaa',
+                                              fontSize: 16),
+                                        )),
+                                        subtitle: Text(
+                                          document['description'],
+                                          style: TextStyle(
+                                              color: Colors.grey[800],
+                                              fontFamily: 'Comfortaa',
+                                              fontSize: 14),
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      eventDetailsForUesers(
+                                                        event: uid,
+                                                      )));
+                                        },
+                                      )));
+                            }).toList(),
+                          ));
+                    },
+                  ),
+                  // Card(
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10)),
+                  //     margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  //     color: Colors.grey[100],
+                  //     child: ListTile(
+                  //       title: Center(
+                  //           child: Text(
+                  //         "  $UserName Events",
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(
+                  //             color: Colors.black,
+                  //             fontFamily: 'Comfortaa',
+                  //             fontSize: 16),
+                  //       )),
+                  //       trailing: Icon(
+                  //         Icons.arrow_forward_ios,
+                  //       ),
+                  //       onTap: () {
+                  //         Navigator.of(context).push(MaterialPageRoute(
+                  //             builder: (context) =>
+                  //                 viewEventCreatorEvents(user: widget.user)));
+                  //       },
+                  //     )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]))
+          ]))
+    ]));
   }
 }
 
