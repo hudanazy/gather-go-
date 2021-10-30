@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/Brows.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
@@ -14,7 +15,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
   PageController? _pageController;
 
   List<Widget> tabPages = [
-    EventList(),
+    HomeScreen(),
     SignOut(),
     createEvent(),
     ProfileForm(),
