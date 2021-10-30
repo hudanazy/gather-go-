@@ -70,25 +70,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
 
-//check if event is already booked
-    String eventBooked = '';
-    try {
-      var doc = FirebaseFirestore.instance
-          .collection('uesrInfo')
-          .doc(widget.event!.get('uid'))
-          .collection('bookedEvents')
-          .doc(widget.event!.id);
-      if (doc != null)
-        eventBooked = 'true';
-      else {
-        eventBooked = 'false';
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-//----------
     final buttonColor;
-    if (bookedNum < attendeeNum && eventBooked == 'false')
+    if (bookedNum < attendeeNum) //&& eventBooked =='false')
       buttonColor = Colors.amber;
     else
       buttonColor = Colors.grey;
@@ -246,47 +229,46 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                       onPressed: () async {
                         if (bookedNum < attendeeNum) {
-                          if (eventBooked == 'true') {
-                            eventBookedDialog();
-                          } else {
-                            var result = await showBookDialog(context);
-                            if (result == true) {
-                              var eventDate = widget.event?.get('date');
-                              var eventTime = widget.event?.get('time');
-                              NotifactionManager().showAttendeeNotification(
-                                  1,
-                                  "Reminder, your booked event",
-                                  widget.event?.get('name') +
-                                      " event starts in 2 hours, don't forget it",
-                                  eventDate,
-                                  eventTime);
-                              try {
-                                FirebaseFirestore.instance
-                                    .collection('events')
-                                    .doc(widget.event?.id)
-                                    .update({
-                                  "bookedNumber": bookedNum + 1,
-                                });
-                                DatabaseService()
-                                    .addBookedEventToProfile(widget.event!.id);
-                                Fluttertoast.showToast(
-                                  msg: widget.event?.get('name') +
-                                      " booked successfully, you can view it in your profile",
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-                                Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()));
-                              } catch (e) {
-                                // fail msg
-                                Fluttertoast.showToast(
-                                  msg: "Somthing went wrong ",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                );
-                              }
+                          var result = await showBookDialog(context);
+                          if (result == true) {
+                            var eventDate = widget.event?.get('date');
+                            var eventTime = widget.event?.get('time');
+                            // NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
+                            //         widget.event?.get('name')+" event starts in 2 hours, don't forget it",
+                            //         eventDate, eventTime);
+                            NotifactionManager().showAttendeeNotification(
+                                1,
+                                "Reminder, your booked event",
+                                widget.event?.get('name') +
+                                    " starts tomorrow, don't forget it",
+                                eventDate,
+                                eventTime);
+                            try {
+                              FirebaseFirestore.instance
+                                  .collection('events')
+                                  .doc(widget.event?.id)
+                                  .update({
+                                "bookedNumber": bookedNum + 1,
+                              });
+                              DatabaseService()
+                                  .addBookedEventToProfile(widget.event!.id);
+                              Fluttertoast.showToast(
+                                msg: widget.event?.get('name') +
+                                    " booked successfully, you can view it in your profile",
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+                              Navigator.pop(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()));
+                            } catch (e) {
+                              // fail msg
+                              Fluttertoast.showToast(
+                                msg: "Somthing went wrong ",
+                                toastLength: Toast.LENGTH_SHORT,
+                              );
                             }
-                          } //event booked check
+                          }
                         } else {
                           AlertDialog alert = AlertDialog(
                             title: Text('Fully booked'),

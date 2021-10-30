@@ -55,12 +55,12 @@ final now = DateTime.now();
 final expirationDate = DateTime(2021, 1, 10);
 final bool isExpired = expirationDate.isBefore(now); //exaple
  */
-
+/* 
 DateTime _now = DateTime.now();
 DateTime _start = DateTime(_now.year, _now.month, _now.day, 0, 0);
 DateTime _end = DateTime(_now.year, _now.month, _now.day, 21, 12, 59);
 var currDt = DateTime.now().toString();
-var timen = DateTime.now().hour;
+var timen = DateTime.now().hour; */
 
 class _HomeScreenState extends State<HomeScreen> {
   Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
@@ -173,6 +173,7 @@ print(currDt.second); // 49 */
           children: [
             Container(
                 height: 200,
+                // width: 400,
                 padding: EdgeInsets.all(20),
                 color: Colors.white,
                 child: Column(
@@ -197,7 +198,7 @@ print(currDt.second); // 49 */
                           'Gather Go',
                           textAlign: TextAlign.center,
                           style:
-                              TextStyle(color: Colors.amber[600], fontSize: 50
+                              TextStyle(color: Colors.amber[600], fontSize: 55
 
                                   // decoration: TextDecoration.underline,
                                   ),
@@ -274,12 +275,12 @@ print(currDt.second); // 49 */
                                               elevation: 6,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(30),
+                                                      BorderRadius.circular(10),
                                                   side: BorderSide(
-                                                      width: 3,
+                                                      width: 0.5,
                                                       color: Colors.amber)),
                                               margin: const EdgeInsets.fromLTRB(
-                                                  5, 0, 5, 0),
+                                                  10, 0, 10, 0),
                                               //color: Colors.orangeAccent,
                                               child: ListTile(
                                                 title: Center(

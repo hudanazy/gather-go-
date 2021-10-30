@@ -141,7 +141,7 @@ class NotifactionManager {
         id,
         title,
         body,
-        schedualAttendeeNotification(DateTime.parse(day!), time3), //exp 8 am
+        schedualNotification(DateTime.parse(day!), time3), //exp 8 am
         const NotificationDetails(
           android: AndroidNotificationDetails(
               "id", 'Main Channel', 'Main channel notifications',
@@ -159,8 +159,8 @@ class NotifactionManager {
 
     tz.TZDateTime schedualAttendeeNotification(DateTime? day, TimeOfDay? time) {
     final schedualDate;
-    final now = DateTime.now()
-        .add(Duration(seconds: 1)); //it didn't work without adding 1 second
+    final now = DateTime.now()//tz.TZDateTime.now(tz.local)//
+        .add(Duration(seconds: 1));  //it didn't work without adding 1 second
     final timeToCheck =
         DateTime(now.year, now.month, now.day, now.hour+2, now.minute);
     final eventTime = DateTime(day!.year, day.month, day.day, time!.hour, time.minute);
