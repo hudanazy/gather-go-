@@ -60,6 +60,11 @@ class _epFormState extends State<epForm> {
     }
   }
 
+  String? currentName = "";
+  String? currentBio = "";
+  String? currentStatus = "";
+  dynamic imageFile;
+
   @override
   Widget build(BuildContext context) {
     //  final user = Provider.of<NewUser?>(context);
@@ -90,10 +95,10 @@ class _epFormState extends State<epForm> {
               child: ListView(
             children: snapshot.data.docs.map<Widget>((document) {
               DocumentSnapshot uid = document;
-              String? _currentName = document['name'];
-              String? _currentBio = document['bio'];
-              String? _currentStatus = document['status'];
-              File? _imageFile;
+              // currentName = document['name'];
+              // currentBio = document['bio'];
+              // currentStatus = document['status'];
+              //_imageFile;
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -175,8 +180,9 @@ class _epFormState extends State<epForm> {
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
                               val!.isEmpty ? 'Please enter a name' : null,
-                          onChanged: (val) =>
-                              setState(() => _currentName = val),
+                          onChanged: (val) {
+                            setState(() => currentName = val);
+                          },
                         ),
                       ),
                       SizedBox(
@@ -199,7 +205,7 @@ class _epFormState extends State<epForm> {
                         height: 10,
                       ),
                       DropdownButtonFormField(
-                          value: _currentStatus,
+                          value: document['status'],
                           decoration: textInputDecoration,
                           items: status.map((status) {
                             return DropdownMenuItem(
@@ -208,7 +214,7 @@ class _epFormState extends State<epForm> {
                             );
                           }).toList(),
                           onChanged: (val) =>
-                              setState(() => _currentStatus = val as String),
+                              setState(() => currentStatus = val as String),
                           style: TextStyle(
                             color: Colors.orange[600],
                             fontFamily: 'Comfortaa',
@@ -234,7 +240,7 @@ class _epFormState extends State<epForm> {
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
                               val!.isEmpty ? 'Please enter a bio' : null,
-                          onChanged: (val) => setState(() => _currentBio = val),
+                          onChanged: (val) => setState(() => currentBio = val),
                         ),
                       ),
                       SizedBox(
@@ -259,27 +265,42 @@ class _epFormState extends State<epForm> {
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
-                            if (image == null) {
+                            print(currentName);
+                            if (image == null && document['imageUrl'] == '') {
                               Fluttertoast.showToast(
                                 msg: "Please pick an image.",
                                 toastLength: Toast.LENGTH_LONG,
                               );
                               return;
+                            } else if (image == null &&
+                                document['imageUrl'] != '') {
+                              imageFile = document['imageUrl'];
                             }
                             //image upload to storage
-
-                            if (_formkey.currentState!.validate()) {
+                            else {
                               final ref = FirebaseStorage.instance
                                   .ref()
                                   .child('user_image')
                                   .child(user!.uid + '.jpg');
 
                               await ref.putFile(image!);
-                              final url = await ref.getDownloadURL();
 
-                              dynamic db = await DatabaseService(uid: user.uid)
-                                  .updateProfileData(user.uid, _currentName!,
-                                      _currentStatus!, _currentBio!, url);
+                              final url = await ref.getDownloadURL();
+                              imageFile = url;
+                            }
+                            if (_formkey.currentState!.validate()) {
+                              if (currentName == "") {
+                                currentName = document['name'];
+                              }
+                              if (currentStatus == "") {
+                                currentStatus = document['status'];
+                              }
+                              if (currentBio == "") {
+                                currentBio = document['bio'];
+                              }
+                              dynamic db = await DatabaseService(uid: user?.uid)
+                                  .updateProfileData(user!.uid, currentName!,
+                                      currentStatus!, currentBio!, imageFile);
                               Navigator.pop(context);
                               Fluttertoast.showToast(
                                 msg: "Profile successfully updated.",
