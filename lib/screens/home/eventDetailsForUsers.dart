@@ -234,8 +234,11 @@ class _eventDetails extends State<eventDetailsForUesers> {
                           if (result == true) {
                             var eventDate= widget.event?.get('date');
                             var eventTime = widget.event?.get('time');
-                            NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
-                                    widget.event?.get('name')+" event starts in 2 hours, don't forget it", 
+                            // NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
+                            //         widget.event?.get('name')+" event starts in 2 hours, don't forget it", 
+                            //         eventDate, eventTime);
+                                NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
+                                    widget.event?.get('name')+" starts tomorrow, don't forget it", 
                                     eventDate, eventTime);
                             try {
                               FirebaseFirestore.instance

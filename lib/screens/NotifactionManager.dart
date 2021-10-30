@@ -141,7 +141,7 @@ class NotifactionManager {
         id,
         title,
         body,
-        schedualAttendeeNotification(DateTime.parse(day!), time3), //exp 8 am
+        schedualNotification(DateTime.parse(day!), time3), //exp 8 am
         const NotificationDetails(
           android: AndroidNotificationDetails(
               "id", 'Main Channel', 'Main channel notifications',
