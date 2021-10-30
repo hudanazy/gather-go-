@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:gather_go/screens/home/event_list.dart';
 // import 'package:gather_go/screens/home/profile_form.dart';
@@ -473,12 +474,12 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
-                                    NotifactionManager().showNotification(
-                                        1,
-                                        "Reminder, " + eventName.text,
-                                        "You have upcoming event, don't forget it",
-                                        dateo,
-                                        ttime); //before 1 day
+                                    // NotifactionManager().showNotification(
+                                    //     1,
+                                    //     "Reminder, " + eventName.text,
+                                    //     "You have upcoming event, don't forget it",
+                                    //     dateo,
+                                    //     ttime); //before 1 day
                                     await DatabaseService(uid: user?.uid)
                                         .addEventData(
                                       user!.uid,
@@ -494,6 +495,8 @@ class _Eventform extends State<createEvent> {
                                       saveLat,
                                       saveLong,
                                     );
+                                    var userID = user.uid;
+                                    await FirebaseMessaging.instance.subscribeToTopic('event_$userID$timeAgo');
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
                                       toastLength: Toast.LENGTH_LONG,

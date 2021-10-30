@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:intl/message_format.dart';
 
 // ignore: camel_case_types
 class eventDetails extends StatefulWidget {
@@ -188,6 +191,19 @@ class _eventDetails extends State<eventDetails> {
                                 "adminCheck": true,
                                 "location": widget.event?.get('location')
                               });
+                              var timePosted = widget.event?.get('timePosted');
+                              var message = {
+                            //     data: {
+                            //         title: "",
+                            //         body: ""
+                            //     },
+                            //     token: regestarationToken
+                            // };
+                                .putData("score", "850")
+                                .putData("time", "2:45")
+                                .setTopic('event_$userID$timePosted')
+                                .build();
+                              FirebaseMessaging.instance.sendMessage(message);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",
