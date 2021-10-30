@@ -70,23 +70,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
 
-//check if event is already booked
-    String eventBooked='';
-    try{
-    var doc= FirebaseFirestore.instance.collection('uesrInfo').doc(widget.event!.get('uid'))
-      .collection('bookedEvents').doc(widget.event!.id);
-      if (doc != null)
-        eventBooked='true';
-      else {
-        eventBooked='false';
-      }
 
-    }catch(e){
-      print(e.toString());
-    }
-//----------
     final buttonColor;
-    if(bookedNum < attendeeNum && eventBooked =='false')
+    if(bookedNum < attendeeNum )//&& eventBooked =='false')
       buttonColor=Colors.amber;
     else
       buttonColor=Colors.grey;
@@ -244,9 +230,6 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                         onPressed: () async {
                           if (bookedNum < attendeeNum){
-                            if (eventBooked=='true'){
-                            eventBookedDialog();
-                            }else {
                           var result = await showBookDialog(context);
                           if (result == true) {
                             var eventDate= widget.event?.get('date');
@@ -277,7 +260,6 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               );
                             }
                           }
-                          }//event booked check
                           } else {
                             AlertDialog alert= AlertDialog(
                               title: Text('Fully booked'),

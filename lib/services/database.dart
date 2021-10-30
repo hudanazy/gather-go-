@@ -25,7 +25,7 @@ class DatabaseService {
       "bio": bio,
       "status": status,
       "imageUrl": imageUrl,
-      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
+      //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
 
