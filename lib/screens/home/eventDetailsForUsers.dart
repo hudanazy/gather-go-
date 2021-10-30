@@ -66,30 +66,32 @@ class _eventDetails extends State<eventDetailsForUesers> {
     var curLat = currentLocation?.latitude ?? 0;
     var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
-    int bookedNum= widget.event!.get('bookedNumber');
+    int bookedNum = widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
 
 //check if event is already booked
-    String eventBooked='';
-    try{
-    var doc= FirebaseFirestore.instance.collection('uesrInfo').doc(widget.event!.get('uid'))
-      .collection('bookedEvents').doc(widget.event!.id);
+    String eventBooked = '';
+    try {
+      var doc = FirebaseFirestore.instance
+          .collection('uesrInfo')
+          .doc(widget.event!.get('uid'))
+          .collection('bookedEvents')
+          .doc(widget.event!.id);
       if (doc != null)
-        eventBooked='true';
+        eventBooked = 'true';
       else {
-        eventBooked='false';
+        eventBooked = 'false';
       }
-
-    }catch(e){
+    } catch (e) {
       print(e.toString());
     }
 //----------
     final buttonColor;
-    if(bookedNum < attendeeNum && eventBooked =='false')
-      buttonColor=Colors.amber;
+    if (bookedNum < attendeeNum && eventBooked == 'false')
+      buttonColor = Colors.amber;
     else
-      buttonColor=Colors.grey;
+      buttonColor = Colors.grey;
 
     List<Marker> myMarker = [];
     eventCreator(userID);
@@ -225,15 +227,15 @@ class _eventDetails extends State<eventDetailsForUesers> {
                     ),
                   ],
                 )),
-              Padding(
+            Padding(
                 padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
-              child: Wrap(
+                child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-              ElevatedButton.icon(
-                icon: Icon(
-                  Icons.book,
-                  color:Colors.black,
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.book,
+                        color: Colors.black,
                       ),
                       label: Text('Book event',
                           style: TextStyle(
@@ -242,68 +244,80 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       style: ElevatedButton.styleFrom(
                         primary: buttonColor,
                       ),
-                        onPressed: () async {
-                          if (bookedNum < attendeeNum){
-                            if (eventBooked=='true'){
+                      onPressed: () async {
+                        if (bookedNum < attendeeNum) {
+                          if (eventBooked == 'true') {
                             eventBookedDialog();
-                            }else {
-                          var result = await showBookDialog(context);
-                          if (result == true) {
-                            var eventDate= widget.event?.get('date');
-                            var eventTime = widget.event?.get('time');
-                            NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
-                                    widget.event?.get('name')+" event starts in 2 hours, don't forget it", 
-                                    eventDate, eventTime);
-                            try {
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .update({"bookedNumber": bookedNum+1,});
-                              DatabaseService().addBookedEventToProfile(widget.event!.id);
-                              Fluttertoast.showToast(
-                                msg: widget.event?.get('name') +
-                                    " booked successfully, you can view it in your profile",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                              Navigator.pop(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home()));
-                            } catch (e) {
-                              // fail msg
-                              Fluttertoast.showToast(
-                                msg: "Somthing went wrong ",
-                                toastLength: Toast.LENGTH_SHORT,
-                              );
-                            }
-                          }
-                          }//event booked check
                           } else {
-                            AlertDialog alert= AlertDialog(
-                              title: Text('Fully booked'),
-                              content: Text(
-                                'Sorry, all event\'s seats are booked.\nPlease choose another event to attend.',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
+                            var result = await showBookDialog(context);
+                            if (result == true) {
+                              var eventDate = widget.event?.get('date');
+                              var eventTime = widget.event?.get('time');
+                              NotifactionManager().showAttendeeNotification(
+                                  1,
+                                  "Reminder, your booked event",
+                                  widget.event?.get('name') +
+                                      " event starts in 2 hours, don't forget it",
+                                  eventDate,
+                                  eventTime);
+                              try {
+                                FirebaseFirestore.instance
+                                    .collection('events')
+                                    .doc(widget.event?.id)
+                                    .update({
+                                  "bookedNumber": bookedNum + 1,
+                                });
+                                DatabaseService()
+                                    .addBookedEventToProfile(widget.event!.id);
+                                Fluttertoast.showToast(
+                                  msg: widget.event?.get('name') +
+                                      " booked successfully, you can view it in your profile",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
+                              } catch (e) {
+                                // fail msg
+                                Fluttertoast.showToast(
+                                  msg: "Somthing went wrong ",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                );
+                              }
+                            }
+                          } //event booked check
+                        } else {
+                          AlertDialog alert = AlertDialog(
+                            title: Text('Fully booked'),
+                            content: Text(
+                              'Sorry, all event\'s seats are booked.\nPlease choose another event to attend.',
+                              style: TextStyle(
+                                fontSize: 18,
                               ),
-                              actions: [
-                                TextButton(
+                            ),
+                            actions: [
+                              TextButton(
                                   child: Text("Ok",
-                                    style: TextStyle(color: Colors.blue)),
-                                    onPressed: () {
-                                      Navigator.push(
+                                      style: TextStyle(color: Colors.blue)),
+                                  onPressed: () {
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                      builder: (context) => Home()));
-                                }),
-                              ],);
-                              showDialog(context: context, builder: (BuildContext context){
+                                            builder: (context) => Home()));
+                                  }),
+                            ],
+                          );
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
                                 return alert;
                               });
-                          }
-                        },
-                      ),],))
+                        }
+                      },
+                    ),
+                  ],
+                ))
           ],
         ),
       ),
@@ -315,11 +329,14 @@ class _eventDetails extends State<eventDetailsForUesers> {
   // void _onMapCreated(GoogleMapController _cntlr) {
   //   _controller = _cntlr;
   // }
-eventBookedDialog(){
-    AlertDialog alert= AlertDialog(
-      title: Text('Event booked',
-      style: TextStyle(
-        color: Colors.red,),),
+  eventBookedDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Event booked',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
       content: Text(
         'You already booked this event.',
         style: TextStyle(
@@ -328,20 +345,19 @@ eventBookedDialog(){
       ),
       actions: [
         TextButton(
-          child: Text("Ok",
-          style: TextStyle(color: Colors.blue)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => Home()));
-          }),
-      ],);
-    showDialog(context: context, builder: (BuildContext context){
-      return alert;
-    });
-}
-
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
 
   String _textFromFile = "";
   late DocumentSnapshot documentList;
