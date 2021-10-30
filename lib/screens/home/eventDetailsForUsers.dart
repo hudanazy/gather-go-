@@ -70,9 +70,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
 
-
+  // final snap = FirebaseFirestore.instance
+  // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
-    if(bookedNum < attendeeNum )//&& eventBooked =='false')
+    if(bookedNum < attendeeNum)//&& eventBooked =='false')
       buttonColor=Colors.amber;
     else
       buttonColor=Colors.grey;
@@ -230,6 +231,15 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                         onPressed: () async {
                           if (bookedNum < attendeeNum){
+                            // StreamBuilder<Object>(
+                            //   stream: snap,
+                            //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                            //     if (snapshot.data.size ==0)
+                            //     return eventBookedDialog();
+                            //     print('success');
+                            //   },
+                            // );
+
                           var result = await showBookDialog(context);
                           if (result == true) {
                             var eventDate= widget.event?.get('date');
