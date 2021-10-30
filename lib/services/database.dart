@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
@@ -23,7 +24,8 @@ class DatabaseService {
       "name": name,
       "bio": bio,
       "status": status,
-      "imageUrl": imageUrl
+      "imageUrl": imageUrl,
+      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
 
@@ -44,6 +46,7 @@ class DatabaseService {
       "description": description,
       "timePosted": timePosted,
       "attendees": attendeeNum,
+      "bookedNumber": 0,
       "date": date,
       "time": time,
       "category": category,
@@ -71,6 +74,7 @@ class DatabaseService {
       "description": description,
       "timePosted": timePosted,
       "attendees": attendeeNum,
+      "bookedNumber": 0,
       "date": date,
       "time": time,
       "category": category,
@@ -102,6 +106,7 @@ class DatabaseService {
       "description": description,
       "timePosted": timePosted,
       "attendees": attendees,
+      "bookedNumber": 0,
       "date": date,
       "time": time,
       "approved": approved,
@@ -126,9 +131,19 @@ class DatabaseService {
       "email": email,
       "status": status,
       "imageUrl": imageUrl,
-
+      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
       /* "location": location*/
     }); // may need to change date and time format
+  }
+
+    //user booked events
+
+  addBookedEventToProfile(
+    String eventUid
+    ) {
+    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
+      "eventUid": eventUid,
+    });
   }
 
 //get user stream

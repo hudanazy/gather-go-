@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
+import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
@@ -309,7 +310,7 @@ print(currDt.second); // 49 */
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              eventDetails(
+                                                              eventDetailsForUesers(
                                                                 event: uid,
                                                                 // change to move to details and booked
                                                               )));

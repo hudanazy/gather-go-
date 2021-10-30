@@ -128,4 +128,63 @@ class NotifactionManager {
     print(schedualDate);
     return schedualDate;
   }
+
+  // .............................................attendee notification
+
+  Future<void> showAttendeeNotification(
+      int id, String title, String body, String? day, String? time) async {
+        tz.initializeTimeZones();
+        String time2 = time!.substring(10, time.length-1);
+        TimeOfDay time3 = TimeOfDay(hour:int.parse(time2.split(":")[0]),
+        minute: int.parse(time2.split(":")[1].split(" ")[0])); //https://stackoverflow.com/questions/53382971/how-to-convert-string-to-timeofday-in-flutter
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        schedualAttendeeNotification(DateTime.parse(day!), time3), //exp 8 am
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+              "id", 'Main Channel', 'Main channel notifications',
+              importance: Importance.max,
+              priority: Priority.max,
+              icon: '@drawable/ic_flutternotification'),
+        ),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.dateAndTime,
+        androidAllowWhileIdle: true,
+        payload: 'events detaild' //this could be deleted
+        );
+  }
+
+    tz.TZDateTime schedualAttendeeNotification(DateTime? day, TimeOfDay? time) {
+    final schedualDate;
+    final now = DateTime.now()
+        .add(Duration(seconds: 1)); //it didn't work without adding 1 second
+    final timeToCheck =
+        DateTime(now.year, now.month, now.day, now.hour+2, now.minute);
+    final eventTime = DateTime(day!.year, day.month, day.day, time!.hour, time.minute);
+
+    print(now);
+    print(time.toString());
+    print(timeToCheck);
+    print(eventTime);
+    print(TimeOfDay.now().toString());
+    if (timeToCheck ==eventTime)
+      schedualDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
+          now.hour, now.minute, now.second);
+    else {
+      print('tttest time');
+      print(time.hour-2);
+      schedualDate = tz.TZDateTime(
+          tz.local,
+          day.year,
+          day.month,
+          day.day, 
+          time.hour-2, //- 3
+          time.minute);//+ 30
+    }
+    print(schedualDate);
+    return schedualDate;
+  }
 }
