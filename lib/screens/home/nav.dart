@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/Brows.dart';
-import 'package:gather_go/screens/home/event_list.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/createEvent.dart';
 
@@ -16,7 +15,6 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
   List<Widget> tabPages = [
     HomeScreen(),
-    SignOut(),
     createEvent(),
     ProfileForm(),
   ];
@@ -55,11 +53,6 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
             icon: Icon(Icons.home),
             label: 'Home',
             backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box_outlined),

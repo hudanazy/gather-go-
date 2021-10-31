@@ -74,7 +74,6 @@ Future<bool> showDispproveDialog(BuildContext context) async {
   );
 }
 
-
 // return showDialog<void>(
 //   context: context,
 //   barrierDismissible: false, // user must tap button!
@@ -199,7 +198,6 @@ Future<bool> showMapdialogAdmin(
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   markers: Set.from(myMarker),
-                  //Set<Polyline>.of(_polylines),
                   myLocationEnabled: true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
@@ -247,12 +245,10 @@ Future<bool> showBookDialog(BuildContext context) async {
     context: context,
     builder: (context) => AlertDialog(
       title: Text("Book event"),
-      content:
-          Text("Are you sure you want to book this event ?"),
+      content: Text("Are you sure you want to book this event ?"),
       actions: [
         TextButton(
-            child: Text("No",
-                style: TextStyle(color: Colors.grey)),
+            child: Text("No", style: TextStyle(color: Colors.grey)),
             onPressed: () {
               Navigator.pop(context, false);
             }),

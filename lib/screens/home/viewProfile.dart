@@ -19,14 +19,10 @@ class viewProfile extends StatefulWidget {
 
 // ignore: camel_case_types
 class _viewProfile extends State<viewProfile> {
-  final _formKey = GlobalKey<FormState>(); //for form
-
-  String? _currentName;
-  String? _currentBio;
 //widget.user?.get('name')
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
+    //final color = Theme.of(context).colorScheme.primary;
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')

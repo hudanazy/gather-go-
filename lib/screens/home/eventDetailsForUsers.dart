@@ -27,44 +27,44 @@ class eventDetailsForUesers extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetailsForUesers> {
-  LocationData? currentLocation;
-  var location = new Location();
-  String error = "";
+  // LocationData? currentLocation;
+  // var location = new Location();
+  // String error = "";
 
-  void initState() {
-    super.initState();
+  // void initState() {
+  //   super.initState();
 
-    initPlatformState();
+  //   initPlatformState();
 
-    location.onLocationChanged.listen((LocationData result) {
-      setState(() {
-        currentLocation = result;
-      });
-    });
-  }
+  //   location.onLocationChanged.listen((LocationData result) {
+  //     setState(() {
+  //       currentLocation = result;
+  //     });
+  //   });
+  // }
 
-  void initPlatformState() async {
-    LocationData? myLocation;
-    try {
-      myLocation = await location.getLocation();
-      error = "";
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED')
-        error = "permission denied";
-      else if (e.code == "PERMISSION_DENIED_NEVER_ASK")
-        error = "permission denied";
-      myLocation = null;
-    }
+  // void initPlatformState() async {
+  //   LocationData? myLocation;
+  //   try {
+  //     myLocation = await location.getLocation();
+  //     error = "";
+  //   } on PlatformException catch (e) {
+  //     if (e.code == 'PERMISSION_DENIED')
+  //       error = "permission denied";
+  //     else if (e.code == "PERMISSION_DENIED_NEVER_ASK")
+  //       error = "permission denied";
+  //     myLocation = null;
+  //   }
 
-    setState(() {
-      currentLocation = myLocation!;
-    });
-  }
+  //   setState(() {
+  //     currentLocation = myLocation!;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    var curLat = currentLocation?.latitude ?? 0;
-    var curLong = currentLocation?.longitude ?? 0;
+    // var curLat = currentLocation?.latitude ?? 0;
+    // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
     int bookedNum = widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
@@ -78,16 +78,15 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
     List<Marker> myMarker = [];
     eventCreator(userID);
-    LatLng markerPosition =
-        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+    LatLng markerPosition = LatLng(widget.event?.get('lat'),
+        widget.event?.get('long')); // event location from DB
 
-    setPolylines(markerPosition, curLong, curLat);
     setState(() {
       myMarker.add(Marker(
         markerId: MarkerId(markerPosition.toString()),
-        infoWindow: InfoWindow(title: widget.event?.get('name')),
-        position: markerPosition, // markerPosition,
-        // draggable: true,
+        infoWindow:
+            InfoWindow(title: widget.event?.get('name')), // event name from DB
+        position: markerPosition,
         icon: BitmapDescriptor.defaultMarker,
       ));
     });
@@ -204,7 +203,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                       //color: Colors.deepOrange,
                       onPressed: () {
-                        showMapdialog(context, myMarker, _polylines);
+                        showMapdialogAdmin(context, myMarker);
                       },
                       //child: Text("see the location"),
                     ),
@@ -356,30 +355,30 @@ class _eventDetails extends State<eventDetailsForUesers> {
   }
 }
 
-Set<Polyline> _polylines = Set<Polyline>();
-List<LatLng> polylineCoordinates = [];
-PolylinePoints polylinePoints = new PolylinePoints();
+// Set<Polyline> _polylines = Set<Polyline>();
+// List<LatLng> polylineCoordinates = [];
+// PolylinePoints polylinePoints = new PolylinePoints();
 
-void setPolylines(LatLng a, double curLat, double curLong) async {
-  //LatLng cur = LatLng(curLat, curLong);
-  //getDirection(cur, a);
-  PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-    "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg", //"AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
-    PointLatLng(a.latitude, a.longitude),
-    PointLatLng(curLong, curLat),
-    travelMode: TravelMode.driving,
-  );
-  polylineCoordinates.clear();
+// void setPolylines(LatLng a, double curLat, double curLong) async {
+//   //LatLng cur = LatLng(curLat, curLong);
+//   //getDirection(cur, a);
+//   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+//     "AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg", //"AIzaSyDLPzEuq9j9sCXxxfr-U7LZMulEVeIbKKg",
+//     PointLatLng(a.latitude, a.longitude),
+//     PointLatLng(curLong, curLat),
+//     travelMode: TravelMode.driving,
+//   );
+//   polylineCoordinates.clear();
+//   print(result.status);
+//   if (result.status == 'OK') {
+//     result.points.forEach((PointLatLng point) {
+//       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//     });
 
-  if (result.status == 'OK') {
-    result.points.forEach((PointLatLng point) {
-      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-    });
-
-    _polylines.add(Polyline(
-        width: 5,
-        polylineId: PolylineId('polyLine'),
-        color: Colors.orangeAccent,
-        points: polylineCoordinates));
-  }
-}
+//     _polylines.add(Polyline(
+//         width: 5,
+//         polylineId: PolylineId('polyLine'),
+//         color: Colors.orangeAccent,
+//         points: polylineCoordinates));
+//   }
+// }

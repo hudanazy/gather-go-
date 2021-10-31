@@ -41,8 +41,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
       stateColor = Colors.lightGreen;
     }
 
-    Future<String> eventCreatorName = eventCreator(userID);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -294,21 +292,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
         ),
       ),
     );
-  }
-
-  String _textFromFile = "";
-  // will return eventCreator name
-  Future<String> eventCreator(String uid) async {
-    String uesrName = " ";
-    DocumentSnapshot documentList;
-    documentList =
-        await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
-
-    uesrName = documentList['uesrname'];
-
-    setState(() => _textFromFile = uesrName);
-
-    return uesrName;
   }
 }
 

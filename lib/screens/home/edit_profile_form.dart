@@ -298,7 +298,8 @@ class _epFormState extends State<epForm> {
                               if (currentBio == "") {
                                 currentBio = document['bio'];
                               }
-                              dynamic db = await DatabaseService(uid: user?.uid)
+                              dynamic db = await DatabaseService(
+                                      uid: user?.uid.toString())
                                   .updateProfileData(user!.uid, currentName!,
                                       currentStatus!, currentBio!, imageFile);
                               Navigator.pop(context);
