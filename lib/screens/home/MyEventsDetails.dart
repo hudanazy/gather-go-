@@ -5,6 +5,7 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'MyEvents.dart';
 
@@ -29,6 +30,20 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     bool approved = widget.event?.get('approved');
     String state = "";
     Color stateColor = Colors.grey;
+    List<Marker> myMarker = [];
+    eventCreator(userID);
+    LatLng markerPosition =
+        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+
+    setState(() {
+      myMarker.add(Marker(
+        markerId: MarkerId(markerPosition.toString()),
+        infoWindow: InfoWindow(title: widget.event?.get('name')),
+        position: markerPosition, // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
 
     if (adminCheck == false) {
       state = "Wating";
@@ -114,6 +129,55 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Text("   Max attendee number is $attendeeNum  ")
               ]),
             ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    // ElevatedButton.icon(
+                    //   icon: Icon(
+                    //     Icons.location_pin,
+                    //     color: Colors.black,
+                    //   ),
+                    //   label: Text("details",
+                    //       style: TextStyle(
+                    //         color: Colors.black87,
+                    //       )),
+                    //   style: ElevatedButton.styleFrom(
+                    //     primary: Colors.white,
+                    //   ),
+                    //   //color: Colors.deepOrange,
+                    //   onPressed: () {
+                    //     //showMapdialogAdmin(context, myMarker);
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => eventDetailsForUesers(
+                    //                   event: widget.event,
+                    //                 )));
+                    //   },
+                    //child: Text("see the location"),
+                    //),
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.black,
+                      ),
+                      label: Text("see the location",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        showMapdialogAdmin(context, myMarker);
+                      },
+                      //child: Text("see the location"),
+                    ),
+                  ],
+                )),
 
 //Start
             Row(
