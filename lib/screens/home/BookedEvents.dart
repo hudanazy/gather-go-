@@ -20,16 +20,11 @@ class _BookedEvents extends State<BookedEvents> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
-    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
-        .instance
-        .collection('events')
-        .where('events.uid', arrayContainsAny: [
-      FirebaseFirestore.instance
-          .collection('uesrInfo')
-          .where('uid', isEqualTo: user!.uid)
-          .where(FirebaseFirestore.instance.collection('bookedEvents'))
-    ]).snapshots();
+
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap =
+        FirebaseFirestore.instance.collection('events').snapshots();
 //'events.uid', arrayContainsAny:
+
     return Scaffold(
         body: Column(
       children: [
