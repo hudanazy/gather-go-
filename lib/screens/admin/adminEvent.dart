@@ -36,7 +36,7 @@ class _adminEvent extends State<adminEvent> {
                     toolbarHeight: 100,
                     backgroundColor: Colors.white,
                     title: Text(
-                      "All New Events",
+                      "\nAll New Events",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.deepOrange,
@@ -65,7 +65,7 @@ class _adminEvent extends State<adminEvent> {
                       return Center(child: Loading());
                     }
                     if (snapshot.data.size == 0) {
-                      return Center(child: Text("No new events"));
+                      return Center(child: Text("No new events"), heightFactor: 30,);
                     }
 
                     // if (!snapshot.hasData) {
