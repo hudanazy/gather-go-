@@ -62,8 +62,8 @@ class _MyEvents extends State<MyEvents> {
               );
             }
             return Container(
-                height: 640,
-                width: 500,
+                height: 500,
+                width: 400,
                 child: ListView(
                   children: snapshot.data.docs.map<Widget>((document) {
                     DocumentSnapshot uid = document;

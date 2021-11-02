@@ -4,9 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:provider/provider.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
-
 import 'package:gather_go/Models/ProfileOnScreen.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:io';
 
 class DatabaseService {
@@ -29,20 +27,64 @@ class DatabaseService {
       "bio": bio,
       "status": status,
       "imageUrl": imageUrl,
-      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
+      //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
 
-  Future updateEventData(String? title, String? description, String? date,
-      String? time /*, GeoPoint location*/, bool approved) async {
+  Future disapproveEvent(
+      String? userID,
+      String? name,
+      String? description,
+      String? timePosted,
+      int? attendeeNum,
+      String? date,
+      String? time,
+      String? category,
+      double? lat,
+      double? long) async {
     return await eventCollection.doc(uid).set({
-      "name": title,
+      "uid": userID,
+      "name": name,
       "description": description,
+      "timePosted": timePosted,
+      "attendees": attendeeNum,
+      "bookedNumber": 0,
       "date": date,
       "time": time,
-      "approved": approved,
-      /* "location": location*/
-    }); // may need to change date and time format
+      "category": category,
+      'approved': false,
+      "adminCheck": true,
+      "lat": lat,
+      "long": long,
+    });
+  }
+
+  Future approveEvent(
+      String? userID,
+      String? name,
+      String? description,
+      String? timePosted,
+      int? attendeeNum,
+      String? date,
+      String? time,
+      String? category,
+      double? lat,
+      double? long) async {
+    return await eventCollection.doc(uid).set({
+      "uid": userID,
+      "name": name,
+      "description": description,
+      "timePosted": timePosted,
+      "attendees": attendeeNum,
+      "bookedNumber": 0,
+      "date": date,
+      "time": time,
+      "category": category,
+      'approved': true,
+      "adminCheck": true,
+      "lat": lat,
+      "long": long,
+    });
   }
 
   addEventData(
@@ -73,7 +115,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-    }); 
+    });
   }
 
   addProfileData(
@@ -91,7 +133,7 @@ class DatabaseService {
       "email": email,
       "status": status,
       "imageUrl": imageUrl,
-      "bookedEvents": null,
+      //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
       /* "location": location*/
     }); // may need to change date and time format
   }
@@ -101,7 +143,7 @@ class DatabaseService {
   addBookedEventToProfile(
     String eventUid
     ) {
-    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').add({
+    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
       "eventUid": eventUid,
     });
   }
@@ -154,18 +196,20 @@ class DatabaseService {
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
-        //  uid: snapshot.get('uid'),
-        uid: snapshot.get('uid'),
-        name: snapshot.get('name'),
-        category: snapshot.get('category'),
-        description: snapshot.get('description'),
-        timePosted: snapshot.get('timePosted'),
-        //  imageUrl: snapshot.get('imageUrl'),
-        attendees: snapshot.get('attendees'),
-        // comments: snapshot.get('comments'),
-        date: snapshot.get('date'),
-        time: snapshot.get('time'),
-        approved: snapshot.get('approved'));
+      //  uid: snapshot.get('uid'),
+      uid: snapshot.get('uid'),
+      name: snapshot.get('name'),
+      category: snapshot.get('category'),
+      description: snapshot.get('description'),
+      timePosted: snapshot.get('timePosted'),
+      //  imageUrl: snapshot.get('imageUrl'),
+      attendees: snapshot.get('attendees'),
+      // comments: snapshot.get('comments'),
+      date: snapshot.get('date'),
+      time: snapshot.get('time'),
+      approved: snapshot.get('approved'),
+      adminCheck: snapshot.get('adminCheck'),
+    );
   }
 
   Future updateUesrData(
@@ -187,6 +231,10 @@ class DatabaseService {
   /*List<UesrInfo> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UesrInfo(
+          // snapshot.data['uesrname']
+          name: doc.get('name') ?? '',
+          email: doc.get('email') ?? '',
+          password: doc.get('password') ?? '');
         // snapshot.data['uesrname']
         name: doc.get('name') ?? '',
         email: doc.get('email') ?? '',
@@ -210,7 +258,8 @@ class DatabaseService {
           date: doc.get('date') ?? '',
           time: doc.get('time') ?? '',
           /* location: doc.get('location') ?? ''*/
-          approved: doc.get('approved') ?? '');
+          approved: doc.get('approved') ?? '',
+          adminCheck: doc.get('adminCheck') ?? '');
     }).toList();
   }
 }
