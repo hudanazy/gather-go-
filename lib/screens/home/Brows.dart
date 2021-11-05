@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/admin/eventDetails.dart';
+import 'package:gather_go/Models/NewUser.dart';
+
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
-import 'package:gather_go/screens/home/event_list.dart';
-import 'package:gather_go/screens/home/profile_form.dart';
-import 'package:gather_go/screens/home/createEvent.dart';
-import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/screens/home/user_list.dart';
-import 'package:gather_go/shared/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:async/async.dart' show StreamGroup;
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -63,16 +59,18 @@ var currDt = DateTime.now().toString();
 var timen = DateTime.now().hour; */
 
 class _HomeScreenState extends State<HomeScreen> {
-  Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
-      .collection('events')
-      // .orderBy("timePosted")
-      .where('approved', isEqualTo: true)
-      .where('adminCheck', isEqualTo: true)
-      //.where('date', isGreaterThanOrEqualTo: DateTime.now().toString())
-      //.where('date', isGreaterThanOrEqualTo: _start) //not return
-      // .where(DateTime.now().toString(), isGreaterThanOrEqualTo: 'date')//not return data
-      // .orderBy('date')
-      //.orderBy('lat')
+  // final user = Provider.of<NewUser?>(context, listen: false);
+  // Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
+  //     .collection('events')
+  //     // .orderBy("timePosted")
+  //     .where('approved', isEqualTo: true)
+  //     .where('adminCheck', isEqualTo: true)
+  //.where('uid',isNotEqualTo: )
+  //.where('date', isGreaterThanOrEqualTo: DateTime.now().toString())
+  //.where('date', isGreaterThanOrEqualTo: _start) //not return
+  // .where(DateTime.now().toString(), isGreaterThanOrEqualTo: 'date')//not return data
+  // .orderBy('date')
+  //.orderBy('lat')
 
 /* 
       .collection("events")
@@ -94,38 +92,38 @@ print(currDt.hour); // 15
 print(currDt.minute); // 21
 print(currDt.second); // 49 */
 
-      //-------------------------
-      //.orderBy(TimeOfDay.now())
-      //  .where('date', isGreaterThanOrEqualTo: new DateTime.now())
-      // .where('date', isGreaterThanOrEqualTo: now) //exption
-      // .where('time', isGreaterThanOrEqualTo: now)//exption
-      // .where('date').limit(7)//number doc
+  //-------------------------
+  //.orderBy(TimeOfDay.now())
+  //  .where('date', isGreaterThanOrEqualTo: new DateTime.now())
+  // .where('date', isGreaterThanOrEqualTo: now) //exption
+  // .where('time', isGreaterThanOrEqualTo: now)//exption
+  // .where('date').limit(7)//number doc
 
-      // .where('date',isExpired:false)
-      // .where('date',  isGreaterThanOrEqualTo: new DateTime.now().toString()) //exption
+  // .where('date',isExpired:false)
+  // .where('date',  isGreaterThanOrEqualTo: new DateTime.now().toString()) //exption
 
-      //new time
-      // .where('date', isGreaterThanOrEqualTo: new DateTime.now().toString())//exption
+  //new time
+  // .where('date', isGreaterThanOrEqualTo: new DateTime.now().toString())//exption
 
-      /* .where('time',
+  /* .where('time',
           isGreaterThanOrEqualTo: new DateTime.now().toString()) */ //exption
 
-      /* .where('timePosted',
+  /* .where('timePosted',
           isGreaterThanOrEqualTo: new DateTime.fromMillisecondsSinceEpoch(7)) */ //exp
 
-      /*  .where('timePosted',
+  /*  .where('timePosted',
           isGreaterThanOrEqualTo: new DateTime.fromMicrosecondsSinceEpoch(1)) */ //exp
-      // .elementAt(now)
+  // .elementAt(now)
 
-      // .where('location', isEqualTo: 'Latlang')
+  // .where('location', isEqualTo: 'Latlang')
 
-      //   .where("location", isGreaterThan: lesserGeoPoint)not
-      //    .where("location", isLessThan: greaterGeoPoint);not
-      //Geocoder
-      //.where("location", isEqualTo: LatLng )
-      //.where("location", isEqualTo: LatLng(24.774265, 46.738586)) //chick
-      // .where("location", isGreaterThanOrEqualTo: LatLng)
-      .snapshots();
+  //   .where("location", isGreaterThan: lesserGeoPoint)not
+  //    .where("location", isLessThan: greaterGeoPoint);not
+  //Geocoder
+  //.where("location", isEqualTo: LatLng )
+  //.where("location", isEqualTo: LatLng(24.774265, 46.738586)) //chick
+  // .where("location", isGreaterThanOrEqualTo: LatLng)
+  // .snapshots();
   //is approved
   int _selectedCategory = 0;
 /* 
@@ -167,6 +165,17 @@ print(currDt.second); // 49 */
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<NewUser?>(context, listen: false);
+    //final user = Provider.of<NewUser?>(context, listen: false);
+    Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
+        FirebaseFirestore.instance
+            .collection('events')
+            // .orderBy("timePosted")
+            .where('uid', isNotEqualTo: user?.uid)
+            .where('approved', isEqualTo: true)
+            .where('adminCheck', isEqualTo: true)
+            .snapshots();
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: ListView(
@@ -252,7 +261,7 @@ print(currDt.second); // 49 */
                       children: [
                         SizedBox(height: 350),
                         StreamBuilder(
-                            stream: snap,
+                            stream: stream1,
                             builder: (BuildContext context,
                                 AsyncSnapshot<dynamic> snapshot) {
                               if (!snapshot.hasData) {
