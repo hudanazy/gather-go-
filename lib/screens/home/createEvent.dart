@@ -1,28 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-// import 'package:gather_go/screens/home/event_list.dart';
-// import 'package:gather_go/screens/home/profile_form.dart';
-// import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-//import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
-//import 'package:gather_go/shared/gradient_app_bar.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/nav.dart';
-//import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:gather_go/shared/num_button.dart';
-import '../NotifactionManager.dart';
+//import '../NotifactionManager.dart';
 //import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
+//import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -78,8 +70,12 @@ class _Eventform extends State<createEvent> {
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.onMessage.listen((event) {
+      print(event);
+    });
 
-    tz.initializeTimeZones();
+
+    //tz.initializeTimeZones();
   }
 
   //DateTime date;
@@ -119,7 +115,7 @@ class _Eventform extends State<createEvent> {
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
                         // child: Text(
-                        //   "Event Nme",
+                        //   "Event Name",
                         //   style: TextStyle(
                         //     color: Colors.purpleAccent,
                         //     letterSpacing: 5,
@@ -496,7 +492,7 @@ class _Eventform extends State<createEvent> {
                                       saveLong,
                                     );
                                     var userID = user.uid;
-                                    await FirebaseMessaging.instance.subscribeToTopic('event_$userID$timeAgo');
+                                    await FirebaseMessaging.instance.subscribeToTopic('event');
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
                                       toastLength: Toast.LENGTH_LONG,
