@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/home/comments/comment_page.dart';
 import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/viewProfile.dart';
@@ -209,6 +210,35 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       },
                       //child: Text("see the location"),
                     ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.message,
+                        color: Colors.black,
+                      ),
+                      label: Text("0 comments",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => CommentWidget()));
+                      },
+                      //child: Text("see the location"),
+                    ),
+                    // IconButton(
+                    //     icon: Icon(
+                    //       Icons.message,
+                    //       size: 20,
+                    //     ),
+                    //     onPressed: () {}),
+                    // Text("0 comments"),
                   ],
                 )),
             Padding(
@@ -264,7 +294,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                   .addBookedEventToProfile(widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
-                                    " booked successfully",//, you can view it in your profile",
+                                    " booked successfully", //, you can view it in your profile",
                                 toastLength: Toast.LENGTH_LONG,
                               );
                               Navigator.pop(

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+import 'package:gather_go/Models/comment.dart';
 import 'dart:io';
 
 class DatabaseService {
@@ -16,6 +17,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('events');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
+  final CollectionReference commentCollection =
+      FirebaseFirestore.instance.collection('comments');
 
   Future updateProfileData(String uid, String name, String status, String bio,
       String imageUrl) async {
@@ -136,12 +139,14 @@ class DatabaseService {
     }); // may need to change date and time format
   }
 
-    //user booked events
+  //user booked events
 
-  addBookedEventToProfile(
-    String eventUid
-    ) {
-    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
+  addBookedEventToProfile(String eventUid) {
+    userCollection
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('bookedEvents')
+        .doc(eventUid)
+        .set({
       "eventUid": eventUid,
     });
   }
@@ -258,5 +263,61 @@ class DatabaseService {
           approved: doc.get('approved') ?? '',
           adminCheck: doc.get('adminCheck') ?? '');
     }).toList();
+  }
+
+  Future<bool> add_comment(Comment comment) async {
+    try {
+      await commentCollection.doc().set(
+          comment.toMap()..update("date_comment", (value) => Timestamp.now()));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Stream<int> getCountComment(String id) {
+    return commentCollection
+        .where("id_comment_pub", isEqualTo: id)
+        .snapshots()
+        .map((comments) {
+      return comments.docs
+          .map((e) => Comment.fromJson(e.data() as Map<String, dynamic>, e.id))
+          .toList()
+          .length;
+    });
+  }
+
+  Stream<List<Comment>> gecomment(String id) {
+    return commentCollection
+        .where("id_comment_pub", isEqualTo: id)
+        .snapshots()
+        .map((comments) {
+      return comments.docs
+          .map((e) => Comment.fromJson(e.data() as Map<String, dynamic>, e.id))
+          .toList();
+    });
+  }
+
+  Stream<List<Comment>> gecommentComment(String id) {
+    return commentCollection
+        .where("id_comment", isEqualTo: id)
+        .snapshots()
+        .map((comments) {
+      return comments.docs
+          .map((e) => Comment.fromJson(e.data() as Map<String, dynamic>, e.id))
+          .toList();
+    });
+  }
+
+  Stream<int> getCountCommentComment(String id) {
+    return commentCollection
+        .where("id_comment", isEqualTo: id)
+        .snapshots()
+        .map((comments) {
+      return comments.docs
+          .map((e) => Comment.fromJson(e.data() as Map<String, dynamic>, e.id))
+          .toList()
+          .length;
+    });
   }
 }
