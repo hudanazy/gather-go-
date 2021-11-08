@@ -5,17 +5,15 @@ admin.initializeApp();
 exports.myFunction = functions.firestore
     .document("events/{docId}")
     .onUpdate((change, context) => {
-      const userId = change.after.data().uid;
-      const timePosted = change.after.data().timePosted;
+      const userId = change.after.data().uid.toString();
       let message = "";
       if ( change.after.data().adminCheck) {
         const isApproved = change.after.data().approved;
         if (isApproved) {
-          console.log("event_".concat(userId).concat(timePosted));
           message = "Your event "+
           change.after.data().name+" is approved, don't forget about it.";
           return admin.messaging().sendToTopic(
-              "event", {
+              "event_"+userId, {
                 notification: {
                   title: "Upcoming event",
                   body: message,
@@ -25,7 +23,7 @@ exports.myFunction = functions.firestore
           message = "Sorry, your event "+
           change.after.data().name+" is disapproved.";
           return admin.messaging().sendToTopic(
-              "event", {
+              "event_"+userId, {
                 notification: {
                   title: "Event disapproved",
                   body: message}});

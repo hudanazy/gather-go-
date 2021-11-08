@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -73,7 +74,9 @@ class _Eventform extends State<createEvent> {
     FirebaseMessaging.onMessage.listen((event) {
       print(event);
     });
-
+    FirebaseMessaging.onBackgroundMessage((message) async {
+      await Firebase.initializeApp();
+      print('object');});
 
     //tz.initializeTimeZones();
   }
@@ -492,7 +495,7 @@ class _Eventform extends State<createEvent> {
                                       saveLong,
                                     );
                                     var userID = user.uid;
-                                    await FirebaseMessaging.instance.subscribeToTopic('event');
+                                    await FirebaseMessaging.instance.subscribeToTopic('event_$userID');
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
                                       toastLength: Toast.LENGTH_LONG,
