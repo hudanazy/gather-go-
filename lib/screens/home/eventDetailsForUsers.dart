@@ -1,19 +1,21 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+//import 'package:flutter/services.dart';
+//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
-import 'package:gather_go/screens/home/comments/comment_page.dart';
+import 'package:gather_go/screens/comment_screen.dart';
 import 'package:gather_go/screens/home/home.dart';
-import 'package:gather_go/screens/home/profile_form.dart';
+//import 'package:gather_go/screens/home/profile_form.dart';
 import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 
 import '../NotifactionManager.dart';
 
@@ -227,8 +229,18 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                       //color: Colors.deepOrange,
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => CommentWidget()));
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (ctx) =>
+                        // CommentScreen(
+                        //       event: widget.event,
+                        //     )));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CommentScreen(event: widget.event
+                                        // change to move to details and booked
+                                        )));
                       },
                       //child: Text("see the location"),
                     ),
