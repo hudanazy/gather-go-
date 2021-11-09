@@ -166,6 +166,7 @@ print(currDt.second); // 49 */
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context, listen: false);
+    // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
         FirebaseFirestore.instance
@@ -336,6 +337,6 @@ print(currDt.second); // 49 */
                   ],
                 ))
           ],
-        )); //scaffold
+        ));
   }
 }

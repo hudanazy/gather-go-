@@ -48,7 +48,7 @@ class DatabaseService {
       "attendees": attendeeNum,
       "bookedNumber": 0,
       "date": date,
-      "time": time,
+      "time": DateTime.parse(time!),
       "category": category,
       'approved': false,
       "adminCheck": true,
@@ -136,12 +136,14 @@ class DatabaseService {
     }); // may need to change date and time format
   }
 
-    //user booked events
+  //user booked events
 
-  addBookedEventToProfile(
-    String eventUid
-    ) {
-    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
+  addBookedEventToProfile(String eventUid) {
+    userCollection
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('bookedEvents')
+        .doc(eventUid)
+        .set({
       "eventUid": eventUid,
     });
   }

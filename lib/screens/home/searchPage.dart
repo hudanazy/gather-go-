@@ -44,55 +44,54 @@ class _SearchListState extends State<SearchList> {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               toolbarHeight: 110,
               backgroundColor: Colors.white,
-              title: Text(
-                "Search",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-              ),
+              title: TextField(
+                  // controller: _controller,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 15),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.orangeAccent, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2),
+                      ),
+                      hintText: "Search",
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Comfortaa',
+                      ),
+                      // suffixIcon: IconButton(
+                      //   onPressed: _controller.clear,
+                      //   icon: Icon(Icons.clear),
+                      //   color: Colors.purple[300],
+                      // ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      )),
+                  onSubmitted: (val) {
+                    //initialSearch(val);
+                  },
+                  onChanged: (val) {
+                    if (val.length == 0) {
+                      isNotSearching = true;
+                    }
+                    setState(() {
+                      isNotSearching = false;
+                      searchInput = val;
+                      if (val.length == 0) {
+                        isNotSearching = true;
+                      }
+                    });
+                  }),
             ),
-            body: ListView(children: [
-              Container(
-                  height: 200,
-                  // width: 400,
-                  padding: EdgeInsets.all(20),
-                  child: TextField(
-                      // controller: _controller,
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 15),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.purple, width: 0.5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.amberAccent, width: 0.5),
-                          ),
-                          hintText: "Search",
-                          hintStyle: TextStyle(color: Colors.purple[300]),
-                          // suffixIcon: IconButton(
-                          //   onPressed: _controller.clear,
-                          //   icon: Icon(Icons.clear),
-                          //   color: Colors.purple[300],
-                          // ),
-                          prefixIcon:
-                              Icon(Icons.search, color: Colors.purple[300])),
-                      onSubmitted: (val) {
-                        //initialSearch(val);
-                      },
-                      onChanged: (val) {
-                        setState(() {
-                          isNotSearching = false;
-                          searchInput = val;
-                        });
-                      })),
-              Column(
-                children: [buildResult(searchInput)],
-              )
-            ])));
+            body: Container(
+              child: buildResult(searchInput),
+            )));
 //   return Scaffold(
 //         backgroundColor: Colors.white,
 //         body: ListView(children: [
@@ -132,10 +131,13 @@ class _SearchListState extends State<SearchList> {
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
-                .where('name', isGreaterThanOrEqualTo: searchInput) //,
-                // isLessThan: searchField.substring(0, searchField.length - 1) +
-                //     String.fromCharCode(
-                //         searchField.codeUnitAt(searchField.length - 1) + 1))
+                .where(
+                  'name',
+                  isGreaterThanOrEqualTo: searchInput,
+                )
+                // .where('fieldName',
+                //     isGreaterThanOrEqualTo: searchInput.toLowerCase())
+                // .where('fieldName', isLessThan: searchInput + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {

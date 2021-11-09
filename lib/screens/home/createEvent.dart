@@ -488,7 +488,7 @@ class _Eventform extends State<createEvent> {
                                       timeAgo!,
                                       _currentValue,
                                       dateo.toString(),
-                                      ttime.toString(),
+                                      ttime,
                                       approved,
                                       false,
                                       saveLat,
