@@ -10,6 +10,7 @@ import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:gather_go/services/database.dart';
+import 'package:gather_go/screens/comments/new_message.dart';
 
 class CommentScreen extends StatefulWidget {
   // const CommentScreen({Key? key}) : super(key: key);
@@ -30,58 +31,59 @@ class _CommentScreenState extends State<CommentScreen> {
         .snapshots();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: ListView(children: [
-        Container(
-            height: 200,
-            // width: 400,
-            padding: EdgeInsets.all(20),
-            color: Colors.white,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(children: [
-                    IconButton(
-                      icon: new Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => eventDetailsForUesers(
-                                      event: widget.event,
-                                    )));
-                      },
-                    ),
-                    Flexible(
-                      child: Text(widget.event?.get('name') + ' comments  ',
-                          style: TextStyle(
-                              color: Colors.deepOrange,
-                              fontFamily: 'Comfortaa',
-                              fontSize: 18)),
-                    ),
-                  ]),
-                  Padding(
-                      padding: const EdgeInsets.all(30),
-                      // padding: const EdgeInsets.only(left: 30),
-                      child: Column(children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(height: 350),
-                              StreamBuilder(
-                                  stream: FirebaseFirestore.instance
-                                      .collection(
-                                          'events/0opY97ALXRrj7UOg482R/messages')
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<dynamic> snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: Loading(),
-                                      );
-                                    }
+      body: SingleChildScrollView(
+        child: ListView(children: [
+          Container(
+              height: 200,
+              // width: 400,
+              padding: EdgeInsets.all(20),
+              color: Colors.white,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      IconButton(
+                        icon: new Icon(Icons.arrow_back_ios),
+                        onPressed: () {
+                          Navigator.pop(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => eventDetailsForUesers(
+                                        event: widget.event,
+                                      )));
+                        },
+                      ),
+                      Flexible(
+                        child: Text(widget.event?.get('name') + ' comments  ',
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontFamily: 'Comfortaa',
+                                fontSize: 18)),
+                      ),
+                    ]),
+                    Padding(
+                        padding: const EdgeInsets.all(30),
+                        // padding: const EdgeInsets.only(left: 30),
+                        child: Column(children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(height: 350),
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('comments')
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: Loading(),
+                                        );
+                                      }
 
-                                    return Container(
+                                      return Container(
                                         height: 350,
                                         width: 280,
                                         child: ListView(
@@ -124,12 +126,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                     .bold),
                                                       )),
                                                       /*  subtitle: Text(
-                                                  document['date'].toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.amber[600],
-                                                      fontFamily: 'Comfortaa',
-                                                      fontSize: 14),
-                                                ), */
+                                                    document['date'].toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.amber[600],
+                                                        fontFamily: 'Comfortaa',
+                                                        fontSize: 14),
+                                                  ), */
                                                       // 00:000
                                                       trailing: Icon(
                                                         Icons
@@ -149,17 +151,19 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       },
                                                     )));
                                           }).toList(), //docmnt
-                                        ));
-                                  })
-                            ])
-                      ]))
-                ]))
-      ]),
+                                        ),
+                                      );
+                                    })
+                              ])
+                        ]))
+                  ]))
+        ]),
+      ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
             FirebaseFirestore.instance
-                .collection('events/0opY97ALXRrj7UOg482R/messages')
+                .collection('comments')
                 .add({'text': 'This was added!'});
             // FirebaseFirestore.instance
             //     .collection('events/0opY97ALXRrj7UOg482R/messages')

@@ -88,6 +88,22 @@ class DatabaseService {
     });
   }
 
+  addCommentData(
+    String text,
+    String uid,
+    DocumentSnapshot<Object?>? eventID,
+    int likes,
+    int dislikes,
+  ) {
+    commentCollection.add({
+      "text": text,
+      "uid": uid,
+      "eventID": eventID,
+      "likes": likes,
+      "dislikes": dislikes,
+    });
+  }
+
   addEventData(
     String uid,
     String name,
