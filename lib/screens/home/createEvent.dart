@@ -473,12 +473,12 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
-                                    NotifactionManager().showNotification(
-                                        1,
-                                        "Reminder, " + eventName.text,
-                                        "You have upcoming event, don't forget it",
-                                        dateo,
-                                        ttime); //before 1 day
+                                    // NotifactionManager().showNotification(
+                                    //     1,
+                                    //     "Reminder, " + eventName.text,
+                                    //     "You have upcoming event, don't forget it",
+                                    //     dateo,
+                                    //     ttime); //before 1 day
                                     await DatabaseService(uid: user?.uid)
                                         .addEventData(
                                       user!.uid,

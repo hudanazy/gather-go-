@@ -266,7 +266,7 @@ class _ProfileFormState extends State<ProfileForm> {
                                 child: ListTile(
                                   title: Center(
                                       child: Text(
-                                    "Created Events",
+                                    "Booked Events",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.black,

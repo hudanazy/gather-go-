@@ -47,6 +47,7 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendeeNum,
       "bookedNumber": 0,
+      "attendeesList": [],
       "date": date,
       "time": time,
       "category": category,
@@ -75,6 +76,7 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendeeNum,
       "bookedNumber": 0,
+      "attendeesList": [],
       "date": date,
       "time": time,
       "category": category,
@@ -107,6 +109,7 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendees,
       "bookedNumber": 0,
+      "attendeesList": [],
       "date": date,
       "time": time,
       "approved": approved,
@@ -131,20 +134,20 @@ class DatabaseService {
       "email": email,
       "status": status,
       "imageUrl": imageUrl,
-      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
+      //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
       /* "location": location*/
     }); // may need to change date and time format
   }
 
     //user booked events
 
-  addBookedEventToProfile(
-    String eventUid
-    ) {
-    userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
-      "eventUid": eventUid,
-    });
-  }
+  // addBookedEventToProfile(
+  //   String eventUid
+  //   ) {
+  //   userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
+  //     "eventUid": eventUid,
+  //   });
+  // }
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {

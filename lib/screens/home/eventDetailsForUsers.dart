@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/screens/home/home.dart';
-import 'package:gather_go/screens/home/profile_form.dart';
+
 import 'package:gather_go/screens/home/viewProfile.dart';
-import 'package:gather_go/services/database.dart';
+
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-
 import '../NotifactionManager.dart';
 
 // ignore: camel_case_types
@@ -73,7 +69,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
-    if (bookedNum < attendeeNum) //&& eventBooked =='false')
+    List list = widget.event?.get('attendeesList');
+    final currentUser = FirebaseAuth.instance.currentUser!.uid;
+    if (bookedNum < attendeeNum &&  !list.contains(currentUser)) //&& eventBooked =='false')
       buttonColor = Colors.amber;
     else
       buttonColor = Colors.grey;
@@ -229,6 +227,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
                         primary: buttonColor,
                       ),
                       onPressed: () async {
+                        List list = widget.event?.get('attendeesList');
+                        if (list.contains(currentUser)){
+                            eventBookedDialog();
+                          }else {
                         if (bookedNum < attendeeNum) {
                           // StreamBuilder<Object>(
                           //   stream: snap,
@@ -254,14 +256,17 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                 eventDate,
                                 eventTime);
                             try {
+                              List list = widget.event?.get('attendeesList');
+                              list.add(currentUser);
                               FirebaseFirestore.instance
                                   .collection('events')
                                   .doc(widget.event?.id)
                                   .update({
                                 "bookedNumber": bookedNum + 1,
+                                "attendeesList": list
                               });
-                              DatabaseService()
-                                  .addBookedEventToProfile(widget.event!.id);
+                              // DatabaseService()
+                              //     .addBookedEventToProfile(widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " booked successfully, you can view it in your profile",
@@ -305,7 +310,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               builder: (BuildContext context) {
                                 return alert;
                               });
-                        }
+                        }}
                       },
                     ),
                   ],
