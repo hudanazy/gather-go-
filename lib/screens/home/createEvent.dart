@@ -118,7 +118,7 @@ class _Eventform extends State<createEvent> {
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
                         // child: Text(
-                        //   "Event Name",
+                        //   "Event Nme",
                         //   style: TextStyle(
                         //     color: Colors.purpleAccent,
                         //     letterSpacing: 5,

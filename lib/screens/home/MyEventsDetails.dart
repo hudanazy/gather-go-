@@ -5,6 +5,9 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'MyEvents.dart';
 
 // ignore: camel_case_types
 class MyEventsDetails extends StatefulWidget {
@@ -27,6 +30,20 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     bool approved = widget.event?.get('approved');
     String state = "";
     Color stateColor = Colors.grey;
+    List<Marker> myMarker = [];
+
+    LatLng markerPosition =
+        LatLng(widget.event?.get('lat'), widget.event?.get('long'));
+
+    setState(() {
+      myMarker.add(Marker(
+        markerId: MarkerId(markerPosition.toString()),
+        infoWindow: InfoWindow(title: widget.event?.get('name')),
+        position: markerPosition, // markerPosition,
+        // draggable: true,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
 
     if (adminCheck == false) {
       state = "Wating";
@@ -38,8 +55,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
       state = "Approved";
       stateColor = Colors.lightGreen;
     }
-
-    Future<String> eventCreatorName = eventCreator(userID);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -111,7 +126,102 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 Icon(Icons.people_alt_rounded),
                 Text("   Max attendee number is $attendeeNum  ")
               ]),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    // ElevatedButton.icon(
+                    //   icon: Icon(
+                    //     Icons.location_pin,
+                    //     color: Colors.black,
+                    //   ),
+                    //   label: Text("details",
+                    //       style: TextStyle(
+                    //         color: Colors.black87,
+                    //       )),
+                    //   style: ElevatedButton.styleFrom(
+                    //     primary: Colors.white,
+                    //   ),
+                    //   //color: Colors.deepOrange,
+                    //   onPressed: () {
+                    //     //showMapdialogAdmin(context, myMarker);
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => eventDetailsForUesers(
+                    //                   event: widget.event,
+                    //                 )));
+                    //   },
+                    //child: Text("see the location"),
+                    //),
+                    ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.location_pin,
+                        color: Colors.black,
+                      ),
+                      label: Text("see the location",
+                          style: TextStyle(
+                            color: Colors.black87,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      //color: Colors.deepOrange,
+                      onPressed: () {
+                        showMapdialogAdmin(context, myMarker);
+                      },
+                      //child: Text("see the location"),
+                    ),
+                  ],
+                )),
+
+//Start
+            Row(
+              children: [
+                Expanded(
+                    child: Align(
+                        alignment: Alignment.bottomCenter, //her
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.purple[300]),
+                            ),
+                            child: Text('Delete Event',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 12)),
+                            onPressed: () async {
+                              var result = await showDdeleteDialog(context);
+                              if (result == true) {
+                                try {
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .delete();
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " delete successfully",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyEvents()));
+                                } catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: "somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                }
+                              }
+                            })))
+              ],
             )
+
             /*Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
@@ -246,21 +356,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
         ),
       ),
     );
-  }
-
-  String _textFromFile = "";
-  // will return eventCreator name
-  Future<String> eventCreator(String uid) async {
-    String uesrName = " ";
-    DocumentSnapshot documentList;
-    documentList =
-        await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
-
-    uesrName = documentList['uesrname'];
-
-    setState(() => _textFromFile = uesrName);
-
-    return uesrName;
   }
 }
 
