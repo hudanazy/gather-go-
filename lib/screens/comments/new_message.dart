@@ -19,7 +19,7 @@ class _NewMessageState extends State<NewMessage> {
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
     return Container(
-      margin: EdgeInsets.only(top: 8),
+      margin: EdgeInsets.only(bottom: 3),
       padding: EdgeInsets.all(8),
       child: Row(
         children: <Widget>[
@@ -34,12 +34,13 @@ class _NewMessageState extends State<NewMessage> {
           )),
           IconButton(
             onPressed: () async {
-              if (_enteredMessage.trim().isEmpty)
+              if (_enteredMessage.trim().isEmpty) {
+                print("no message");
                 return;
-              else {
-                dynamic db = await DatabaseService(uid: user?.uid)
-                    .addCommentData(
-                        _enteredMessage, user!.uid, widget.event, 0, 0);
+              } else {
+                print(widget.event?.data().toString());
+                await DatabaseService(uid: user?.uid).addCommentData(
+                    _enteredMessage, user!.uid, widget.event?.id, 0, 0);
               }
             },
             icon: Icon(Icons.send),

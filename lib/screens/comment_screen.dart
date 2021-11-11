@@ -33,13 +33,13 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: ListView(children: [
-          Container(
-              height: 200,
-              // width: 400,
-              padding: EdgeInsets.all(20),
-              color: Colors.white,
+      body: ListView(children: [
+        Container(
+            //height: 200,
+            // width: 400,
+            // padding: EdgeInsets.all(20),
+            color: Colors.white,
+            child: SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,6 +74,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                 StreamBuilder(
                                     stream: FirebaseFirestore.instance
                                         .collection('comments')
+                                        .where('eventID',
+                                            isEqualTo: widget.event?.id)
                                         .snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<dynamic> snapshot) {
@@ -126,12 +128,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                     .bold),
                                                       )),
                                                       /*  subtitle: Text(
-                                                    document['date'].toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.amber[600],
-                                                        fontFamily: 'Comfortaa',
-                                                        fontSize: 14),
-                                                  ), */
+                                                      document['date'].toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.amber[600],
+                                                          fontFamily: 'Comfortaa',
+                                                          fontSize: 14),
+                                                    ), */
                                                       // 00:000
                                                       trailing: Icon(
                                                         Icons
@@ -156,90 +158,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                     })
                               ])
                         ]))
-                  ]))
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            FirebaseFirestore.instance
-                .collection('comments')
-                .add({'text': 'This was added!'});
-            // FirebaseFirestore.instance
-            //     .collection('events/0opY97ALXRrj7UOg482R/messages')
-            //     .snapshots()
-            //     .listen((data) {
-            //   data.docs.forEach((document) {
-            //     print(document['text']
-            // );
-            // }
-            // );
-            // }
-            // )
-          }),
+                  ]),
+            )),
+        NewMessage(
+          event: widget.event,
+        )
+      ]),
     );
-
-    // return Scaffold(
-    //   body: StreamBuilder(
-    //     stream: FirebaseFirestore.instance
-    //         .collection('events/0opY97ALXRrj7UOg482R/messages')
-    //         .snapshots(),
-    //     builder: (ctx, snapshot) {
-    //       SingleChildScrollView(
-    //         child: Column(
-    //           children: [
-    //             Padding(
-    //               padding: const EdgeInsets.only(top: 40),
-    //             ),
-    //             Row(children: [
-    //               IconButton(
-    //                 icon: new Icon(Icons.arrow_back_ios),
-    //                 onPressed: () {
-    //                   Navigator.pop(
-    //                       context,
-    //                       MaterialPageRoute(
-    //                           builder: (context) => eventDetailsForUesers(
-    //                                 event: widget.event,
-    //                               )));
-    //                 },
-    //               ),
-    //               Flexible(
-    //                 child: Text(widget.event?.get('name') + '   ',
-    //                     style: TextStyle(
-    //                         color: Colors.deepOrange,
-    //                         fontFamily: 'Comfortaa',
-    //                         fontSize: 18)),
-    //               ),
-    //             ]),
-    //             ListView.builder(
-    //               scrollDirection: Axis.vertical,
-    //               shrinkWrap: true,
-    //               itemCount: 10,
-    //               itemBuilder: (ctx, index) => Container(
-    //                 padding: EdgeInsets.all(8),
-    //                 child: Text("this works"),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     },
-    //   ),
-    //   floatingActionButton: FloatingActionButton(
-    //       child: Icon(Icons.add),
-    //       onPressed: () {
-    //         // FirebaseFirestore.instance
-    //         //     .collection('events/0opY97ALXRrj7UOg482R/messages')
-    //         //     .snapshots()
-    //         //     .listen((data) {
-    //         //   data.docs.forEach((document) {
-    //         //     print(document['text']
-    //         // );
-    //         // }
-    //         // );
-    //         // }
-    //         // )
-    //       }),
-    // );
   }
 }

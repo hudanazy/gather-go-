@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Comment {
   String? text;
-  String? uid;
+  Object? uid;
   DocumentSnapshot<Object?>? eventID;
   int? likes;
   int? dislikes;

@@ -91,7 +91,7 @@ class DatabaseService {
   addCommentData(
     String text,
     String uid,
-    DocumentSnapshot<Object?>? eventID,
+    String? eventID,
     int likes,
     int dislikes,
   ) {
