@@ -8,6 +8,8 @@ import 'MyEventsDetails.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 
+import 'eventDetailsForUsers.dart';
+
 // ignore: camel_case_types
 class BookedEvents extends StatefulWidget {
   @override
@@ -99,8 +101,10 @@ class _BookedEvents extends State<BookedEvents> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MyEventsDetails(
+                                        builder: (context) =>
+                                            eventDetailsForUesers(
                                               event: uid,
+                                              // change to move to details and booked
                                             )));
                               },
                             )));
