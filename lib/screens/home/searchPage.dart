@@ -46,389 +46,55 @@ class _SearchListState extends State<SearchList> {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              toolbarHeight: 110,
-              backgroundColor: Colors.white,
-              title: TextField(
-                  // controller: _controller,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 15),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.orangeAccent, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 2),
-                      ),
-                      hintText: "Search",
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Comfortaa',
-                      ),
-                      // suffixIcon: IconButton(
-                      //   onPressed: _controller.clear,
-                      //   icon: Icon(Icons.clear),
-                      //   color: Colors.purple[300],
-                      // ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      )),
-                  onSubmitted: (val) {
-                    //initialSearch(val);
-                  },
-                  onChanged: (val) {
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            toolbarHeight: 110,
+            backgroundColor: Colors.white,
+            title: TextField(
+                // controller: _controller,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.orangeAccent, width: 2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2),
+                    ),
+                    hintText: "Search",
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Comfortaa',
+                    ),
+                    // suffixIcon: IconButton(
+                    //   onPressed: _controller.clear,
+                    //   icon: Icon(Icons.clear),
+                    //   color: Colors.purple[300],
+                    // ),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    )),
+                onChanged: (val) {
+                  if (val.length == 0) {
+                    isNotSearching = true;
+                  }
+                  setState(() {
+                    isNotSearching = false;
+                    searchInput = val;
                     if (val.length == 0) {
                       isNotSearching = true;
                     }
-                    setState(() {
-                      isNotSearching = false;
-                      searchInput = val;
-                      if (val.length == 0) {
-                        isNotSearching = true;
-                      }
-                    });
-                  }),
-            ),
-            body: ListView(children: [
-              Container(
-                child: buildResult(searchInput),
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Educational",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Educational")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Sports",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Sports")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Arts",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Arts")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Academic",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Academic")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Culture",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Culture")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Video Games",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Video Games")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Activities",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Activities")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Beauty",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Beauty")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Health",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Health")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Career",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Career")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Personal Growth",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyEventsByCategory(
-                                category: "Personal Growth")));
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 80,
-                child: Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    color: Colors.orange.shade100,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        "Other",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.orange.shade500,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 24),
-                      )),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                MyEventsByCategory(category: "Other")));
-                      },
-                    )),
-              ),
-            ])));
+                  });
+                }),
+          ),
+          body: Container(
+            child: buildResult(searchInput, context),
+          ),
+          // Container(
+          //   child: buildCategory(context),
+          // ),
+        ));
 //   return Scaffold(
 //         backgroundColor: Colors.white,
 //         body: ListView(children: [
@@ -461,10 +127,10 @@ class _SearchListState extends State<SearchList> {
             .snapshots();
   }
 
-  Widget buildResult(String searchInput) {
+  Widget buildResult(String searchInput, context) {
     return isNotSearching
-        ? Text(
-            "") // we can put catogory here and add new stream for description search
+        ? buildCategory(
+            context) // we can put catogory here and add new stream for description search
         : StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('events')
@@ -473,9 +139,9 @@ class _SearchListState extends State<SearchList> {
                 //   'name',
                 //   isGreaterThanOrEqualTo: searchInput,
                 // )
-                .where('nameLowerCase',
+                .where('name', // lower case didnt work
                     isGreaterThanOrEqualTo: searchInput) //toLowerCase()
-                .where('nameLowerCase', isLessThan: searchInput + 'z')
+                .where('name', isLessThan: searchInput + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -530,3 +196,371 @@ class _SearchListState extends State<SearchList> {
           );
   }
 }
+
+Widget buildCategory(context) {
+// SizedBox(
+//                 height: 10,
+//               ),
+  final category = [
+    'Educational',
+    'Sports',
+    'Arts',
+    'Academic',
+    'Culture',
+    'Video Games',
+    'Activities',
+    'Beauty',
+    'Health',
+    'Career',
+    'Personal Growth',
+    'Other'
+  ];
+// for(int i =0 ; i<category.length; i++ ){
+
+// }
+  return Column(
+    children: [
+      Card(
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+          color: Colors.orange.shade100,
+          child: ListTile(
+            title: Center(
+                child: Text(
+              "Educational",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  color: Colors.orange.shade500,
+                  fontFamily: 'Comfortaa',
+                  fontSize: 24),
+            )),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      MyEventsByCategory(category: "Educational")));
+            },
+          )),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Sports",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Sports")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Arts",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Arts")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Academic",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Academic")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Culture",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Culture")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Video Games",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Video Games")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Activities",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Activities")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Beauty",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Beauty")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Health",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Health")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Career",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Career")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Personal Growth",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Personal Growth")));
+              },
+            )),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+        height: 80,
+        child: Card(
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            color: Colors.orange.shade100,
+            child: ListTile(
+              title: Center(
+                  child: Text(
+                "Other",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.orange.shade500,
+                    fontFamily: 'Comfortaa',
+                    fontSize: 24),
+              )),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        MyEventsByCategory(category: "Other")));
+              },
+            )),
+      )
+    ],
+  );
+}
+
+// class categoryWdget extends StatelessWidget {
+//   const categoryWdget({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
