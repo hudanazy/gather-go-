@@ -47,13 +47,14 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendeeNum,
       "bookedNumber": 0,
-      "date": date,
-      "time": DateTime.parse(time!),
+      "date": date, //DateTime.parse(date!),
+      "time": time, //DateTime.parse(time!),
       "category": category,
       'approved': false,
       "adminCheck": true,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name?.toLowerCase(),
     });
   }
 
@@ -82,6 +83,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name?.toLowerCase(),
     });
   }
 
@@ -113,6 +115,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name.toLowerCase(),
     });
   }
 
