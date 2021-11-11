@@ -126,18 +126,19 @@ class _SearchListState extends State<SearchList> {
 
   Widget buildResult(String searchInput) {
     return isNotSearching
-        ? Text("") // we can put catogory here
+        ? Text(
+            "") // we can put catogory here and add new stream for description search
         : StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
-                .where(
-                  'name',
-                  isGreaterThanOrEqualTo: searchInput,
-                )
-                // .where('fieldName',
-                //     isGreaterThanOrEqualTo: searchInput.toLowerCase())
-                // .where('fieldName', isLessThan: searchInput + 'z')
+                // .where(
+                //   'name',
+                //   isGreaterThanOrEqualTo: searchInput,
+                // )
+                .where('nameLowerCase',
+                    isGreaterThanOrEqualTo: searchInput) //toLowerCase()
+                .where('nameLowerCase', isLessThan: searchInput + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -145,7 +146,7 @@ class _SearchListState extends State<SearchList> {
               }
               if (snapshot.data.size == 0) {
                 return Center(
-                  child: Text("No result found..."),
+                  child: Text("No result found...\ntry somthing else!"),
                   heightFactor: 30,
                 );
               }
