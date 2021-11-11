@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
-import 'package:gather_go/Models/comment.dart';
+//import 'package:gather_go/Models/comment.dart';
 import 'dart:io';
 
 class DatabaseService {

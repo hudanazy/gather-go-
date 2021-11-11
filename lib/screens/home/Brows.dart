@@ -5,7 +5,7 @@ import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:async/async.dart' show StreamGroup;
+//import 'package:async/async.dart' show StreamGroup;
 
 const Color KAppColor = Color(0xFFFFB300);
 
