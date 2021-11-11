@@ -139,9 +139,11 @@ class _SearchListState extends State<SearchList> {
                 //   'name',
                 //   isGreaterThanOrEqualTo: searchInput,
                 // )
-                .where('name', // lower case didnt work
-                    isGreaterThanOrEqualTo: searchInput) //toLowerCase()
-                .where('name', isLessThan: searchInput + 'z')
+                .where('nameLowerCase', // lower case didnt work
+                    isGreaterThanOrEqualTo:
+                        searchInput.toLowerCase()) //toLowerCase()
+                .where('nameLowerCase',
+                    isLessThan: searchInput.toLowerCase() + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
