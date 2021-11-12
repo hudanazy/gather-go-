@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gather_go/screens/admin/eventDetails.dart';
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/home/event_list.dart';
@@ -63,6 +65,19 @@ var currDt = DateTime.now().toString();
 var timen = DateTime.now().hour; */
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', 
+    'High Importance Notifications', 
+    'This channel is used for important notifications.', 
+    importance: Importance.max,
+  );
+     var flutterLocalNotificationsPlugin= new FlutterLocalNotificationsPlugin();
+  _HomeScreenState(){
+
+     flutterLocalNotificationsPlugin
+     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+  ?.createNotificationChannel(channel);}
+
   Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
       .collection('events')
       // .orderBy("timePosted")
@@ -167,6 +182,29 @@ print(currDt.second); // 49 */
 
   @override
   Widget build(BuildContext context) {
+     FirebaseMessaging.instance.getToken();
+          FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+      print(message.data.toString());
+       if (notification != null && android != null) {
+    flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channel.description,
+              //importance: Importance.max,
+              //priority: Priority.max,
+              icon: '@drawable/ic_flutternotification'),
+        ),
+        );
+       }
+       return;
+  });
     return Scaffold(
         backgroundColor: Colors.white,
         body: ListView(

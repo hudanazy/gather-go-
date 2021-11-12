@@ -68,17 +68,20 @@ class _Eventform extends State<createEvent> {
 
   double saveLat = 0;
   double saveLong = 0;
+
+  
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen((event) {
-      print(event);
-    });
-    FirebaseMessaging.onBackgroundMessage((message) async {
-      await Firebase.initializeApp();
-      print('object');});
+    // FirebaseMessaging.onMessage.listen((event) {
+    //   print(event);
+    // });
+    // FirebaseMessaging.onBackgroundMessage((message) async {
+    //   await Firebase.initializeApp();
+    //   print('object');});
 
     //tz.initializeTimeZones();
+  
   }
 
   //DateTime date;
