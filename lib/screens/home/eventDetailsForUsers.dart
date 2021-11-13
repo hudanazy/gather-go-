@@ -306,7 +306,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                   .addBookedEventToProfile(widget.event!.id);
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
-                                    " booked successfully", //, you can view it in your profile",
+                                    " booked successfully, you can view it in your profile",
                                 toastLength: Toast.LENGTH_LONG,
                               );
                               Navigator.pop(
