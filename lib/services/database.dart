@@ -111,7 +111,7 @@ class DatabaseService {
         temp = "";
       } else {
         temp = temp + description[i];
-        searchDescription.add(temp);
+        searchDescription.add(temp.toLowerCase());
       }
     }
     eventCollection.add({
