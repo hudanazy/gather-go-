@@ -101,6 +101,19 @@ class DatabaseService {
     double lat,
     double long,
   ) {
+    List<String> searchDescription =
+        []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
+    String temp = "";
+
+    //we should change the description to lower case first then use it in the loop
+    for (var i = 0; i < description.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp);
+      }
+    }
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -116,6 +129,7 @@ class DatabaseService {
       "lat": lat,
       "long": long,
       "nameLowerCase": name.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
