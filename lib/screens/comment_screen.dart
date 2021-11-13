@@ -26,48 +26,46 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context, listen: false);
-    Stream<QuerySnapshot<Map<String, dynamic>>> stream1 = FirebaseFirestore
-        .instance
-        .collection('events/0opY97ALXRrj7UOg482R/messages')
-        .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: ListView(children: [
-        Container(
+      body: ListView(
+        children: [
+          Container(
             //height: 200,
             // width: 400,
             // padding: EdgeInsets.all(20),
             color: Colors.white,
             child: SingleChildScrollView(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(children: [
-                      IconButton(
-                        icon: new Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => eventDetailsForUesers(
-                                        event: widget.event,
-                                      )));
-                        },
-                      ),
-                      Flexible(
-                        child: Text(widget.event?.get('name') + ' comments  ',
-                            style: TextStyle(
-                                color: Colors.deepOrange,
-                                fontFamily: 'Comfortaa',
-                                fontSize: 18)),
-                      ),
-                    ]),
-                    Padding(
-                        padding: const EdgeInsets.all(30),
-                        // padding: const EdgeInsets.only(left: 30),
-                        child: Column(children: [
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(children: [
+                    IconButton(
+                      icon: new Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => eventDetailsForUesers(
+                                      event: widget.event,
+                                    )));
+                      },
+                    ),
+                    Flexible(
+                      child: Text(widget.event?.get('name') + ' comments  ',
+                          style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontFamily: 'Comfortaa',
+                              fontSize: 18)),
+                    ),
+                  ]),
+                  Padding(
+                      padding: const EdgeInsets.all(30),
+                      // padding: const EdgeInsets.only(left: 30),
+                      child: Column(
+                        children: [
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -75,6 +73,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 StreamBuilder(
                                     stream: FirebaseFirestore.instance
                                         .collection('comments')
+                                        .orderBy("timePosted")
                                         .where('eventID',
                                             isEqualTo: widget.event?.id)
                                         .snapshots(),
@@ -82,7 +81,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         AsyncSnapshot<dynamic> snapshot) {
                                       if (!snapshot.hasData) {
                                         return Center(
-                                          child: Loading(),
+                                          child: Text("No comments yet."),
                                         );
                                       }
 
@@ -157,14 +156,26 @@ class _CommentScreenState extends State<CommentScreen> {
                                         ),
                                       );
                                     })
-                              ])
-                        ]))
-                  ]),
-            )),
-        NewMessage(
-          event: widget.event,
-        )
-      ]),
+                              ]),
+                        ],
+                      ))
+                ],
+              ),
+            ),
+          ),
+          // Expanded(
+          //   child: Align(
+          //     alignment: FractionalOffset.bottomCenter,
+          //     child: NewMessage(
+          //       event: widget.event,
+          //     ),
+          //   ),
+          // )
+        ],
+      ),
+      bottomNavigationBar: NewMessage(
+        event: widget.event,
+      ),
     );
   }
 }

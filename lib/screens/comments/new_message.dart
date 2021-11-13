@@ -33,16 +33,18 @@ class _NewMessageState extends State<NewMessage> {
             },
           )),
           IconButton(
-            onPressed: () async {
-              if (_enteredMessage.trim().isEmpty) {
-                print("no message");
-                return;
-              } else {
-                print(widget.event?.data().toString());
-                await DatabaseService(uid: user?.uid).addCommentData(
-                    _enteredMessage, user!.uid, widget.event?.id, 0, 0);
-              }
-            },
+            onPressed: (_enteredMessage.trim().isEmpty)
+                ? null
+                : () async {
+                    print(widget.event?.data().toString());
+                    await DatabaseService(uid: user?.uid).addCommentData(
+                        _enteredMessage,
+                        user!.uid,
+                        widget.event!.id,
+                        0,
+                        0,
+                        DateTime.now().toString());
+                  },
             icon: Icon(Icons.send),
             color: Colors.blueAccent,
           )

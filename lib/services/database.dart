@@ -88,19 +88,15 @@ class DatabaseService {
     });
   }
 
-  addCommentData(
-    String text,
-    String uid,
-    String? eventID,
-    int likes,
-    int dislikes,
-  ) {
+  addCommentData(String text, String uid, String eventID, int likes,
+      int dislikes, String timePosted) {
     commentCollection.add({
       "text": text,
       "uid": uid,
       "eventID": eventID,
       "likes": likes,
       "dislikes": dislikes,
+      "timePosted": timePosted
     });
   }
 
