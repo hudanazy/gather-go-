@@ -8,7 +8,7 @@ import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
-import 'package:gather_go/shared/loading.dart';
+//import 'package:gather_go/shared/loading.dart';
 
 ///import 'package:gather_go/services/database.dart';
 import 'package:gather_go/screens/comments/new_message.dart';
@@ -26,6 +26,12 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context, listen: false);
+    Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = FirebaseFirestore
+        .instance
+        .collection('comments')
+        .orderBy("timePosted", descending: true)
+        .where('eventID', isEqualTo: widget.event?.id)
+        .snapshots();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -71,12 +77,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               children: [
                                 SizedBox(height: 350),
                                 StreamBuilder(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('comments')
-                                        .orderBy("timePosted")
-                                        .where('eventID',
-                                            isEqualTo: widget.event?.id)
-                                        .snapshots(),
+                                    stream: snapshot,
                                     builder: (BuildContext context,
                                         AsyncSnapshot<dynamic> snapshot) {
                                       if (!snapshot.hasData) {
@@ -89,6 +90,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         height: 350,
                                         width: 280,
                                         child: ListView(
+                                          //reverse: true,
                                           children: snapshot.data.docs
                                               .map<Widget>((document) {
                                             DocumentSnapshot uid = document;

@@ -15,6 +15,13 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   var _enteredMessage = "";
+  dynamic _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
@@ -25,6 +32,7 @@ class _NewMessageState extends State<NewMessage> {
         children: <Widget>[
           Expanded(
               child: TextField(
+            controller: _controller,
             decoration: InputDecoration(labelText: "Add a comment..."),
             onChanged: (value) {
               setState(() {
@@ -44,6 +52,10 @@ class _NewMessageState extends State<NewMessage> {
                         0,
                         0,
                         DateTime.now().toString());
+                    _controller.clear();
+                    setState(() {
+                      _enteredMessage = "";
+                    });
                   },
             icon: Icon(Icons.send),
             color: Colors.blueAccent,
