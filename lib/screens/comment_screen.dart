@@ -9,7 +9,8 @@ import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:gather_go/services/database.dart';
+
+///import 'package:gather_go/services/database.dart';
 import 'package:gather_go/screens/comments/new_message.dart';
 
 class CommentScreen extends StatefulWidget {
