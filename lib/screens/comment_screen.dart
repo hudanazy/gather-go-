@@ -67,100 +67,99 @@ class _CommentScreenState extends State<CommentScreen> {
                               fontSize: 18)),
                     ),
                   ]),
-                  Padding(
-                      padding: const EdgeInsets.all(30),
-                      // padding: const EdgeInsets.only(left: 30),
-                      child: Column(
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(height: 350),
-                                StreamBuilder(
-                                    stream: snapshot,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<dynamic> snapshot) {
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: Text("No comments yet."),
-                                        );
-                                      }
+                  // Padding(
+                  //     padding: const EdgeInsets.all(30),
+                  // padding: const EdgeInsets.only(left: 30),
+                  // child:
+                  Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(height: 350),
+                            StreamBuilder(
+                                stream: snapshot,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: Text("No comments yet."),
+                                    );
+                                  }
 
-                                      return Container(
-                                        height: 350,
-                                        width: 280,
-                                        child: ListView(
-                                          //reverse: true,
-                                          children: snapshot.data.docs
-                                              .map<Widget>((document) {
-                                            DocumentSnapshot uid = document;
-                                            return Padding(
-                                                padding: const EdgeInsets.all(
-                                                    8),
-                                                //  const EdgeInsets.only(right: 70),
-                                                child: Card(
-                                                    elevation: 6,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            side: BorderSide(
-                                                                width: 0.5,
-                                                                color: Colors
-                                                                    .amber)),
-                                                    margin: const EdgeInsets
-                                                        .fromLTRB(10, 0, 10, 0),
-                                                    //color: Colors.orangeAccent,
-                                                    child: ListTile(
-                                                      title: Center(
-                                                          child: Text(
-                                                        document['text'],
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .amber[600],
-                                                            fontFamily:
-                                                                'Comfortaa',
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )),
-                                                      /*  subtitle: Text(
-                                                      document['date'].toString(),
+                                  return Container(
+                                    height: 350,
+                                    width: 280,
+                                    child: Expanded(
+                                      child: ListView(
+                                        //reverse: true,
+                                        children: snapshot.data.docs
+                                            .map<Widget>((document) {
+                                          DocumentSnapshot uid = document;
+                                          return Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              //  const EdgeInsets.only(right: 70),
+                                              child: Card(
+                                                  elevation: 6,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      side: BorderSide(
+                                                          width: 0.5,
+                                                          color: Colors.amber)),
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 0, 10, 0),
+                                                  //color: Colors.orangeAccent,
+                                                  child: ListTile(
+                                                    title: Center(
+                                                        child: Text(
+                                                      document['text'],
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
-                                                          color: Colors.amber[600],
-                                                          fontFamily: 'Comfortaa',
-                                                          fontSize: 14),
-                                                    ), */
-                                                      // 00:000
-                                                      trailing: Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_sharp,
-                                                        color:
-                                                            Colors.purple[300],
-                                                      ),
-                                                      onTap: () {
-                                                        // Navigator.push(
-                                                        //     context,
-                                                        //     MaterialPageRoute(
-                                                        //         builder: (context) =>
-                                                        //             eventDetailsForUesers(
-                                                        //               event: uid,
-                                                        //               // change to move to details and booked
-                                                        //             )));
-                                                      },
-                                                    )));
-                                          }).toList(), //docmnt
-                                        ),
-                                      );
-                                    })
-                              ]),
-                        ],
-                      ))
+                                                          color:
+                                                              Colors.amber[600],
+                                                          fontFamily:
+                                                              'Comfortaa',
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                                    /*  subtitle: Text(
+                                                        document['date'].toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.amber[600],
+                                                            fontFamily: 'Comfortaa',
+                                                            fontSize: 14),
+                                                      ), */
+                                                    // 00:000
+                                                    trailing: Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_sharp,
+                                                      color: Colors.purple[300],
+                                                    ),
+                                                    onTap: () {
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     MaterialPageRoute(
+                                                      //         builder: (context) =>
+                                                      //             eventDetailsForUesers(
+                                                      //               event: uid,
+                                                      //               // change to move to details and booked
+                                                      //             )));
+                                                    },
+                                                  )));
+                                        }).toList(), //docmnt
+                                      ),
+                                    ),
+                                  );
+                                })
+                          ]),
+                    ],
+                  )
+                  // )
                 ],
               ),
             ),

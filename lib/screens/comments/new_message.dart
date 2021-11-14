@@ -32,8 +32,18 @@ class _NewMessageState extends State<NewMessage> {
         children: <Widget>[
           Expanded(
               child: TextField(
+            minLines: 1,
+            maxLines: 5,
             controller: _controller,
-            decoration: InputDecoration(labelText: "Add a comment..."),
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                hintText: "Add a comment..",
+                focusColor: Colors.grey,
+                hoverColor: Colors.grey,
+                // labelText: "Add a comment...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                )),
             onChanged: (value) {
               setState(() {
                 _enteredMessage = value;
