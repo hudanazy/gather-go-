@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
+import 'package:gather_go/screens/home/MyEventsDetails.dart';
 
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -136,11 +137,12 @@ class _SearchListState extends State<SearchList> {
 
   Widget buildSearchByDescription(
       String searchInput, BuildContext context, String? UId) {
+        String uuuu = FirebaseAuth.instance.currentUser!.uid;
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
         .where('approved', isEqualTo: true)
-        .where("uid", isNotEqualTo: UId)
+        //.where("uid", isNotEqualTo: UId)
         .where('searchDescription', arrayContains: searchInput.toLowerCase())
         .snapshots();
 
@@ -156,7 +158,8 @@ class _SearchListState extends State<SearchList> {
               if (snapshot.data.size == 0 && searchInput.length != 0) {
                 return Center(
                   child: Text(
-                      "We're sorry. We were not able to find a match\nTry Another Saerch"),
+                      "Sorry. We were not able to find a match\nTry Another Saerch",
+                      textAlign: TextAlign.center,),
                 );
               }
               return ListView(
@@ -197,6 +200,15 @@ class _SearchListState extends State<SearchList> {
                               color: Colors.purple[300],
                             ),
                             onTap: () {
+                                                            if (document['uid']==uuuu)
+              {                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MyEventsDetails(
+                                            event: uid,
+                                          )));}
+                                          else
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -220,7 +232,7 @@ class _SearchListState extends State<SearchList> {
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
-                // .where('uid', isNotEqualTo: uuuu)
+                //.where('uid', isNotEqualTo: uuuu)
                 .where('nameLowerCase',
                     isGreaterThanOrEqualTo: searchInput.toLowerCase())
                 .where('nameLowerCase',
@@ -233,7 +245,8 @@ class _SearchListState extends State<SearchList> {
               if (snapshot.data.size == 0) {
                 return Center(
                   child: Text(
-                      "We're sorry. We were not able to find a match\nTry Another Saerch"),
+                      "Sorry. We were not able to find a match\nTry Another Saerch",
+                      textAlign: TextAlign.center,),
                   heightFactor: 30,
                 );
               }
@@ -261,6 +274,15 @@ class _SearchListState extends State<SearchList> {
                               Icons.arrow_forward_ios,
                             ),
                             onTap: () {
+                              if (document['uid']==uuuu)
+              {                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MyEventsDetails(
+                                            event: uid,
+                                          )));}
+                              else
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
