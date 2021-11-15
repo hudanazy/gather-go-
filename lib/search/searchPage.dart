@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
@@ -26,6 +27,7 @@ class _SearchListState extends State<SearchList> {
   TabBar tabs = TabBar(
     tabs: [],
   );
+
   int tabNum = 0;
   // String searchInput = "h";
   @override // mey move search bar to the appBar
@@ -33,7 +35,7 @@ class _SearchListState extends State<SearchList> {
     final user = Provider.of<NewUser?>(context, listen: false);
     String? UId = user?.uid;
 
-    var _controller = TextEditingController();
+    //var _controller = TextEditingController();
     return MaterialApp(
         home: DefaultTabController(
             length: tabNum,
@@ -126,17 +128,19 @@ class _SearchListState extends State<SearchList> {
                   ? buildCategory(
                       context) // we can put catogory here and add new stream for description search
                   : TabBarView(children: [
-                      buildResult(searchInput, context),
-                      buildSearchByDescription(searchInput, context),
+                      buildResult(searchInput, context, UId),
+                      buildSearchByDescription(searchInput, context, UId),
                     ]),
             )));
   }
 
-  Widget buildSearchByDescription(String searchInput, BuildContext context) {
+  Widget buildSearchByDescription(
+      String searchInput, BuildContext context, String? UId) {
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
         .where('approved', isEqualTo: true)
+        .where("uid", isNotEqualTo: UId)
         .where('searchDescription', arrayContains: searchInput.toLowerCase())
         .snapshots();
 
@@ -208,13 +212,15 @@ class _SearchListState extends State<SearchList> {
             });
   }
 
-  Widget buildResult(String searchInput, context) {
+  Widget buildResult(String searchInput, context, String? UId) {
+    String uuuu = FirebaseAuth.instance.currentUser!.uid;
     return searchInput.length == 0
         ? Scaffold()
         : StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
+                // .where('uid', isNotEqualTo: uuuu)
                 .where('nameLowerCase',
                     isGreaterThanOrEqualTo: searchInput.toLowerCase())
                 .where('nameLowerCase',
@@ -372,28 +378,38 @@ class _SearchListState extends State<SearchList> {
     return SingleChildScrollView(
         child: Column(
       children: [
-        Card(
-            elevation: 0,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            color: Colors.orange.shade100,
-            child: ListTile(
-              title: Center(
-                  child: Text(
-                "Educational",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.orange.shade500,
-                    fontFamily: 'Comfortaa',
-                    fontSize: 24),
+        SizedBox(
+          height: 10,
+        ),
+
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: 80,
+          child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              color: Colors.orange.shade100,
+              child: ListTile(
+                title: Center(
+                    child: Text(
+                  "Educational",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.orange.shade500,
+                      fontFamily: 'Comfortaa',
+                      fontSize: 24),
+                )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          MyEventsByCategory(category: "Educational")));
+                },
               )),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        MyEventsByCategory(category: "Educational")));
-              },
-            )),
+        ),
         SizedBox(
           height: 10,
         ),
