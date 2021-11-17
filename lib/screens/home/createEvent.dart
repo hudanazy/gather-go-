@@ -71,6 +71,8 @@ class _Eventform extends State<createEvent> {
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
+  String viewDate = "Select date ";
+  String viewTime = "Select time ";
 
   double saveLat = 0;
   double saveLong = 0;
@@ -255,7 +257,7 @@ class _Eventform extends State<createEvent> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "Select date ",
+                              text: viewDate,
                               style: TextStyle(
                                   color: Colors.orange[600],
                                   letterSpacing: 2,
@@ -328,7 +330,7 @@ class _Eventform extends State<createEvent> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "Select time ",
+                              text: viewTime,
                               style: TextStyle(
                                   color: Colors.orange[600],
                                   letterSpacing: 2,
@@ -558,6 +560,7 @@ class _Eventform extends State<createEvent> {
       toastLength: Toast.LENGTH_LONG,
     );
     setState(() => dateo = newDate);
+    viewDate = newDate.toString().substring(0, 10);
   }
 
   Future pickTime(BuildContext context) async {
@@ -575,6 +578,7 @@ class _Eventform extends State<createEvent> {
       msg: "Time selected.",
       toastLength: Toast.LENGTH_LONG,
     );
+    viewTime = ttime.toString().substring(10, 15);
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
