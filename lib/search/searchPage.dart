@@ -20,6 +20,7 @@ class SearchList extends StatefulWidget {
 class _SearchListState extends State<SearchList> {
   bool isNotSearching = true;
   String searchInput = "";
+  //bool searchInputBool=false ; // to avoid display result when the input is empty 
   Color backColor = Colors.orange.shade100;
   Widget appBarTitle = new Text('\nSearch for events',
       style: TextStyle(
@@ -41,6 +42,7 @@ class _SearchListState extends State<SearchList> {
         home: DefaultTabController(
             length: tabNum,
             child: Scaffold(
+              resizeToAvoidBottomInset: false, 
               appBar: new AppBar(
                   backgroundColor: Colors.white,
                   centerTitle: false,
@@ -97,6 +99,7 @@ class _SearchListState extends State<SearchList> {
                               onChanged: (val) {
                                 setState(() {
                                   searchInput = val;
+                                
                                 });
                               },
                             );
@@ -138,17 +141,26 @@ class _SearchListState extends State<SearchList> {
   Widget buildSearchByDescription(
       String searchInput, BuildContext context, String? UId) {
         String uuuu = FirebaseAuth.instance.currentUser!.uid;
+        searchInput=searchInput.trimLeft();
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
         .where('approved', isEqualTo: true)
-        //.where("uid", isNotEqualTo: UId)
         .where('searchDescription', arrayContains: searchInput.toLowerCase())
         .snapshots();
 
-    return searchInput.length == 0
-        ? Scaffold()
-        : StreamBuilder<Object>(
+bool isOnlySpace = false;
+    int j=0; // counter of spaces number in searchInput 
+    for (int i=0 ; i< searchInput.length ; i++){
+      if(searchInput.substring(i,i+1)==" ")
+      j++;
+
+    }
+    if(j==searchInput.length)
+    isOnlySpace=true;
+
+
+    return isOnlySpace? Scaffold(): StreamBuilder<Object>(
             stream: snap,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -225,18 +237,27 @@ class _SearchListState extends State<SearchList> {
             });
   }
 
-  Widget buildResult(String searchInput, context, String? UId) {
+  Widget buildResult(String searchInput, context, String? UId , ) {
     String uuuu = FirebaseAuth.instance.currentUser!.uid;
-    return searchInput.length == 0
-        ? Scaffold()
-        : StreamBuilder(
+    bool isOnlySpace = false;
+    int j=0; // counter of spaces number in searchInput 
+    for (int i=0 ; i< searchInput.length ; i++){
+      if(searchInput.substring(i,i+1)==" ")
+      j++;
+
+    }
+    if(j==searchInput.length)
+    isOnlySpace=true;
+searchInput=searchInput.trimLeft();
+    return isOnlySpace? Scaffold():
+         StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
                 //.where('uid', isNotEqualTo: uuuu)
                 .where('nameLowerCase',
                     isGreaterThanOrEqualTo: searchInput.toLowerCase())
-                .where('nameLowerCase',
+                .where('nameLowerCase', 
                     isLessThan: searchInput.toLowerCase() + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -252,7 +273,9 @@ class _SearchListState extends State<SearchList> {
                   //heightFactor: 30,
                 );
               }
-              return ListView(
+           
+              return  isOnlySpace? Scaffold(): // to avoid search when the input space 
+              ListView(
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
                   return Padding(
@@ -315,9 +338,7 @@ class _SearchListState extends State<SearchList> {
         .where('nameLowerCase', isLessThan: searchInput.toLowerCase() + 'z')
         .snapshots();
 
-    return searchInput.length == 0
-        ? Scaffold()
-        : StreamBuilder<Object>(
+    return  StreamBuilder<Object>(
             stream: snap,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -401,9 +422,7 @@ class _SearchListState extends State<SearchList> {
       'Personal Growth',
       'Other'
     ];
-// for(int i =0 ; i<category.length; i++ ){
 
-// }
     return SingleChildScrollView(
         child: Column(
       children: [
