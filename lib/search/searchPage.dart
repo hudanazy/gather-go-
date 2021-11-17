@@ -654,90 +654,90 @@ searchInput=searchInput.trimLeft();
                 },
               )),
         ),
-        // SizedBox(
-        //   height: 10,
-        // ),
-        // Container(
-        //   height: 80,
-        //   child: Card(
-        //       elevation: 0,
-        //       shape:
-        //           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        //       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        //       color: Colors.orange.shade100,
-        //       child: ListTile(
-        //         title: Center(
-        //             child: Text(
-        //           "Health",
-        //           textAlign: TextAlign.center,
-        //           style: TextStyle(
-        //               color: Colors.orange.shade500,
-        //               fontFamily: 'Comfortaa',
-        //               fontSize: 24),
-        //         )),
-        //         onTap: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //               builder: (context) =>
-        //                   MyEventsByCategory(category: "Health")));
-        //         },
-        //       )),
-        // ),
-        // SizedBox(
-        //   height: 10,
-        // ),
-        // Container(
-        //   height: 80,
-        //   child: Card(
-        //       elevation: 0,
-        //       shape:
-        //           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        //       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        //       color: Colors.orange.shade100,
-        //       child: ListTile(
-        //         title: Center(
-        //             child: Text(
-        //           "Career",
-        //           textAlign: TextAlign.center,
-        //           style: TextStyle(
-        //               color: Colors.orange.shade500,
-        //               fontFamily: 'Comfortaa',
-        //               fontSize: 24),
-        //         )),
-        //         onTap: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //               builder: (context) =>
-        //                   MyEventsByCategory(category: "Career")));
-        //         },
-        //       )),
-        // ),
-        // SizedBox(
-        //   height: 10,
-        // ),
-        // Container(
-        //   height: 80,
-        //   child: Card(
-        //       elevation: 0,
-        //       shape:
-        //           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        //       margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        //       color: Colors.orange.shade100,
-        //       child: ListTile(
-        //         title: Center(
-        //             child: Text(
-        //           "Personal Growth",
-        //           textAlign: TextAlign.center,
-        //           style: TextStyle(
-        //               color: Colors.orange.shade500,
-        //               fontFamily: 'Comfortaa',
-        //               fontSize: 24),
-        //         )),
-        //         onTap: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //               builder: (context) =>
-        //                   MyEventsByCategory(category: "Personal Growth")));
-        //         },
-        //       )),
-        // ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: 80,
+          child: Card(
+              elevation: 0,
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              color: Colors.orange.shade100,
+              child: ListTile(
+                title: Center(
+                    child: Text(
+                  "Health",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.orange.shade500,
+                      fontFamily: 'Comfortaa',
+                      fontSize: 24),
+                )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          MyEventsByCategory(category: "Health")));
+                },
+              )),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: 80,
+          child: Card(
+              elevation: 0,
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              color: Colors.orange.shade100,
+              child: ListTile(
+                title: Center(
+                    child: Text(
+                  "Career",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.orange.shade500,
+                      fontFamily: 'Comfortaa',
+                      fontSize: 24),
+                )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          MyEventsByCategory(category: "Career")));
+                },
+              )),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: 80,
+          child: Card(
+              elevation: 0,
+              shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              color: Colors.orange.shade100,
+              child: ListTile(
+                title: Center(
+                    child: Text(
+                  "Personal Growth",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.orange.shade500,
+                      fontFamily: 'Comfortaa',
+                      fontSize: 24),
+                )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          MyEventsByCategory(category: "Personal Growth")));
+                },
+              )),
+        ),
         SizedBox(
           height: 10,
         ),
