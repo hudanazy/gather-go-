@@ -156,7 +156,8 @@ class _SearchListState extends State<SearchList> {
               }
 
               if (snapshot.data.size == 0 && searchInput.length != 0) {
-                return Center(
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
                   child: Text(
                       "Sorry. We were not able to find a match\nTry Another Saerch",
                       textAlign: TextAlign.center,),
@@ -243,11 +244,12 @@ class _SearchListState extends State<SearchList> {
                 return Center(child: Loading());
               }
               if (snapshot.data.size == 0) {
-                return Center(
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
                   child: Text(
                       "Sorry. We were not able to find a match\nTry Another Saerch",
                       textAlign: TextAlign.center,),
-                  heightFactor: 30,
+                  //heightFactor: 30,
                 );
               }
               return ListView(
@@ -256,22 +258,27 @@ class _SearchListState extends State<SearchList> {
                   return Padding(
                       padding: const EdgeInsets.all(10),
                       child: Card(
+                        elevation: 6,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),
+                              side:
+                                  BorderSide(width: 0.5, color: Colors.amber)),
                           margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          color: Colors.grey[200],
+                          //color: Colors.grey[200],
                           child: ListTile(
                             title: Center(
                                 child: Text(
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.deepOrange,
+                                  color: Colors.amber[600],
                                   fontFamily: 'Comfortaa',
-                                  fontSize: 16),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                             )),
                             trailing: Icon(
                               Icons.arrow_forward_ios,
+                              color: Colors.purple[300],
                             ),
                             onTap: () {
                               if (document['uid']==uuuu)
