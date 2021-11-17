@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
-import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+
 
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+
 //import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 //import 'package:location/location.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -51,6 +51,7 @@ class _eventDetails extends State<eventDetails> {
     });
 
     return Scaffold(
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -90,12 +91,14 @@ class _eventDetails extends State<eventDetails> {
               child: Row(
                 children: <Widget>[
                   Icon(Icons.access_time),
+                  Flexible(
+                child:
                   Text("   " +
                       widget.event?.get('date').substring(0, 10) +
                       "  " +
                       widget.event?.get('time').substring(10, 15) +
                       '                                                           '), // we may need to change it as i dont think this the right time !!
-                ],
+                  )],
               ),
             ),
             //   Padding(padding: const EdgeInsets.only(left: 20.0),
@@ -103,11 +106,13 @@ class _eventDetails extends State<eventDetails> {
             //     Text("        ")])),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
+              child: Flexible(
+               
               child: Row(children: <Widget>[
                 Icon(Icons.people_alt_rounded),
                 Text("   Max attendee number is $attendeeNum  ")
               ]),
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
