@@ -277,8 +277,10 @@ class _ProfileFormState extends State<ProfileForm> {
                                     Icons.arrow_forward_ios,
                                   ),
                                   onTap: () {
-                                    MaterialPageRoute(
-                                        builder: (context) => BookedEvents());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BookedEvents()));
                                   },
                                 ))
                           ]));

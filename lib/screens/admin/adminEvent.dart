@@ -65,7 +65,10 @@ class _adminEvent extends State<adminEvent> {
                       return Center(child: Loading());
                     }
                     if (snapshot.data.size == 0) {
-                      return Center(child: Text("No new events"), heightFactor: 30,);
+                      return Center(
+                        child: Text("No new events"),
+                        heightFactor: 30,
+                      );
                     }
 
                     // if (!snapshot.hasData) {
@@ -79,7 +82,7 @@ class _adminEvent extends State<adminEvent> {
                     // }
 
                     return Container(
-                        height: 640,
+                        height: 540, // fix black yellow
                         width: 500,
                         child: ListView(
                           children: snapshot.data.docs.map<Widget>((document) {
