@@ -70,7 +70,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
     final buttonColor;
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
-    if (bookedNum < attendeeNum &&  !list.contains(currentUser))
+    if (bookedNum < attendeeNum && !list.contains(currentUser))
       buttonColor = Colors.amber;
     else
       buttonColor = Colors.grey;
@@ -130,11 +130,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
               child: Row(
                 children: <Widget>[
                   Icon(Icons.access_time),
-                  Text("   " +
-                      widget.event?.get('date').substring(0, 10) +
-                      "  " +
-                      widget.event?.get('time').substring(10, 15) +
-                      '                                                           '), // we may need to change it as i dont think this the right time !!
+                  Flexible(
+                    child: Text("   " +
+                        widget.event?.get('date').substring(0, 10) +
+                        "  " +
+                        widget.event?.get('time').substring(10, 15) +
+                        '                                                           '), // we may need to change it as i dont think this the right time !!
+                  ) // we may need to change it as i dont think this the right time !!
                 ],
               ),
             ),
@@ -227,90 +229,91 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                       onPressed: () async {
                         List list = widget.event?.get('attendeesList');
-                        if (list.contains(currentUser)){
-                            eventBookedDialog();
-                          }else {
-                        if (bookedNum < attendeeNum) {
-                          // StreamBuilder<Object>(
-                          //   stream: snap,
-                          //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
-                          //     if (snapshot.data.size ==0)
-                          //     return eventBookedDialog();
-                          //     print('success');
-                          //   },
-                          // );
-
-                          var result = await showBookDialog(context);
-                          if (result == true) {
-                            var eventDate = widget.event?.get('date');
-                            var eventTime = widget.event?.get('time');
-                            // NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
-                            //         widget.event?.get('name')+" event starts in 2 hours, don't forget it",
-                            //         eventDate, eventTime);
-                            NotifactionManager().showAttendeeNotification(
-                                1,
-                                "Reminder, your booked event",
-                                widget.event?.get('name') +
-                                    " starts tomorrow, don't forget it",
-                                eventDate,
-                                eventTime);
-                            try {
-                              List list = widget.event?.get('attendeesList');
-                              list.add(currentUser);
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .update({
-                                "bookedNumber": bookedNum + 1,
-                                "attendeesList": list
-                              });
-                              // DatabaseService()
-                              //     .addBookedEventToProfile(widget.event!.id);
-                              Fluttertoast.showToast(
-                                msg: widget.event?.get('name') +
-                                    " booked successfully, you can view it in your profile",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                              Navigator.pop(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home()));
-                            } catch (e) {
-                              // fail msg
-                              Fluttertoast.showToast(
-                                msg: "Somthing went wrong ",
-                                toastLength: Toast.LENGTH_SHORT,
-                              );
-                            }
-                          }
+                        if (list.contains(currentUser)) {
+                          eventBookedDialog();
                         } else {
-                          AlertDialog alert = AlertDialog(
-                            title: Text('Fully booked'),
-                            content: Text(
-                              'Sorry, all event\'s seats are booked.\nPlease choose another event to attend.',
-                              style: TextStyle(
-                                fontSize: 18,
+                          if (bookedNum < attendeeNum) {
+                            // StreamBuilder<Object>(
+                            //   stream: snap,
+                            //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                            //     if (snapshot.data.size ==0)
+                            //     return eventBookedDialog();
+                            //     print('success');
+                            //   },
+                            // );
+
+                            var result = await showBookDialog(context);
+                            if (result == true) {
+                              var eventDate = widget.event?.get('date');
+                              var eventTime = widget.event?.get('time');
+                              // NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
+                              //         widget.event?.get('name')+" event starts in 2 hours, don't forget it",
+                              //         eventDate, eventTime);
+                              NotifactionManager().showAttendeeNotification(
+                                  1,
+                                  "Reminder, your booked event",
+                                  widget.event?.get('name') +
+                                      " starts tomorrow, don't forget it",
+                                  eventDate,
+                                  eventTime);
+                              try {
+                                List list = widget.event?.get('attendeesList');
+                                list.add(currentUser);
+                                FirebaseFirestore.instance
+                                    .collection('events')
+                                    .doc(widget.event?.id)
+                                    .update({
+                                  "bookedNumber": bookedNum + 1,
+                                  "attendeesList": list
+                                });
+                                // DatabaseService()
+                                //     .addBookedEventToProfile(widget.event!.id);
+                                Fluttertoast.showToast(
+                                  msg: widget.event?.get('name') +
+                                      " booked successfully, you can view it in your profile",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
+                              } catch (e) {
+                                // fail msg
+                                Fluttertoast.showToast(
+                                  msg: "Somthing went wrong ",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                );
+                              }
+                            }
+                          } else {
+                            AlertDialog alert = AlertDialog(
+                              title: Text('Fully booked'),
+                              content: Text(
+                                'Sorry, all event\'s seats are booked.\nPlease choose another event to attend.',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
                               ),
-                            ),
-                            actions: [
-                              TextButton(
-                                  child: Text("Ok",
-                                      style: TextStyle(color: Colors.blue)),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
-                                  }),
-                            ],
-                          );
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return alert;
-                              });
+                              actions: [
+                                TextButton(
+                                    child: Text("Ok",
+                                        style: TextStyle(color: Colors.blue)),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    }),
+                              ],
+                            );
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                });
+                          }
                         }
-                      }},
+                      },
                     ),
                   ],
                 ))
