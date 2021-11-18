@@ -15,8 +15,9 @@ import 'package:gather_go/screens/comments/new_message.dart';
 
 class CommentScreen extends StatefulWidget {
   // const CommentScreen({Key? key}) : super(key: key);
+  final DocumentSnapshot? user;
   final DocumentSnapshot? event;
-  CommentScreen({required this.event});
+  CommentScreen({required this.event, required this.user});
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -26,7 +27,7 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    final user = Provider.of<NewUser?>(context, listen: false);
+
     Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = FirebaseFirestore
         .instance
         .collection('comments')
@@ -119,6 +120,47 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       MainAxisAlignment.end,
                                                   // padding: const EdgeInsets.all(8),
                                                   children: [
+                                                    Row(
+                                                      children: [
+                                                        Center(
+                                                          child: Stack(
+                                                            children: [
+                                                              ClipOval(
+                                                                child: Material(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  child: widget.user?.get(
+                                                                              'imageUrl') ==
+                                                                          ''
+                                                                      ? Image
+                                                                          .asset(
+                                                                          'images/profile.png',
+                                                                          width:
+                                                                              70,
+                                                                          height:
+                                                                              70,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        )
+                                                                      : Ink
+                                                                          .image(
+                                                                          image: NetworkImage(widget
+                                                                              .user
+                                                                              ?.get('imageUrl')),
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          width:
+                                                                              160,
+                                                                          height:
+                                                                              160,
+                                                                        ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                     Container(
                                                       width: width / 1.5,
                                                       child: Text(
@@ -146,6 +188,14 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           iconSize: 20,
                                                         ),
                                                         Text('0'),
+                                                        IconButton(
+                                                          onPressed:
+                                                              () async {},
+                                                          icon: Icon(
+                                                              Icons.report),
+                                                          color: Colors.grey,
+                                                          iconSize: 20,
+                                                        ),
                                                       ],
                                                       //  const EdgeInsets.only(right: 70),
                                                       // child: Card(

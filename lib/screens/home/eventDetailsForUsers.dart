@@ -237,10 +237,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CommentScreen(event: widget.event
-                                        // change to move to details and booked
-                                        )));
+                                builder: (context) => CommentScreen(
+                                      event: widget.event, user: documentList,
+                                      // change to move to details and booked
+                                    )));
                       },
                       //child: Text("see the location"),
                     ),
