@@ -117,21 +117,22 @@ class _Eventform extends State<createEvent> {
                       ),
                       //   GradientAppBar(),
                       Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 20, left: 50),
-                        // child: Text(
-                        //   "Event Nme",
-                        //   style: TextStyle(
-                        //     color: Colors.purpleAccent,
-                        //     letterSpacing: 5,
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.w700,
-                        //   ),
-                        // ),
-                      ),
-                      SizedBox(height: 10),
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.only(top: 20, left: 20),
+                          child: Text(
+                            "Event Name",
+                            style: TextStyle(
+                                color: Colors.orange[600],
+                                letterSpacing: 2,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Comfortaa"),
+                          ),
+                        ),
+                      SizedBox(height: 8),
                       SizedBox(
                         width: 320,
+                        height: 50,
                         child: TextFormField(
                           controller: eventName,
                           maxLines: 1,
@@ -150,22 +151,24 @@ class _Eventform extends State<createEvent> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 20, left: 50),
-                        child: Text(
-                          "Event Category",
-                          style: TextStyle(
-                              color: Colors.orange[600],
-                              letterSpacing: 2,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Comfortaa"),
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.only(top: 20, left: 20),
+                          child: Text(
+                            "Event Category",
+                            style: TextStyle(
+                                color: Colors.orange[600],
+                                letterSpacing: 2,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Comfortaa"),
+                          ),
                         ),
-                      ),
+                      
 
                       SizedBox(height: 10),
                       Container(
                         width: 320,
+                        height: 50,
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
@@ -192,18 +195,18 @@ class _Eventform extends State<createEvent> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 20, left: 50),
-                        // child: Text(
-                        //   "Description",
-                        //   style: TextStyle(
-                        //     color: Colors.lightBlue,
-                        //     letterSpacing: 5,
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.w700,
-                        //   ),
-                        // ),
-                      ),
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.only(top: 20, left: 20),
+                          child: Text(
+                            "Event Description",
+                            style: TextStyle(
+                                color: Colors.orange[600],
+                                letterSpacing: 2,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Comfortaa"),
+                          ),
+                        ),
                       SizedBox(height: 10),
                       SizedBox(
                         width: 320,
@@ -243,7 +246,7 @@ class _Eventform extends State<createEvent> {
                       //   onChanged: (value) =>
                       //       setState(() => this._currentValue = value),
                       // ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       NumberPicker(
                         value: _currentValue,
                         minValue: 1,
@@ -252,7 +255,7 @@ class _Eventform extends State<createEvent> {
                         onChanged: (value) =>
                             setState(() => _currentValue = value),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       RichText(
                         text: TextSpan(
                           children: [
@@ -314,7 +317,7 @@ class _Eventform extends State<createEvent> {
                       //   onPressed: () => pickDate(context),
                       // ),
                       // ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       // SfDateRangePicker(
                       //   controller: Datee,
                       //   // onSelectionChanged: _onSelectionChanged,
@@ -386,7 +389,7 @@ class _Eventform extends State<createEvent> {
                       //   onPressed: () => pickTime(context),
                       // ),
 
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
@@ -400,7 +403,7 @@ class _Eventform extends State<createEvent> {
                               fontFamily: "Comfortaa"),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       SizedBox(
                         height: 400,
                         width: 350,
@@ -420,7 +423,7 @@ class _Eventform extends State<createEvent> {
                           onTap: _handleTap,
                         ),
                       ),
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
 
                       SizedBox(
                         height: 50,
