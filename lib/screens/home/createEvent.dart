@@ -73,6 +73,7 @@ class _Eventform extends State<createEvent> {
   String? StringLatLng;
   String viewDate = "Select date ";
   String viewTime = "Select time ";
+  String viewLocation = "Select Location  ";
 
   double saveLat = 0;
   double saveLong = 0;
@@ -102,32 +103,21 @@ class _Eventform extends State<createEvent> {
                     children: <Widget>[
                       SizedBox(height: 30),
                       AppBar(
-                        backgroundColor: Colors.white,
-                        elevation: 0.0,
-                        title: Text(
-                          "Create an event",
-                          style: TextStyle(
-                            fontFamily: 'Comfortaa',
-                            fontSize: 27,
-                            color: Colors.orange[600],
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                      
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          title: Text(
+            "Create An Event",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
+          ),
+        ),
                       //   GradientAppBar(),
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 20, left: 50),
-                        // child: Text(
-                        //   "Event Nme",
-                        //   style: TextStyle(
-                        //     color: Colors.purpleAccent,
-                        //     letterSpacing: 5,
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.w700,
-                        //   ),
-                        // ),
+                        
                       ),
                       SizedBox(height: 10),
                       SizedBox(
@@ -171,7 +161,7 @@ class _Eventform extends State<createEvent> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                                color: Colors.amberAccent, width: 2)),
+                                color: Colors.amberAccent, width: 1)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                               focusColor: Colors.grey,
@@ -354,73 +344,67 @@ class _Eventform extends State<createEvent> {
                                   color: Colors.orange[600],
                                   size: 50,
                                 ),
-                                // style: ElevatedButton.styleFrom(
-                                //   minimumSize: Size.fromHeight(40),
-                                //   primary: Colors.white,
-                                // ),
+                                
                                 onPressed: () => pickTime(context),
                               ),
                             ),
+                            
                           ],
                         ),
                       ),
-                      // child: IconButton(
-                      //   // label: Text(
-                      //   //   "Set event time",
-                      //   //   style: TextStyle(
-                      //   //     color: Colors.deepPurple,
-                      //   //     fontSize: 20,
-                      //   //     fontWeight: FontWeight.w500,
-                      //   //   ),
-                      //   // ),
-                      //   icon: Icon(
-                      //     Icons.access_time,
-                      //     textDirection: TextDirection.ltr,
-                      //     color: Colors.purple[300],
-                      //     size: 50,
-                      //   ),
-                      //   // style: ElevatedButton.styleFrom(
-                      //   //    minimumSize: Size.fromHeight(40),
-                      //   //   primary: Colors.white,
-                      //   // ),
-                      //   onPressed: () => pickTime(context),
-                      // ),
+                       RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: viewLocation,
+                              style: TextStyle(
+                                  color: Colors.orange[600],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                            WidgetSpan(
+                              child: IconButton(
+                               
+                                icon: Icon(
+                                  Icons.location_on,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.orange[600],
+                                  size: 50,
+                                ),
+                                
+                                onPressed: () => showMapdialogToSelectLocation(context),
+                              ),
+                            ),
+                            
+                          ],
+                        ),
+                      ),
+                    
 
-                      SizedBox(height: 40),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 20, left: 50),
-                        child: Text(
-                          "Select location",
-                          style: TextStyle(
-                              color: Colors.orange[600],
-                              letterSpacing: 2,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Comfortaa"),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        height: 400,
-                        width: 350,
-                        child: GoogleMap(
-                          initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition),
-                          mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          zoomControlsEnabled: true,
-                          zoomGesturesEnabled: true,
-                          liteModeEnabled: false,
-                          tiltGesturesEnabled: true,
-                          myLocationEnabled: true,
-                          markers: Set.from(myMarker),
-                          onTap: _handleTap,
-                        ),
-                      ),
-                      SizedBox(height: 40),
+                      // showMapdialogToSelectLocation(context)
+                      // SizedBox(height: 20),
+                      // SizedBox(
+                      //   height: 400,
+                      //   width: 350,
+                      //   child: GoogleMap(
+                      //     initialCameraPosition:
+                      //         CameraPosition(target: _initialcameraposition),
+                      //     mapType: MapType.normal,
+                      //     onMapCreated: _onMapCreated,
+                      //     rotateGesturesEnabled: true,
+                      //     scrollGesturesEnabled: true,
+                      //     zoomControlsEnabled: true,
+                      //     zoomGesturesEnabled: true,
+                      //     liteModeEnabled: false,
+                      //     tiltGesturesEnabled: true,
+                      //     myLocationEnabled: true,
+                      //     markers: Set.from(myMarker),
+                      //     onTap: _handleTap,
+                      //   ),
+                      // ),
+                      // SizedBox(height: 40),
 
                       SizedBox(
                         height: 50,
@@ -585,4 +569,57 @@ class _Eventform extends State<createEvent> {
       value: item,
       child: Text(item,
           style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
+
+Future<bool> showMapdialogToSelectLocation(
+    BuildContext context) async {
+  return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                right: -40.0,
+                top: -40.0,
+                child: InkResponse(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
+                  },
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pop('dialog'); //do what you want here
+                    },
+                    child: CircleAvatar(
+                      child: Icon(Icons.close),
+                      backgroundColor: Colors.deepOrange,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 500,
+                width: 450,
+                child: GoogleMap(
+                          initialCameraPosition:
+                              CameraPosition(target: _initialcameraposition),
+                          mapType: MapType.normal,
+                          onMapCreated: _onMapCreated,
+                          rotateGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          zoomGesturesEnabled: true,
+                          liteModeEnabled: false,
+                          tiltGesturesEnabled: true,
+                          myLocationEnabled: true,
+                         markers: Set.from(myMarker),
+                          onTap: _handleTap,
+                        ),
+              ),
+            ],
+          ),
+        );
+      });
+}
 }
