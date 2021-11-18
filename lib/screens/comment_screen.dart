@@ -26,6 +26,8 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<NewUser?>(context);
+    // commenter(widget.user!.id);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = FirebaseFirestore
@@ -97,48 +99,97 @@ class _CommentScreenState extends State<CommentScreen> {
                                         children: snapshot.data.docs
                                             .map<Widget>((document) {
                                           DocumentSnapshot uid = document;
+                                          final now = DateTime.now();
+                                          final past =
+                                              document['timePosted'].toDate();
+                                          final differenceDays =
+                                              now.difference(past).inDays;
+                                          final differenceHours =
+                                              now.difference(past).inHours;
+                                          final differenceMinutes =
+                                              now.difference(past).inMinutes;
+                                          final differenceSeconds =
+                                              now.difference(past).inSeconds;
+                                          final differenceMS = now
+                                              .difference(past)
+                                              .inMilliseconds;
+                                          String ago = "";
+                                          if (differenceDays == 0) {
+                                            if (differenceHours == 0) {
+                                              if (differenceMinutes == 0) {
+                                                if (differenceSeconds == 0) {
+                                                  if (differenceMS == 0) {
+                                                    ago = "now";
+                                                  } else {
+                                                    ago = differenceMS
+                                                            .toString() +
+                                                        "ms";
+                                                  }
+                                                } else {
+                                                  ago = differenceSeconds
+                                                          .toString() +
+                                                      "s";
+                                                }
+                                              } else {
+                                                ago = differenceMinutes
+                                                        .toString() +
+                                                    "m";
+                                              }
+                                            } else {
+                                              ago = differenceHours.toString() +
+                                                  "h";
+                                            }
+                                          } else {
+                                            ago =
+                                                differenceDays.toString() + "d";
+                                          }
+                                          //to get commenters current profile image
+                                          // commenter(document['uid']);
                                           return Card(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: Row(children: [
-                                              Center(
-                                                child: Stack(
-                                                  children: [
-                                                    ClipOval(
-                                                      child: Material(
-                                                        color:
-                                                            Colors.transparent,
-                                                        child: widget.user?.get(
-                                                                    'imageUrl') ==
-                                                                null
-                                                            ? Image.asset(
-                                                                'images/profile.png',
-                                                                width: 70,
-                                                                height: 70,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              )
-                                                            : Ink.image(
-                                                                image: NetworkImage(
-                                                                    widget.user
-                                                                        ?.get(
-                                                                            'imageUrl')),
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                width: 70,
-                                                                height: 70,
-                                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 10),
+                                                child: Center(
+                                                  child: Stack(
+                                                    children: [
+                                                      ClipOval(
+                                                        child: Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: document[
+                                                                      'imageUrl'] ==
+                                                                  ""
+                                                              ? Image.asset(
+                                                                  'images/profile.png',
+                                                                  width: 70,
+                                                                  height: 70,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                )
+                                                              : Ink.image(
+                                                                  image: NetworkImage(
+                                                                      document[
+                                                                          'imageUrl']),
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  width: 60,
+                                                                  height: 60,
+                                                                ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                               Expanded(
                                                 child: Container(
                                                   padding: EdgeInsets.only(
                                                       top: 10,
-                                                      left: 10,
+                                                      left: 20,
                                                       right: 10),
                                                   decoration: BoxDecoration(
                                                       color: Colors.white
@@ -150,6 +201,20 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
                                                       children: [
+                                                        // Container(
+                                                        //   width: width / 1.5,
+                                                        //   child: Text(
+                                                        //       document['name']),
+                                                        // ),
+                                                        Container(
+                                                          width: width / 1.5,
+                                                          child: Text(
+                                                            document['name'],
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue),
+                                                          ),
+                                                        ),
                                                         Container(
                                                           width: width / 1.5,
                                                           child: Text(
@@ -160,6 +225,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
+                                                            Text(ago),
                                                             IconButton(
                                                               onPressed:
                                                                   () async {},
@@ -214,7 +280,27 @@ class _CommentScreenState extends State<CommentScreen> {
       ),
       bottomNavigationBar: NewMessage(
         event: widget.event,
+        user: widget.user,
       ),
     );
+  }
+
+  String name = "";
+  String imageUrl = "";
+  late DocumentSnapshot? documentList;
+  // will return eventCreator name
+  void commenter(String uid) async {
+    String Name = "";
+    String image = "";
+    documentList =
+        await FirebaseFirestore.instance.collection('uesrInfo').doc(uid).get();
+
+    Name = documentList?['name'];
+    image = documentList?['imageUrl'];
+
+    setState(() {
+      name = Name;
+      imageUrl = image;
+    });
   }
 }
