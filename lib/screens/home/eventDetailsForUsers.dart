@@ -66,6 +66,20 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   @override
   Widget build(BuildContext context) {
+    //  final String
+
+    numComments() async {
+      await FirebaseFirestore.instance
+          .collection('comments')
+          // .orderBy("timePosted")
+          .where('eventID', isEqualTo: widget.event?.id)
+          .snapshots()
+          .length;
+    }
+
+    dynamic commentN = numComments();
+
+    //dynamic num = numComments();
     // var curLat = currentLocation?.latitude ?? 0;
     // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
@@ -220,7 +234,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                         Icons.message,
                         color: Colors.black,
                       ),
-                      label: Text("0 comments",
+                      label: Text("$commentN comments",
                           style: TextStyle(
                             color: Colors.black87,
                           )),

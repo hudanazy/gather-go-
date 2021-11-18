@@ -38,7 +38,9 @@ class _NewMessageState extends State<NewMessage> {
           Expanded(
               child: TextField(
             minLines: 1,
+            // maxLines: 5,
             maxLines: 5,
+            keyboardType: TextInputType.multiline,
             controller: _controller,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
