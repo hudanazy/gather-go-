@@ -27,23 +27,23 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    createEvent(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
+  // static List<Widget> _widgetOptions = <Widget>[
+  //   Text(
+  //     'Index 0: Home',
+  //     style: optionStyle,
+  //   ),
+  //   createEvent(),
+  //   Text(
+  //     'Index 2: School',
+  //     style: optionStyle,
+  //   ),
+  // ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   // final AuthService _auth = AuthService();
 // Widget build(BuildContext context) {
@@ -59,16 +59,16 @@ class _HomeState extends State<Home> {
   //final uesrList initial = uesrList();
   @override
   Widget build(BuildContext context) {
-    void _showSettingsPanel() {
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-              child: ProfileForm(),
-            );
-          });
-    }
+    // void _showSettingsPanel() {
+    //   showModalBottomSheet(
+    //       context: context,
+    //       builder: (context) {
+    //         return Container(
+    //           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+    //           child: ProfileForm(),
+    //         );
+    //       });
+    // }
 
     return Scaffold(
       // resizeToAvoidBottomInset: false,

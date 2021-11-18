@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+import 'package:gather_go/search/searchPage.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
-import 'package:async/async.dart' show StreamGroup;
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -166,6 +166,7 @@ print(currDt.second); // 49 */
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context, listen: false);
+    // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
         FirebaseFirestore.instance
@@ -214,26 +215,28 @@ print(currDt.second); // 49 */
                         )
                       ],
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.purple, width: 0.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.amberAccent, width: 0.5),
-                        ),
-                        hintText: "Search",
-                        hintStyle: TextStyle(color: Colors.purple[300]),
-                        prefixIcon:
-                            Icon(Icons.search, color: Colors.purple[300]),
-                        suffixIcon:
-                            Icon(Icons.filter_list, color: Colors.purple[300]),
-                      ),
-                      onChanged: (val) {},
-                    ),
+                    // TextField(
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.purple, width: 0.5),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.amberAccent, width: 0.5),
+                    //     ),
+                    //     hintText: "Search",
+                    //     hintStyle: TextStyle(color: Colors.purple[300]),
+                    //     prefixIcon:
+                    //         Icon(Icons.search, color: Colors.purple[300]),
+                    //     suffixIcon:
+                    //         Icon(Icons.filter_list, color: Colors.purple[300]),
+                    //   ),
+                    //   onChanged: (val) {
+                    //     // SearchList(searchInput: val);
+                    //   },
+                    // ),
                     Container(
                         height: 30,
                         child: Row(
@@ -334,6 +337,6 @@ print(currDt.second); // 49 */
                   ],
                 ))
           ],
-        )); //scaffold
+        ));
   }
 }
