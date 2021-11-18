@@ -89,7 +89,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 return Padding(
                                   padding: EdgeInsets.only(top: 10, right: 20),
                                   child: Container(
-                                    height: height / 1.3,
+                                    height: height / 1.4,
                                     width: width / 1.2,
                                     child: SingleChildScrollView(
                                       child: Column(

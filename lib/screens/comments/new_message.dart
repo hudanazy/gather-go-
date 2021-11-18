@@ -30,60 +30,67 @@ class _NewMessageState extends State<NewMessage> {
 
     final user = Provider.of<NewUser?>(context);
     commenter(user!.uid);
-    return Container(
-      margin: EdgeInsets.only(bottom: 3),
-      padding: EdgeInsets.all(8),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-              child: TextField(
-            minLines: 1,
-            // maxLines: 5,
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-            controller: _controller,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                hintText: "Add a comment..",
-                focusColor: Colors.grey,
-                hoverColor: Colors.grey,
-                // labelText: "Add a comment...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                )),
-            onChanged: (value) {
-              setState(() {
-                _enteredMessage = value;
-              });
-            },
-          )),
-          IconButton(
-            onPressed: (_enteredMessage.trim().isEmpty)
-                ? null
-                : () async {
-                    //print(widget.event?.data().toString());
-                    print(name);
-                    print(imageUrl);
-                    await DatabaseService(uid: user.uid).addCommentData(
-                        _enteredMessage,
-                        user.uid,
-                        name,
-                        imageUrl,
-                        widget.event!.id,
-                        0,
-                        0,
-                        DateTime.now());
-                    _controller.clear();
-                    setState(() {
-                      _enteredMessage = "";
-                    });
-                  },
-            icon: Icon(Icons.send),
-            color: Colors.blueAccent,
-          )
-        ],
-      ),
-    );
+    return SingleChildScrollView(
+        child: Stack(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(bottom: 3),
+          padding: EdgeInsets.all(8),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                  child: TextField(
+                minLines: 1,
+                // maxLines: 5,
+                maxLines: 3,
+                maxLength: 300,
+                keyboardType: TextInputType.multiline,
+                controller: _controller,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    hintText: "Add a comment..",
+                    focusColor: Colors.grey,
+                    hoverColor: Colors.grey,
+                    // labelText: "Add a comment...",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    )),
+                onChanged: (value) {
+                  setState(() {
+                    _enteredMessage = value;
+                  });
+                },
+              )),
+              IconButton(
+                onPressed: (_enteredMessage.trim().isEmpty)
+                    ? null
+                    : () async {
+                        //print(widget.event?.data().toString());
+                        print(name);
+                        print(imageUrl);
+                        await DatabaseService(uid: user.uid).addCommentData(
+                            _enteredMessage,
+                            user.uid,
+                            name,
+                            imageUrl,
+                            widget.event!.id,
+                            0,
+                            0,
+                            DateTime.now());
+                        _controller.clear();
+                        setState(() {
+                          _enteredMessage = "";
+                        });
+                      },
+                icon: Icon(Icons.send),
+                color: Colors.blueAccent,
+              )
+            ],
+          ),
+        )
+        // your body code
+      ],
+    ));
   }
 
   String name = "";
