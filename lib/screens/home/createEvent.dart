@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 // import 'package:gather_go/screens/home/event_list.dart';
 // import 'package:gather_go/screens/home/profile_form.dart';
 // import 'package:get/get.dart';
@@ -45,7 +46,7 @@ class _Eventform extends State<createEvent> {
     'Other'
   ];
   String? item = 'Other';
-
+ 
   final _formKey = GlobalKey<FormState>();
 
   //DateTime _dateTime = DateTime.now();
@@ -74,7 +75,7 @@ class _Eventform extends State<createEvent> {
   String viewDate = "Select date ";
   String viewTime = "Select time ";
   String viewLocation = "Select Location  ";
-
+var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
   double saveLat = 0;
   double saveLong = 0;
   @override
@@ -122,12 +123,15 @@ class _Eventform extends State<createEvent> {
                       SizedBox(height: 10),
                       SizedBox(
                         width: 320,
+
                         child: TextFormField(
                           controller: eventName,
                           maxLines: 1,
                           initialValue: eventData?.name,
-                          decoration: textInputDecoration.copyWith(
-                            hintText: "Event name..",
+                          decoration: 
+                          textInputDecoration.copyWith(
+                            
+                            hintText: "Event name",
                             hintStyle: TextStyle(
                                 color: Colors.orange[600],
                                 fontFamily: "Comfortaa"),
@@ -381,8 +385,9 @@ class _Eventform extends State<createEvent> {
                           ],
                         ),
                       ),
+                     
                     
-
+//showMapdialogToSelect 
                       // showMapdialogToSelectLocation(context)
                       // SizedBox(height: 20),
                       // SizedBox(
@@ -524,7 +529,8 @@ class _Eventform extends State<createEvent> {
           }));
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
-    });
+  
+                });
   }
 
   Future pickDate(BuildContext context) async {
@@ -573,35 +579,11 @@ class _Eventform extends State<createEvent> {
 Future<bool> showMapdialogToSelectLocation(
     BuildContext context) async {
   return await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Positioned(
-                right: -40.0,
-                top: -40.0,
-                child: InkResponse(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).pop('dialog');
-                  },
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pop('dialog'); //do what you want here
-                    },
-                    child: CircleAvatar(
-                      child: Icon(Icons.close),
-                      backgroundColor: Colors.deepOrange,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 500,
-                width: 450,
-                child: GoogleMap(
+    
+  context: context,
+  
+  builder: (context) {
+     googleMap = GoogleMap(
                           initialCameraPosition:
                               CameraPosition(target: _initialcameraposition),
                           mapType: MapType.normal,
@@ -613,13 +595,71 @@ Future<bool> showMapdialogToSelectLocation(
                           liteModeEnabled: false,
                           tiltGesturesEnabled: true,
                           myLocationEnabled: true,
-                         markers: Set.from(myMarker),
+                          markers: Set.from(myMarker),
+                          onTap: _handleTap,
+                        );
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text("SELECT LOCATION" ,style: TextStyle( color: Colors.grey, fontSize: 10 ) ),
+          content:  googleMap = GoogleMap(
+                          initialCameraPosition:
+                              CameraPosition(target: _initialcameraposition),
+                          mapType: MapType.normal,
+                          onMapCreated: _onMapCreated,
+                          rotateGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          zoomGesturesEnabled: true,
+                          liteModeEnabled: false,
+                          tiltGesturesEnabled: true,
+                          myLocationEnabled: true,
+                          markers: Set.from(myMarker),
                           onTap: _handleTap,
                         ),
-              ),
-            ],
-          ),
+                        
+                        
+                      
+          actions: <Widget>[
+            
+            
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            
+            
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  SizedBox(
+                        height: 400,
+                        width: 450,
+                  child: googleMap = GoogleMap(
+                          initialCameraPosition:
+                              CameraPosition(target: _initialcameraposition),
+                          mapType: MapType.normal,
+                          onMapCreated: _onMapCreated,
+                          rotateGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          zoomGesturesEnabled: true,
+                          liteModeEnabled: false,
+                          tiltGesturesEnabled: true,
+                          myLocationEnabled: true,
+                          markers: Set.from(myMarker),
+                          onTap: _handleTap,
+                        ));});
+                
+              },
+              child: Text("OK"),
+            ),
+          ],
         );
-      });
+      },
+    );
+  },
+);
 }
+
 }
