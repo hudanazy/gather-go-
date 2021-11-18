@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/screens/admin/adminNav.dart';
 import 'package:gather_go/screens/authenticate/sign_in.dart';
+import 'package:gather_go/screens/home/BookedEvents.dart';
 import 'package:gather_go/screens/home/editProfile.dart';
 import 'package:gather_go/screens/home/edit_profile_form.dart';
 import 'package:gather_go/screens/wrapper.dart';
@@ -276,8 +277,10 @@ class _ProfileFormState extends State<ProfileForm> {
                                     Icons.arrow_forward_ios,
                                   ),
                                   onTap: () {
-                                    MaterialPageRoute(
-                                        builder: (context) => MyEvents());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BookedEvents()));
                                   },
                                 ))
                           ]));
