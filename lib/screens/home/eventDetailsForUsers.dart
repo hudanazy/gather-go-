@@ -113,8 +113,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
     return StreamBuilder<QuerySnapshot>(
         stream: commentSnap, //DatabaseService(uid: user.uid).profileData,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          final data = snapshot.data.docs;
-          var nComments = snapshot.data.docs.length.toString();
+          //final data = snapshot.data.docs;
+          var nComments;
+          if (!snapshot.hasData) {
+            nComments = "0";
+          } else {
+            nComments = snapshot.data.docs.length.toString();
+          }
 
           return Scaffold(
             body: SingleChildScrollView(
