@@ -31,7 +31,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     String state = "";
     Color stateColor = Colors.grey;
     List<Marker> myMarker = [];
-
+ 
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
 
