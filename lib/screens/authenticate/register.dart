@@ -180,7 +180,7 @@ class _RegisterState extends State<Register> {
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
                               EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 115)),
+                                  vertical: 10, horizontal: 50)),
                         ),
                       ),
                       Text('Already have an account?'),
