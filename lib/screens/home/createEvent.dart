@@ -59,7 +59,7 @@ class _Eventform extends State<createEvent> {
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
   String? timeAgo;
-  int _currentValue = 5;
+  int _currentValue = 0;
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
@@ -228,11 +228,12 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         ),
                       ),
   NumericStepButton(
-                        // value: _currentValue,
+                        
                         minValue: 1,
                         maxValue: 500,
-                        onChanged: (value) =>
-                            setState(() => this._currentValue = value),
+                        onChanged: (value) {
+                            setState(() => this._currentValue = value);
+                            print("$_currentValue  hhhhhhhhhhhhhhhhhhh      " );}
                       ),
                       ],
                     ),
@@ -388,9 +389,15 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else {
+                                } else if (_currentValue == 0){
+                                  Fluttertoast.showToast(
+                                    msg: "Attendee number can't be 0 ",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                }else{
                                   // print(ttime);
                                   var result = await showMyDialog(context);
+
                                   if (result == true) {
                                    
                                     await DatabaseService(uid: user?.uid)
