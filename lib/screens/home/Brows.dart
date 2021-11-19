@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:gather_go/screens/admin/eventDetails.dart';
 import 'package:gather_go/Models/NewUser.dart';
-
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
-import 'package:gather_go/search/searchPage.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 
@@ -197,7 +194,8 @@ print(currDt.second); // 49 */
               channel.description,
               //importance: Importance.max,
               //priority: Priority.max,
-              icon: '@drawable/ic_flutternotification'),
+              icon: '@drawable/ic_flutternotification',
+              styleInformation: BigTextStyleInformation(''),),
         ),
         );
        }
