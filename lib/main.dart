@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gather_go/Models/NewUser.dart';
@@ -58,34 +57,6 @@ class _MyAppStatefullState extends State<MyAppStatefull> {
   ?.createNotificationChannel(channel);
    }
    
-  // @override
-  // void initState() {
-  //     print('objecthhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-  //     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //       // RemoteNotification? notification = message.notification;
-  //       // AndroidNotification? android = message.notification?.android;
-  //     print(message.data.toString());
-  //   //    if (notification != null && android != null) {
-  //   // flutterLocalNotificationsPlugin.show(
-  //   //     notification.hashCode,
-  //   //     notification.title,
-  //   //     notification.body,
-  //   //     NotificationDetails(
-  //   //       android: AndroidNotificationDetails(
-  //   //           channel.id,
-  //   //           channel.name,
-  //   //           channel.description,
-  //   //           //importance: Importance.max,
-  //   //           //priority: Priority.max,
-  //   //           icon: '@drawable/ic_flutternotification'),
-  //   //     ),
-  //   //     );
-  //   //    }
-  //      return;
-  // });
-  // super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -13,9 +12,6 @@ import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/home/nav.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import '../NotifactionManager.dart';
-//import 'package:timezone/timezone.dart' as tz;
-//import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -70,21 +66,6 @@ class _Eventform extends State<createEvent> {
 
   double saveLat = 0;
   double saveLong = 0;
-
-  
-  @override
-  void initState() {
-    super.initState();
-    // FirebaseMessaging.onMessage.listen((event) {
-    //   print(event);
-    // });
-    // FirebaseMessaging.onBackgroundMessage((message) async {
-    //   await Firebase.initializeApp();
-    //   print('object');});
-
-    //tz.initializeTimeZones();
-  
-  }
 
   //DateTime date;
   @override
@@ -478,12 +459,7 @@ class _Eventform extends State<createEvent> {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
                                   if (result == true) {
-                                    // NotifactionManager().showNotification(
-                                    //     1,
-                                    //     "Reminder, " + eventName.text,
-                                    //     "You have upcoming event, don't forget it",
-                                    //     dateo,
-                                    //     ttime); //before 1 day
+                                   
                                     await DatabaseService(uid: user?.uid)
                                         .addEventData(
                                       user!.uid,
