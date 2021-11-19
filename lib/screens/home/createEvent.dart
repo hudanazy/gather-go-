@@ -218,11 +218,11 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 10, left: 20),
                         child: Text(
-                          "How many attendees?",
+                          "Attendee Number",
                           style: TextStyle(
                               color: Colors.orange[600],
                               letterSpacing: 2,
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                               fontFamily: "Comfortaa"),
                         ),
@@ -233,7 +233,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         maxValue: 500,
                         onChanged: (value) {
                             setState(() => this._currentValue = value);
-                            print("$_currentValue  hhhhhhhhhhhhhhhhhhh      " );}
+                            }
                       ),
                       ],
                     ),
@@ -541,6 +541,7 @@ Future<bool> showMapdialogToSelectLocation(
             TextButton(
               onPressed: () {
                 setState(() {
+                   viewLocation = "Selected";
                   SizedBox(
                         height: 300,
                         width: 450,
@@ -559,12 +560,13 @@ Future<bool> showMapdialogToSelectLocation(
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
                         ));
-                         viewLocation = "Selected";});
+                        });
       if(saveLat != 0 && saveLat !=0 )          
     Fluttertoast.showToast(
       msg: "Location selected.",
       toastLength: Toast.LENGTH_LONG,
     );
+    
    
               },
               child: Text("Click here to update the location "),
