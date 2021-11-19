@@ -76,6 +76,8 @@ class _epFormState extends State<epForm> {
         .collection('uesrInfo')
         .where('uid', isEqualTo: user?.uid)
         .snapshots();
+    bool isNameOnlySpace = false;
+    bool isBioOnlySpace = false;
 
     return StreamBuilder<Object>(
         stream: snap, //DatabaseService(uid: user.uid).profileData,
@@ -265,19 +267,48 @@ class _epFormState extends State<epForm> {
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
-                            print(currentName);
-                            if (image == null && document['imageUrl'] == '') {
-                              Fluttertoast.showToast(
-                                msg: "Please pick an image.",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                              return;
-                            } else if (image == null &&
-                                document['imageUrl'] != '') {
+                            //check if onlyspaces in name
+                            bool isNameOnlySpace() {
+                              int j =
+                                  0; // counter of spaces number in name Input
+                              for (int i = 0; i < currentName!.length; i++) {
+                                if (currentName!.substring(i, i + 1) == " ")
+                                  j++;
+                              }
+                              if (j == currentName!.length) {
+                                return true;
+                              }
+                              return false;
+                            }
+
+                            //////
+                            /////check if onlyspaces in bio
+                            bool isBioOnlySpace() {
+                              int k =
+                                  0; // counter of spaces number in bio Input
+                              for (int i = 0; i < currentBio!.length; i++) {
+                                if (currentBio!.substring(i, i + 1) == " ") k++;
+                              }
+                              if (k == currentBio!.length) {
+                                return true;
+                              }
+                              return false;
+                            }
+
+                            //////////////////////
+
+                            // if (image == null && document['imageUrl'] == '') {
+                            //   Fluttertoast.showToast(
+                            //     msg: "Please pick an image.",
+                            //     toastLength: Toast.LENGTH_LONG,
+                            //   );
+                            //   return;
+                            // } else
+                            if (image == null && document['imageUrl'] != '') {
                               imageFile = document['imageUrl'];
                             }
                             //image upload to storage
-                            else {
+                            else if (image != null) {
                               final ref = FirebaseStorage.instance
                                   .ref()
                                   .child('user_image')
@@ -287,16 +318,40 @@ class _epFormState extends State<epForm> {
 
                               final url = await ref.getDownloadURL();
                               imageFile = url;
+                            } else {
+                              imageFile = '';
                             }
+
                             if (_formkey.currentState!.validate()) {
-                              if (currentName == "") {
+                              if (currentName == "" || isNameOnlySpace()) {
                                 currentName = document['name'];
                               }
                               if (currentStatus == "") {
                                 currentStatus = document['status'];
                               }
-                              if (currentBio == "") {
+                              if (currentBio == "" || isBioOnlySpace()) {
                                 currentBio = document['bio'];
+                              }
+                              if (isNameOnlySpace() && isBioOnlySpace()) {
+                                Fluttertoast.showToast(
+                                  msg: "Name and bio can't be only spaces.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                return;
+                              }
+                              if (isNameOnlySpace()) {
+                                Fluttertoast.showToast(
+                                  msg: "Name can't be only spaces.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                return;
+                              }
+                              if (isBioOnlySpace()) {
+                                Fluttertoast.showToast(
+                                  msg: "Bio can't be only spaces.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                return;
                               }
                               dynamic db = await DatabaseService(
                                       uid: user?.uid.toString())
