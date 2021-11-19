@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
-
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
@@ -15,7 +14,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
 
