@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
@@ -209,6 +210,7 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
+  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
