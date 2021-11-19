@@ -39,6 +39,17 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -55,6 +66,7 @@ class DatabaseService {
       "lat": lat,
       "long": long,
       "nameLowerCase": name?.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
@@ -69,6 +81,18 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -85,6 +109,7 @@ class DatabaseService {
       "lat": lat,
       "long": long,
       "nameLowerCase": name?.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
@@ -106,7 +131,6 @@ class DatabaseService {
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
 
-    //we should change the description to lower case first then use it in the loop
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
