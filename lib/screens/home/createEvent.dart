@@ -527,10 +527,6 @@ Future<bool> showMapdialogToSelectLocation(
                           onTap: _handleTap,
                         ), ),        
           actions: <Widget>[
-            
-              
-              
-              
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text("Done"),
@@ -557,7 +553,7 @@ Future<bool> showMapdialogToSelectLocation(
                           onTap: _handleTap,
                         ));
                          viewLocation = "Selected";});
-                
+      if(saveLat != 0 && saveLat !=0 )          
     Fluttertoast.showToast(
       msg: "Location selected.",
       toastLength: Toast.LENGTH_LONG,
