@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-// import 'package:gather_go/screens/home/event_list.dart';
-// import 'package:gather_go/screens/home/profile_form.dart';
-// import 'package:get/get.dart';
+import 'package:gather_go/shared/num_button.dart';
+
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-//import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
-//import 'package:gather_go/shared/gradient_app_bar.dart';
-import 'package:numberpicker/numberpicker.dart';
+
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:gather_go/screens/home/home.dart';
+
 import 'package:gather_go/screens/home/nav.dart';
-//import 'package:location/location.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:gather_go/shared/num_button.dart';
+
 import '../NotifactionManager.dart';
-//import 'package:timezone/timezone.dart' as tz;
+
 import 'package:timezone/data/latest.dart' as tz;
+
+
+
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
@@ -53,6 +53,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController eventName = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
+  TextEditingController attendeeNum = TextEditingController();
 
   //int _currentStep = 0;
   DateTime? dateo;
@@ -60,6 +61,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController? description;
   String? Name;
   String? Description;
+  int? attendeeNumber;
   TimeOfDay? ttime;
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
@@ -72,9 +74,9 @@ class _Eventform extends State<createEvent> {
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
-  String viewDate = "Select date ";
-  String viewTime = "Select time ";
-  String viewLocation = "Select Location  ";
+  String viewDate = "Date ";
+  String viewTime = "Time ";
+  String viewLocation = "Location  ";
 var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
   double saveLat = 0;
   double saveLong = 0;
@@ -102,7 +104,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 30),
+                      
                       AppBar(
                       
           toolbarHeight: 100,
@@ -128,9 +130,9 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 fontFamily: "Comfortaa"),
                           ),
                         ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 5),
                       SizedBox(
-                        width: 320,
+                        width: 350,
                         height: 50,
                         child: TextFormField(
                           controller: eventName,
@@ -139,10 +141,6 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           decoration: 
                           textInputDecoration.copyWith(
                             
-                            hintText: "Event name",
-                            hintStyle: TextStyle(
-                                color: Colors.orange[600],
-                                fontFamily: "Comfortaa"),
                           ),
                           validator: (val) => val!.isEmpty
                               ? "The event needs a name."
@@ -150,7 +148,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           onChanged: (val) => setState(() => Name = val),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      
                       Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 20, left: 20),
@@ -166,16 +164,16 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         ),
                       
 
-                      SizedBox(height: 10),
+                      SizedBox(height: 5),
                       Container(
-                        width: 320,
+                        width: 350,
                         height: 50,
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                                color: Colors.amberAccent, width: 1)),
+                                color: Colors.grey, width: 1)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                               focusColor: Colors.grey,
@@ -194,7 +192,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                               )),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      
                       Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 20, left: 20),
@@ -208,92 +206,149 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 fontFamily: "Comfortaa"),
                           ),
                         ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 5),
                       SizedBox(
-                        width: 320,
+                       
+                        width: 350,
+                        
                         child: TextFormField(
                           controller: eventDescription,
+                          minLines: 3,
                           maxLines: 5,
                           initialValue: eventData?.description,
-                          decoration: textInputDecoration.copyWith(
-                              hintText: "Tell us more about your event...",
-                              hintStyle: TextStyle(
-                                  color: Colors.orange[600],
-                                  fontFamily: "Comfortaa")),
+                          decoration: textInputDecoration.copyWith(),
                           validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
                           onChanged: (val) => setState(() => Description = val),
                         ),
                       ),
+                    
                       SizedBox(height: 10),
-                      Container(
+                    Row(
+                      children: [
+                        Container(
                         alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 20, left: 50),
+                        padding: EdgeInsets.only(top: 10, left: 20),
                         child: Text(
                           "How many attendees?",
                           style: TextStyle(
                               color: Colors.orange[600],
                               letterSpacing: 2,
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               fontFamily: "Comfortaa"),
                         ),
                       ),
-                      // NumericStepButton(
-                      //   // value: _currentValue,
-                      //   minValue: 1,
-                      //   maxValue: 500,
-                      //   onChanged: (value) =>
-                      //       setState(() => this._currentValue = value),
-                      // ),
-                      SizedBox(height: 5),
-                      NumberPicker(
-                        value: _currentValue,
+  NumericStepButton(
+                        // value: _currentValue,
                         minValue: 1,
                         maxValue: 500,
-                        axis: Axis.horizontal,
                         onChanged: (value) =>
-                            setState(() => _currentValue = value),
+                            setState(() => this._currentValue = value),
                       ),
-                      SizedBox(height: 5),
-                      RichText(
+                      ],
+                    ),
+                      
+                      
+                      
+                       
+                       Center( child: 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        RichText(
                         text: TextSpan(
                           children: [
+                             WidgetSpan(
+                              child: IconButton(
+                               
+                                icon: Icon(
+                                  Icons.calendar_today_rounded,
+                                  color: Colors.orange[600],
+                                  size: 25,
+                                ),
+                               
+                                onPressed: () => pickDate(context),
+                              ),
+                            ),
                             TextSpan(
                               text: viewDate,
                               style: TextStyle(
                                   color: Colors.orange[600],
                                   letterSpacing: 2,
-                                  fontSize: 18,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: "Comfortaa"),
                             ),
-                            WidgetSpan(
-                              child: IconButton(
-                                // label: Text(
-                                //   "Set event date",
-                                //   style: TextStyle(
-                                //     color: Colors.deepPurple,
-                                //     fontSize: 20,
-                                //     fontWeight: FontWeight.w500,
-                                //   ),
-                                // ),
-                                icon: Icon(
-                                  Icons.calendar_today_rounded,
-                                  color: Colors.orange[600],
-                                  size: 50,
-                                ),
-                                // style: ElevatedButton.styleFrom(
-                                //   minimumSize: Size.fromHeight(40),
-                                //   primary: Colors.white,
-                                // ),
-                                onPressed: () => pickDate(context),
-                              ),
-                            ),
+                           
                           ],
                         ),
                       ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                             WidgetSpan(
+                              child: IconButton(
+                                
+                                icon: Icon(
+                                  Icons.access_time,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.orange[600],
+                                  size: 25,
+                                ),
+                                
+                                onPressed: () => pickTime(context),
+                              ),
+                            ),
+                            TextSpan(
+                              text: viewTime,
+                              style: TextStyle(
+                                  color: Colors.orange[600],
+                                  letterSpacing: 2,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                           
+                            
+                          ],
+                        ),
+                      ),RichText(
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: IconButton(
+                               
+                                icon: Icon(
+                                  Icons.location_on_outlined,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.orange[600],
+                                  size: 25,
+                                ),
+                                //Location()
+                                
+                                onPressed: () => showMapdialogToSelectLocation(context),
+                              ),
+                            ),
+                            TextSpan(
+                              text: viewLocation,
+                              style: TextStyle(
+                                  color: Colors.orange[600],
+                                  letterSpacing: 2,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                            
+                            
+                          ],
+                        ),
+                      ),
+                      ],
+                      ),),
+                     
+                      
                       // Container(
                       //   // color: Colors.amber,
                       //   width: 50,
@@ -318,7 +373,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                       //   onPressed: () => pickDate(context),
                       // ),
                       // ),
-                      SizedBox(height: 5),
+                     SizedBox(height: 10),
                       // SfDateRangePicker(
                       //   controller: Datee,
                       //   // onSelectionChanged: _onSelectionChanged,
@@ -330,71 +385,8 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                       //   margin: const EdgeInsets.only(right: 5.0),
                       //   // color: Colors.amber,
                       //   width: 50,
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: viewTime,
-                              style: TextStyle(
-                                  color: Colors.orange[600],
-                                  letterSpacing: 2,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Comfortaa"),
-                            ),
-                            WidgetSpan(
-                              child: IconButton(
-                                // label: Text(
-                                //   "Set event time",
-                                //   style: TextStyle(
-                                //     color: Colors.deepPurple,
-                                //     fontSize: 20,
-                                //     fontWeight: FontWeight.w500,
-                                //   ),
-                                // ),
-                                icon: Icon(
-                                  Icons.access_time,
-                                  textDirection: TextDirection.ltr,
-                                  color: Colors.orange[600],
-                                  size: 50,
-                                ),
-                                
-                                onPressed: () => pickTime(context),
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                      ),
-                       RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: viewLocation,
-                              style: TextStyle(
-                                  color: Colors.orange[600],
-                                  letterSpacing: 2,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Comfortaa"),
-                            ),
-                            WidgetSpan(
-                              child: IconButton(
-                               
-                                icon: Icon(
-                                  Icons.location_on,
-                                  textDirection: TextDirection.ltr,
-                                  color: Colors.orange[600],
-                                  size: 50,
-                                ),
-                                
-                                onPressed: () => showMapdialogToSelectLocation(context),
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                      ),
+                      
+                       
                      
                     
 //showMapdialogToSelect 
@@ -518,13 +510,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    // _location.onLocationChanged.listen((l) {
-    //   _controller.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
-    //     ),
-    //   );
-    // });
+    
   }
 
   void _handleTap(LatLng tappedPoint) {
@@ -593,28 +579,18 @@ Future<bool> showMapdialogToSelectLocation(
   context: context,
   
   builder: (context) {
-     googleMap = GoogleMap(
-                          initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition),
-                          mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          zoomControlsEnabled: true,
-                          zoomGesturesEnabled: true,
-                          liteModeEnabled: false,
-                          tiltGesturesEnabled: true,
-                          myLocationEnabled: true,
-                          markers: Set.from(myMarker),
-                          onTap: _handleTap,
-                        );
+   
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
-          title: Text("SELECT LOCATION" ,style: TextStyle( color: Colors.grey, fontSize: 10 ) ),
-          content:  googleMap = GoogleMap(
+          title: Text("SELECT LOCATION" ,style: TextStyle( color: Colors.grey, fontSize: 10) ),
+          content:   
+          SizedBox(
+                        height: 400,
+                        width: 450,
+                  child: GoogleMap(
                           initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition),
+                              CameraPosition(target: _initialcameraposition , zoom: 5),
                           mapType: MapType.normal,
                           onMapCreated: _onMapCreated,
                           rotateGesturesEnabled: true,
@@ -626,24 +602,21 @@ Future<bool> showMapdialogToSelectLocation(
                           myLocationEnabled: true,
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
-                        ),
-                        
-                        
-                      
+                        ), ),        
           actions: <Widget>[
             
-            
+              
+              
+              
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
+              child: Text("Done"),
             ),
-            
-            
             TextButton(
               onPressed: () {
                 setState(() {
                   SizedBox(
-                        height: 400,
+                        height: 300,
                         width: 450,
                   child: googleMap = GoogleMap(
                           initialCameraPosition:
@@ -659,10 +632,16 @@ Future<bool> showMapdialogToSelectLocation(
                           myLocationEnabled: true,
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
-                        ));});
+                        ));
+                         viewLocation = "Selected";});
                 
+    Fluttertoast.showToast(
+      msg: "Location selected.",
+      toastLength: Toast.LENGTH_LONG,
+    );
+   
               },
-              child: Text("OK"),
+              child: Text("Click here to update the location "),
             ),
           ],
         );
