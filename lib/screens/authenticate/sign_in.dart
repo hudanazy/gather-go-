@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 
-
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -121,7 +120,7 @@ class _SignInState extends State<SignIn> {
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
                               EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 123)),
+                                  vertical: 10, horizontal: 50)),
                         ),
                       ),
                       Text('Don’t have an account?'),

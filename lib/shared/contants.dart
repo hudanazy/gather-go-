@@ -7,8 +7,8 @@ const textInputDecoration = InputDecoration(
     // ),
     filled: true,
     enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.amber, width: 1),
+        borderSide: BorderSide(color: Colors.grey, width: 1),
         borderRadius: BorderRadius.all(const Radius.circular(15))),
     focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.purple, width: 2),
+        borderSide: BorderSide(color: Colors.amber, width: 2),
         borderRadius: BorderRadius.all(const Radius.circular(15))));

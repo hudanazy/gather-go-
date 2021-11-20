@@ -31,7 +31,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     String state = "";
     Color stateColor = Colors.grey;
     List<Marker> myMarker = [];
-
+ 
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
 
@@ -103,11 +103,13 @@ class _MyEventsDetails extends State<MyEventsDetails> {
               child: Row(
                 children: <Widget>[
                   Icon(Icons.access_time),
-                  Text("   " +
-                      widget.event?.get('date').substring(0, 10) +
-                      "  " +
-                      widget.event?.get('time').substring(10, 15) +
-                      '                                                           '), // we may need to change it as i dont think this the right time !!
+                  Flexible(
+                    child: Text("   " +
+                        widget.event?.get('date').substring(0, 10) +
+                        "  " +
+                        widget.event?.get('time').substring(10, 15) +
+                        '                                                           '), // we may need to change it as i dont think this the right time !!
+                  )
                 ],
               ),
             ),

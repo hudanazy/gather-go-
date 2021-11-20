@@ -1,21 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:gather_go/Models/ProfileOnScreen.dart';
-//import 'package:gather_go/screens/admin/adminNav.dart';
-//import 'package:gather_go/screens/home/editProfile.dart';
+
+import 'package:gather_go/screens/home/BookedEvents.dart';
 import 'package:gather_go/screens/home/edit_profile_form.dart';
-//import 'package:gather_go/services/auth.dart';
-//import 'package:gather_go/services/database.dart';
-//import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
-//import 'package:gather_go/shared/build_appbar.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
-// import 'dart:io';
-// import 'package:gather_go/shared/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:gather_go/services/database.dart';
+
 
 import 'MyEvents.dart';
 
@@ -273,8 +266,10 @@ class _ProfileFormState extends State<ProfileForm> {
                                     Icons.arrow_forward_ios,
                                   ),
                                   onTap: () {
-                                    MaterialPageRoute(
-                                        builder: (context) => MyEvents());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BookedEvents()));
                                   },
                                 ))
                           ]));
