@@ -98,8 +98,8 @@ class _eventEditFormState extends State<EidtEventForm> {
       initialCameraPosition:
           CameraPosition(target: LatLng(24.708481, 46.752108)));
   String viewLocation = "Location";
-  String viewDate = "New Date ";
-  String viewTime = "New Time ";
+  String viewDate = " Date ";
+  String viewTime = " Time ";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -397,7 +397,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 padding: MaterialStateProperty.all(
                                     EdgeInsets.fromLTRB(35, 15, 35, 15))),
                             child: Text(
-                              'Save Changes',
+                              'Save',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
