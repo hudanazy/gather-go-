@@ -212,7 +212,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                             document['name'],
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .blue),
+                                                                        .orange[
+                                                                    700]),
                                                           ),
                                                         ),
                                                         Container(
