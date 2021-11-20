@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:provider/provider.dart';
 //import 'package:gather_go/shared/loading.dart';
 
@@ -40,42 +41,57 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
+      appBar: SecondaryAppBar(title: "Comments",),
       body: Column(
         children: [
+          // SizedBox(height: 5,),
+          // SizedBox(
+          //   height: 45,
+          //   child: Text(
+          //     widget.event?.get('name'),
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 20,
+          //       color: Colors.purple[600]),
+          //   ),
+          // ),
           Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Row(children: [
-                  IconButton(
-                    icon: new Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => eventDetailsForUesers(
-                                    event: widget.event,
-                                  )));
-                    },
-                  ),
-                  Flexible(
-                    child: Text(widget.event?.get('name') + ' comments  ',
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 26)),
-                  ),
-                ]),
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: 350),
+            alignment: Alignment.center,
+            child:
+            // color: Colors.white,
+            // child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // children: [
+                // SizedBox(
+                //   height: 40,
+                // ),
+             //   Row(children: [
+                  // IconButton(
+                  //   icon: new Icon(Icons.arrow_back_ios),
+                  //   onPressed: () {
+                  //     Navigator.pop(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => eventDetailsForUesers(
+                  //                   event: widget.event,
+                  //                 )));
+                  //   },
+                  // ),
+                  // Flexible(
+                  //   child: Text(widget.event?.get('name') + ' comments  ',
+                  //       style: TextStyle(
+                  //           color: Colors.deepOrange,
+                  //           fontFamily: 'Comfortaa',
+                  //           fontSize: 26)),
+                  // ),
+             //   ]),
+             //   Column(
+               //   children: [
+                    // Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                         // SizedBox(height: 10),
                           StreamBuilder(
                               stream: snapshot,
                               builder: (BuildContext context,
@@ -86,10 +102,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                   );
                                 }
 
-                                return Padding(
-                                  padding: EdgeInsets.only(top: 10, right: 20),
-                                  child: Container(
-                                    height: height / 1.4,
+                                return //Padding(
+                                  
+                                 // child: 
+                                  Container(
+                                    padding: EdgeInsets.only(top: 10, ),//right: 20
+                                    height: (height / 1.5)+25,
                                     width: width / 1.2,
                                     child: SingleChildScrollView(
                                       child: Column(
@@ -268,14 +286,15 @@ class _CommentScreenState extends State<CommentScreen> {
                                         }).toList(), //docmnt
                                       ),
                                     ),
-                                  ),
+                                //  ),
                                 );
                               })
-                        ]),
-                  ],
-                ),
-              ],
-            ),
+                     //   ]
+                        //),
+                  //],
+               // ),
+             // ],
+         //   ),
           ),
         ],
       ),
