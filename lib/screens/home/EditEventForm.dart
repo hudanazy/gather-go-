@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/num_button.dart';
@@ -111,28 +112,29 @@ class _eventEditFormState extends State<EidtEventForm> {
     String userID = widget.event?.get('uid');
 
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: new Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(
-                  context, MaterialPageRoute(builder: (context) => MyEvents()));
-            },
-          ),
-          toolbarHeight: 100,
-          backgroundColor: Colors.white,
-          title: Text(
-            "Edit your Event",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.orange[400],
-                fontFamily: 'Comfortaa',
-                fontSize: 24),
-          ),
-        ),
+        appBar: SecondaryAppBar(title: "Edit your Event",),
+        // AppBar(
+        //   leading: IconButton(
+        //     icon: new Icon(
+        //       Icons.arrow_back_ios,
+        //       color: Colors.black,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.pop(
+        //           context, MaterialPageRoute(builder: (context) => MyEvents()));
+        //     },
+        //   ),
+        //   toolbarHeight: 100,
+        //   backgroundColor: Colors.white,
+        //   title: Text(
+        //     "Edit your Event",
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //         color: Colors.orange[400],
+        //         fontFamily: 'Comfortaa',
+        //         fontSize: 24),
+        //   ),
+        // ),
         body: SingleChildScrollView(
             child: Column(
           children: [
@@ -439,6 +441,27 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 var result = await showEditEventDialog(context);
                                 if (result == true) {
                                   try {
+                                     List<String> searchDescription =[]; 
+                                      String temp = "";
+                                      for (var i = 0; i < currentDescrption!.length; i++) {
+                                        if (currentDescrption![i] == " ") {
+                                          temp = "";
+                                        } else {
+                                          temp = temp + currentDescrption![i];
+                                          searchDescription.add(temp.toLowerCase());
+                                        }
+                                      }
+                                      List<String> nameLowerCase =[];
+
+                                      temp="";
+                                      for (var i = 0; i < currentNameEvent!.length; i++) {
+                                        if (currentNameEvent![i] == " ") {
+                                          temp = "";
+                                        } else {
+                                          temp = temp + currentNameEvent![i];
+                                          nameLowerCase.add(temp.toLowerCase());
+                                        }
+                                      }
                                     FirebaseFirestore.instance
                                         .collection("events")
                                         .doc(widget.event?.id)
@@ -453,6 +476,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       "long": currentlong,
                                       "adminCheck": false,
                                       "approved": false,
+                                      "nameLowerCase": nameLowerCase,
+                                      "searchDescription": searchDescription,
                                     });
 
                                     // date
