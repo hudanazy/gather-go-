@@ -21,10 +21,10 @@ class _SearchListState extends State<SearchList> {
   bool isNotSearching = true;
   String searchInput = "";
   //bool searchInputBool=false ; // to avoid display result when the input is empty 
-  Color backColor = Colors.orange.shade100;
-  Widget appBarTitle = new Text('\nSearch for events',
+  Color backColor = Colors.amber;
+  Widget appBarTitle = new Text('\nSearch for Events',
       style: TextStyle(
-          color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24));
+          color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24, fontWeight: FontWeight.bold));
   Icon actionIcon = new Icon(Icons.search, color: Colors.black, size: 40);
   TabBar tabs = TabBar(
     tabs: [],
@@ -42,14 +42,16 @@ class _SearchListState extends State<SearchList> {
         home: DefaultTabController(
             length: tabNum,
             child: Scaffold(
+              backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false, 
               appBar: new AppBar(
-                  backgroundColor: Colors.white,
-                  centerTitle: false,
+                  backgroundColor: Colors.orange[400],
+                  //centerTitle: true,
                   bottom: tabs,
                   title: appBarTitle,
                   actions: <Widget>[
                     new IconButton(
+                      padding: const EdgeInsets.only( right: 10, top: 22),
                       //iconSize: 40,
                       icon: actionIcon,
                       onPressed: () {
@@ -58,7 +60,7 @@ class _SearchListState extends State<SearchList> {
                             tabNum = 2;
                             isNotSearching = false;
                             this.tabs = new TabBar(
-                              indicatorColor: Colors.orangeAccent,
+                              indicatorColor: Colors.purple[600],
                               labelColor: Colors.black,
                               labelStyle: TextStyle(
                                 fontFamily: 'Comfortaa',
@@ -81,7 +83,7 @@ class _SearchListState extends State<SearchList> {
                                       EdgeInsets.symmetric(vertical: 15),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.orangeAccent, width: 2),
+                                        color: Colors.purple.shade600, width: 2),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -108,7 +110,7 @@ class _SearchListState extends State<SearchList> {
                             tabNum = 0;
                             isNotSearching = true;
                             this.tabs = new TabBar(
-                              indicatorColor: Colors.orangeAccent,
+                              indicatorColor: Colors.purple[600],
                               labelColor: Colors.black,
                               labelStyle: TextStyle(
                                 fontFamily: 'Comfortaa',
@@ -122,7 +124,8 @@ class _SearchListState extends State<SearchList> {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'Comfortaa',
-                                    fontSize: 24));
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold));
                           }
                         });
                       },
@@ -195,10 +198,10 @@ bool isOnlySpace = false;
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.amber[600],
+                                  color: Colors.black,
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                  ),
                             )),
                             /*  subtitle: Text(
                                                   document['date'].toString(),
@@ -294,10 +297,10 @@ searchInput=searchInput.trimLeft();
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.amber[600],
+                                  color: Colors.black,
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                  ),
                             )),
                             trailing: Icon(
                               Icons.arrow_forward_ios,
@@ -371,7 +374,7 @@ searchInput=searchInput.trimLeft();
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.amber[600],
+                                  color: Colors.amber,
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
