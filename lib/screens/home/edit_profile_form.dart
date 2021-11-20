@@ -323,36 +323,29 @@ class _epFormState extends State<epForm> {
                             }
 
                             if (_formkey.currentState!.validate()) {
-                              if (currentName == "" || isNameOnlySpace()) {
+                              if (currentName == "") {
                                 currentName = document['name'];
-                              }
-                              if (currentStatus == "") {
-                                currentStatus = document['status'];
-                              }
-                              if (currentBio == "" || isBioOnlySpace()) {
-                                currentBio = document['bio'];
-                              }
-                              if (isNameOnlySpace() && isBioOnlySpace()) {
-                                Fluttertoast.showToast(
-                                  msg: "Name and bio can't be only spaces.",
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-                                return;
-                              }
-                              if (isNameOnlySpace()) {
+                              } else if (isNameOnlySpace()) {
                                 Fluttertoast.showToast(
                                   msg: "Name can't be only spaces.",
                                   toastLength: Toast.LENGTH_LONG,
                                 );
                                 return;
                               }
-                              if (isBioOnlySpace()) {
+                              if (currentStatus == "") {
+                                currentStatus = document['status'];
+                              }
+
+                              if (currentBio == "") {
+                                currentBio = document['bio'];
+                              } else if (isBioOnlySpace()) {
                                 Fluttertoast.showToast(
                                   msg: "Bio can't be only spaces.",
                                   toastLength: Toast.LENGTH_LONG,
                                 );
                                 return;
                               }
+
                               dynamic db = await DatabaseService(
                                       uid: user?.uid.toString())
                                   .updateProfileData(user!.uid, currentName!,
