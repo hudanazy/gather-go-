@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -57,28 +58,31 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     }
 
     return Scaffold(
+      appBar: SecondaryAppBar(title: 'Event Details',),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: ArcBannerImage(),
+             // child: ArcBannerImage(),
             ),
             Row(children: [
-              IconButton(
-                icon: new Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => adminEvent()));
-                },
-              ),
+              // IconButton(
+              //   icon: new Icon(Icons.arrow_back_ios),
+              //   onPressed: () {
+              //     Navigator.pop(context,
+              //         MaterialPageRoute(builder: (context) => adminEvent()));
+              //   },
+              // ),
               Flexible(
+                child: Padding(
+              padding: const EdgeInsets.all(20.0),
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Comfortaa',
                         fontSize: 18)),
-              ),
+              )),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
@@ -113,15 +117,15 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.location_pin),
-                  Text("   to be added later"),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20.0),
+            //   child: Row(
+            //     children: <Widget>[
+            //       Icon(Icons.location_pin),
+            //       Text("   to be added later"),
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Row(children: <Widget>[
@@ -188,11 +192,11 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                         child: ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.purple[300]),
+                                  MaterialStateProperty.all(Colors.orange[400]),
                             ),
                             child: Text('Delete Event',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Comfortaa',
                                     fontSize: 12)),

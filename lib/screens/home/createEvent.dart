@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/shared/num_button.dart';
 import 'package:gather_go/services/database.dart';
@@ -80,7 +81,11 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
 
-    return StreamBuilder<Object>(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: MyAppBar(title: "Create An Event",),
+      body:
+     StreamBuilder<Object>(
         stream: DatabaseService(uid: user?.uid).eventss,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -92,17 +97,17 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                   child: Column(
                     children: <Widget>[
                       
-                      AppBar(
+        //               AppBar(
                       
-          toolbarHeight: 100,
-          backgroundColor: Colors.white,
-          title: Text(
-            "Create An Event",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-          ),
-        ),
+        //   toolbarHeight: 100,
+        //   backgroundColor: Colors.white,
+        //   title: Text(
+        //     "Create An Event",
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //         color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
+        //   ),
+        // ),
                       //   GradientAppBar(),
                       Container(
                           alignment: Alignment.topLeft,
@@ -110,7 +115,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Name",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -142,7 +147,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Category",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -174,7 +179,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                               onChanged: (value) =>
                                   setState(() => this.item = value),
                               style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 fontFamily: 'Comfortaa',
                               )),
                         ),
@@ -186,7 +191,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Description",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -220,7 +225,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         child: Text(
                           "Attendee Number",
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               letterSpacing: 2,
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -253,7 +258,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                
                                 icon: Icon(
                                   Icons.calendar_today_rounded,
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   size: 25,
                                 ),
                                
@@ -263,7 +268,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                             TextSpan(
                               text: viewDate,
                               style: TextStyle(
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -282,7 +287,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 icon: Icon(
                                   Icons.access_time,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   size: 25,
                                 ),
                                 
@@ -292,7 +297,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                             TextSpan(
                               text: viewTime,
                               style: TextStyle(
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -311,7 +316,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 icon: Icon(
                                   Icons.location_on_outlined,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   size: 25,
                                 ),
                                 //Location()
@@ -322,7 +327,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                             TextSpan(
                               text: viewLocation,
                               style: TextStyle(
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -435,7 +440,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                       SizedBox(height: 40),
                     ],
                   )));
-        });
+        }));
   }
 
   void _onMapCreated(GoogleMapController _cntlr) {

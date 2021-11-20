@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:provider/provider.dart';
@@ -79,7 +80,10 @@ class _epFormState extends State<epForm> {
     bool isNameOnlySpace = false;
     bool isBioOnlySpace = false;
 
-    return StreamBuilder<Object>(
+    return Scaffold(
+      appBar: SecondaryAppBar(title: "Edit your profile",),
+      body:
+    StreamBuilder<Object>(
         stream: snap, //DatabaseService(uid: user.uid).profileData,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
@@ -108,18 +112,18 @@ class _epFormState extends State<epForm> {
                   key: _formkey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        "Edit your profile",
-                        style: TextStyle(
-                            color: Colors.orange[600],
-                            letterSpacing: 2,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Comfortaa"),
-                      ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Text(
+                      //   "Edit your profile",
+                      //   style: TextStyle(
+                      //       color: Colors.orange[600],
+                      //       letterSpacing: 2,
+                      //       fontSize: 25,
+                      //       fontWeight: FontWeight.w600,
+                      //       fontFamily: "Comfortaa"),
+                      // ),
                       SizedBox(
                         height: 20,
                       ),
@@ -172,12 +176,12 @@ class _epFormState extends State<epForm> {
                           decoration: textInputDecoration.copyWith(
                             hintText: "What would like us to call you?",
                             hintStyle: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 fontSize: 14,
                                 fontFamily: "Comfortaa"),
                           ),
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               fontSize: 14,
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
@@ -196,7 +200,7 @@ class _epFormState extends State<epForm> {
                         child: Text(
                           "Status",
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               letterSpacing: 2,
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
@@ -218,7 +222,7 @@ class _epFormState extends State<epForm> {
                           onChanged: (val) =>
                               setState(() => currentStatus = val as String),
                           style: TextStyle(
-                            color: Colors.orange[600],
+                            color: Colors.orange[400],
                             fontFamily: 'Comfortaa',
                           )),
                       SizedBox(
@@ -231,13 +235,13 @@ class _epFormState extends State<epForm> {
                           decoration: textInputDecoration.copyWith(
                             hintText: "Enter your bio.",
                             hintStyle: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 fontSize: 14,
                                 fontFamily: "Comfortaa"),
                           ),
                           maxLines: 4,
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               fontSize: 14,
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
@@ -366,7 +370,7 @@ class _epFormState extends State<epForm> {
               );
             }).toList(),
           ));
-        });
+        }));
   }
 
   Widget buildImage() {

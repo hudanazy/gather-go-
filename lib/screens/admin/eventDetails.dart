@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 
 
 
@@ -57,29 +58,34 @@ class _eventDetails extends State<eventDetails> {
     });
 
     return Scaffold(
-
+      appBar: SecondaryAppBar(title: 'Event Details',),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: ArcBannerImage(),
+           //   child: ArcBannerImage(),
             ),
             Row(children: [
-              IconButton(
-                icon: new Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => adminEvent()));
-                },
-              ),
+              Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),),
+              // IconButton(
+              //   icon: new Icon(Icons.arrow_back_ios),
+              //   onPressed: () {
+              //     Navigator.pop(context,
+              //         MaterialPageRoute(builder: (context) => adminEvent()));
+              //   },
+              // ),
               Flexible(
+                child: Padding(
+              padding: const EdgeInsets.all(20.0),
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
-                        color: Colors.deepOrange,
+                        color: Colors.orange[400],
                         fontFamily: 'Comfortaa',
-                        fontSize: 18)),
-              ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),),
+              )),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
@@ -191,10 +197,10 @@ class _eventDetails extends State<eventDetails> {
                         child: ElevatedButton(
                           child: Text('Disapprove',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Comfortaa',
-                                  fontSize: 12)),
+                                  fontSize: 16)),
                           onPressed: () async {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
@@ -235,7 +241,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[300]),
+                                  MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -247,10 +253,10 @@ class _eventDetails extends State<eventDetails> {
                       child: ElevatedButton(
                         child: Text('Approve',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Comfortaa',
-                                fontSize: 12)),
+                                fontSize: 16)),
                         onPressed: () async {
                           var result = await showApproveDialog(context);
                           if (result == true) {
