@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gather_go/Models/NewUser.dart';
-
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
-//import 'package:async/async.dart' show StreamGroup;
+
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -59,6 +60,18 @@ var currDt = DateTime.now().toString();
 var timen = DateTime.now().hour; */
 
 class _HomeScreenState extends State<HomeScreen> {
+    final AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', 
+    'High Importance Notifications', 
+    'This channel is used for important notifications.', 
+    importance: Importance.max,
+  );
+     var flutterLocalNotificationsPlugin= new FlutterLocalNotificationsPlugin();
+  _HomeScreenState(){
+
+     flutterLocalNotificationsPlugin
+     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+  ?.createNotificationChannel(channel);}
   // final user = Provider.of<NewUser?>(context, listen: false);
   // Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
   //     .collection('events')
@@ -165,7 +178,32 @@ print(currDt.second); // 49 */
 
   @override
   Widget build(BuildContext context) {
+     FirebaseMessaging.instance.getToken();
+          FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+      print(message.data.toString());
+       if (notification != null && android != null) {
+    flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channel.description,
+              //importance: Importance.max,
+              //priority: Priority.max,
+              icon: '@drawable/ic_flutternotification',
+              styleInformation: BigTextStyleInformation(''),),
+        ),
+        );
+       }
+       return;
+  });
     final user = Provider.of<NewUser?>(context, listen: false);
+    // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
         FirebaseFirestore.instance
@@ -214,26 +252,28 @@ print(currDt.second); // 49 */
                         )
                       ],
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.purple, width: 0.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.amberAccent, width: 0.5),
-                        ),
-                        hintText: "Search",
-                        hintStyle: TextStyle(color: Colors.purple[300]),
-                        prefixIcon:
-                            Icon(Icons.search, color: Colors.purple[300]),
-                        suffixIcon:
-                            Icon(Icons.filter_list, color: Colors.purple[300]),
-                      ),
-                      onChanged: (val) {},
-                    ),
+                    // TextField(
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.purple, width: 0.5),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.amberAccent, width: 0.5),
+                    //     ),
+                    //     hintText: "Search",
+                    //     hintStyle: TextStyle(color: Colors.purple[300]),
+                    //     prefixIcon:
+                    //         Icon(Icons.search, color: Colors.purple[300]),
+                    //     suffixIcon:
+                    //         Icon(Icons.filter_list, color: Colors.purple[300]),
+                    //   ),
+                    //   onChanged: (val) {
+                    //     // SearchList(searchInput: val);
+                    //   },
+                    // ),
                     Container(
                         height: 30,
                         child: Row(
@@ -334,6 +374,6 @@ print(currDt.second); // 49 */
                   ],
                 ))
           ],
-        )); //scaffold
+        ));
   }
 }

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
@@ -43,6 +42,17 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -50,13 +60,16 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendeeNum,
       "bookedNumber": 0,
-      "date": date,
-      "time": time,
+      "attendeesList": [],
+      "date": date, //DateTime.parse(date!),
+      "time": time, //DateTime.parse(time!),
       "category": category,
       'approved': false,
       "adminCheck": true,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name?.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
@@ -71,6 +84,18 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -78,6 +103,7 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendeeNum,
       "bookedNumber": 0,
+      "attendeesList": [],
       "date": date,
       "time": time,
       "category": category,
@@ -85,6 +111,8 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name?.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
@@ -116,6 +144,18 @@ class DatabaseService {
     double lat,
     double long,
   ) {
+    List<String> searchDescription =
+        []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
+    String temp = "";
+
+    for (var i = 0; i < description.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -124,12 +164,15 @@ class DatabaseService {
       "timePosted": timePosted,
       "attendees": attendees,
       "bookedNumber": 0,
+      "attendeesList": [],
       "date": date,
       "time": time,
       "approved": approved,
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
+      "nameLowerCase": name.toLowerCase(),
+      "searchDescription": searchDescription,
     });
   }
 
@@ -148,22 +191,22 @@ class DatabaseService {
       "email": email,
       "status": status,
       "imageUrl": imageUrl,
-      "bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
+      //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
       /* "location": location*/
     }); // may need to change date and time format
   }
 
   //user booked events
 
-  addBookedEventToProfile(String eventUid) {
-    userCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('bookedEvents')
-        .doc(eventUid)
-        .set({
-      "eventUid": eventUid,
-    });
-  }
+
+  // addBookedEventToProfile(
+  //   String eventUid
+  //   ) {
+  //   userCollection.doc(FirebaseAuth.instance.currentUser!.uid).collection('bookedEvents').doc(eventUid).set({
+  //     "eventUid": eventUid,
+  //   });
+  // }
+
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
@@ -209,6 +252,7 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
+  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(

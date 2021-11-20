@@ -1,22 +1,21 @@
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
-//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/screens/comment_screen.dart';
 import 'package:gather_go/screens/home/home.dart';
-//import 'package:gather_go/screens/home/profile_form.dart';
+
 import 'package:gather_go/screens/home/viewProfile.dart';
-import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:location/location.dart';
+
 import 'package:gather_go/shared/loading.dart';
+
 import '../NotifactionManager.dart';
 
 // ignore: camel_case_types
@@ -91,7 +90,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
-    if (bookedNum < attendeeNum) //&& eventBooked =='false')
+    List list = widget.event?.get('attendeesList');
+    final currentUser = FirebaseAuth.instance.currentUser!.uid;
+    if (bookedNum < attendeeNum && !list.contains(currentUser))
       buttonColor = Colors.amber;
     else
       buttonColor = Colors.grey;
@@ -121,13 +122,83 @@ class _eventDetails extends State<eventDetailsForUesers> {
             nComments = snapshot.data.docs.length.toString();
           }
 
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: ArcBannerImage(),
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: ArcBannerImage(),
+            ),
+            Row(children: [
+              IconButton(
+                icon: new Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => adminEvent()));
+                },
+              ),
+              Flexible(
+                child: Text(widget.event?.get('name') + '   ',
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontFamily: 'Comfortaa',
+                        fontSize: 18)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Chip(
+                  label: Text(category, style: TextStyle(color: Colors.black)),
+                  backgroundColor: Colors.grey[350],
+                ),
+              )
+            ]),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Edescription(widget.event?.get('description')),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.access_time),
+                  Flexible(
+                    child: Text("   " +
+                        widget.event?.get('date').substring(0, 10) +
+                        "  " +
+                        widget.event?.get('time').substring(10, 15) +
+                        '                                                           '), // we may need to change it as i dont think this the right time !!
+                  ) // we may need to change it as i dont think this the right time !!
+                ],
+              ),
+            ),
+            //   Padding(padding: const EdgeInsets.only(left: 20.0),
+            //  child: Row(children: <Widget>[
+            //     Text("        ")])),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Row(children: <Widget>[
+                Icon(Icons.people_alt_rounded),
+                Text("   Max attendee number is $attendeeNum  ")
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
+              child: Row(children: <Widget>[
+                Icon(
+                  Icons.person_rounded,
+                ),
+                Text("   Created by "),
+                ElevatedButton(
+                  child: Text(" $_textFromFile ",
+                      style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontFamily: 'Comfortaa',
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+
                   ),
                   Row(children: [
                     IconButton(
@@ -153,6 +224,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             style: TextStyle(color: Colors.black)),
                         backgroundColor: Colors.grey[350],
                       ),
+
                     )
                   ]),
                   Padding(
@@ -389,6 +461,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
             ),
           );
         });
+
   }
 
   // Location _location = Location();

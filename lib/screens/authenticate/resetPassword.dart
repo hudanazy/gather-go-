@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+
 class resetPassword extends StatefulWidget {
+
   @override
   _resetPasswordState createState() => _resetPasswordState();
 }
+
 class _resetPasswordState extends State<resetPassword> {
   final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
@@ -37,7 +41,9 @@ class _resetPasswordState extends State<resetPassword> {
                 style: TextStyle(
                   fontFamily: 'Comfortaa',
                   fontSize: 27,
+
                              color: Colors.amber[600]),
+
                 textAlign: TextAlign.center,
               ),
             ),
@@ -46,7 +52,8 @@ class _resetPasswordState extends State<resetPassword> {
                  padding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
                 height: 800,
                 child: Form(
-                                      key: _formKey, 
+                  key: _formKey, 
+
                     child: Column(
                       children: [
                         SizedBox(
@@ -103,7 +110,9 @@ class _resetPasswordState extends State<resetPassword> {
                                       });}
                                   });
                             }
+
                              },
+
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.amber),
