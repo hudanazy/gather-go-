@@ -147,7 +147,7 @@ class DatabaseService {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
-
+  List<String> nameLowerCase =[];
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -156,6 +156,16 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    temp="";
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
+    
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -171,7 +181,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
     });
   }

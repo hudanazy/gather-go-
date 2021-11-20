@@ -84,7 +84,7 @@ class _viewProfile extends State<viewProfile> {
       //   // ),
       // ),
       Container(
-          height: 640,
+          height: 540,
           width: 500,
           child: ListView(children: [
             Padding(
