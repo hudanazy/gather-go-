@@ -350,6 +350,7 @@ class _epFormState extends State<epForm> {
                                       uid: user?.uid.toString())
                                   .updateProfileData(user!.uid, currentName!,
                                       currentStatus!, currentBio!, imageFile);
+                              updateComment(user.uid, imageFile, currentName);
                               Navigator.pop(context);
                               Fluttertoast.showToast(
                                 msg: "Profile successfully updated.",
@@ -415,4 +416,17 @@ class _epFormState extends State<epForm> {
           child: child,
         ),
       );
+  var collection;
+  var documentList;
+  // will return eventCreator name
+  void updateComment(String uid, String img, String? name) async {
+    collection = await FirebaseFirestore.instance
+        .collection('comments')
+        .where("uid", isEqualTo: uid);
+    documentList = await collection.get();
+
+    for (var doc in documentList.docs) {
+      await doc.reference.update({"name": name, "imageUrl": img});
+    }
+  }
 }
