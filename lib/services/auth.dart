@@ -2,8 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/services/database.dart';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'dart:io';
+//import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

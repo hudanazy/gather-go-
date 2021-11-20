@@ -7,6 +7,7 @@ import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 
+
 const Color KAppColor = Color(0xFFFFB300);
 
 List<Map> categories = [

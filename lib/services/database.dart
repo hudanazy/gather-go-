@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+//import 'package:gather_go/Models/comment.dart';
 import 'dart:io';
 
 class DatabaseService {
@@ -15,6 +16,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('events');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
+  final CollectionReference commentCollection =
+      FirebaseFirestore.instance.collection('comments');
 
   Future updateProfileData(String uid, String name, String status, String bio,
       String imageUrl) async {
@@ -113,6 +116,20 @@ class DatabaseService {
     });
   }
 
+  addCommentData(String text, String uid, String name, String imageUrl,
+      String eventID, int likes, int dislikes, DateTime timePosted) {
+    commentCollection.add({
+      "text": text,
+      "uid": uid,
+      "name": name,
+      "imageUrl": imageUrl,
+      "eventID": eventID,
+      "likes": likes,
+      "dislikes": dislikes,
+      "timePosted": timePosted
+    });
+  }
+
   addEventData(
     String uid,
     String name,
@@ -181,6 +198,7 @@ class DatabaseService {
 
   //user booked events
 
+
   // addBookedEventToProfile(
   //   String eventUid
   //   ) {
@@ -188,6 +206,7 @@ class DatabaseService {
   //     "eventUid": eventUid,
   //   });
   // }
+
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {

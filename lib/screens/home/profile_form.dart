@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:gather_go/screens/home/BookedEvents.dart';
 import 'package:gather_go/screens/home/edit_profile_form.dart';
 import 'package:gather_go/shared/loading.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import 'MyEvents.dart';
 
@@ -57,7 +59,6 @@ class _ProfileFormState extends State<ProfileForm> {
           if (!snapshot.hasData) {
             return Center(
               child: Loading(),
-
               //     child: Text(
               //   "No New Events", // may be change it to loading , itis appear for a second every time
               //   textAlign: TextAlign.center,
@@ -106,12 +107,7 @@ class _ProfileFormState extends State<ProfileForm> {
                           // color: Colors.grey[200],
                           children: [
                             IconButton(
-                              iconSize: 45,
                               padding: EdgeInsets.only(left: 270, top: 40),
-                              icon: Icon(
-                                Icons.logout_outlined,
-                                color: Colors.black,
-                              ),
 //alignment: Alignment.topRight,
                               // label: Text(
                               //   "Set event date",
@@ -124,6 +120,11 @@ class _ProfileFormState extends State<ProfileForm> {
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
                               },
+                              icon: Icon(
+                                Icons.logout_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
                             ),
                             SizedBox(
                               height: 25,
