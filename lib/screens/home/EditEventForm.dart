@@ -1,48 +1,16 @@
-//import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/EventInfo.dart';
-import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
-import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/dialogs.dart';
-import 'package:gather_go/shared/dialogs.dart';
-import 'package:gather_go/shared/loading.dart';
+import 'package:gather_go/shared/num_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
-//-----------------------
-
-// import 'package:gather_go/screens/home/event_list.dart';
-// import 'package:gather_go/screens/home/profile_form.dart';
-// import 'package:get/get.dart';
-//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-//import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-//import 'package:gather_go/services/database.dart';
-//import 'package:provider/provider.dart';
-//import 'package:gather_go/Models/NewUser.dart';
-//import 'package:gather_go/Models/EventInfo.dart';
-//import 'package:gather_go/shared/contants.dart';
-//import 'package:gather_go/shared/gradient_app_bar.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:gather_go/screens/home/home.dart';
-//import 'package:gather_go/screens/home/nav.dart';
-//import 'package:location/location.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:gather_go/shared/num_button.dart';
 import '../NotifactionManager.dart';
 import 'MyEventsDetails.dart';
 import 'nav.dart';
-//import 'package:timezone/timezone.dart' as tz;
-//import 'package:timezone/data/latest.dart' as tz;
-
-//----------------------
 
 class EidtEventForm extends StatefulWidget {
   final DocumentSnapshot? event;
@@ -95,7 +63,6 @@ class _eventEditFormState extends State<EidtEventForm> {
 
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
-  String? StringLatLng;
 
   double saveLat = 0;
   double saveLong = 0;
@@ -127,6 +94,12 @@ class _eventEditFormState extends State<EidtEventForm> {
   double? currentlat = 0.0;
   double? currentlong = 0.0;
   EventInfo? eventData;
+  var googleMap = GoogleMap(
+      initialCameraPosition:
+          CameraPosition(target: LatLng(24.708481, 46.752108)));
+  String viewLocation = "Location";
+  String viewDate = "New Date ";
+  String viewTime = "New Time ";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -155,7 +128,7 @@ class _eventEditFormState extends State<EidtEventForm> {
             "Edit your Event",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.orange[600],
+                color: Colors.orange[400],
                 fontFamily: 'Comfortaa',
                 fontSize: 24),
           ),
@@ -169,9 +142,6 @@ class _eventEditFormState extends State<EidtEventForm> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        SizedBox(
-                          height: 50,
-                        ),
                         /* Text(
                           "Edit your event",
                           style: TextStyle(
@@ -188,30 +158,29 @@ class _eventEditFormState extends State<EidtEventForm> {
                           child: Text(
                             "Event Name",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: "Comfortaa"),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 5),
                         SizedBox(
-                          width: 320,
+                          width: 350,
                           child: TextFormField(
-                            // controller: eventName,
                             maxLines: 1,
                             initialValue: widget.event?.get('name'),
-                            //     widget.event?.get('name') + '   ', //wigit
+
                             decoration: textInputDecoration.copyWith(
                               hintText: "Event name..",
                               hintStyle: TextStyle(
-                                  color: Colors.orange[600],
+                                  color: Colors.orange[400],
                                   fontFamily: "Comfortaa"),
                             ),
 
                             style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.black,
                               fontFamily: 'Comfortaa',
                             ),
                             validator: (val) =>
@@ -222,7 +191,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
@@ -230,7 +199,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                           child: Text(
                             "Event Category",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -239,7 +208,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                         ),
                         SizedBox(height: 10),
                         Container(
-                          width: 320,
+                          width: 350,
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           child: DropdownButtonFormField(
@@ -259,7 +228,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                               )),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
@@ -267,7 +236,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                           child: Text(
                             "Event Description",
                             style: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -275,20 +244,20 @@ class _eventEditFormState extends State<EidtEventForm> {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         SizedBox(
-                          width: 320,
+                          width: 350,
                           child: TextFormField(
                             maxLines: 5,
                             initialValue: widget.event?.get('description'),
                             decoration: textInputDecoration.copyWith(
                                 hintText: "Tell us more about your event...",
                                 hintStyle: TextStyle(
-                                    color: Colors.orange[600],
+                                    color: Colors.orange[400],
                                     fontFamily: "Comfortaa")),
                             style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.black,
                               fontFamily: 'Comfortaa',
                             ),
                             validator: (val) => val!.isEmpty
@@ -299,142 +268,126 @@ class _eventEditFormState extends State<EidtEventForm> {
                             },
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 50),
-                          child: Text(
-                            "How many attendees?",
-                            style: TextStyle(
-                                color: Colors.orange[600],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-
-                        SizedBox(height: 20),
-                        NumberPicker(
-                          value: _currentValue,
-                          minValue: 1,
-                          maxValue: 500,
-                          axis: Axis.horizontal,
-                          onChanged: (value) =>
-                              setState(() => _currentValue = value),
-                        ),
-
-                        SizedBox(height: 20),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Select new date ",
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              padding: EdgeInsets.only(top: 10, left: 20),
+                              child: Text(
+                                "Attendee Number",
                                 style: TextStyle(
-                                    color: Colors.orange[600],
+                                    color: Colors.orange[400],
                                     letterSpacing: 2,
-                                    fontSize: 18,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "Comfortaa"),
                               ),
-                              //Old
-                              WidgetSpan(
-                                child: IconButton(
-                                  // label: Text(
-                                  //   "Set event date",
-                                  //   style: TextStyle(
-                                  //     color: Colors.deepPurple,
-                                  //     fontSize: 20,
-                                  //     fontWeight: FontWeight.w500,
-                                  //   ),
-                                  // ),
-                                  icon: Icon(
-                                    Icons.calendar_today_rounded,
-                                    color: Colors.orange[600],
-                                    size: 50,
-                                  ),
-                                  // style: ElevatedButton.styleFrom(
-                                  //   minimumSize: Size.fromHeight(40),
-                                  //   primary: Colors.white,
-                                  // ),
-                                  onPressed: () => pickDate(context),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            NumericStepButton(
+                                minValue: 1,
+                                maxValue: 500,
+                                onChanged: (value) {
+                                  setState(() => this._currentValue = value);
+                                }),
+                          ],
                         ),
+
                         //-------------------------------------------time
-                        SizedBox(height: 20),
-                        RichText(
-                          text: TextSpan(
+                        SizedBox(height: 5),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextSpan(
-                                text: "Select new time ",
-                                style: TextStyle(
-                                    color: Colors.orange[600],
-                                    letterSpacing: 2,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "Comfortaa"),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.calendar_today_rounded,
+                                          color: Colors.orange[400],
+                                          size: 25,
+                                        ),
+                                        onPressed: () => pickDate(context),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: viewDate,
+                                      style: TextStyle(
+                                          color: Colors.orange[400],
+                                          letterSpacing: 2,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Comfortaa"),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              WidgetSpan(
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.access_time,
-                                    textDirection: TextDirection.ltr,
-                                    color: Colors.orange[600],
-                                    size: 50,
-                                  ),
-                                  // style: ElevatedButton.styleFrom(
-                                  //   minimumSize: Size.fromHeight(40),
-                                  //   primary: Colors.white,
-                                  // ),
-                                  onPressed: () => pickTime(context),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.access_time,
+                                          textDirection: TextDirection.ltr,
+                                          color: Colors.orange[400],
+                                          size: 25,
+                                        ),
+                                        onPressed: () => pickTime(context),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: viewTime,
+                                      style: TextStyle(
+                                          color: Colors.orange[400],
+                                          letterSpacing: 2,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Comfortaa"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.location_on_outlined,
+                                          textDirection: TextDirection.ltr,
+                                          color: Colors.orange[400],
+                                          size: 25,
+                                        ),
+                                        //Location()
+
+                                        onPressed: () =>
+                                            showMapdialogToSelectLocation(
+                                                context),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: viewLocation,
+                                      style: TextStyle(
+                                          color: Colors.orange[400],
+                                          letterSpacing: 2,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Comfortaa"),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-//-----------------------------------------------------location
-                        SizedBox(height: 40),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 50),
-                          child: Text(
-                            "Select new location",
-                            style: TextStyle(
-                                color: Colors.orange[600],
-                                letterSpacing: 2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
                         SizedBox(height: 20),
-                        SizedBox(
-                          height: 400,
-                          width: 350,
-                          child: GoogleMap(
-                            initialCameraPosition:
-                                CameraPosition(target: _initialcameraposition),
-                            mapType: MapType.normal,
-                            onMapCreated: _onMapCreated,
-                            rotateGesturesEnabled: true,
-                            scrollGesturesEnabled: true,
-                            zoomControlsEnabled: true,
-                            zoomGesturesEnabled: true,
-                            liteModeEnabled: false,
-                            tiltGesturesEnabled: true,
-                            myLocationEnabled: true,
-                            markers: Set.from(myMarker),
-                            onTap: _handleTap,
-                          ),
-                        ),
-                        // ---------------------- end location
-                        SizedBox(height: 40),
+
                         SizedBox(
                           height: 50,
-                          width: 190,
+                          width: 115,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
@@ -573,6 +526,7 @@ class _eventEditFormState extends State<EidtEventForm> {
       toastLength: Toast.LENGTH_LONG,
     );
     setState(() => currdate = newDate.toString());
+    viewDate = currdate.toString().substring(0, 10);
   }
 
   Future pickTime(BuildContext context) async {
@@ -591,10 +545,83 @@ class _eventEditFormState extends State<EidtEventForm> {
       msg: "Time selected.",
       toastLength: Toast.LENGTH_LONG,
     );
+    viewTime = currtime.toString().substring(10, 15);
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
       value: item,
       child: Text(item,
           style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
+
+  Future<bool> showMapdialogToSelectLocation(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("SELECT LOCATION",
+                  style: TextStyle(color: Colors.grey, fontSize: 10)),
+              content: SizedBox(
+                height: 400,
+                width: 450,
+                child: GoogleMap(
+                  initialCameraPosition:
+                      CameraPosition(target: _initialcameraposition, zoom: 5),
+                  mapType: MapType.normal,
+                  onMapCreated: _onMapCreated,
+                  rotateGesturesEnabled: true,
+                  scrollGesturesEnabled: true,
+                  zoomControlsEnabled: true,
+                  zoomGesturesEnabled: true,
+                  liteModeEnabled: false,
+                  tiltGesturesEnabled: true,
+                  myLocationEnabled: true,
+                  markers: Set.from(myMarker),
+                  onTap: _handleTap,
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Done"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      viewLocation = "Selected";
+                      SizedBox(
+                          height: 300,
+                          width: 450,
+                          child: googleMap = GoogleMap(
+                            initialCameraPosition:
+                                CameraPosition(target: _initialcameraposition),
+                            mapType: MapType.normal,
+                            onMapCreated: _onMapCreated,
+                            rotateGesturesEnabled: true,
+                            scrollGesturesEnabled: true,
+                            zoomControlsEnabled: true,
+                            zoomGesturesEnabled: true,
+                            liteModeEnabled: false,
+                            tiltGesturesEnabled: true,
+                            myLocationEnabled: true,
+                            markers: Set.from(myMarker),
+                            onTap: _handleTap,
+                          ));
+                    });
+                    if (saveLat != 0 && saveLat != 0)
+                      Fluttertoast.showToast(
+                        msg: "Location selected.",
+                        toastLength: Toast.LENGTH_LONG,
+                      );
+                  },
+                  child: Text("Click here to update the location "),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 }
