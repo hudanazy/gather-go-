@@ -42,6 +42,7 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+        
       List<String> searchDescription =
         []; 
     String temp = "";
@@ -51,6 +52,17 @@ class DatabaseService {
       } else {
         temp = temp + description[i];
         searchDescription.add(temp.toLowerCase());
+      }
+    }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
       }
     }
     return await eventCollection.doc(uid).set({
@@ -68,7 +80,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
     });
   }
@@ -96,6 +108,17 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -111,7 +134,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
     });
   }
