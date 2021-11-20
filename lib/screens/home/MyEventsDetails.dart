@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/screens/admin/eventDetails.dart';
+import 'package:gather_go/screens/home/EditEventForm.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'MyEvents.dart';
+import 'edit_profile_form.dart';
 
 // ignore: camel_case_types
 class MyEventsDetails extends StatefulWidget {
@@ -25,14 +29,14 @@ class _MyEventsDetails extends State<MyEventsDetails> {
   Widget build(BuildContext context) {
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
-
+    //String eventUID = widget.event?.uid;
     String category = widget.event?.get('category');
     bool adminCheck = widget.event?.get('adminCheck');
     bool approved = widget.event?.get('approved');
     String state = "";
     Color stateColor = Colors.grey;
     List<Marker> myMarker = [];
- 
+
     LatLng markerPosition =
         LatLng(widget.event?.get('lat'), widget.event?.get('long'));
 
@@ -58,31 +62,28 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     }
 
     return Scaffold(
-      appBar: SecondaryAppBar(title: 'Event Details',),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-             // child: ArcBannerImage(),
+              child: ArcBannerImage(),
             ),
             Row(children: [
-              // IconButton(
-              //   icon: new Icon(Icons.arrow_back_ios),
-              //   onPressed: () {
-              //     Navigator.pop(context,
-              //         MaterialPageRoute(builder: (context) => adminEvent()));
-              //   },
-              // ),
+              IconButton(
+                icon: new Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => adminEvent()));
+                },
+              ),
               Flexible(
-                child: Padding(
-              padding: const EdgeInsets.all(20.0),
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Comfortaa',
                         fontSize: 18)),
-              )),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
@@ -107,25 +108,23 @@ class _MyEventsDetails extends State<MyEventsDetails> {
               child: Row(
                 children: <Widget>[
                   Icon(Icons.access_time),
-                  Flexible(
-                    child: Text("   " +
-                        widget.event?.get('date').substring(0, 10) +
-                        "  " +
-                        widget.event?.get('time').substring(10, 15) +
-                        '                                                           '), // we may need to change it as i dont think this the right time !!
-                  )
+                  Text("   " +
+                      widget.event?.get('date').substring(0, 10) +
+                      "  " +
+                      widget.event?.get('time').substring(10, 15) +
+                      '                                                           '), // we may need to change it as i dont think this the right time !!
                 ],
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 20.0),
-            //   child: Row(
-            //     children: <Widget>[
-            //       Icon(Icons.location_pin),
-            //       Text("   to be added later"),
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.location_pin),
+                  Text("   to be added later"),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Row(children: <Widget>[
@@ -138,30 +137,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    // ElevatedButton.icon(
-                    //   icon: Icon(
-                    //     Icons.location_pin,
-                    //     color: Colors.black,
-                    //   ),
-                    //   label: Text("details",
-                    //       style: TextStyle(
-                    //         color: Colors.black87,
-                    //       )),
-                    //   style: ElevatedButton.styleFrom(
-                    //     primary: Colors.white,
-                    //   ),
-                    //   //color: Colors.deepOrange,
-                    //   onPressed: () {
-                    //     //showMapdialogAdmin(context, myMarker);
-                    //     Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => eventDetailsForUesers(
-                    //                   event: widget.event,
-                    //                 )));
-                    //   },
-                    //child: Text("see the location"),
-                    //),
                     ElevatedButton.icon(
                       icon: Icon(
                         Icons.location_pin,
@@ -191,12 +166,12 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                         alignment: Alignment.bottomCenter, //her
                         child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.orangeAccent),
                             ),
                             child: Text('Delete Event',
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Comfortaa',
                                     fontSize: 12)),
@@ -224,140 +199,33 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                   );
                                 }
                               }
-                            })))
-              ],
-            )
-
-            /*Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
-              child: Row(children: <Widget>[
-                Icon(
-                  Icons.person_rounded,
-                ),
-                Text("   Created by   $_textFromFile")
-              ]),
-            ),
-            Row(
-              children: [
+                            }))),
                 Expanded(
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
-                          child: Text('Disapprove',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 12)),
-                          onPressed: () async {
-                            var result = await showDispproveDialog(context);
-                            if (result == true) {
-                              try {
-                                FirebaseFirestore.instance
-                                    .collection('events')
-                                    .doc(widget.event?.id)
-                                    .set({
-                                  "uid": userID,
-                                  "name": widget.event?.get('name'),
-                                  "description":
-                                      widget.event?.get('description'),
-                                  "timePosted": widget.event?.get('timePosted'),
-                                  "attendees": attendeeNum,
-                                  "date": widget.event?.get('date'),
-                                  "time": widget.event?.get('time'),
-                                  "category": category,
-                                  'approved': false,
-                                  "adminCheck": true,
-                                  "location": widget.event?.get('location')
-                                });
-                                // success msg + redirect to adminEvent
-
-                                Fluttertoast.showToast(
-                                  msg: widget.event?.get('name') +
-                                      " dispproved successfully",
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-
-                                Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => adminEvent()));
-                              } catch (e) {
-                                // fail msg
-                                Fluttertoast.showToast(
-                                  msg: "somthing went wrong ",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                );
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.orangeAccent),
+                            ),
+                            child: Text('Edit Event',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 12)),
+                            onPressed: () async {
+                              if (approved == true) {
+                                await showEditEventApproved(context);
                               }
-                            }
-                          },
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[300]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              padding: MaterialStateProperty.all(
-                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                        ))),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        child: Text('Approve',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Comfortaa',
-                                fontSize: 12)),
-                        onPressed: () async {
-                          var result = await showApproveDialog(context);
-                          if (result == true) {
-                            try {
-                              FirebaseFirestore.instance
-                                  .collection('events')
-                                  .doc(widget.event?.id)
-                                  .set({
-                                "uid": userID,
-                                "name": widget.event?.get('name'),
-                                "description": widget.event?.get('description'),
-                                "timePosted": widget.event?.get('timePosted'),
-                                "attendees": attendeeNum,
-                                "date": widget.event?.get('date'),
-                                "category": category,
-                                "time": widget.event?.get('time'),
-                                'approved': true,
-                                "adminCheck": true,
-                                "location": widget.event?.get('location')
-                              });
-                              Fluttertoast.showToast(
-                                msg: widget.event?.get('name') +
-                                    " approved successfully",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                              Navigator.pop(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => adminEvent()));
-                            } catch (e) {
-                              // fail msg
-                              Fluttertoast.showToast(
-                                msg: "Somthing went wrong ",
-                                toastLength: Toast.LENGTH_SHORT,
-                              );
-                            }
-                          }
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.purple[300]),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                      )),
-                )
+                                      builder: (context) =>
+                                          EidtEventForm(event: widget.event)));
+                            })))
               ],
-            )*/
+            )
           ],
         ),
       ),
