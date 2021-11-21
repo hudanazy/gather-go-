@@ -98,7 +98,8 @@ class _epFormState extends State<epForm> {
           return Container(
               // height: 640,
               // width: 500,
-              child: ListView(
+              child: 
+              ListView(
             children: snapshot.data.docs.map<Widget>((document) {
               DocumentSnapshot uid = document;
               // currentName = document['name'];
@@ -170,7 +171,7 @@ class _epFormState extends State<epForm> {
                         height: 30,
                       ),
                       SizedBox(
-                        width: 320,
+                        width: 300,
                         child: TextFormField(
                           initialValue: document['name'],
                           decoration: textInputDecoration.copyWith(
@@ -195,6 +196,7 @@ class _epFormState extends State<epForm> {
                         height: 20,
                       ),
                       Container(
+                        width: 300,
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 0, left: 5),
                         child: Text(
@@ -210,6 +212,9 @@ class _epFormState extends State<epForm> {
                       SizedBox(
                         height: 10,
                       ),
+                      SizedBox(
+                        width: 300,
+                        child:
                       DropdownButtonFormField(
                           value: document['status'],
                           decoration: textInputDecoration,
@@ -224,12 +229,12 @@ class _epFormState extends State<epForm> {
                           style: TextStyle(
                             color: Colors.orange[400],
                             fontFamily: 'Comfortaa',
-                          )),
+                          ))),
                       SizedBox(
                         height: 30,
                       ),
                       SizedBox(
-                        width: 320,
+                        width: 300,
                         child: TextFormField(
                           initialValue: document['bio'],
                           decoration: textInputDecoration.copyWith(
@@ -260,7 +265,7 @@ class _epFormState extends State<epForm> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+                                  MaterialStateProperty.all(Colors.black),
                               padding: MaterialStateProperty.all(
                                   EdgeInsets.fromLTRB(35, 15, 35, 15))),
                           child: Text(
