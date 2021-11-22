@@ -112,7 +112,9 @@ class _eventEditFormState extends State<EidtEventForm> {
     String userID = widget.event?.get('uid');
 
     return Scaffold(
-        appBar: SecondaryAppBar(title: "Edit your Event",),
+        appBar: SecondaryAppBar(
+          title: "Edit your Event",
+        ),
         // AppBar(
         //   leading: IconButton(
         //     icon: new Icon(
@@ -185,8 +187,9 @@ class _eventEditFormState extends State<EidtEventForm> {
                               color: Colors.black,
                               fontFamily: 'Comfortaa',
                             ),
-                            validator: (val) =>
-                                val!.isEmpty ? 'Please enter a name' : null,
+                            validator: (val) => val!.trim().isEmpty
+                                ? 'Please enter a name'
+                                : null,
                             onChanged: (val) {
                               setState(() => currentNameEvent = val);
                             }, //name event
@@ -262,7 +265,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                               color: Colors.black,
                               fontFamily: 'Comfortaa',
                             ),
-                            validator: (val) => val!.isEmpty
+                            validator: (val) => val!.trim().isEmpty
                                 ? 'Please enter a descrption about event '
                                 : null,
                             onChanged: (val) {
@@ -441,27 +444,32 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 var result = await showEditEventDialog(context);
                                 if (result == true) {
                                   try {
-                                     List<String> searchDescription =[]; 
-                                      String temp = "";
-                                      for (var i = 0; i < currentDescrption!.length; i++) {
-                                        if (currentDescrption![i] == " ") {
-                                          temp = "";
-                                        } else {
-                                          temp = temp + currentDescrption![i];
-                                          searchDescription.add(temp.toLowerCase());
-                                        }
+                                    List<String> searchDescription = [];
+                                    String temp = "";
+                                    for (var i = 0;
+                                        i < currentDescrption!.length;
+                                        i++) {
+                                      if (currentDescrption![i] == " ") {
+                                        temp = "";
+                                      } else {
+                                        temp = temp + currentDescrption![i];
+                                        searchDescription
+                                            .add(temp.toLowerCase());
                                       }
-                                      List<String> nameLowerCase =[];
+                                    }
+                                    List<String> nameLowerCase = [];
 
-                                      temp="";
-                                      for (var i = 0; i < currentNameEvent!.length; i++) {
-                                        if (currentNameEvent![i] == " ") {
-                                          temp = "";
-                                        } else {
-                                          temp = temp + currentNameEvent![i];
-                                          nameLowerCase.add(temp.toLowerCase());
-                                        }
+                                    temp = "";
+                                    for (var i = 0;
+                                        i < currentNameEvent!.length;
+                                        i++) {
+                                      if (currentNameEvent![i] == " ") {
+                                        temp = "";
+                                      } else {
+                                        temp = temp + currentNameEvent![i];
+                                        nameLowerCase.add(temp.toLowerCase());
                                       }
+                                    }
                                     FirebaseFirestore.instance
                                         .collection("events")
                                         .doc(widget.event?.id)
