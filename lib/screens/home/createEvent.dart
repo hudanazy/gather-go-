@@ -134,7 +134,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           textInputDecoration.copyWith(
                             
                           ),
-                          validator: (val) => val!.isEmpty
+                          validator: (val) => val!.trim().isEmpty
                               ? "The event needs a name."
                               : eventData?.name,
                           onChanged: (val) => setState(() => Name = val),
@@ -209,7 +209,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           maxLines: 5,
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(),
-                          validator: (val) => val!.isEmpty
+                          validator: (val) => val!.trim().isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
                           onChanged: (val) => setState(() => Description = val),

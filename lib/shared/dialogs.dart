@@ -267,8 +267,8 @@ Future<bool> showEditEventDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text("Ediet event"),
-      content: Text("Are you sure you want to Ediet this event ?"),
+      title: Text("Edit event"),
+      content: Text("Are you sure you want to Edit this event ?"),
       actions: [
         TextButton(
             child: Text("No",
@@ -296,7 +296,7 @@ Future<bool> showEditEventApproved(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text("Ediet event"),
+      title: Text("Edit event"),
       content: Text("this event is approved can't edit"),
       actions: [
         TextButton(

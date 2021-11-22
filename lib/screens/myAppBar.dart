@@ -24,6 +24,7 @@ Widget MyAppBarWidget(title) {
     elevation: 6,
     toolbarHeight:100,
     backgroundColor: Colors.orange[400],
+    automaticallyImplyLeading: false,
     iconTheme: IconThemeData(
       color: Colors.black,),
     //centerTitle: true,
