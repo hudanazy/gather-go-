@@ -131,6 +131,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 DocumentSnapshot uid = document;
                                 final now = DateTime.now();
                                 final past = document['timePosted'].toDate();
+
                                 final differenceDays =
                                     now.difference(past).inDays;
                                 final differenceHours =
@@ -142,6 +143,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 final differenceMS =
                                     now.difference(past).inMilliseconds;
                                 String ago = "";
+
                                 if (differenceDays == 0) {
                                   if (differenceHours == 0) {
                                     if (differenceMinutes == 0) {
@@ -162,7 +164,18 @@ class _CommentScreenState extends State<CommentScreen> {
                                     ago = differenceHours.toString() + "h";
                                   }
                                 } else {
-                                  ago = differenceDays.toString() + "d";
+                                  var months;
+                                  if (differenceDays > 30) {
+                                    months = differenceDays / 30;
+                                    ago = ((months).floor()).toString() + "mo";
+                                    var year;
+                                    if (months >= 12) {
+                                      year = months / 12;
+                                      ago = year.floor().toString() + "y";
+                                    }
+                                  } else {
+                                    ago = differenceDays.toString() + "d";
+                                  }
                                 }
                                 //to get commenters current profile image
                                 // commenter(document['uid']);
