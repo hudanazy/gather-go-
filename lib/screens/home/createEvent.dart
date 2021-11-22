@@ -192,9 +192,8 @@ class _Eventform extends State<createEvent> {
                             width: 350,
                             height: 50,
                             child: TextFormField(
-                              // controller: eventName,
                               maxLines: 1,
-                              // initialValue: eventData?.name,
+
                               decoration: InputDecoration(
                                 labelText: "Attendee Number",
                                 labelStyle: (TextStyle(
@@ -203,10 +202,13 @@ class _Eventform extends State<createEvent> {
                                     //
                                     )),
                               ),
+                              keyboardType: TextInputType.datetime,
                               validator: (val) => val!.trim().isEmpty
                                   ? "The event needs attendee"
                                   : eventData?.name,
-                              onChanged: (val) => setState(() => Name = val),
+                              onChanged: (val) => setState(
+                                  () => attendeeNumber = int.parse(val)),
+                              // maxLength: 4,
                             ),
                           ),
                           Center(
