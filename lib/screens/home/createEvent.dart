@@ -81,9 +81,9 @@ class _Eventform extends State<createEvent> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: MyAppBar(
-          title: "Create An Event",
-        ),
+        // appBar: MyAppBar(
+        //   title: "Create An Event",
+        // ),
         body: StreamBuilder<Object>(
             stream: DatabaseService(uid: user?.uid).eventss,
             builder: (context, snapshot) {
@@ -95,32 +95,20 @@ class _Eventform extends State<createEvent> {
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
-                          //               AppBar(
-
-                          //   toolbarHeight: 100,
-                          //   backgroundColor: Colors.white,
-                          //   title: Text(
-                          //     "Create An Event",
-                          //     textAlign: TextAlign.center,
-                          //     style: TextStyle(
-                          //         color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-                          //   ),
-                          // ),
-                          //   GradientAppBar(),
-                          // Container(
-                          //     alignment: Alignment.topLeft,
-                          //     padding: EdgeInsets.only(top: 20, left: 20),
-                          //     child: Text(
-                          //       "Event Name",
-                          //       style: TextStyle(
-                          //           color: Colors.orange[400],
-                          //           letterSpacing: 2,
-                          //           fontSize: 13,
-                          //           fontWeight: FontWeight.w600,
-                          //           fontFamily: "Comfortaa"),
-                          //     ),
-                          //   ),
-                          SizedBox(height: 5),
+                          AppBar(
+                            toolbarHeight: 110,
+                            backgroundColor: Colors.white,
+                            title: Text(
+                              "Create Event",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          SizedBox(height: 15),
                           SizedBox(
                             width: 350,
                             height: 50,
@@ -128,71 +116,20 @@ class _Eventform extends State<createEvent> {
                               // controller: eventName,
                               maxLines: 1,
                               // initialValue: eventData?.name,
-                              decoration:
-                                  InputDecoration(labelText: "Event name"),
+                              decoration: InputDecoration(
+                                labelText: "Event name",
+                                labelStyle: (TextStyle(
+                                    color: Colors.orange[400],
+                                    fontFamily: "Comfortaa"
+                                    //
+                                    )),
+                              ),
                               validator: (val) => val!.trim().isEmpty
                                   ? "The event needs a name."
                                   : eventData?.name,
                               onChanged: (val) => setState(() => Name = val),
                             ),
                           ),
-
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: EdgeInsets.only(top: 20, left: 20),
-                            child: Text(
-                              "Event Category",
-                              style: TextStyle(
-                                  color: Colors.orange[400],
-                                  letterSpacing: 2,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Comfortaa"),
-                            ),
-                          ),
-
-                          SizedBox(height: 5),
-                          Container(
-                            width: 350,
-                            height: 50,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border:
-                                    Border.all(color: Colors.grey, width: 1)),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                  focusColor: Colors.grey,
-                                  value: item,
-
-                                  // initialValue: category[0],
-                                  isExpanded: true,
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.blueGrey),
-                                  items: category.map(buildMenuItem).toList(),
-                                  onChanged: (value) =>
-                                      setState(() => this.item = value),
-                                  style: TextStyle(
-                                    color: Colors.orange[400],
-                                    fontFamily: 'Comfortaa',
-                                  )),
-                            ),
-                          ),
-
-                          // Container(
-                          //   alignment: Alignment.topLeft,
-                          //   padding: EdgeInsets.only(top: 20, left: 20),
-                          //   child: Text(
-                          //     "Event Description",
-                          //     style: TextStyle(
-                          //         color: Colors.orange[400],
-                          //         letterSpacing: 2,
-                          //         fontSize: 13,
-                          //         fontWeight: FontWeight.w600,
-                          //         fontFamily: "Comfortaa"),
-                          //   ),
-                          // ),
                           SizedBox(height: 5),
                           SizedBox(
                             width: 350,
@@ -219,32 +156,59 @@ class _Eventform extends State<createEvent> {
                                   setState(() => Description = val),
                             ),
                           ),
+                          SizedBox(height: 20),
+                          Container(
+                            width: 360,
+                            height: 50,
 
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Container(
-                                alignment: Alignment.topLeft,
-                                padding: EdgeInsets.only(top: 10, left: 20),
-                                child: Text(
-                                  "Attendee Number",
+                            padding: EdgeInsets.all(5),
+                            // color: Colors.black,
+                            // decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(12),
+                            //     border:
+                            //         Border.all(color: Colors.grey, width: 1)),
+
+                            child: DropdownButton<String>(
+                              focusColor: Colors.black,
+                              isExpanded: true,
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blueGrey),
+                              items: category.map(buildMenuItem).toList(),
+                              onChanged: (value) =>
+                                  setState(() => this.item = value),
+                              style: TextStyle(
+                                color: Colors.orange[400],
+                                fontFamily: 'Comfortaa',
+                              ),
+                              hint: Text("Select Event Category",
                                   style: TextStyle(
                                       color: Colors.orange[400],
-                                      letterSpacing: 2,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "Comfortaa"),
-                                ),
-                              ),
-                              NumericStepButton(
-                                  minValue: 1,
-                                  maxValue: 500,
-                                  onChanged: (value) {
-                                    setState(() => this._currentValue = value);
-                                  }),
-                            ],
+                                      fontFamily: "Comfortaa",
+                                      fontSize: 16)),
+                            ),
                           ),
-
+                          SizedBox(height: 10),
+                          SizedBox(
+                            width: 350,
+                            height: 50,
+                            child: TextFormField(
+                              // controller: eventName,
+                              maxLines: 1,
+                              // initialValue: eventData?.name,
+                              decoration: InputDecoration(
+                                labelText: "Attendee Number",
+                                labelStyle: (TextStyle(
+                                    color: Colors.orange[400],
+                                    fontFamily: "Comfortaa"
+                                    //
+                                    )),
+                              ),
+                              validator: (val) => val!.trim().isEmpty
+                                  ? "The event needs attendee"
+                                  : eventData?.name,
+                              onChanged: (val) => setState(() => Name = val),
+                            ),
+                          ),
                           Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -333,9 +297,7 @@ class _Eventform extends State<createEvent> {
                               ],
                             ),
                           ),
-
                           SizedBox(height: 10),
-
                           SizedBox(
                             height: 50,
                             width: 180,
