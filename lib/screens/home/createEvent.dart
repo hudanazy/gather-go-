@@ -43,8 +43,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController eventName = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
-  TextEditingController attendeeNum = TextEditingController();
-
+  var attendeeNum;
   //int _currentStep = 0;
   DateTime? dateo;
   TextEditingController? name;
@@ -102,9 +101,9 @@ class _Eventform extends State<createEvent> {
                               "Create Event",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.grey[850],
                                   fontFamily: 'Comfortaa',
-                                  fontSize: 24,
+                                  fontSize: 26,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -117,9 +116,9 @@ class _Eventform extends State<createEvent> {
                               maxLines: 1,
                               // initialValue: eventData?.name,
                               decoration: InputDecoration(
-                                labelText: "Event name",
+                                labelText: "Event Name",
                                 labelStyle: (TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.grey[850],
                                     fontFamily: "Comfortaa"
                                     //
                                     )),
@@ -141,7 +140,7 @@ class _Eventform extends State<createEvent> {
                               decoration: InputDecoration(
                                 labelText: "Event Description",
                                 labelStyle: (TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.grey[850],
                                     // letterSpacing: 2,
                                     // fontSize: 13,
                                     // fontWeight: FontWeight.w600,
@@ -177,12 +176,12 @@ class _Eventform extends State<createEvent> {
                               onChanged: (value) =>
                                   setState(() => this.item = value),
                               style: TextStyle(
-                                color: Colors.orange[400],
+                                color: Colors.grey[850],
                                 fontFamily: 'Comfortaa',
                               ),
                               hint: Text("Select Event Category",
                                   style: TextStyle(
-                                      color: Colors.orange[400],
+                                      color: Colors.grey[850],
                                       fontFamily: "Comfortaa",
                                       fontSize: 16)),
                             ),
@@ -197,17 +196,17 @@ class _Eventform extends State<createEvent> {
                               decoration: InputDecoration(
                                 labelText: "Attendee Number",
                                 labelStyle: (TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.grey[850],
                                     fontFamily: "Comfortaa"
                                     //
                                     )),
                               ),
                               keyboardType: TextInputType.datetime,
                               validator: (val) => val!.trim().isEmpty
-                                  ? "The event needs attendee"
-                                  : eventData?.name,
-                              onChanged: (val) => setState(
-                                  () => attendeeNumber = int.parse(val)),
+                                  ? "Description can't be empty."
+                                  : eventData?.description,
+                              onChanged: (val) =>
+                                  setState(() => attendeeNum = val),
                               // maxLength: 4,
                             ),
                           ),
@@ -219,7 +218,7 @@ class _Eventform extends State<createEvent> {
                                 IconButton(
                                   icon: Icon(
                                     Icons.calendar_today_rounded,
-                                    color: Colors.orange[300],
+                                    color: Colors.grey[850],
                                     size: 21,
                                   ),
                                   onPressed: () => pickDate(context),
@@ -228,7 +227,7 @@ class _Eventform extends State<createEvent> {
                                   viewDate,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      color: Colors.orange[400],
+                                      color: Colors.grey[850],
                                       fontSize: 16,
                                       fontFamily: "Comfortaa"),
                                 ),
@@ -249,7 +248,7 @@ class _Eventform extends State<createEvent> {
                                   icon: Icon(
                                     Icons.access_time,
                                     textDirection: TextDirection.ltr,
-                                    color: Colors.orange[300],
+                                    color: Colors.grey[850],
                                     size: 22,
                                   ),
                                   onPressed: () => pickTime(context),
@@ -258,7 +257,7 @@ class _Eventform extends State<createEvent> {
                                   viewTime,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      color: Colors.orange[400],
+                                      color: Colors.grey[850],
                                       fontSize: 16,
                                       fontFamily: "Comfortaa"),
                                 ),
@@ -279,7 +278,7 @@ class _Eventform extends State<createEvent> {
                                   icon: Icon(
                                     Icons.location_on_outlined,
                                     textDirection: TextDirection.ltr,
-                                    color: Colors.orange[300],
+                                    color: Colors.grey[850],
                                     size: 22,
                                   ),
                                   //Location()
@@ -290,7 +289,7 @@ class _Eventform extends State<createEvent> {
                                   viewLocation,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      color: Colors.orange[400],
+                                      color: Colors.grey[850],
                                       fontSize: 16,
                                       fontFamily: "Comfortaa"),
                                 ),
@@ -302,14 +301,14 @@ class _Eventform extends State<createEvent> {
                                 color: Colors.grey[500],
                                 thickness: 1.2,
                               )),
-                          SizedBox(height: 10),
+                          SizedBox(height: 20),
                           SizedBox(
-                            height: 50,
-                            width: 180,
+                            height: 47,
+                            width: 360,
                             child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Colors.orange[400]),
+                                      Colors.orange[300]),
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
                                   padding: MaterialStateProperty.all(
@@ -317,7 +316,7 @@ class _Eventform extends State<createEvent> {
                               child: Text(
                                 'Submit',
                                 style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "Comfortaa"),
                               ),
@@ -352,7 +351,7 @@ class _Eventform extends State<createEvent> {
                                         msg: "Location has to be selected.",
                                         toastLength: Toast.LENGTH_LONG,
                                       );
-                                    } else if (_currentValue == 0) {
+                                    } else if (attendeeNum == "0") {
                                       Fluttertoast.showToast(
                                         msg: "Attendee number can't be 0 ",
                                         toastLength: Toast.LENGTH_LONG,
@@ -369,7 +368,8 @@ class _Eventform extends State<createEvent> {
                                           item!,
                                           Description!,
                                           timeAgo!,
-                                          _currentValue,
+                                          _currentValue =
+                                              int.parse(attendeeNum),
                                           dateo.toString(),
                                           ttime.toString(),
                                           approved,
