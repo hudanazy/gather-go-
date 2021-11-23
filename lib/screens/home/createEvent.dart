@@ -130,7 +130,7 @@ class _Eventform extends State<createEvent> {
                               onChanged: (val) => setState(() => Name = val),
                             ),
                           ),
-                          SizedBox(height: 5),
+                          SizedBox(height: 1),
                           SizedBox(
                             width: 350,
                             child: TextFormField(
@@ -211,94 +211,97 @@ class _Eventform extends State<createEvent> {
                               // maxLength: 4,
                             ),
                           ),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.calendar_today_rounded,
-                                            color: Colors.orange[400],
-                                            size: 25,
-                                          ),
-                                          onPressed: () => pickDate(context),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: viewDate,
-                                        style: TextStyle(
-                                            color: Colors.orange[400],
-                                            letterSpacing: 2,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "Comfortaa"),
-                                      ),
-                                    ],
+                          Container(
+                              width: 370,
+                              height: 50,
+                              alignment: Alignment.bottomLeft,
+                              child: Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.calendar_today_rounded,
+                                    color: Colors.orange[300],
+                                    size: 21,
                                   ),
+                                  onPressed: () => pickDate(context),
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.access_time,
-                                            textDirection: TextDirection.ltr,
-                                            color: Colors.orange[400],
-                                            size: 25,
-                                          ),
-                                          onPressed: () => pickTime(context),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: viewTime,
-                                        style: TextStyle(
-                                            color: Colors.orange[400],
-                                            letterSpacing: 2,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "Comfortaa"),
-                                      ),
-                                    ],
+                                Text(
+                                  viewDate,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.orange[400],
+                                      fontSize: 16,
+                                      fontFamily: "Comfortaa"),
+                                ),
+                              ])),
+                          SizedBox(
+                              width: 350,
+                              height: 4,
+                              child: Divider(
+                                color: Colors.grey[500],
+                                thickness: 1.2,
+                              )),
+                          Container(
+                              width: 370,
+                              height: 50,
+                              alignment: Alignment.bottomLeft,
+                              child: Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.access_time,
+                                    textDirection: TextDirection.ltr,
+                                    color: Colors.orange[300],
+                                    size: 22,
                                   ),
+                                  onPressed: () => pickTime(context),
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.location_on_outlined,
-                                            textDirection: TextDirection.ltr,
-                                            color: Colors.orange[400],
-                                            size: 25,
-                                          ),
-                                          //Location()
-
-                                          onPressed: () =>
-                                              showMapdialogToSelectLocation(
-                                                  context),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: viewLocation,
-                                        style: TextStyle(
-                                            color: Colors.orange[400],
-                                            letterSpacing: 2,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "Comfortaa"),
-                                      ),
-                                    ],
+                                Text(
+                                  viewTime,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.orange[400],
+                                      fontSize: 16,
+                                      fontFamily: "Comfortaa"),
+                                ),
+                              ])),
+                          SizedBox(
+                              width: 350,
+                              height: 4,
+                              child: Divider(
+                                color: Colors.grey[500],
+                                thickness: 1.2,
+                              )),
+                          Container(
+                              width: 370,
+                              height: 50,
+                              alignment: Alignment.bottomLeft,
+                              child: Row(children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.location_on_outlined,
+                                    textDirection: TextDirection.ltr,
+                                    color: Colors.orange[300],
+                                    size: 22,
                                   ),
+                                  //Location()
+                                  onPressed: () =>
+                                      showMapdialogToSelectLocation(context),
                                 ),
-                              ],
-                            ),
-                          ),
+                                Text(
+                                  viewLocation,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.orange[400],
+                                      fontSize: 16,
+                                      fontFamily: "Comfortaa"),
+                                ),
+                              ])),
+                          SizedBox(
+                              width: 350,
+                              height: 4,
+                              child: Divider(
+                                color: Colors.grey[500],
+                                thickness: 1.2,
+                              )),
                           SizedBox(height: 10),
                           SizedBox(
                             height: 50,
@@ -315,7 +318,7 @@ class _Eventform extends State<createEvent> {
                                 'Submit',
                                 style: TextStyle(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w600,
                                     fontFamily: "Comfortaa"),
                               ),
                               onPressed: () async {
