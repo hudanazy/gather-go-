@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/shared/num_button.dart';
@@ -320,9 +321,12 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                   size: 25,
                                 ),
                                 //Location()
-                                
-                                onPressed: () => showMapdialogToSelectLocation(context),
-                              ),
+                                //selectLocation
+                              onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => selectLocation()));
+                },
+              ),
                             ),
                             TextSpan(
                               text: viewLocation,
