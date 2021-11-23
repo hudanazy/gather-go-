@@ -12,6 +12,7 @@ class EventInfo {
   //final GeoPoint location;
   bool approved = false;
   bool adminCheck = false;
+  //int attendeeNumber;
 
   EventInfo({
     required this.uid,
@@ -28,5 +29,6 @@ class EventInfo {
       required this.location*/
     required this.approved,
     required this.adminCheck,
+   // required this.attendeeNumber,
   });
 }

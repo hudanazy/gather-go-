@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/Models/ProfileOnScreen.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:provider/provider.dart';
@@ -76,8 +77,13 @@ class _epFormState extends State<epForm> {
         .collection('uesrInfo')
         .where('uid', isEqualTo: user?.uid)
         .snapshots();
+    bool isNameOnlySpace = false;
+    bool isBioOnlySpace = false;
 
-    return StreamBuilder<Object>(
+    return Scaffold(
+      appBar: SecondaryAppBar(title: "Edit your profile",),
+      body:
+    StreamBuilder<Object>(
         stream: snap, //DatabaseService(uid: user.uid).profileData,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
@@ -92,7 +98,8 @@ class _epFormState extends State<epForm> {
           return Container(
               // height: 640,
               // width: 500,
-              child: ListView(
+              child: 
+              ListView(
             children: snapshot.data.docs.map<Widget>((document) {
               DocumentSnapshot uid = document;
               // currentName = document['name'];
@@ -106,18 +113,18 @@ class _epFormState extends State<epForm> {
                   key: _formkey,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        "Edit your profile",
-                        style: TextStyle(
-                            color: Colors.orange[600],
-                            letterSpacing: 2,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Comfortaa"),
-                      ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Text(
+                      //   "Edit your profile",
+                      //   style: TextStyle(
+                      //       color: Colors.orange[600],
+                      //       letterSpacing: 2,
+                      //       fontSize: 25,
+                      //       fontWeight: FontWeight.w600,
+                      //       fontFamily: "Comfortaa"),
+                      // ),
                       SizedBox(
                         height: 20,
                       ),
@@ -164,18 +171,18 @@ class _epFormState extends State<epForm> {
                         height: 30,
                       ),
                       SizedBox(
-                        width: 320,
+                        width: 300,
                         child: TextFormField(
                           initialValue: document['name'],
                           decoration: textInputDecoration.copyWith(
                             hintText: "What would like us to call you?",
                             hintStyle: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 fontSize: 14,
                                 fontFamily: "Comfortaa"),
                           ),
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               fontSize: 14,
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
@@ -189,12 +196,13 @@ class _epFormState extends State<epForm> {
                         height: 20,
                       ),
                       Container(
+                        width: 300,
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 0, left: 5),
                         child: Text(
                           "Status",
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               letterSpacing: 2,
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
@@ -204,6 +212,9 @@ class _epFormState extends State<epForm> {
                       SizedBox(
                         height: 10,
                       ),
+                      SizedBox(
+                        width: 300,
+                        child:
                       DropdownButtonFormField(
                           value: document['status'],
                           decoration: textInputDecoration,
@@ -216,26 +227,26 @@ class _epFormState extends State<epForm> {
                           onChanged: (val) =>
                               setState(() => currentStatus = val as String),
                           style: TextStyle(
-                            color: Colors.orange[600],
+                            color: Colors.orange[400],
                             fontFamily: 'Comfortaa',
-                          )),
+                          ))),
                       SizedBox(
                         height: 30,
                       ),
                       SizedBox(
-                        width: 320,
+                        width: 300,
                         child: TextFormField(
                           initialValue: document['bio'],
                           decoration: textInputDecoration.copyWith(
                             hintText: "Enter your bio.",
                             hintStyle: TextStyle(
-                                color: Colors.orange[600],
+                                color: Colors.orange[400],
                                 fontSize: 14,
                                 fontFamily: "Comfortaa"),
                           ),
                           maxLines: 4,
                           style: TextStyle(
-                              color: Colors.orange[600],
+                              color: Colors.orange[400],
                               fontSize: 14,
                               fontFamily: "Comfortaa"),
                           validator: (val) =>
@@ -254,7 +265,7 @@ class _epFormState extends State<epForm> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+                                  MaterialStateProperty.all(Colors.black),
                               padding: MaterialStateProperty.all(
                                   EdgeInsets.fromLTRB(35, 15, 35, 15))),
                           child: Text(
@@ -265,19 +276,48 @@ class _epFormState extends State<epForm> {
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
-                            print(currentName);
-                            if (image == null && document['imageUrl'] == '') {
-                              Fluttertoast.showToast(
-                                msg: "Please pick an image.",
-                                toastLength: Toast.LENGTH_LONG,
-                              );
-                              return;
-                            } else if (image == null &&
-                                document['imageUrl'] != '') {
+                            //check if onlyspaces in name
+                            bool isNameOnlySpace() {
+                              int j =
+                                  0; // counter of spaces number in name Input
+                              for (int i = 0; i < currentName!.length; i++) {
+                                if (currentName!.substring(i, i + 1) == " ")
+                                  j++;
+                              }
+                              if (j == currentName!.length) {
+                                return true;
+                              }
+                              return false;
+                            }
+
+                            //////
+                            /////check if onlyspaces in bio
+                            bool isBioOnlySpace() {
+                              int k =
+                                  0; // counter of spaces number in bio Input
+                              for (int i = 0; i < currentBio!.length; i++) {
+                                if (currentBio!.substring(i, i + 1) == " ") k++;
+                              }
+                              if (k == currentBio!.length) {
+                                return true;
+                              }
+                              return false;
+                            }
+
+                            //////////////////////
+
+                            // if (image == null && document['imageUrl'] == '') {
+                            //   Fluttertoast.showToast(
+                            //     msg: "Please pick an image.",
+                            //     toastLength: Toast.LENGTH_LONG,
+                            //   );
+                            //   return;
+                            // } else
+                            if (image == null && document['imageUrl'] != '') {
                               imageFile = document['imageUrl'];
                             }
                             //image upload to storage
-                            else {
+                            else if (image != null) {
                               final ref = FirebaseStorage.instance
                                   .ref()
                                   .child('user_image')
@@ -287,21 +327,39 @@ class _epFormState extends State<epForm> {
 
                               final url = await ref.getDownloadURL();
                               imageFile = url;
+                            } else {
+                              imageFile = '';
                             }
+
                             if (_formkey.currentState!.validate()) {
                               if (currentName == "") {
                                 currentName = document['name'];
+                              } else if (isNameOnlySpace()) {
+                                Fluttertoast.showToast(
+                                  msg: "Name can't be only spaces.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                return;
                               }
                               if (currentStatus == "") {
                                 currentStatus = document['status'];
                               }
+
                               if (currentBio == "") {
                                 currentBio = document['bio'];
+                              } else if (isBioOnlySpace()) {
+                                Fluttertoast.showToast(
+                                  msg: "Bio can't be only spaces.",
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                                return;
                               }
+
                               dynamic db = await DatabaseService(
                                       uid: user?.uid.toString())
                                   .updateProfileData(user!.uid, currentName!,
                                       currentStatus!, currentBio!, imageFile);
+                              updateComment(user.uid, imageFile, currentName);
                               Navigator.pop(context);
                               Fluttertoast.showToast(
                                 msg: "Profile successfully updated.",
@@ -317,7 +375,7 @@ class _epFormState extends State<epForm> {
               );
             }).toList(),
           ));
-        });
+        }));
   }
 
   Widget buildImage() {
@@ -367,4 +425,17 @@ class _epFormState extends State<epForm> {
           child: child,
         ),
       );
+  var collection;
+  var documentList;
+  // will return eventCreator name
+  void updateComment(String uid, String img, String? name) async {
+    collection = await FirebaseFirestore.instance
+        .collection('comments')
+        .where("uid", isEqualTo: uid);
+    documentList = await collection.get();
+
+    for (var doc in documentList.docs) {
+      await doc.reference.update({"name": name, "imageUrl": img});
+    }
+  }
 }
