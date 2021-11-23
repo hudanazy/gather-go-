@@ -63,7 +63,7 @@ Widget MySecondaryAppBarWidget(title) {
       style: TextStyle(
           color: Colors.black, 
           fontFamily: 'Comfortaa', 
-          fontSize: 20, 
+          fontSize: 28, 
           fontWeight: FontWeight.bold)),
     elevation: 6,
     toolbarHeight:100,

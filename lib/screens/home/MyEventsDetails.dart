@@ -59,10 +59,10 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     });
 
     if (adminCheck == false) {
-      state = "Wating";
+      state = "Waiting";
       stateColor = Colors.grey;
     } else if (adminCheck == true && approved == false) {
-      state = "Disapprove";
+      state = "Disapproved";
       stateColor = Colors.red;
     } else if (adminCheck == true && approved == true) {
       state = "Approved";
@@ -79,36 +79,40 @@ class _MyEventsDetails extends State<MyEventsDetails> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
+            appBar: SecondaryAppBar(title: 'Event Details',),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5.0),
-                    child: ArcBannerImage(),
+                  //  child: ArcBannerImage(),
                   ),
                   Row(children: [
-                    IconButton(
-                      icon: new Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => adminEvent()));
-                      },
-                    ),
+                    // IconButton(
+                    //   icon: new Icon(Icons.arrow_back_ios),
+                    //   onPressed: () {
+                    //     Navigator.pop(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => adminEvent()));
+                    //   },
+                    // ),
                     Flexible(
+                      child: Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.orange[400],
                               fontFamily: 'Comfortaa',
-                              fontSize: 18)),
-                    ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold)),
+                    )),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Chip(
                         label: Text(category,
                             style: TextStyle(color: Colors.black)),
-                        backgroundColor: Colors.deepOrange[100],
+                        backgroundColor: Colors.orange[200],
                       ),
                     ),
                     Padding(
@@ -137,15 +141,15 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.location_pin),
-                        Text("   to be added later"),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 20.0),
+                  //   child: Row(
+                  //     children: <Widget>[
+                  //       Icon(Icons.location_pin),
+                  //       Text("   to be added later"),
+                  //     ],
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Row(children: <Widget>[
@@ -166,9 +170,12 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             label: Text("see the location",
                                 style: TextStyle(
                                   color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
+                              //minimumSize: Size.fromWidth(180),
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
@@ -191,9 +198,12 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             label: Text(nComments + " comments",
                                 style: TextStyle(
                                   color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
+                             // minimumSize: Size.fromWidth(180),
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
@@ -218,7 +228,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.orangeAccent),
+                                        Colors.deepPurple),
                                   ),
                                   child: Text('Delete Event',
                                       style: TextStyle(
@@ -259,7 +269,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.orangeAccent),
+                                        Colors.deepPurple),
                                   ),
                                   child: Text('Edit Event',
                                       style: TextStyle(

@@ -217,7 +217,7 @@ print(currDt.second); // 49 */
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: MyAppBar(title: 'Browse Events'),
+        appBar: MyAppBar(title: 'Upcoming Events'),
         body: Container(
         alignment: Alignment.center,
        // height: 600,
