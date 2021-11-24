@@ -3,11 +3,14 @@
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 //import 'package:gather_go/shared/loading.dart';
@@ -265,7 +268,23 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   ),
                                                   Text('0'),
                                                   IconButton(
-                                                    onPressed: () async {},
+                                                    onPressed: () async {
+                                                      var result = await showReportCommentDialog(context);
+                                                      if (result == true) {
+                                                      int reportNumber= uid.get('reportNumber');
+                                                      List userReported= uid.get('userReported');
+                                                      userReported.add(user!.uid);
+                                                      FirebaseFirestore.instance.collection('comments').doc(uid.id).update({
+                                                        'userReported': userReported,
+                                                        'reportNumber': reportNumber+1,
+                                                      });
+                                                      Fluttertoast.showToast(
+                                                        msg: 
+                                                            "Comment reported successfully",
+                                                        toastLength: Toast.LENGTH_LONG,
+                                                      );
+                                                    }
+                                                    },
                                                     icon: Icon(Icons.report),
                                                     color: Colors.grey,
                                                     iconSize: 20,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/Brows.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/shared/num_button.dart';
@@ -426,10 +427,14 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                       msg: "Event successfully sent to admin.",
                                       toastLength: Toast.LENGTH_LONG,
                                     );
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyBottomBarDemo()));
+                                    //Navigator.of(context).pop();
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             MyBottomBarDemo()));
+
+
+                                  //here we add the code to clear the current input 
                                   }
                                 }
                               }

@@ -263,6 +263,28 @@ Future<bool> showBookDialog(BuildContext context) async {
   );
 }
 
+Future<bool> showReportCommentDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Report Comment"),
+      content: Text("Are you sure you want to report this comment?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
 Future<bool> showEditEventDialog(BuildContext context) async {
   return await showDialog(
     context: context,
