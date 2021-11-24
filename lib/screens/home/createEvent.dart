@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/search/searchPage.dart';
 import 'package:gather_go/shared/num_button.dart';
 
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -23,6 +24,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
+  final double saveLat;
+  final double saveLong;
+  createEvent({required this.saveLat, required this.saveLong});
   @override
   _Eventform createState() => _Eventform();
 }
@@ -75,8 +79,8 @@ class _Eventform extends State<createEvent> {
   String viewTime = "Time ";
   String viewLocation = "Location  ";
 var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
-  double saveLat = 0;
-  double saveLong = 0;
+  // double saveLat = 0;
+  // double saveLong = 0;
 
   //DateTime date;
   @override
@@ -324,10 +328,16 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 ),
                                 //Location()
                                 //selectLocation
-                              onPressed: () {
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => selectLocation()));
-                },
+                           onPressed: () {
+                                        Navigator.pop(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    selectLocation(
+                                                     
+                                                    )));
+                                      },
+               
               ),
                             ),
                             TextSpan(
@@ -378,8 +388,8 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                               if (_formKey.currentState!.validate()) {
                                 if (dateo == null &&
                                     ttime == null &&
-                                    saveLat == 0 &&
-                                    saveLong == 0) {
+                                    widget.saveLat == 0 &&
+                                    widget.saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg:
                                         "Date and time and location have to be selected.",
@@ -395,7 +405,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (saveLat == 0 && saveLong == 0) {
+                                } else if (widget.saveLat == 0 && widget.saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
@@ -423,8 +433,8 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      saveLat,
-                                      saveLong,
+                                      widget.saveLat,
+                                      widget.saveLong,
                                     );
                                     var userID = user.uid;
                                     await FirebaseMessaging.instance.subscribeToTopic('event_$userID');
@@ -449,26 +459,26 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
         }));
   }
 
-  void _onMapCreated(GoogleMapController _cntlr) {
-    _controller = _cntlr;
+  // void _onMapCreated(GoogleMapController _cntlr) {
+  //   _controller = _cntlr;
     
-  }
+  // }
 
-  void _handleTap(LatLng tappedPoint) {
-    setState(() {
-      myMarker = [];
-      myMarker.add(Marker(
-          markerId: MarkerId(tappedPoint.toString()),
-          position: tappedPoint,
-          draggable: true,
-          onDragEnd: (dragEndPosition) {
-            print(dragEndPosition);
-          }));
-      saveLat = tappedPoint.latitude;
-      saveLong = tappedPoint.longitude;
+  // void _handleTap(LatLng tappedPoint) {
+  //   setState(() {
+  //     myMarker = [];
+  //     myMarker.add(Marker(
+  //         markerId: MarkerId(tappedPoint.toString()),
+  //         position: tappedPoint,
+  //         draggable: true,
+  //         onDragEnd: (dragEndPosition) {
+  //           print(dragEndPosition);
+  //         }));
+  //     saveLat = tappedPoint.latitude;
+  //     saveLong = tappedPoint.longitude;
   
-                });
-  }
+  //               });
+  // }
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.now().add(Duration(days: 1));
@@ -513,81 +523,81 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
       child: Text(item,
           style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
 
-Future<bool> showMapdialogToSelectLocation(
-    BuildContext context) async {
-  return await showDialog(
+// Future<bool> showMapdialogToSelectLocation(
+//     BuildContext context) async {
+//   return await showDialog(
     
-  context: context,
+//   context: context,
   
-  builder: (context) {
+//   builder: (context) {
    
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return AlertDialog(
-          title: Text("SELECT LOCATION" ,style: TextStyle( color: Colors.grey, fontSize: 10) ),
-          content:   
-          SizedBox(
-                        height: 400,
-                        width: 450,
-                  child: GoogleMap(
-                          initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition , zoom: 5),
-                          mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          zoomControlsEnabled: true,
-                          zoomGesturesEnabled: true,
-                          liteModeEnabled: false,
-                          tiltGesturesEnabled: true,
-                          myLocationEnabled: true,
-                          markers: Set.from(myMarker),
-                          onTap: _handleTap,
-                        ), ),        
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Done"),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                   viewLocation = "Selected";
-                  SizedBox(
-                        height: 300,
-                        width: 450,
-                  child: googleMap = GoogleMap(
-                          initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition),
-                          mapType: MapType.normal,
-                          onMapCreated: _onMapCreated,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          zoomControlsEnabled: true,
-                          zoomGesturesEnabled: true,
-                          liteModeEnabled: false,
-                          tiltGesturesEnabled: true,
-                          myLocationEnabled: true,
-                          markers: Set.from(myMarker),
-                          onTap: _handleTap,
-                        ));
-                        });
-      if(saveLat != 0 && saveLat !=0 )          
-    Fluttertoast.showToast(
-      msg: "Location selected.",
-      toastLength: Toast.LENGTH_LONG,
-    );
+//     return StatefulBuilder(
+//       builder: (context, setState) {
+//         return AlertDialog(
+//           title: Text("SELECT LOCATION" ,style: TextStyle( color: Colors.grey, fontSize: 10) ),
+//           content:   
+//           SizedBox(
+//                         height: 400,
+//                         width: 450,
+//                   child: GoogleMap(
+//                           initialCameraPosition:
+//                               CameraPosition(target: _initialcameraposition , zoom: 5),
+//                           mapType: MapType.normal,
+//                           onMapCreated: _onMapCreated,
+//                           rotateGesturesEnabled: true,
+//                           scrollGesturesEnabled: true,
+//                           zoomControlsEnabled: true,
+//                           zoomGesturesEnabled: true,
+//                           liteModeEnabled: false,
+//                           tiltGesturesEnabled: true,
+//                           myLocationEnabled: true,
+//                           markers: Set.from(myMarker),
+//                           onTap: _handleTap,
+//                         ), ),        
+//           actions: <Widget>[
+//             TextButton(
+//               onPressed: () => Navigator.pop(context),
+//               child: Text("Done"),
+//             ),
+//             TextButton(
+//               onPressed: () {
+//                 setState(() {
+//                    viewLocation = "Selected";
+//                   SizedBox(
+//                         height: 300,
+//                         width: 450,
+//                   child: googleMap = GoogleMap(
+//                           initialCameraPosition:
+//                               CameraPosition(target: _initialcameraposition),
+//                           mapType: MapType.normal,
+//                           onMapCreated: _onMapCreated,
+//                           rotateGesturesEnabled: true,
+//                           scrollGesturesEnabled: true,
+//                           zoomControlsEnabled: true,
+//                           zoomGesturesEnabled: true,
+//                           liteModeEnabled: false,
+//                           tiltGesturesEnabled: true,
+//                           myLocationEnabled: true,
+//                           markers: Set.from(myMarker),
+//                           onTap: _handleTap,
+//                         ));
+//                         });
+//       if(saveLat != 0 && saveLat !=0 )          
+//     Fluttertoast.showToast(
+//       msg: "Location selected.",
+//       toastLength: Toast.LENGTH_LONG,
+//     );
     
    
-              },
-              child: Text("Click here to update the location "),
-            ),
-          ],
-        );
-      },
-    );
-  },
-);
-}
+//               },
+//               child: Text("Click here to update the location "),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   },
+// );
+// }
 
 }
