@@ -1,21 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/services.dart';
 
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
-import 'package:gather_go/screens/myAppBar.dart';
-
 
 
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
-import 'package:intl/message_format.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 //import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -58,34 +51,29 @@ class _eventDetails extends State<eventDetails> {
     });
 
     return Scaffold(
-      appBar: SecondaryAppBar(title: 'Event Details',),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-           //   child: ArcBannerImage(),
+              child: ArcBannerImage(),
             ),
             Row(children: [
-              Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),),
-              // IconButton(
-              //   icon: new Icon(Icons.arrow_back_ios),
-              //   onPressed: () {
-              //     Navigator.pop(context,
-              //         MaterialPageRoute(builder: (context) => adminEvent()));
-              //   },
-              // ),
+              IconButton(
+                icon: new Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => adminEvent()));
+                },
+              ),
               Flexible(
-                child: Padding(
-              padding: const EdgeInsets.all(20.0),
                 child: Text(widget.event?.get('name') + '   ',
                     style: TextStyle(
-                        color: Colors.orange[400],
+                        color: Colors.deepOrange,
                         fontFamily: 'Comfortaa',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),),
-              )),
+                        fontSize: 18)),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Chip(
@@ -197,10 +185,10 @@ class _eventDetails extends State<eventDetails> {
                         child: ElevatedButton(
                           child: Text('Disapprove',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Comfortaa',
-                                  fontSize: 16)),
+                                  fontSize: 12)),
                           onPressed: () async {
                             var result = await showDispproveDialog(context);
                             if (result == true) {
@@ -241,7 +229,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
+                                  MaterialStateProperty.all(Colors.orange[300]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -253,10 +241,10 @@ class _eventDetails extends State<eventDetails> {
                       child: ElevatedButton(
                         child: Text('Approve',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Comfortaa',
-                                fontSize: 16)),
+                                fontSize: 12)),
                         onPressed: () async {
                           var result = await showApproveDialog(context);
                           if (result == true) {

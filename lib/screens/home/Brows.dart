@@ -1,39 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gather_go/Models/NewUser.dart';
+
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
-import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/search/searchPage.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 
-
 const Color KAppColor = Color(0xFFFFB300);
 
-// List<Map> categories = [
-//   {
-//     "name": 'SPORT',
-//     'icon': Icons.sports_basketball,
-//   },
-//   {
-//     "name": 'ART',
-//     'icon': Icons.bubble_chart,
-//   },
-//   /* {
-//     "name": 'MUSIC',
-//     'icon': Icons.music_note,
-//   }, */
+List<Map> categories = [
+  {
+    "name": 'SPORT',
+    'icon': Icons.sports_basketball,
+  },
+  {
+    "name": 'ART',
+    'icon': Icons.bubble_chart,
+  },
+  /* {
+    "name": 'MUSIC',
+    'icon': Icons.music_note,
+  }, */
 
-//   {
-//     "name": 'Games',
-//     'icon': Icons.games_outlined,
-//   },
-//   {
-//     "name": 'Other',
-//     'icon': Icons.more,
-//   },
-// ];
+  {
+    "name": 'Games',
+    'icon': Icons.games_outlined,
+  },
+  {
+    "name": 'Other',
+    'icon': Icons.more,
+  },
+];
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -61,18 +59,6 @@ var currDt = DateTime.now().toString();
 var timen = DateTime.now().hour; */
 
 class _HomeScreenState extends State<HomeScreen> {
-    final AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', 
-    'High Importance Notifications', 
-    'This channel is used for important notifications.', 
-    importance: Importance.max,
-  );
-     var flutterLocalNotificationsPlugin= new FlutterLocalNotificationsPlugin();
-  _HomeScreenState(){
-
-     flutterLocalNotificationsPlugin
-     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-  ?.createNotificationChannel(channel);}
   // final user = Provider.of<NewUser?>(context, listen: false);
   // Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore.instance
   //     .collection('events')
@@ -139,7 +125,7 @@ print(currDt.second); // 49 */
   // .where("location", isGreaterThanOrEqualTo: LatLng)
   // .snapshots();
   //is approved
- // int _selectedCategory = 0;
+  int _selectedCategory = 0;
 /* 
   static var now = DateTime.now();
 
@@ -147,62 +133,38 @@ print(currDt.second); // 49 */
 
   static get string => null; */
 
-  // List<Widget> buildCategoriesWidgets() {
-  //   List<Widget> categoriesWidgets = [];
-  //   for (Map category in categories) {
-  //     categoriesWidgets.add(GestureDetector(
-  //       child: Container(
-  //         color: _selectedCategory == categories.indexOf(category)
-  //             ? KAppColor
-  //             : Colors.transparent,
-  //         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-  //         child: Row(
-  //           children: [
-  //             Icon(category['icon'], color: Colors.purple[300]),
-  //             SizedBox(width: 5),
-  //             Text(category['name'],
-  //                 style: TextStyle(color: Colors.purple[300])),
-  //           ],
-  //         ),
-  //       ),
-  //       onTap: () {
-  //         setState(() {
-  //           /* scrollDirection:
-  //           Axis.horizontal; */
-  //           _selectedCategory = categories.indexOf(category);
-  //         });
-  //       },
-  //     ));
-  //   }
-  //   return categoriesWidgets;
-  // }
+  List<Widget> buildCategoriesWidgets() {
+    List<Widget> categoriesWidgets = [];
+    for (Map category in categories) {
+      categoriesWidgets.add(GestureDetector(
+        child: Container(
+          color: _selectedCategory == categories.indexOf(category)
+              ? KAppColor
+              : Colors.transparent,
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          child: Row(
+            children: [
+              Icon(category['icon'], color: Colors.purple[300]),
+              SizedBox(width: 5),
+              Text(category['name'],
+                  style: TextStyle(color: Colors.purple[300])),
+            ],
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            /* scrollDirection:
+            Axis.horizontal; */
+            _selectedCategory = categories.indexOf(category);
+          });
+        },
+      ));
+    }
+    return categoriesWidgets;
+  }
 
   @override
   Widget build(BuildContext context) {
-     FirebaseMessaging.instance.getToken();
-          FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        RemoteNotification? notification = message.notification;
-        AndroidNotification? android = message.notification?.android;
-      print(message.data.toString());
-       if (notification != null && android != null) {
-    flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channel.description,
-              //importance: Importance.max,
-              //priority: Priority.max,
-              icon: '@drawable/ic_flutternotification',
-              styleInformation: BigTextStyleInformation(''),),
-        ),
-        );
-       }
-       return;
-  });
     final user = Provider.of<NewUser?>(context, listen: false);
     // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
@@ -217,95 +179,18 @@ print(currDt.second); // 49 */
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: MyAppBar(title: 'Browse Events'),
-        body: Container(
-        alignment: Alignment.center,
-       // height: 600,
-      //  width: 340,
-          child: //[
-          StreamBuilder(
-            stream: stream1,
-            builder: (BuildContext context,
-                AsyncSnapshot<dynamic> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: Loading(),
-                );
-              }
-    return //Container(
-        // height: 600,
-        // width: 320,
-      //  child: 
-        ListView(
-          children: snapshot.data.docs
-              .map<Widget>((document) {
-            DocumentSnapshot uid = document;
-            return Padding(
-                padding: const EdgeInsets.all(8),
-                //  const EdgeInsets.only(right: 70),
-                child: Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10),
-                        side: BorderSide(
-                            width: 0.5,
-                            color: Colors.orange.shade400)),
-                    margin: const EdgeInsets.fromLTRB(
-                        10, 0, 10, 0),
-                    //color: Colors.orangeAccent,
-                    child: ListTile(
-                      title: Center(
-                          child: Text(
-                        document['name'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 16,
-                            ),
-                      )),
-                      /*  subtitle: Text(
-                        document['date'].toString(),
-                        style: TextStyle(
-                            color: Colors.amber[600],
-                            fontFamily: 'Comfortaa',
-                            fontSize: 14),
-                      ), */
-                      // 00:000
-                      trailing: Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        color: Colors.purple[300],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    eventDetailsForUesers(
-                                      event: uid,
-                                      // change to move to details and booked
-                                    )));
-                      },
-                    )));
-          }).toList(), //docmnt
-       // )
-        );
-  }),
-                              //        ],
-        ));
-  }
-}
-            // Container(
-            //     //height: 200,
-            //     // width: 400,
-            //    // padding: EdgeInsets.all(0),
-            //     color: Colors.white,
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-                    // Row(
-                    //   children: [
+        body: ListView(
+          children: [
+            Container(
+                height: 200,
+                // width: 400,
+                padding: EdgeInsets.all(20),
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
                         /* Icon(
                           Icons.location_on_outlined,
                           color: Colors.white,
@@ -319,67 +204,139 @@ print(currDt.second); // 49 */
                           ),
                         ) */
 
-            //             // Text(
-            //             //   'Gather Go',
-            //             //   textAlign: TextAlign.center,
-            //             //   style:
-            //             //       TextStyle(color: Colors.amber[600], fontSize: 55
+                        Text(
+                          'Gather Go',
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: Colors.amber[600], fontSize: 55
 
-            //             //           // decoration: TextDecoration.underline,
-            //             //           ),
-            //             // )
-                    //   ],
+                                  // decoration: TextDecoration.underline,
+                                  ),
+                        )
+                      ],
+                    ),
+                    // TextField(
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.purple, width: 0.5),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.amberAccent, width: 0.5),
+                    //     ),
+                    //     hintText: "Search",
+                    //     hintStyle: TextStyle(color: Colors.purple[300]),
+                    //     prefixIcon:
+                    //         Icon(Icons.search, color: Colors.purple[300]),
+                    //     suffixIcon:
+                    //         Icon(Icons.filter_list, color: Colors.purple[300]),
+                    //   ),
+                    //   onChanged: (val) {
+                    //     // SearchList(searchInput: val);
+                    //   },
                     // ),
-            //         // TextField(
-            //         //   decoration: InputDecoration(
-            //         //     contentPadding: EdgeInsets.symmetric(vertical: 15),
-            //         //     focusedBorder: OutlineInputBorder(
-            //         //       borderSide:
-            //         //           BorderSide(color: Colors.purple, width: 0.5),
-            //         //     ),
-            //         //     enabledBorder: OutlineInputBorder(
-            //         //       borderSide:
-            //         //           BorderSide(color: Colors.amberAccent, width: 0.5),
-            //         //     ),
-            //         //     hintText: "Search",
-            //         //     hintStyle: TextStyle(color: Colors.purple[300]),
-            //         //     prefixIcon:
-            //         //         Icon(Icons.search, color: Colors.purple[300]),
-            //         //     suffixIcon:
-            //         //         Icon(Icons.filter_list, color: Colors.purple[300]),
-            //         //   ),
-            //         //   onChanged: (val) {
-            //         //     // SearchList(searchInput: val);
-            //         //   },
-            //         // ),
-            //         // Container(
-            //         //     height: 30,
-            //         //     child: Row(
-            //         //       //children: buildCategoriesWidgets(),
-            //         //     ))
-                //   ],
-                // )),
-            //SizedBox(height: 15),
-            // Text(
-            //   'Here you can browse upcoming events',
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //       color: Colors.purple[300],
-            //       fontSize: 17,
-            //       fontWeight: FontWeight.bold),
-            // ),
-            //SizedBox(height: 20),
-            // Padding(
-            //     padding: const EdgeInsets.all(30),
-            //     // padding: const EdgeInsets.only(left: 30),
-            //     child: Column(
-               //   children: [
-             //       Row(
-                //      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //      children: [
-                        //SizedBox(height: 30),
-               //       ],
-               //     )
-              //    ],
-               // ))
+                    Container(
+                        height: 30,
+                        child: Row(
+                          children: buildCategoriesWidgets(),
+                        ))
+                  ],
+                )),
+            SizedBox(height: 15),
+            Text(
+              'Upcoming Events',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.purple[300],
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Padding(
+                padding: const EdgeInsets.all(30),
+                // padding: const EdgeInsets.only(left: 30),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(height: 350),
+                        StreamBuilder(
+                            stream: stream1,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: Loading(),
+                                );
+                              }
 
+                              return Container(
+                                  height: 350,
+                                  width: 280,
+                                  child: ListView(
+                                    children: snapshot.data.docs
+                                        .map<Widget>((document) {
+                                      DocumentSnapshot uid = document;
+                                      return Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          //  const EdgeInsets.only(right: 70),
+                                          child: Card(
+                                              elevation: 6,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  side: BorderSide(
+                                                      width: 0.5,
+                                                      color: Colors.amber)),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  10, 0, 10, 0),
+                                              //color: Colors.orangeAccent,
+                                              child: ListTile(
+                                                title: Center(
+                                                    child: Text(
+                                                  document['name'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.amber[600],
+                                                      fontFamily: 'Comfortaa',
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                /*  subtitle: Text(
+                                                  document['date'].toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.amber[600],
+                                                      fontFamily: 'Comfortaa',
+                                                      fontSize: 14),
+                                                ), */
+                                                // 00:000
+                                                trailing: Icon(
+                                                  Icons.arrow_forward_ios_sharp,
+                                                  color: Colors.purple[300],
+                                                ),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              eventDetailsForUesers(
+                                                                event: uid,
+                                                                // change to move to details and booked
+                                                              )));
+                                                },
+                                              )));
+                                    }).toList(), //docmnt
+                                  ));
+                            }),
+                      ],
+                    )
+                  ],
+                ))
+          ],
+        ));
+  }
+}

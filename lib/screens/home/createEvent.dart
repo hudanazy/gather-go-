@@ -1,20 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/home/selectLocation.dart';
-import 'package:gather_go/screens/myAppBar.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/shared/num_button.dart';
+
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/shared/contants.dart';
+
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:gather_go/screens/home/nav.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../NotifactionManager.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
 
 
 
@@ -61,7 +66,7 @@ class _Eventform extends State<createEvent> {
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
   String? timeAgo;
-  int _currentValue = 0;
+  int _currentValue = 5;
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
@@ -75,6 +80,12 @@ class _Eventform extends State<createEvent> {
 var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
   double saveLat = 0;
   double saveLong = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    tz.initializeTimeZones();
+  }
 
   //DateTime date;
   @override
@@ -82,11 +93,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: MyAppBar(title: "Create An Event",),
-      body:
-     StreamBuilder<Object>(
+    return StreamBuilder<Object>(
         stream: DatabaseService(uid: user?.uid).eventss,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -98,17 +105,17 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                   child: Column(
                     children: <Widget>[
                       
-        //               AppBar(
+                      AppBar(
                       
-        //   toolbarHeight: 100,
-        //   backgroundColor: Colors.white,
-        //   title: Text(
-        //     "Create An Event",
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //         color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-        //   ),
-        // ),
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          title: Text(
+            "Create An Event",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
+          ),
+        ),
                       //   GradientAppBar(),
                       Container(
                           alignment: Alignment.topLeft,
@@ -116,7 +123,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Name",
                             style: TextStyle(
-                                color: Colors.orange[400],
+                                color: Colors.orange[600],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -135,7 +142,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           textInputDecoration.copyWith(
                             
                           ),
-                          validator: (val) => val!.trim().isEmpty
+                          validator: (val) => val!.isEmpty
                               ? "The event needs a name."
                               : eventData?.name,
                           onChanged: (val) => setState(() => Name = val),
@@ -148,7 +155,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Category",
                             style: TextStyle(
-                                color: Colors.orange[400],
+                                color: Colors.orange[600],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -180,7 +187,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                               onChanged: (value) =>
                                   setState(() => this.item = value),
                               style: TextStyle(
-                                color: Colors.orange[400],
+                                color: Colors.orange[600],
                                 fontFamily: 'Comfortaa',
                               )),
                         ),
@@ -192,7 +199,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           child: Text(
                             "Event Description",
                             style: TextStyle(
-                                color: Colors.orange[400],
+                                color: Colors.orange[600],
                                 letterSpacing: 2,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -210,7 +217,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                           maxLines: 5,
                           initialValue: eventData?.description,
                           decoration: textInputDecoration.copyWith(),
-                          validator: (val) => val!.trim().isEmpty
+                          validator: (val) => val!.isEmpty
                               ? "Description can't be empty."
                               : eventData?.description,
                           onChanged: (val) => setState(() => Description = val),
@@ -224,22 +231,21 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(top: 10, left: 20),
                         child: Text(
-                          "Attendee Number",
+                          "How many attendees?",
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[600],
                               letterSpacing: 2,
-                              fontSize: 13,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               fontFamily: "Comfortaa"),
                         ),
                       ),
   NumericStepButton(
-                        
+                        // value: _currentValue,
                         minValue: 1,
                         maxValue: 500,
-                        onChanged: (value) {
-                            setState(() => this._currentValue = value);
-                            }
+                        onChanged: (value) =>
+                            setState(() => this._currentValue = value),
                       ),
                       ],
                     ),
@@ -259,7 +265,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                
                                 icon: Icon(
                                   Icons.calendar_today_rounded,
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   size: 25,
                                 ),
                                
@@ -269,7 +275,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                             TextSpan(
                               text: viewDate,
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -288,7 +294,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 icon: Icon(
                                   Icons.access_time,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   size: 25,
                                 ),
                                 
@@ -298,7 +304,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                             TextSpan(
                               text: viewTime,
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -317,21 +323,18 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 icon: Icon(
                                   Icons.location_on_outlined,
                                   textDirection: TextDirection.ltr,
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   size: 25,
                                 ),
                                 //Location()
-                                //selectLocation
-                              onPressed: () {
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => selectLocation()));
-                },
-              ),
+                                
+                                onPressed: () => showMapdialogToSelectLocation(context),
+                              ),
                             ),
                             TextSpan(
                               text: viewLocation,
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[600],
                                   letterSpacing: 2,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -344,10 +347,71 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                       ),
                       ],
                       ),),
-                  
-                      
-                     SizedBox(height: 10),
                      
+                      
+                      // Container(
+                      //   // color: Colors.amber,
+                      //   width: 50,
+                      // child: IconButton(
+                      //   // label: Text(
+                      //   //   "Set event date",
+                      //   //   style: TextStyle(
+                      //   //     color: Colors.deepPurple,
+                      //   //     fontSize: 20,
+                      //   //     fontWeight: FontWeight.w500,
+                      //   //   ),
+                      //   // ),
+                      //   icon: Icon(
+                      //     Icons.calendar_today_rounded,
+                      //     color: Colors.purple[300],
+                      //     size: 50,
+                      //   ),
+                      //   // style: ElevatedButton.styleFrom(
+                      //   //   minimumSize: Size.fromHeight(40),
+                      //   //   primary: Colors.white,
+                      //   // ),
+                      //   onPressed: () => pickDate(context),
+                      // ),
+                      // ),
+                     SizedBox(height: 10),
+                      // SfDateRangePicker(
+                      //   controller: Datee,
+                      //   // onSelectionChanged: _onSelectionChanged,
+                      //   selectionMode: DateRangePickerSelectionMode.single,
+                      //   onSubmit: (val) =>
+                      //       setState(() => dateo = val as DateTime),
+                      // ),
+                      // Container(
+                      //   margin: const EdgeInsets.only(right: 5.0),
+                      //   // color: Colors.amber,
+                      //   width: 50,
+                      
+                       
+                     
+                    
+//showMapdialogToSelect 
+                      // showMapdialogToSelectLocation(context)
+                      // SizedBox(height: 20),
+                      // SizedBox(
+                      //   height: 400,
+                      //   width: 350,
+                      //   child: GoogleMap(
+                      //     initialCameraPosition:
+                      //         CameraPosition(target: _initialcameraposition),
+                      //     mapType: MapType.normal,
+                      //     onMapCreated: _onMapCreated,
+                      //     rotateGesturesEnabled: true,
+                      //     scrollGesturesEnabled: true,
+                      //     zoomControlsEnabled: true,
+                      //     zoomGesturesEnabled: true,
+                      //     liteModeEnabled: false,
+                      //     tiltGesturesEnabled: true,
+                      //     myLocationEnabled: true,
+                      //     markers: Set.from(myMarker),
+                      //     onTap: _handleTap,
+                      //   ),
+                      // ),
+                      // SizedBox(height: 40),
 
                       SizedBox(
                         height: 50,
@@ -398,17 +462,16 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (_currentValue == 0){
-                                  Fluttertoast.showToast(
-                                    msg: "Attendee number can't be 0 ",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                }else{
+                                } else {
                                   // print(ttime);
                                   var result = await showMyDialog(context);
-
                                   if (result == true) {
-                                   
+                                    NotifactionManager().showNotification(
+                                        1,
+                                        "Reminder, " + eventName.text,
+                                        "You have upcoming event, don't forget it",
+                                        dateo,
+                                        ttime); //before 1 day
                                     await DatabaseService(uid: user?.uid)
                                         .addEventData(
                                       user!.uid,
@@ -424,8 +487,6 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                       saveLat,
                                       saveLong,
                                     );
-                                    var userID = user.uid;
-                                    await FirebaseMessaging.instance.subscribeToTopic('event_$userID');
                                     Fluttertoast.showToast(
                                       msg: "Event successfully sent to admin.",
                                       toastLength: Toast.LENGTH_LONG,
@@ -444,7 +505,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                       SizedBox(height: 40),
                     ],
                   )));
-        }));
+        });
   }
 
   void _onMapCreated(GoogleMapController _cntlr) {
@@ -543,6 +604,10 @@ Future<bool> showMapdialogToSelectLocation(
                           onTap: _handleTap,
                         ), ),        
           actions: <Widget>[
+            
+              
+              
+              
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text("Done"),
@@ -550,7 +615,6 @@ Future<bool> showMapdialogToSelectLocation(
             TextButton(
               onPressed: () {
                 setState(() {
-                   viewLocation = "Selected";
                   SizedBox(
                         height: 300,
                         width: 450,
@@ -569,13 +633,12 @@ Future<bool> showMapdialogToSelectLocation(
                           markers: Set.from(myMarker),
                           onTap: _handleTap,
                         ));
-                        });
-      if(saveLat != 0 && saveLat !=0 )          
+                         viewLocation = "Selected";});
+                
     Fluttertoast.showToast(
       msg: "Location selected.",
       toastLength: Toast.LENGTH_LONG,
     );
-    
    
               },
               child: Text("Click here to update the location "),

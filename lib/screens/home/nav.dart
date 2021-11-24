@@ -48,7 +48,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
         onTap: onTabTapped,
         // backgroundColor: Colors.white,
         selectedIconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.orange[200],
+        backgroundColor: Colors.grey[200],
         selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
         selectedItemColor: Colors.black,

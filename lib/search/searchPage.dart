@@ -21,10 +21,10 @@ class _SearchListState extends State<SearchList> {
   bool isNotSearching = true;
   String searchInput = "";
   //bool searchInputBool=false ; // to avoid display result when the input is empty 
-  Color backColor = Colors.amber;
-  Widget appBarTitle = new Text('\nSearch for Events',
+  Color backColor = Colors.orange.shade100;
+  Widget appBarTitle = new Text('\nSearch for events',
       style: TextStyle(
-          color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24, fontWeight: FontWeight.bold));
+          color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24));
   Icon actionIcon = new Icon(Icons.search, color: Colors.black, size: 40);
   TabBar tabs = TabBar(
     tabs: [],
@@ -42,16 +42,14 @@ class _SearchListState extends State<SearchList> {
         home: DefaultTabController(
             length: tabNum,
             child: Scaffold(
-              backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false, 
               appBar: new AppBar(
-                  backgroundColor: Colors.orange[400],
-                  //centerTitle: true,
+                  backgroundColor: Colors.white,
+                  centerTitle: false,
                   bottom: tabs,
                   title: appBarTitle,
                   actions: <Widget>[
                     new IconButton(
-                      padding: const EdgeInsets.only( right: 10, top: 22),
                       //iconSize: 40,
                       icon: actionIcon,
                       onPressed: () {
@@ -60,7 +58,7 @@ class _SearchListState extends State<SearchList> {
                             tabNum = 2;
                             isNotSearching = false;
                             this.tabs = new TabBar(
-                              indicatorColor: Colors.purple[600],
+                              indicatorColor: Colors.orangeAccent,
                               labelColor: Colors.black,
                               labelStyle: TextStyle(
                                 fontFamily: 'Comfortaa',
@@ -83,7 +81,7 @@ class _SearchListState extends State<SearchList> {
                                       EdgeInsets.symmetric(vertical: 15),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.purple.shade600, width: 2),
+                                        color: Colors.orangeAccent, width: 2),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -110,7 +108,7 @@ class _SearchListState extends State<SearchList> {
                             tabNum = 0;
                             isNotSearching = true;
                             this.tabs = new TabBar(
-                              indicatorColor: Colors.purple[600],
+                              indicatorColor: Colors.orangeAccent,
                               labelColor: Colors.black,
                               labelStyle: TextStyle(
                                 fontFamily: 'Comfortaa',
@@ -124,8 +122,7 @@ class _SearchListState extends State<SearchList> {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'Comfortaa',
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold));
+                                    fontSize: 24));
                           }
                         });
                       },
@@ -198,10 +195,10 @@ bool isOnlySpace = false;
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.amber[600],
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16,
-                                  ),
+                                  fontWeight: FontWeight.bold),
                             )),
                             /*  subtitle: Text(
                                                   document['date'].toString(),
@@ -258,7 +255,10 @@ searchInput=searchInput.trimLeft();
                 .collection('events')
                 .where('approved', isEqualTo: true)
                 //.where('uid', isNotEqualTo: uuuu)
-                 .where('nameLowerCase', arrayContains: searchInput.toLowerCase())
+                .where('nameLowerCase',
+                    isGreaterThanOrEqualTo: searchInput.toLowerCase())
+                .where('nameLowerCase', 
+                    isLessThan: searchInput.toLowerCase() + 'z')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -294,10 +294,10 @@ searchInput=searchInput.trimLeft();
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.amber[600],
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16,
-                                  ),
+                                  fontWeight: FontWeight.bold),
                             )),
                             trailing: Icon(
                               Icons.arrow_forward_ios,
@@ -328,7 +328,81 @@ searchInput=searchInput.trimLeft();
           );
   }
 
-  
+  Widget buildSearchByName(String searchInput, BuildContext context) {
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('approved', isEqualTo: true)
+        .where('nameLowerCase',
+            isGreaterThanOrEqualTo: searchInput.toLowerCase())
+        .where('nameLowerCase', isLessThan: searchInput.toLowerCase() + 'z')
+        .snapshots();
+
+    return  StreamBuilder<Object>(
+            stream: snap,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: Loading());
+              }
+              if (snapshot.data.size == 0 && searchInput.length != 0) {
+                return Center(
+                  child: Text(
+                      "We're sorry. We were not able to find a match\nTry Another Saerch"),
+                  heightFactor: 30,
+                );
+              }
+              return ListView(
+                children: snapshot.data.docs.map<Widget>((document) {
+                  DocumentSnapshot uid = document;
+                  return Padding(
+                      padding: const EdgeInsets.all(10),
+                      //  const EdgeInsets.only(right: 70),
+                      child: Card(
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side:
+                                  BorderSide(width: 0.5, color: Colors.amber)),
+                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          //color: Colors.orangeAccent,
+                          child: ListTile(
+                            title: Center(
+                                child: Text(
+                              document['name'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.amber[600],
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                            /*  subtitle: Text(
+                                                  document['date'].toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.amber[600],
+                                                      fontFamily: 'Comfortaa',
+                                                      fontSize: 14),
+                                                ), */
+                            // 00:000
+                            trailing: Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              color: Colors.purple[300],
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          eventDetailsForUesers(
+                                            event: uid,
+                                            // change to move to details and booked
+                                          )));
+                            },
+                          )));
+                }).toList(), //docmnt
+              );
+            });
+  }
 
   Widget buildCategory(context) {
 // SizedBox(

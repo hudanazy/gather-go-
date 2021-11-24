@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gather_go/screens/admin/eventDetails.dart';
-import 'package:gather_go/screens/myAppBar.dart';
 
 import 'package:gather_go/shared/loading.dart';
 
@@ -30,36 +29,34 @@ class _adminEvent extends State<adminEvent> {
         //     ? Loading()
         //     :
         Scaffold(
-          backgroundColor: Colors.white,
-          appBar: MyAppBar(title: "All New Events",),
             resizeToAvoidBottomInset: false,
             body: Column(
               children: [
-                // AppBar(
-                //     toolbarHeight: 100,
-                //     backgroundColor: Colors.white,
-                //     title: Text(
-                //       "\nAll New Events",
-                //       textAlign: TextAlign.center,
-                //       style: TextStyle(
-                //           color: Colors.deepOrange,
-                //           fontFamily: 'Comfortaa',
-                //           fontSize: 24),
-                //     ),
-                //     actions: [
-                //       ElevatedButton.icon(
-                //           onPressed: () async {
-                //             await FirebaseAuth.instance.signOut();
-                //           },
-                //           icon: Icon(Icons.logout, color: Colors.deepOrange),
-                //           label: Text('Log Out',
-                //               style: TextStyle(
-                //                 color: Colors.deepOrange,
-                //               )),
-                //           style: ElevatedButton.styleFrom(
-                //             primary: Colors.white,
-                //           )),
-                //     ]),
+                AppBar(
+                    toolbarHeight: 100,
+                    backgroundColor: Colors.white,
+                    title: Text(
+                      "\nAll New Events",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.deepOrange,
+                          fontFamily: 'Comfortaa',
+                          fontSize: 24),
+                    ),
+                    actions: [
+                      ElevatedButton.icon(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                          },
+                          icon: Icon(Icons.logout, color: Colors.deepOrange),
+                          label: Text('Log Out',
+                              style: TextStyle(
+                                color: Colors.deepOrange,
+                              )),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          )),
+                    ]),
                 StreamBuilder(
                   stream: snap,
                   builder:
@@ -85,7 +82,6 @@ class _adminEvent extends State<adminEvent> {
                     // }
 
                     return Container(
-                      padding: const EdgeInsets.only(top: 10),
                         height: 540, // fix black yellow
                         width: 500,
                         child: ListView(
@@ -94,28 +90,24 @@ class _adminEvent extends State<adminEvent> {
                             return Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Card(
-                                  elevation: 6,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(10),
-                                            side:
-                                  BorderSide(width: 0.5, color: Colors.orange.shade400)),
+                                            BorderRadius.circular(10)),
                                     margin:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  //  color: Colors.grey[200],
+                                    color: Colors.grey[200],
                                     child: ListTile(
                                       title: Center(
                                           child: Text(
                                         document['name'],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.black,
+                                            color: Colors.deepOrange,
                                             fontFamily: 'Comfortaa',
                                             fontSize: 16),
                                       )),
                                       trailing: Icon(
                                         Icons.arrow_forward_ios,
-                                        color: Colors.purple[300],
                                       ),
                                       onTap: () {
                                         Navigator.push(

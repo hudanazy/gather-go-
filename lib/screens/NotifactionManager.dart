@@ -10,7 +10,7 @@ import 'package:flutter/fix_data.yaml'; */
 class NotifactionManager {
   static final NotifactionManager _NotifactionManager =
       NotifactionManager._internal();
-      
+
   factory NotifactionManager() {
     return _NotifactionManager;
   }
@@ -19,7 +19,7 @@ class NotifactionManager {
       new FlutterLocalNotificationsPlugin();
 //here------------------------------------------------
   NotifactionManager._internal();
-  
+
   Future<void> initNotification() async {
     //  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     //      new FlutterLocalNotificationsPlugin();

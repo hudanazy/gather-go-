@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:gather_go/screens/authenticate/sign_in.dart';
 import 'package:gather_go/services/auth.dart';
+
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
@@ -14,6 +15,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
 
@@ -44,8 +46,7 @@ class _RegisterState extends State<Register> {
                 style: TextStyle(
                     fontFamily: 'Comfortaa',
                     fontSize: 27,
-                    color: Colors.orange[400],
-                    fontWeight: FontWeight.bold),
+                    color: Colors.orangeAccent),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -63,15 +64,6 @@ class _RegisterState extends State<Register> {
                   key: _fromkey,
                   child: Column(
                     children: [
-                      // ClipPath(
-                      //   clipper: ArcClipper(),
-                      //   child: Image.asset(
-                      //     'images/logo1.png',
-                      //     //width: 300,
-                      //     //height: 200.0,
-                      //     fit: BoxFit.contain,
-                      //   ),
-                      // ),
                       TextFormField(
                         decoration:
                             textInputDecoration.copyWith(hintText: "Name"),
@@ -155,10 +147,7 @@ class _RegisterState extends State<Register> {
                       ),
                       Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
-                        child: Text("Register",
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                        child: Text("Register"),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
@@ -188,7 +177,7 @@ class _RegisterState extends State<Register> {
                         },
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.orange[400]),
+                              MaterialStateProperty.all(Colors.amber),
                           foregroundColor:
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
@@ -198,10 +187,7 @@ class _RegisterState extends State<Register> {
                       ),
                       Text('Already have an account?'),
                       ElevatedButton(
-                        child: Text('Login now',
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                        child: Text('Login now'),
                         onPressed: () {
                           widget.toggleView();
                           // Navigator.push(
