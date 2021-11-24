@@ -302,8 +302,8 @@ Future<bool> showEditEventApproved(BuildContext context) async {
         TextButton(
             child: Text("Ok", style: TextStyle(color: Colors.blue)),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MyEvents()));
+              Navigator.pop(
+                  context);
             }),
       ],
     ),

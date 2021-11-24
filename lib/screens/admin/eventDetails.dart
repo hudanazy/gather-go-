@@ -11,8 +11,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 
-
-
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:intl/message_format.dart';
@@ -58,17 +56,20 @@ class _eventDetails extends State<eventDetails> {
     });
 
     return Scaffold(
-      appBar: SecondaryAppBar(title: 'Event Details',),
+      appBar: SecondaryAppBar(
+        title: 'Event Details',
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-           //   child: ArcBannerImage(),
+              //   child: ArcBannerImage(),
             ),
             Row(children: [
               Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),),
+                padding: const EdgeInsets.only(bottom: 10.0),
+              ),
               // IconButton(
               //   icon: new Icon(Icons.arrow_back_ios),
               //   onPressed: () {
@@ -77,14 +78,16 @@ class _eventDetails extends State<eventDetails> {
               //   },
               // ),
               Flexible(
-                child: Padding(
-              padding: const EdgeInsets.all(20.0),
-                child: Text(widget.event?.get('name') + '   ',
-                    style: TextStyle(
-                        color: Colors.orange[400],
-                        fontFamily: 'Comfortaa',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),),
+                  child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  widget.event?.get('name') + '   ',
+                  style: TextStyle(
+                      color: Colors.orange[400],
+                      fontFamily: 'Comfortaa',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               )),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
@@ -104,27 +107,26 @@ class _eventDetails extends State<eventDetails> {
                 children: <Widget>[
                   Icon(Icons.access_time),
                   Flexible(
-                child:
-                  Text("   " +
-                      widget.event?.get('date').substring(0, 10) +
-                      "  " +
-                      widget.event?.get('time').substring(10, 15) +
-                      '                                                           '), // we may need to change it as i dont think this the right time !!
-                  )],
+                    child: Text("   " +
+                        widget.event?.get('date').substring(0, 10) +
+                        "  " +
+                        widget.event?.get('time').substring(10, 15) +
+                        '                                                           '), // we may need to change it as i dont think this the right time !!
+                  )
+                ],
               ),
             ),
             //   Padding(padding: const EdgeInsets.only(left: 20.0),
             //  child: Row(children: <Widget>[
             //     Text("        ")])),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Flexible(
-               
-              child: Row(children: <Widget>[
-                Icon(Icons.people_alt_rounded),
-                Text("   Max attendee number is $attendeeNum  ")
-              ]),
-            )),
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Flexible(
+                  child: Row(children: <Widget>[
+                    Icon(Icons.people_alt_rounded),
+                    Text("   Max attendee number is $attendeeNum  ")
+                  ]),
+                )),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
@@ -241,7 +243,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
+                                  MaterialStateProperty.all(Colors.red[300]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -294,7 +296,7 @@ class _eventDetails extends State<eventDetails> {
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.purple[300]),
+                                MaterialStateProperty.all(Colors.green[300]),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(

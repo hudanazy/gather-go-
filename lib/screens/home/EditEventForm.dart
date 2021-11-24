@@ -100,7 +100,7 @@ class _eventEditFormState extends State<EidtEventForm> {
           CameraPosition(target: LatLng(24.708481, 46.752108)));
   String viewLocation = "Location";
   String viewDate = " Date ";
-  String viewTime = " Time ";
+  String viewTime = "";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -110,6 +110,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     bool approved = widget.event?.get('approved'); //111111111
     int attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
+    String oldTime = widget.event?.get('time');
 
     return Scaffold(
         appBar: SecondaryAppBar(
@@ -344,7 +345,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: viewTime,
+                                      text:
+                                          viewTime.isEmpty ? oldTime : viewTime,
                                       style: TextStyle(
                                           color: Colors.orange[400],
                                           letterSpacing: 2,

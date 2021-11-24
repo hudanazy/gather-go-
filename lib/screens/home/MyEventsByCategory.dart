@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
@@ -27,6 +28,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
+     String uuuu = FirebaseAuth.instance.currentUser!.uid;
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
@@ -111,14 +113,30 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
                                 color: Colors.purple[300],
                               ),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            eventDetailsForUesers(
-                                              event: uid,
-                                              // change to move to details and booked
-                                            )));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             eventDetailsForUesers(
+                                //               event: uid,
+                                //               // change to move to details and booked
+                                //             )));
+                                                  if (document['uid']==uuuu)
+              {                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MyEventsDetails(
+                                            event: uid,
+                                          )));}
+                              else
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          eventDetailsForUesers(
+                                            event: uid,
+                                          )));
                               },
                             )));
                   }).toList(),
