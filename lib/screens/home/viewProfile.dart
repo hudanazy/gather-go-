@@ -4,6 +4,7 @@ import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/screens/home/viewEventCreatorEvents.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/loading.dart';
 
 import 'MyEvents.dart';
@@ -57,36 +58,37 @@ class _viewProfile extends State<viewProfile> {
       stateColor = Colors.grey;
     }
     return Scaffold(
+      appBar: SecondaryAppBar(title: 'Profile',),
         body: Column(children: [
-      AppBar(
-        leading: IconButton(
-          icon: new Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        eventDetailsForUesers(event: widget.event)));
-          },
-        ),
-        toolbarHeight: 110,
-        backgroundColor: Colors.white,
-        title: Text(
-          "Profile",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-        ),
-      ),
+      // AppBar(
+      //   leading: IconButton(
+      //     icon: new Icon(
+      //       Icons.arrow_back_ios,
+      //       color: Colors.black,
+      //     ),
+      //     onPressed: () {
+      //       Navigator.pop(
+      //           context,
+      //           MaterialPageRoute(
+      //               builder: (context) =>
+      //                   eventDetailsForUesers(event: widget.event)));
+      //     },
+      //   ),
+      //  // toolbarHeight: 110,
+      //   backgroundColor: Colors.white,
+      //   // title: Text(
+      //   //   "Profile",
+      //   //   textAlign: TextAlign.center,
+      //   //   style: TextStyle(
+      //   //       color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
+      //   // ),
+      // ),
       Container(
-          height: 640,
+          height: 540,
           width: 500,
           child: ListView(children: [
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 52),
+                padding: EdgeInsets.symmetric(horizontal: 35),
                 child: Column(children: [
                   SizedBox(
                     height: 30,
@@ -100,16 +102,16 @@ class _viewProfile extends State<viewProfile> {
                             child: widget.user?.get('imageUrl') == ''
                                 ? Image.asset(
                                     'images/profile.png',
-                                    width: 200,
-                                    height: 200,
+                                    width: 130,
+                                    height: 130,
                                     fit: BoxFit.cover,
                                   )
                                 : Ink.image(
                                     image: NetworkImage(
                                         widget.user?.get('imageUrl')),
                                     fit: BoxFit.cover,
-                                    width: 160,
-                                    height: 160,
+                                    width: 130,
+                                    height: 130,
                                   ),
                           ),
                         ),
@@ -150,7 +152,7 @@ class _viewProfile extends State<viewProfile> {
                         fontSize: 16),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 23,
                   ),
                   StreamBuilder(
                     stream: snap,
@@ -166,9 +168,10 @@ class _viewProfile extends State<viewProfile> {
                         );
                       }
                       return Container(
-                          height: 640,
+                          height: 300,
                           width: 500,
                           child: ListView(
+                            scrollDirection: Axis.vertical,
                             children:
                                 snapshot.data.docs.map<Widget>((document) {
                               DocumentSnapshot uid = document;
@@ -177,29 +180,32 @@ class _viewProfile extends State<viewProfile> {
                                   child: Card(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10)),
+                                              BorderRadius.circular(10),
+                                              side:
+                                  BorderSide(width: 0.5, color: Colors.orange.shade400)),
                                       margin: const EdgeInsets.fromLTRB(
                                           10, 0, 10, 0),
-                                      color: Colors.grey[200],
+                                      //color: Colors.grey[200],
                                       child: ListTile(
                                         title: Center(
                                             child: Text(
                                           document['name'],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: Colors.black45,
+                                              color: Colors.black,
                                               fontFamily: 'Comfortaa',
                                               fontSize: 16),
                                         )),
-                                        subtitle: Text(
-                                          document['description'],
-                                          style: TextStyle(
-                                              color: Colors.grey[800],
-                                              fontFamily: 'Comfortaa',
-                                              fontSize: 14),
-                                        ),
+                                        // subtitle: Text(
+                                        //   document['description'],
+                                        //   style: TextStyle(
+                                        //       color: Colors.grey[800],
+                                        //       fontFamily: 'Comfortaa',
+                                        //       fontSize: 14),
+                                        // ),
                                         trailing: Icon(
                                           Icons.arrow_forward_ios,
+                                          color: Colors.purple[300],
                                         ),
                                         onTap: () {
                                           Navigator.push(

@@ -1,24 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/Models/ProfileOnScreen.dart';
-import 'package:gather_go/screens/admin/adminNav.dart';
-import 'package:gather_go/screens/authenticate/sign_in.dart';
+
 import 'package:gather_go/screens/home/BookedEvents.dart';
-import 'package:gather_go/screens/home/editProfile.dart';
 import 'package:gather_go/screens/home/edit_profile_form.dart';
-import 'package:gather_go/screens/wrapper.dart';
-import 'package:gather_go/services/auth.dart';
-import 'package:gather_go/services/database.dart';
-import 'package:gather_go/shared/contants.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
-import 'package:gather_go/shared/build_appbar.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
-import 'dart:io';
-import 'package:gather_go/shared/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gather_go/services/database.dart';
+
 
 import 'MyEvents.dart';
 
@@ -63,13 +54,16 @@ class _ProfileFormState extends State<ProfileForm> {
     }
 
     //final AuthService _auth = AuthService();
-    return StreamBuilder<Object>(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: MyAppBar(title: '\tProfile',),
+      body:
+    StreamBuilder<Object>(
         stream: snap, //DatabaseService(uid: user.uid).profileData,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: Loading(),
-
               //     child: Text(
               //   "No New Events", // may be change it to loading , itis appear for a second every time
               //   textAlign: TextAlign.center,
@@ -77,8 +71,9 @@ class _ProfileFormState extends State<ProfileForm> {
             );
           }
           return Container(
-              height: 640,
-              width: 500,
+            //  height: 640,
+             // width: 500,
+              color: Colors.white,
               child: ListView(
                 children: snapshot.data.docs.map<Widget>((document) {
                   DocumentSnapshot uid = document;
@@ -117,13 +112,14 @@ class _ProfileFormState extends State<ProfileForm> {
                           // margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           // color: Colors.grey[200],
                           children: [
-                            IconButton(
-                              iconSize: 45,
-                              padding: EdgeInsets.only(left: 270, top: 40),
-                              icon: Icon(
-                                Icons.logout_outlined,
-                                color: Colors.black,
-                              ),
+                           
+                            // IconButton(
+                            //   iconSize: 45,
+                            //   padding: EdgeInsets.only(left: 270, top: 40),
+                            //   icon: Icon(
+                            //     Icons.logout_outlined,
+                            //     color: Colors.black,
+                            //   ),
 //alignment: Alignment.topRight,
                               // label: Text(
                               //   "Set event date",
@@ -133,10 +129,10 @@ class _ProfileFormState extends State<ProfileForm> {
                               //     fontWeight: FontWeight.w500,
                               //   ),
                               // ),
-                              onPressed: () async {
-                                await FirebaseAuth.instance.signOut();
-                              },
-                            ),
+                            //   onPressed: () async {
+                            //     await FirebaseAuth.instance.signOut();
+                            //   },
+                            // ),
                             SizedBox(
                               height: 25,
                             ),
@@ -232,22 +228,27 @@ class _ProfileFormState extends State<ProfileForm> {
                               height: 40,
                             ),
                             Card(
+                              elevation: 6,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(10),
+                                    side:
+                                  BorderSide(width: 0.5, color: Colors.orange.shade400)),
                                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                color: Colors.grey[100],
+                                //color: Colors.grey[100],
                                 child: ListTile(
                                   title: Center(
                                       child: Text(
                                     "Created Events",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.orange[400],
                                         fontFamily: 'Comfortaa',
-                                        fontSize: 16),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   )),
                                   trailing: Icon(
                                     Icons.arrow_forward_ios,
+                                    color: Colors.purple[300],
                                   ),
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -259,22 +260,27 @@ class _ProfileFormState extends State<ProfileForm> {
                               height: 20,
                             ),
                             Card(
+                              elevation: 6,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(10),
+                                    side:
+                                  BorderSide(width: 0.5, color: Colors.orange.shade400)),
                                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                color: Colors.grey[100],
+                                //color: Colors.grey[100],
                                 child: ListTile(
                                   title: Center(
                                       child: Text(
                                     "Booked Events",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.orange[400],
                                         fontFamily: 'Comfortaa',
-                                        fontSize: 16),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   )),
                                   trailing: Icon(
                                     Icons.arrow_forward_ios,
+                                    color: Colors.purple[300],
                                   ),
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -286,7 +292,7 @@ class _ProfileFormState extends State<ProfileForm> {
                           ]));
                 }).toList(),
               ));
-        });
+        }));
   }
 
   Widget buildName(UesrInfo? user) => Column(
@@ -340,7 +346,7 @@ class _ProfileFormState extends State<ProfileForm> {
             context: context,
             builder: (context) {
               return Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                 child: epForm(),
               );
             });

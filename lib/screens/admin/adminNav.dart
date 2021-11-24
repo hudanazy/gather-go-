@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/admin/Comments.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 
 //import 'package:gather_go/screens/admin/location.dart';
@@ -36,9 +37,9 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
           backgroundColor: Colors.white,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _pageIndex,
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Colors.orange[200],
             selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
-            selectedItemColor: Colors.deepOrange[400],
+            selectedItemColor: Colors.black,
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,
             showUnselectedLabels: false,
@@ -89,7 +90,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
-        return [adminEvent(), Text("dat")].elementAt(index);
+        return [adminEvent(), Comments()].elementAt(index);
       },
     };
   }

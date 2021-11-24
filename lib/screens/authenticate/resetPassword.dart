@@ -1,12 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
+
 class resetPassword extends StatefulWidget {
+
   @override
   _resetPasswordState createState() => _resetPasswordState();
 }
+
 class _resetPasswordState extends State<resetPassword> {
   final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
@@ -22,31 +27,34 @@ class _resetPasswordState extends State<resetPassword> {
         : Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: AppBar(
-              leading: IconButton(
-                color: Colors.amber,
-                icon: new Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              backgroundColor: Colors.white,
-              elevation: 0.0,
-              title: Text(
-                 "Reset Password",
-                style: TextStyle(
-                  fontFamily: 'Comfortaa',
-                  fontSize: 27,
-                             color: Colors.amber[600]),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            appBar: SecondaryAppBar(title: "Reset Password",),
+            // AppBar(
+            //   leading: IconButton(
+            //     color: Colors.amber,
+            //     icon: new Icon(Icons.arrow_back_ios),
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //     },
+            //   ),
+            //   backgroundColor: Colors.white,
+            //   elevation: 0.0,
+            //   title: Text(
+            //      "Reset Password",
+            //     style: TextStyle(
+            //       fontFamily: 'Comfortaa',
+            //       fontSize: 27,
+            //       color: Colors.amber),
+
+            //     textAlign: TextAlign.center,
+            //   ),
+            // ),
             body: Container(
                 width: double.infinity,
-                 padding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
+                 padding: EdgeInsets.symmetric(vertical: 150, horizontal: 50),
                 height: 800,
                 child: Form(
-                                      key: _formKey, 
+                  key: _formKey, 
+
                     child: Column(
                       children: [
                         SizedBox(
@@ -76,6 +84,9 @@ class _resetPasswordState extends State<resetPassword> {
                         ),
                         ElevatedButton(
                             child: Text("Submit",
+                            style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    fontWeight: FontWeight.bold)
                           ),
                           onPressed: () async {
                             setState(() {error='';});
@@ -103,14 +114,17 @@ class _resetPasswordState extends State<resetPassword> {
                                       });}
                                   });
                             }
+
                              },
+
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.amber),
+                                  MaterialStateProperty.all(Colors.orange[400]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
-                              padding: 
-                              MaterialStateProperty.all(EdgeInsets.only(top: 10,bottom: 10, left: 100, right: 100)),),
+                              padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 50)),),
                         ),
                         SizedBox(
                           height: 12.0,

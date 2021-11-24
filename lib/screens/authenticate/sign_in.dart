@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 
 import 'package:gather_go/services/auth.dart';
 import 'package:gather_go/shared/contants.dart';
@@ -35,7 +36,8 @@ class _SignInState extends State<SignIn> {
         : Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: AppBar(
+            appBar: //SecondaryAppBar(title: "Login",),
+            AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
@@ -43,7 +45,8 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(
                     fontFamily: 'Comfortaa',
                     fontSize: 27,
-                    color: Colors.amber[600]),
+                    color: Colors.orange[400],
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -55,9 +58,17 @@ class _SignInState extends State<SignIn> {
                   key: _fromkey,
                   child: Column(
                     children: [
-                      ArcBannerImage(),
+                        ClipPath(
+                        clipper: ArcClipper(),
+                        child: Image.asset(
+                          'images/logo1.png',
+                          //width: 300,
+                          //height: 200.0,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                       TextFormField(
                         decoration:
@@ -88,7 +99,9 @@ class _SignInState extends State<SignIn> {
                         child: Text(
                           'Forgot password?',
                           style: TextStyle(
-                              color: Colors.purple[300], fontSize: 16),
+                              color: Colors.purple[300], fontSize: 16,
+                              fontFamily: 'Comfortaa',
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                       // SizedBox(
@@ -96,7 +109,10 @@ class _SignInState extends State<SignIn> {
                       // ),
                       Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
-                        child: Text("Login"),
+                        child: Text("Login",
+                        style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    fontWeight: FontWeight.bold)),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
@@ -115,7 +131,7 @@ class _SignInState extends State<SignIn> {
                         },
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.amber),
+                              MaterialStateProperty.all(Colors.orange[400]),
                           foregroundColor:
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
@@ -125,7 +141,10 @@ class _SignInState extends State<SignIn> {
                       ),
                       Text('Don’t have an account?'),
                       ElevatedButton(
-                        child: Text('Register now'),
+                        child: Text('Register now',
+                        style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    fontWeight: FontWeight.bold)),
                         onPressed: () {
                           widget.toggleView();
                           // Navigator.push(

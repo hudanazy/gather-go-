@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/Models/ProfileOnScreen.dart';
+//import 'package:gather_go/Models/comment.dart';
 import 'dart:io';
 
 class DatabaseService {
@@ -15,6 +16,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('events');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('uesrInfo');
+  final CollectionReference commentCollection =
+      FirebaseFirestore.instance.collection('comments');
 
   Future updateProfileData(String uid, String name, String status, String bio,
       String imageUrl) async {
@@ -39,6 +42,29 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+        
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -54,7 +80,8 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
+      "searchDescription": searchDescription,
     });
   }
 
@@ -69,6 +96,29 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
+      List<String> searchDescription =
+        []; 
+    String temp = "";
+
+    for (var i = 0; i < description!.length; i++) {
+      if (description[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + description[i];
+        searchDescription.add(temp.toLowerCase());
+      }
+    }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -84,7 +134,22 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
+      "searchDescription": searchDescription,
+    });
+  }
+
+  addCommentData(String text, String uid, String name, String imageUrl,
+      String eventID, int likes, int dislikes, DateTime timePosted) {
+    commentCollection.add({
+      "text": text,
+      "uid": uid,
+      "name": name,
+      "imageUrl": imageUrl,
+      "eventID": eventID,
+      "likes": likes,
+      "dislikes": dislikes,
+      "timePosted": timePosted
     });
   }
 
@@ -105,8 +170,7 @@ class DatabaseService {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
-
-    //we should change the description to lower case first then use it in the loop
+  List<String> nameLowerCase =[];
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -115,6 +179,16 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    temp="";
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
+    
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -130,7 +204,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
     });
   }
@@ -157,6 +231,7 @@ class DatabaseService {
 
   //user booked events
 
+
   // addBookedEventToProfile(
   //   String eventUid
   //   ) {
@@ -164,6 +239,7 @@ class DatabaseService {
   //     "eventUid": eventUid,
   //   });
   // }
+
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
@@ -209,6 +285,7 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
+  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(

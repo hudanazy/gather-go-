@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/MyEvents.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 Future<bool> showMyDialog(BuildContext context) async {
@@ -216,8 +217,6 @@ Future<bool> showMapdialogAdmin(
       });
 }
 
-
-
 Future<bool> showDdeleteDialog(BuildContext context) async {
   return await showDialog(
     context: context,
@@ -264,8 +263,52 @@ Future<bool> showBookDialog(BuildContext context) async {
   );
 }
 
+Future<bool> showEditEventDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Edit event"),
+      content: Text("Are you sure you want to Edit this event ?"),
+      actions: [
+        TextButton(
+            child: Text("No",
+                //
+                style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
 
+              // MaterialPageRoute(builder: (context) {
+              //   //var editEventForm = EidtEventForm();
+              //   //return editEventForm;
+              // });
+            })
+      ],
+    ),
+  );
+}
 
+Future<bool> showEditEventApproved(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Edit event"),
+      content: Text("this event is approved can't edit"),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MyEvents()));
+            }),
+      ],
+    ),
+  );
+}
 
   // return showDialog<void>(
   //   context: context,
