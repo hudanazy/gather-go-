@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 //import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,9 +11,12 @@ import 'package:gather_go/screens/home/EditEventForm.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:gather_go/shared/loading.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gather_go/screens/comment_screen.dart';
+import 'package:provider/provider.dart';
 import 'MyEvents.dart';
+import 'Rating_view.dart';
 import 'edit_profile_form.dart';
 
 // ignore: camel_case_types
@@ -28,6 +32,13 @@ class MyEventsDetails extends StatefulWidget {
 class _MyEventsDetails extends State<MyEventsDetails> {
   @override
   Widget build(BuildContext context) {
+    /*  final user = Provider.of<NewUser?>(context);
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('uid', isEqualTo: user!.uid)
+        .snapshots(); */
+//--------------------------------------------------------------------------------
     Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap =
         FirebaseFirestore.instance
             .collection('comments')
@@ -78,14 +89,17 @@ class _MyEventsDetails extends State<MyEventsDetails> {
           } else {
             nComments = snapshot.data.docs.length.toString();
           }
+
           return Scaffold(
-            appBar: SecondaryAppBar(title: 'Event Details',),
+            appBar: SecondaryAppBar(
+              title: 'Event Details',
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5.0),
-                  //  child: ArcBannerImage(),
+                    //  child: ArcBannerImage(),
                   ),
                   Row(children: [
                     // IconButton(
@@ -98,7 +112,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                     //   },
                     // ),
                     Flexible(
-                      child: Padding(
+                        child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
@@ -203,7 +217,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
-                             // minimumSize: Size.fromWidth(180),
+                              // minimumSize: Size.fromWidth(180),
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
@@ -215,6 +229,33 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                           event: widget.event)));
                             },
                             //child: Text("see the location"),
+                          ),
+                        ],
+                      )),
+//try rating
+                  Padding(
+                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.star_rate,
+                              color: Colors.yellow,
+                            ),
+                            label: Text("Rate event !",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              // minimumSize: Size.fromWidth(180),
+                            ),
+                            onPressed: () {
+                              RatingDialog(context);
+                            },
                           ),
                         ],
                       )),
@@ -294,6 +335,17 @@ class _MyEventsDetails extends State<MyEventsDetails> {
             ),
           );
         });
+  }
+
+  RatingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: RatingView(),
+        );
+      },
+    );
   }
 
   String _textFromFile = "";

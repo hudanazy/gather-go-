@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/EventInfo.dart';
+import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:gather_go/shared/loading.dart';
 import 'package:gather_go/shared/num_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../NotifactionManager.dart';
@@ -106,6 +110,13 @@ class _eventEditFormState extends State<EidtEventForm> {
   //DateTime date;
   @override
   Widget build(BuildContext context) {
+    /*  EventInfo? eventData;
+    final user = Provider.of<NewUser?>(context, listen: false);
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('uid', isEqualTo: user?.uid)
+        .snapshots(); */
     bool adminCheck = widget.event?.get('adminCheck');
     bool approved = widget.event?.get('approved'); //111111111
     int attendeeNum = widget.event?.get('attendees');
@@ -116,6 +127,7 @@ class _eventEditFormState extends State<EidtEventForm> {
         appBar: SecondaryAppBar(
           title: "Edit your Event",
         ),
+
         // AppBar(
         //   leading: IconButton(
         //     icon: new Icon(
@@ -138,16 +150,40 @@ class _eventEditFormState extends State<EidtEventForm> {
         //         fontSize: 24),
         //   ),
         // ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        /* Text(
+        body: StreamBuilder<Object>(
+            // stream: snap,
+            /*   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: Loading(),
+                  //     child: Text(
+                  //   "No New Events", // may be change it to loading , itis appear for a second every time
+                  //   textAlign: TextAlign.center,
+                  // )
+                );
+              } */
+            //  stream: DatabaseService(uid: user?.uid).eventss,
+            builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Center(
+              child: Loading(),
+              //     child: Text(
+              //   "No New Events", // may be change it to loading , itis appear for a second every time
+              //   textAlign: TextAlign.center,
+              // )
+            );
+          }
+
+          return SingleChildScrollView(
+              child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          /* Text(
                           "Edit your event",
                           style: TextStyle(
                               color: Colors.orange[600],
@@ -157,364 +193,370 @@ class _eventEditFormState extends State<EidtEventForm> {
                               fontFamily: "Comfortaa"),
                         ), */
 
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Name",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        SizedBox(
-                          width: 350,
-                          child: TextFormField(
-                            maxLines: 1,
-                            initialValue: widget.event?.get('name'),
-
-                            decoration: textInputDecoration.copyWith(
-                              hintText: "Event name..",
-                              hintStyle: TextStyle(
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(top: 20, left: 20),
+                            child: Text(
+                              "Event Name",
+                              style: TextStyle(
                                   color: Colors.orange[400],
+                                  letterSpacing: 2,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                   fontFamily: "Comfortaa"),
                             ),
+                          ),
+                          SizedBox(height: 5),
+                          SizedBox(
+                            width: 350,
+                            child: TextFormField(
+                              maxLines: 1,
+                              initialValue: widget.event?.get('name'),
 
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Comfortaa',
-                            ),
-                            validator: (val) => val!.trim().isEmpty
-                                ? 'Please enter a name'
-                                : null,
-                            onChanged: (val) {
-                              setState(() => currentNameEvent = val);
-                            }, //name event
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Category",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: 350,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          child: DropdownButtonFormField(
-                              value: widget.event?.get('category'),
-                              decoration: textInputDecoration,
-                              items: category.map((category) {
-                                return DropdownMenuItem(
-                                  value: category,
-                                  child: Text(category),
-                                );
-                              }).toList(),
-                              onChanged: (val) => setState(
-                                  () => currentcatogary = val as String),
-                              style: TextStyle(
-                                color: Colors.orange[600],
-                                fontFamily: 'Comfortaa',
-                              )),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Description",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          width: 350,
-                          child: TextFormField(
-                            maxLines: 5,
-                            initialValue: widget.event?.get('description'),
-                            decoration: textInputDecoration.copyWith(
-                                hintText: "Tell us more about your event...",
+                              decoration: textInputDecoration.copyWith(
+                                hintText: "Event name..",
                                 hintStyle: TextStyle(
                                     color: Colors.orange[400],
-                                    fontFamily: "Comfortaa")),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Comfortaa',
-                            ),
-                            validator: (val) => val!.trim().isEmpty
-                                ? 'Please enter a descrption about event '
-                                : null,
-                            onChanged: (val) {
-                              setState(() => currentDescrption = val);
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              padding: EdgeInsets.only(top: 10, left: 20),
-                              child: Text(
-                                "Attendee Number",
-                                style: TextStyle(
-                                    color: Colors.orange[400],
-                                    letterSpacing: 2,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
                                     fontFamily: "Comfortaa"),
                               ),
-                            ),
-                            NumericStepButton(
-                                minValue: 1,
-                                maxValue: 500,
-                                onChanged: (value) {
-                                  setState(() => this._currentValue = value);
-                                }),
-                          ],
-                        ),
 
-                        //-------------------------------------------time
-                        SizedBox(height: 5),
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.calendar_today_rounded,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        onPressed: () => pickDate(context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: viewDate,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.access_time,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        onPressed: () => pickTime(context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          viewTime.isEmpty ? oldTime : viewTime,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.location_on_outlined,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        //Location()
-
-                                        onPressed: () =>
-                                            showMapdialogToSelectLocation(
-                                                context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: viewLocation,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 20),
-
-                        SizedBox(
-                          height: 50,
-                          width: 115,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.orange[400]),
-                                foregroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                            child: Text(
-                              'Save',
                               style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                                fontFamily: 'Comfortaa',
+                              ),
+                              validator: (val) => val!.trim().isEmpty
+                                  ? 'Please enter a name'
+                                  : null,
+                              onChanged: (val) {
+                                setState(() => currentNameEvent = val);
+                              }, //name event
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(top: 20, left: 20),
+                            child: Text(
+                              "Event Category",
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  letterSpacing: 2,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                   fontFamily: "Comfortaa"),
                             ),
-                            onPressed: () async {
-                              // print("hi im here 1 $Name");
-
-                              ///print
-                              if (_formKey.currentState!.validate()) {
-                                if (currentNameEvent == "") {
-                                  currentNameEvent = widget.event?.get('name');
-                                }
-                                if (currentDescrption == "") {
-                                  currentDescrption =
-                                      widget.event?.get('description');
-                                }
-
-                                if (currentcatogary == "") {
-                                  currentcatogary =
-                                      widget.event?.get('category');
-                                }
-                                if (attendeeNum == 0) {
-                                  attendeeNum = widget.event?.get('attendees');
-                                }
-
-                                if (currdate == "") {
-                                  currdate = widget.event?.get('date');
-                                }
-
-                                if (currtime == "") {
-                                  currtime = widget.event?.get('time');
-                                }
-
-                                if (currentlat == 0 || currentlong == 0) {
-                                  currentlat = widget.event?.get('lat');
-                                  currentlong = widget.event?.get('long');
-                                }
-                                var result = await showEditEventDialog(context);
-                                if (result == true) {
-                                  try {
-                                    List<String> searchDescription = [];
-                                    String temp = "";
-                                    for (var i = 0;
-                                        i < currentDescrption!.length;
-                                        i++) {
-                                      if (currentDescrption![i] == " ") {
-                                        temp = "";
-                                      } else {
-                                        temp = temp + currentDescrption![i];
-                                        searchDescription
-                                            .add(temp.toLowerCase());
-                                      }
-                                    }
-                                    List<String> nameLowerCase = [];
-
-                                    temp = "";
-                                    for (var i = 0;
-                                        i < currentNameEvent!.length;
-                                        i++) {
-                                      if (currentNameEvent![i] == " ") {
-                                        temp = "";
-                                      } else {
-                                        temp = temp + currentNameEvent![i];
-                                        nameLowerCase.add(temp.toLowerCase());
-                                      }
-                                    }
-                                    FirebaseFirestore.instance
-                                        .collection("events")
-                                        .doc(widget.event?.id)
-                                        .update({
-                                      "name": currentNameEvent,
-                                      "description": currentDescrption,
-                                      "category": currentcatogary,
-                                      "attendees": _currentValue,
-                                      "date": currdate,
-                                      "time": currtime,
-                                      "lat": currentlat,
-                                      "long": currentlong,
-                                      "adminCheck": false,
-                                      "approved": false,
-                                      "nameLowerCase": nameLowerCase,
-                                      "searchDescription": searchDescription,
-                                    });
-
-                                    // date
-
-                                    Navigator.pop(context);
-                                    Fluttertoast.showToast(
-                                      msg: widget.event?.get('name') +
-                                          " Event update successfully",
-                                      toastLength: Toast.LENGTH_LONG,
-                                    );
-                                  } catch (e) {
-                                    // fail msg
-                                    Fluttertoast.showToast(
-                                      msg: "somthing went wrong ",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                    );
-                                  }
-                                } //if
-                              } //--her
-                            },
                           ),
-                        ),
-                        SizedBox(height: 40),
-                      ],
-                    ))),
-          ],
-        )));
+                          SizedBox(height: 10),
+                          Container(
+                            width: 350,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            child: DropdownButtonFormField(
+                                value: widget.event?.get('category'),
+                                decoration: textInputDecoration,
+                                items: category.map((category) {
+                                  return DropdownMenuItem(
+                                    value: category,
+                                    child: Text(category),
+                                  );
+                                }).toList(),
+                                onChanged: (val) => setState(
+                                    () => currentcatogary = val as String),
+                                style: TextStyle(
+                                  color: Colors.orange[600],
+                                  fontFamily: 'Comfortaa',
+                                )),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(top: 20, left: 20),
+                            child: Text(
+                              "Event Description",
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  letterSpacing: 2,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: TextFormField(
+                              maxLines: 5,
+                              initialValue: widget.event?.get('description'),
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: "Tell us more about your event...",
+                                  hintStyle: TextStyle(
+                                      color: Colors.orange[400],
+                                      fontFamily: "Comfortaa")),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Comfortaa',
+                              ),
+                              validator: (val) => val!.trim().isEmpty
+                                  ? 'Please enter a descrption about event '
+                                  : null,
+                              onChanged: (val) {
+                                setState(() => currentDescrption = val);
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.topLeft,
+                                padding: EdgeInsets.only(top: 10, left: 20),
+                                child: Text(
+                                  "Attendee Number",
+                                  style: TextStyle(
+                                      color: Colors.orange[400],
+                                      letterSpacing: 2,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "Comfortaa"),
+                                ),
+                              ),
+                              NumericStepButton(
+                                  minValue: 1,
+                                  maxValue: 500,
+                                  onChanged: (value) {
+                                    setState(() => this._currentValue = value);
+                                  }),
+                            ],
+                          ),
+
+                          //-------------------------------------------time
+                          SizedBox(height: 5),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.calendar_today_rounded,
+                                            color: Colors.orange[400],
+                                            size: 25,
+                                          ),
+                                          onPressed: () => pickDate(context),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: viewDate,
+                                        style: TextStyle(
+                                            color: Colors.orange[400],
+                                            letterSpacing: 2,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Comfortaa"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.access_time,
+                                            textDirection: TextDirection.ltr,
+                                            color: Colors.orange[400],
+                                            size: 25,
+                                          ),
+                                          onPressed: () => pickTime(context),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: viewTime.isEmpty
+                                            ? oldTime
+                                            : viewTime,
+                                        style: TextStyle(
+                                            color: Colors.orange[400],
+                                            letterSpacing: 2,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Comfortaa"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.location_on_outlined,
+                                            textDirection: TextDirection.ltr,
+                                            color: Colors.orange[400],
+                                            size: 25,
+                                          ),
+                                          //Location()
+
+                                          onPressed: () =>
+                                              showMapdialogToSelectLocation(
+                                                  context),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: viewLocation,
+                                        style: TextStyle(
+                                            color: Colors.orange[400],
+                                            letterSpacing: 2,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Comfortaa"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+
+                          SizedBox(
+                            height: 50,
+                            width: 115,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.orange[400]),
+                                  foregroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.fromLTRB(35, 15, 35, 15))),
+                              child: Text(
+                                'Save',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Comfortaa"),
+                              ),
+                              onPressed: () async {
+                                // print("hi im here 1 $Name");
+
+                                ///print
+                                if (_formKey.currentState!.validate()) {
+                                  if (currentNameEvent == "") {
+                                    currentNameEvent =
+                                        widget.event?.get('name');
+                                  }
+                                  if (currentDescrption == "") {
+                                    currentDescrption =
+                                        widget.event?.get('description');
+                                  }
+
+                                  if (currentcatogary == "") {
+                                    currentcatogary =
+                                        widget.event?.get('category');
+                                  }
+                                  if (attendeeNum == 0) {
+                                    attendeeNum =
+                                        widget.event?.get('attendees');
+                                  }
+
+                                  if (currdate == "") {
+                                    currdate = widget.event?.get('date');
+                                  }
+
+                                  if (currtime == "") {
+                                    currtime = widget.event?.get('time');
+                                  }
+
+                                  if (currentlat == 0 || currentlong == 0) {
+                                    currentlat = widget.event?.get('lat');
+                                    currentlong = widget.event?.get('long');
+                                  }
+                                  var result =
+                                      await showEditEventDialog(context);
+                                  if (result == true) {
+                                    try {
+                                      List<String> searchDescription = [];
+                                      String temp = "";
+                                      for (var i = 0;
+                                          i < currentDescrption!.length;
+                                          i++) {
+                                        if (currentDescrption![i] == " ") {
+                                          temp = "";
+                                        } else {
+                                          temp = temp + currentDescrption![i];
+                                          searchDescription
+                                              .add(temp.toLowerCase());
+                                        }
+                                      }
+                                      List<String> nameLowerCase = [];
+
+                                      temp = "";
+                                      for (var i = 0;
+                                          i < currentNameEvent!.length;
+                                          i++) {
+                                        if (currentNameEvent![i] == " ") {
+                                          temp = "";
+                                        } else {
+                                          temp = temp + currentNameEvent![i];
+                                          nameLowerCase.add(temp.toLowerCase());
+                                        }
+                                      }
+                                      FirebaseFirestore.instance
+                                          .collection("events")
+                                          .doc(widget.event?.id)
+                                          .update({
+                                        "name": currentNameEvent,
+                                        "description": currentDescrption,
+                                        "category": currentcatogary,
+                                        "attendees": _currentValue,
+                                        "date": currdate,
+                                        "time": currtime,
+                                        "lat": currentlat,
+                                        "long": currentlong,
+                                        "adminCheck": false,
+                                        "approved": false,
+                                        "nameLowerCase": nameLowerCase,
+                                        "searchDescription": searchDescription,
+                                      });
+
+                                      // date
+                                      int count = 2;
+                                      Navigator.of(context)
+                                          .popUntil((_) => count-- <= 0);
+                                      //   Navigator.pop(context);
+                                      Fluttertoast.showToast(
+                                        msg: "Your Event update successfully",
+                                        toastLength: Toast.LENGTH_LONG,
+                                      );
+                                    } catch (e) {
+                                      // fail msg
+                                      Fluttertoast.showToast(
+                                        msg: "somthing went wrong ",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                      );
+                                    }
+                                  } //if
+                                } //--her
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 40),
+                        ],
+                      ))),
+            ],
+          ));
+        }));
   }
 
   void _onMapCreated(GoogleMapController _cntlr) {
