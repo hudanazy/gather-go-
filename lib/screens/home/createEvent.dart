@@ -26,7 +26,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class createEvent extends StatefulWidget {
   final double saveLat;
   final double saveLong;
-  createEvent({required this.saveLat, required this.saveLong});
+ 
+  createEvent({required this.saveLat, required this.saveLong, });
   @override
   _Eventform createState() => _Eventform();
 }
@@ -87,7 +88,9 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
   Widget build(BuildContext context) {
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
-
+   
+double v =widget.saveLat;
+print("hhhhhhhhhhhhhhhhhhhhffffff $v");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Create An Event",),
@@ -329,7 +332,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 //Location()
                                 //selectLocation
                            onPressed: () {
-                                        Navigator.pop(
+                                        Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
@@ -380,6 +383,7 @@ var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.7
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
+                            print("hhhhhhhhhhh $v");
                             //update db here using stream provider and database class
                             if (item == null) {
                               item = 'Other';

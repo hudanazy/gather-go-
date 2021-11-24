@@ -5,6 +5,7 @@ import '../myAppBar.dart';
 import 'createEvent.dart';
 
 class selectLocation extends StatefulWidget {
+
   @override
   _selectLocation createState() => _selectLocation();
 }
@@ -24,7 +25,7 @@ class _selectLocation extends State<selectLocation> {
       ,
 
     body: Column(mainAxisSize: MainAxisSize.max,children: [
-       Container(
+       Expanded(child: Container(
                      height: 450,
    child: GoogleMap(
                             initialCameraPosition:
@@ -40,8 +41,10 @@ class _selectLocation extends State<selectLocation> {
                             myLocationEnabled: true,
                             markers: Set.from(myMarker),
                             onTap: _handleTap,
-    ),),
-    !selected?Container():Padding(
+    ),),),
+    !selected?Container():Flex(
+      direction:Axis.horizontal,
+      children: <Widget>[Padding(
                                 padding: const EdgeInsets.all(8),
                                 child:ElevatedButton(
                           style: ButtonStyle(
@@ -58,14 +61,16 @@ class _selectLocation extends State<selectLocation> {
                                 fontWeight: FontWeight.w700,
                                 fontFamily: "Comfortaa"),
                           ),
-                          onPressed: (){Navigator.pop(
-                                            context,
+                          onPressed: (){
+                            print("the 777777777777777777777 resssssult is lat : $saveLat , long: $saveLong");
+                            Navigator.of(context).push(
+                                            
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    createEvent(saveLat: saveLat, saveLong: saveLong,
+                                                    createEvent(saveLat: saveLat, saveLong: saveLong, 
                                                       
                                                     )));},
-     ) )],));
+     ) )]),],));
                         
 
 
