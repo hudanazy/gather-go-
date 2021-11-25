@@ -8,6 +8,7 @@ import 'package:gather_go/screens/myAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:async/async.dart' show StreamGroup;
+import 'package:geocoding/geocoding.dart';
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -206,6 +207,8 @@ print(currDt.second); // 49 */
       return;
     });
     final user = Provider.of<NewUser?>(context, listen: false);
+    String _address = "";
+    FutureBuilder<String?> namep;
     // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
     // Stream<QuerySnapshot<Map<String, dynamic>>> stream1 = FirebaseFirestore
@@ -264,6 +267,28 @@ print(currDt.second); // 49 */
                       children: snapshot.data.docs.map<Widget>((document) {
                         DocumentSnapshot uid = document;
 
+                        namep = FutureBuilder<String?>(
+                            future: pos(document["lat"], document["long"]),
+                            // initalData: 0,
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data.toString(),
+                              );
+                            });
+
+                        //  namep = FutureProvider<String?>(
+                        // initialData: "",
+                        // create: (context) =>
+                        //     pos(document["lat"], document["long"]),
+                        // // initalData: 0,
+                        // builder: (context, snapshot) {
+                        //   return Text(
+                        //     snapshot.toString(),
+                        //   );
+                        // });
+
+                        //namep = pos(document["lat"], document["long"]);
+
                         return Padding(
                             padding: const EdgeInsets.all(8),
                             //  const EdgeInsets.only(right: 70),
@@ -315,7 +340,8 @@ print(currDt.second); // 49 */
 
                                             onPressed: () {},
                                           ),
-                                          Text("Riyadh",
+                                          namep,
+                                          Text("",
                                               style: TextStyle(
                                                   color: Colors.orange[400],
                                                   fontWeight: FontWeight.w600,
@@ -547,3 +573,20 @@ print(currDt.second); // 49 */
 //    ],
 // ))
 
+Future<String?> pos(lat, long) async {
+  List<Placemark> newPlace = await placemarkFromCoordinates(lat, long);
+
+  Placemark placeMark = newPlace[0];
+  String? name = placeMark.name;
+  String? subLocality = placeMark.subLocality;
+  String? locality = placeMark.locality;
+  String? administrativeArea = placeMark.administrativeArea;
+  String? postalCode = placeMark.postalCode;
+  String? country = placeMark.country;
+  String address =
+      "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
+
+  print(locality);
+
+  return locality;
+}
