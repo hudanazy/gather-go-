@@ -217,7 +217,7 @@ print(currDt.second); // 49 */
             .snapshots();
 
     return Scaffold(
-        backgroundColor: Colors.white12,
+        backgroundColor: Colors.white10,
         appBar: MyAppBar(title: 'Browse Events'),
         body: Container(
           alignment: Alignment.center,
@@ -252,6 +252,8 @@ print(currDt.second); // 49 */
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 elevation: 3.0,
                                 child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  color: Colors.white,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -260,66 +262,106 @@ print(currDt.second); // 49 */
                                         height: 0.0,
                                       ),
                                       AspectRatio(
-                                        aspectRatio: 1.8,
-                                        child: document['imageUrl'] != ""
-                                            ? Image.network(
-                                                document['imageUrl'],
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.asset(
-                                                'images/evv.jpg',
-                                                //   width: 200,
-                                                height: 200,
-                                                fit: BoxFit.cover,
-                                              ),
-                                        // borderRadius: BorderRadius.circular(10),
+                                          aspectRatio: 2.5,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    const Radius.circular(20),
+                                                topRight:
+                                                    const Radius.circular(20)),
+                                            child: document['imageUrl'] != ""
+                                                ? Image.network(
+                                                    document['imageUrl'],
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Image.asset(
+                                                    'images/evv.jpg',
+                                                    //   width: 200,
+                                                    height: 200,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          )),
+                                      Row(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.location_on_outlined,
+                                              textDirection: TextDirection.ltr,
+                                              color: Colors.orange[400],
+                                              size: 25,
+                                            ),
+                                            //Location()
+
+                                            onPressed: () {},
+                                          ),
+                                          Text("Riyadh",
+                                              style: TextStyle(
+                                                  color: Colors.orange[400],
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                  fontFamily: "Comfortaa"))
+                                        ],
                                       ),
-                                      Positioned(
-                                        bottom: 40,
-                                        child: Row(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 40.0,
-                                            ),
-                                            Text(
-                                              document['name'],
-                                              style: TextStyle(
-                                                  color: Colors.purple,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 20,
-                                                  fontFamily: "Comfortaa"),
-                                            ),
-                                            SizedBox(
-                                              width: 40.0,
-                                            ),
-                                            Text(
-                                              document['description'].substring(
-                                                  0,
-                                                  document['description']
-                                                              .length <
-                                                          10
-                                                      ? document['description']
-                                                          .length
-                                                      : 10),
-                                              style: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15,
-                                                  fontFamily: "Comfortaa"),
-                                            ),
-                                            Text(
-                                              document['description'].length >=
-                                                      10
-                                                  ? "..."
-                                                  : "",
-                                              style: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15,
-                                                  fontFamily: "Comfortaa"),
-                                            )
-                                          ],
-                                        ),
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 40.0,
+                                            height: 40,
+                                          ),
+                                          Text(
+                                            document['name'].substring(
+                                                0,
+                                                document['name'].length < 25
+                                                    ? document['name'].length
+                                                    : 25),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18,
+                                                fontFamily: "Comfortaa"),
+                                          ),
+                                          Text(
+                                            document['name'].length >= 25
+                                                ? ".."
+                                                : "",
+                                            style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                                fontFamily: "Comfortaa"),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 40.0,
+                                          ),
+                                          Text(
+                                            document['description'].substring(
+                                                0,
+                                                document['description'].length <
+                                                        25
+                                                    ? document['description']
+                                                        .length
+                                                    : 25),
+                                            style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                                fontFamily: "Comfortaa"),
+                                          ),
+                                          Text(
+                                            document['description'].length >= 25
+                                                ? ".."
+                                                : "",
+                                            style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                                fontFamily: "Comfortaa"),
+                                          )
+                                        ],
                                       ),
                                       SizedBox(
                                         height: 16.0,
@@ -328,7 +370,7 @@ print(currDt.second); // 49 */
                                   ),
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
                               )
 
