@@ -47,16 +47,16 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
         currentIndex: _pageIndex,
         onTap: onTabTapped,
         // backgroundColor: Colors.white,
-        selectedIconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.orange[200],
+        selectedIconTheme: IconThemeData(color: Colors.orange[500]),
+        backgroundColor: Colors.white,
         selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.orange[700],
         //unselectedItemColor: Colors.green,
         type: BottomNavigationBarType.fixed,
 
         showSelectedLabels: true,
-        showUnselectedLabels: false,
+        showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

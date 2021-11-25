@@ -12,23 +12,25 @@ class EventInfo {
   //final GeoPoint location;
   bool approved = false;
   bool adminCheck = false;
+  final String imageUrl;
   //int attendeeNumber;
 
-  EventInfo({
-    required this.uid,
-    required this.name,
-    required this.category,
-    required this.description,
-    required this.timePosted,
-    //  required this.imageUrl,
-    required this.attendees,
-    // required this.comments,
-    required this.date,
-    required this.time,
-    /*,
+  EventInfo(
+      {required this.uid,
+      required this.name,
+      required this.category,
+      required this.description,
+      required this.timePosted,
+      //  required this.imageUrl,
+      required this.attendees,
+      // required this.comments,
+      required this.date,
+      required this.time,
+      /*,
       required this.location*/
-    required this.approved,
-    required this.adminCheck,
-   // required this.attendeeNumber,
-  });
+      required this.approved,
+      required this.adminCheck,
+      required this.imageUrl
+      // required this.attendeeNumber,
+      });
 }

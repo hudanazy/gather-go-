@@ -20,11 +20,14 @@ class SearchList extends StatefulWidget {
 class _SearchListState extends State<SearchList> {
   bool isNotSearching = true;
   String searchInput = "";
-  //bool searchInputBool=false ; // to avoid display result when the input is empty 
+  //bool searchInputBool=false ; // to avoid display result when the input is empty
   Color backColor = Colors.amber;
   Widget appBarTitle = new Text('\nSearch for Events',
       style: TextStyle(
-          color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24, fontWeight: FontWeight.bold));
+          color: Colors.black,
+          fontFamily: 'Comfortaa',
+          fontSize: 24,
+          fontWeight: FontWeight.bold));
   Icon actionIcon = new Icon(Icons.search, color: Colors.black, size: 40);
   TabBar tabs = TabBar(
     tabs: [],
@@ -43,7 +46,7 @@ class _SearchListState extends State<SearchList> {
             length: tabNum,
             child: Scaffold(
               backgroundColor: Colors.white,
-              resizeToAvoidBottomInset: false, 
+              resizeToAvoidBottomInset: false,
               appBar: new AppBar(
                   backgroundColor: Colors.orange[400],
                   //centerTitle: true,
@@ -51,7 +54,7 @@ class _SearchListState extends State<SearchList> {
                   title: appBarTitle,
                   actions: <Widget>[
                     new IconButton(
-                      padding: const EdgeInsets.only( right: 10, top: 22),
+                      padding: const EdgeInsets.only(right: 10, top: 22),
                       //iconSize: 40,
                       icon: actionIcon,
                       onPressed: () {
@@ -83,7 +86,8 @@ class _SearchListState extends State<SearchList> {
                                       EdgeInsets.symmetric(vertical: 15),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.purple.shade600, width: 2),
+                                        color: Colors.purple.shade600,
+                                        width: 2),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -101,7 +105,6 @@ class _SearchListState extends State<SearchList> {
                               onChanged: (val) {
                                 setState(() {
                                   searchInput = val;
-                                
                                 });
                               },
                             );
@@ -143,8 +146,8 @@ class _SearchListState extends State<SearchList> {
 
   Widget buildSearchByDescription(
       String searchInput, BuildContext context, String? UId) {
-        String uuuu = FirebaseAuth.instance.currentUser!.uid;
-        searchInput=searchInput.trimLeft();
+    String uuuu = FirebaseAuth.instance.currentUser!.uid;
+    searchInput = searchInput.trimLeft();
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
@@ -152,18 +155,16 @@ class _SearchListState extends State<SearchList> {
         .where('searchDescription', arrayContains: searchInput.toLowerCase())
         .snapshots();
 
-bool isOnlySpace = false;
-    int j=0; // counter of spaces number in searchInput 
-    for (int i=0 ; i< searchInput.length ; i++){
-      if(searchInput.substring(i,i+1)==" ")
-      j++;
-
+    bool isOnlySpace = false;
+    int j = 0; // counter of spaces number in searchInput
+    for (int i = 0; i < searchInput.length; i++) {
+      if (searchInput.substring(i, i + 1) == " ") j++;
     }
-    if(j==searchInput.length)
-    isOnlySpace=true;
+    if (j == searchInput.length) isOnlySpace = true;
 
-
-    return isOnlySpace? Scaffold(): StreamBuilder<Object>(
+    return isOnlySpace
+        ? Scaffold()
+        : StreamBuilder<Object>(
             stream: snap,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -174,8 +175,9 @@ bool isOnlySpace = false;
                 return Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Text(
-                      "Sorry. We were not able to find a match\nTry Another Saerch",
-                      textAlign: TextAlign.center,),
+                    "Sorry. We were not able to find a match\nTry Another Saerch",
+                    textAlign: TextAlign.center,
+                  ),
                 );
               }
               return ListView(
@@ -198,10 +200,10 @@ bool isOnlySpace = false;
                               document['name'],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 16,
-                                  ),
+                                color: Colors.black,
+                                fontFamily: 'Comfortaa',
+                                fontSize: 16,
+                              ),
                             )),
                             /*  subtitle: Text(
                                                   document['date'].toString(),
@@ -216,23 +218,22 @@ bool isOnlySpace = false;
                               color: Colors.purple[300],
                             ),
                             onTap: () {
-                                                            if (document['uid']==uuuu)
-              {                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MyEventsDetails(
-                                            event: uid,
-                                          )));}
-                                          else
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          eventDetailsForUesers(
-                                            event: uid,
-                                            // change to move to details and booked
-                                          )));
+                              if (document['uid'] == uuuu) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyEventsDetails(
+                                              event: uid,
+                                            )));
+                              } else
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            eventDetailsForUesers(
+                                              event: uid,
+                                              // change to move to details and booked
+                                            )));
                             },
                           )));
                 }).toList(), //docmnt
@@ -240,28 +241,28 @@ bool isOnlySpace = false;
             });
   }
 
-  Widget buildResult(String searchInput, context, String? UId , ) {
+  Widget buildResult(
+    String searchInput,
+    context,
+    String? UId,
+  ) {
     String uuuu = FirebaseAuth.instance.currentUser!.uid;
     bool isOnlySpace = false;
-    int j=0; // counter of spaces number in searchInput 
-    for (int i=0 ; i< searchInput.length ; i++){
-      if(searchInput.substring(i,i+1)==" ")
-      j++;
-
+    int j = 0; // counter of spaces number in searchInput
+    for (int i = 0; i < searchInput.length; i++) {
+      if (searchInput.substring(i, i + 1) == " ") j++;
     }
-    if(j==searchInput.length)
-    isOnlySpace=true;
-searchInput=searchInput.trimLeft();
-    return isOnlySpace? Scaffold():
-         StreamBuilder(
+    if (j == searchInput.length) isOnlySpace = true;
+    searchInput = searchInput.trimLeft();
+    return isOnlySpace
+        ? Scaffold()
+        : StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('events')
                 .where('approved', isEqualTo: true)
                 //.where('uid', isNotEqualTo: uuuu)
                 .where('nameLowerCase',
-                    isGreaterThanOrEqualTo: searchInput.toLowerCase())
-                .where('nameLowerCase', 
-                    isLessThan: searchInput.toLowerCase() + 'z')
+                    arrayContains: searchInput.toLowerCase())
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -271,62 +272,65 @@ searchInput=searchInput.trimLeft();
                 return Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Text(
-                      "Sorry. We were not able to find a match\nTry Another Saerch",
-                      textAlign: TextAlign.center,),
+                    "Sorry. We were not able to find a match\nTry Another Saerch",
+                    textAlign: TextAlign.center,
+                  ),
                   //heightFactor: 30,
                 );
               }
-           
-              return  isOnlySpace? Scaffold(): // to avoid search when the input space 
-              ListView(
-                children: snapshot.data.docs.map<Widget>((document) {
-                  DocumentSnapshot uid = document;
-                  return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Card(
-                        elevation: 6,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side:
-                                  BorderSide(width: 0.5, color: Colors.amber)),
-                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          //color: Colors.grey[200],
-                          child: ListTile(
-                            title: Center(
-                                child: Text(
-                              document['name'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 16,
+
+              return isOnlySpace
+                  ? Scaffold()
+                  : // to avoid search when the input space
+                  ListView(
+                      children: snapshot.data.docs.map<Widget>((document) {
+                        DocumentSnapshot uid = document;
+                        return Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(
+                                        width: 0.5, color: Colors.amber)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                //color: Colors.grey[200],
+                                child: ListTile(
+                                  title: Center(
+                                      child: Text(
+                                    document['name'],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Comfortaa',
+                                      fontSize: 16,
+                                    ),
+                                  )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.purple[300],
                                   ),
-                            )),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.purple[300],
-                            ),
-                            onTap: () {
-                              if (document['uid']==uuuu)
-              {                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MyEventsDetails(
-                                            event: uid,
-                                          )));}
-                              else
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          eventDetailsForUesers(
-                                            event: uid,
-                                          )));
-                            },
-                          )));
-                }).toList(),
-              );
+                                  onTap: () {
+                                    if (document['uid'] == uuuu) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyEventsDetails(
+                                                    event: uid,
+                                                  )));
+                                    } else
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  eventDetailsForUesers(
+                                                    event: uid,
+                                                  )));
+                                  },
+                                )));
+                      }).toList(),
+                    );
             },
           );
   }
@@ -341,70 +345,68 @@ searchInput=searchInput.trimLeft();
         .where('nameLowerCase', isLessThan: searchInput.toLowerCase() + 'z')
         .snapshots();
 
-    return  StreamBuilder<Object>(
-            stream: snap,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: Loading());
-              }
-              if (snapshot.data.size == 0 && searchInput.length != 0) {
-                return Center(
-                  child: Text(
-                      "We're sorry. We were not able to find a match\nTry Another Saerch"),
-                  heightFactor: 30,
-                );
-              }
-              return ListView(
-                children: snapshot.data.docs.map<Widget>((document) {
-                  DocumentSnapshot uid = document;
-                  return Padding(
-                      padding: const EdgeInsets.all(10),
-                      //  const EdgeInsets.only(right: 70),
-                      child: Card(
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side:
-                                  BorderSide(width: 0.5, color: Colors.amber)),
-                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          //color: Colors.orangeAccent,
-                          child: ListTile(
-                            title: Center(
-                                child: Text(
-                              document['name'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.amber,
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                            /*  subtitle: Text(
+    return StreamBuilder<Object>(
+        stream: snap,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: Loading());
+          }
+          if (snapshot.data.size == 0 && searchInput.length != 0) {
+            return Center(
+              child: Text(
+                  "We're sorry. We were not able to find a match\nTry Another Saerch"),
+              heightFactor: 30,
+            );
+          }
+          return ListView(
+            children: snapshot.data.docs.map<Widget>((document) {
+              DocumentSnapshot uid = document;
+              return Padding(
+                  padding: const EdgeInsets.all(10),
+                  //  const EdgeInsets.only(right: 70),
+                  child: Card(
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(width: 0.5, color: Colors.amber)),
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //color: Colors.orangeAccent,
+                      child: ListTile(
+                        title: Center(
+                            child: Text(
+                          document['name'],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.amber,
+                              fontFamily: 'Comfortaa',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )),
+                        /*  subtitle: Text(
                                                   document['date'].toString(),
                                                   style: TextStyle(
                                                       color: Colors.amber[600],
                                                       fontFamily: 'Comfortaa',
                                                       fontSize: 14),
                                                 ), */
-                            // 00:000
-                            trailing: Icon(
-                              Icons.arrow_forward_ios_sharp,
-                              color: Colors.purple[300],
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          eventDetailsForUesers(
-                                            event: uid,
-                                            // change to move to details and booked
-                                          )));
-                            },
-                          )));
-                }).toList(), //docmnt
-              );
-            });
+                        // 00:000
+                        trailing: Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          color: Colors.purple[300],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => eventDetailsForUesers(
+                                        event: uid,
+                                        // change to move to details and booked
+                                      )));
+                        },
+                      )));
+            }).toList(), //docmnt
+          );
+        });
   }
 
   Widget buildCategory(context) {
@@ -432,7 +434,6 @@ searchInput=searchInput.trimLeft();
         SizedBox(
           height: 10,
         ),
-
         SizedBox(
           height: 10,
         ),
@@ -450,7 +451,7 @@ searchInput=searchInput.trimLeft();
                   "Educational",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -478,7 +479,7 @@ searchInput=searchInput.trimLeft();
                   "Sports",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -506,7 +507,7 @@ searchInput=searchInput.trimLeft();
                   "Arts",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -534,7 +535,7 @@ searchInput=searchInput.trimLeft();
                   "Academic",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -562,7 +563,7 @@ searchInput=searchInput.trimLeft();
                   "Culture",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -590,7 +591,7 @@ searchInput=searchInput.trimLeft();
                   "Video Games",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -618,7 +619,7 @@ searchInput=searchInput.trimLeft();
                   "Activities",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -646,7 +647,7 @@ searchInput=searchInput.trimLeft();
                   "Beauty",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -664,8 +665,8 @@ searchInput=searchInput.trimLeft();
           height: 80,
           child: Card(
               elevation: 0,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               color: Colors.orange.shade100,
               child: ListTile(
@@ -674,7 +675,7 @@ searchInput=searchInput.trimLeft();
                   "Health",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -692,8 +693,8 @@ searchInput=searchInput.trimLeft();
           height: 80,
           child: Card(
               elevation: 0,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               color: Colors.orange.shade100,
               child: ListTile(
@@ -702,7 +703,7 @@ searchInput=searchInput.trimLeft();
                   "Career",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -720,8 +721,8 @@ searchInput=searchInput.trimLeft();
           height: 80,
           child: Card(
               elevation: 0,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               color: Colors.orange.shade100,
               child: ListTile(
@@ -730,7 +731,7 @@ searchInput=searchInput.trimLeft();
                   "Personal Growth",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),
@@ -758,7 +759,7 @@ searchInput=searchInput.trimLeft();
                   "Other",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.orange.shade500,
+                      color: Colors.orange.shade600,
                       fontFamily: 'Comfortaa',
                       fontSize: 24),
                 )),

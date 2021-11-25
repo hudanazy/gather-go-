@@ -42,8 +42,7 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
-      List<String> searchDescription =
-        []; 
+    List<String> searchDescription = [];
     String temp = "";
     for (var i = 0; i < description!.length; i++) {
       if (description[i] == " ") {
@@ -84,8 +83,7 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
-      List<String> searchDescription =
-        []; 
+    List<String> searchDescription = [];
     String temp = "";
 
     for (var i = 0; i < description!.length; i++) {
@@ -131,23 +129,22 @@ class DatabaseService {
   }
 
   addEventData(
-    String uid,
-    String name,
-    String category,
-    String description,
-    String timePosted,
-    int attendees,
-    String date,
-    String time,
-    bool approved,
-    bool adminCheck,
-    double lat,
-    double long,
-  ) {
+      String uid,
+      String name,
+      String category,
+      String description,
+      String timePosted,
+      int attendees,
+      String date,
+      String time,
+      bool approved,
+      bool adminCheck,
+      double lat,
+      double long,
+      String image) {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
-
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -173,6 +170,7 @@ class DatabaseService {
       "long": long,
       "nameLowerCase": name.toLowerCase(),
       "searchDescription": searchDescription,
+      "imageUrl": image
     });
   }
 
@@ -198,7 +196,6 @@ class DatabaseService {
 
   //user booked events
 
-
   // addBookedEventToProfile(
   //   String eventUid
   //   ) {
@@ -206,7 +203,6 @@ class DatabaseService {
   //     "eventUid": eventUid,
   //   });
   // }
-
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
@@ -252,24 +248,23 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
-  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
-      //  uid: snapshot.get('uid'),
-      uid: snapshot.get('uid'),
-      name: snapshot.get('name'),
-      category: snapshot.get('category'),
-      description: snapshot.get('description'),
-      timePosted: snapshot.get('timePosted'),
-      //  imageUrl: snapshot.get('imageUrl'),
-      attendees: snapshot.get('attendees'),
-      // comments: snapshot.get('comments'),
-      date: snapshot.get('date'),
-      time: snapshot.get('time'),
-      approved: snapshot.get('approved'),
-      adminCheck: snapshot.get('adminCheck'),
-    );
+        //  uid: snapshot.get('uid'),
+        uid: snapshot.get('uid'),
+        name: snapshot.get('name'),
+        category: snapshot.get('category'),
+        description: snapshot.get('description'),
+        timePosted: snapshot.get('timePosted'),
+        //  imageUrl: snapshot.get('imageUrl'),
+        attendees: snapshot.get('attendees'),
+        // comments: snapshot.get('comments'),
+        date: snapshot.get('date'),
+        time: snapshot.get('time'),
+        approved: snapshot.get('approved'),
+        adminCheck: snapshot.get('adminCheck'),
+        imageUrl: snapshot.get("imageUrl"));
   }
 
   Future updateUesrData(
@@ -319,7 +314,8 @@ class DatabaseService {
           time: doc.get('time') ?? '',
           /* location: doc.get('location') ?? ''*/
           approved: doc.get('approved') ?? '',
-          adminCheck: doc.get('adminCheck') ?? '');
+          adminCheck: doc.get('adminCheck') ?? '',
+          imageUrl: doc.get('imageUrl') ?? '');
     }).toList();
   }
 }
