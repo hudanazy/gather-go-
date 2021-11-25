@@ -94,8 +94,11 @@ class _Eventform extends State<createEvent> {
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
+                          SizedBox(
+                            height: 30,
+                          ),
                           AppBar(
-                            toolbarHeight: 110,
+                            toolbarHeight: 80,
                             backgroundColor: Colors.white,
                             title: Text(
                               "Create Event",
