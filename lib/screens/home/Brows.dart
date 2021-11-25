@@ -279,7 +279,7 @@ print(currDt.second); // 49 */
                                         child: Row(
                                           children: <Widget>[
                                             SizedBox(
-                                              width: 16.0,
+                                              width: 40.0,
                                             ),
                                             Text(
                                               document['name'],
@@ -290,17 +290,17 @@ print(currDt.second); // 49 */
                                                   fontFamily: "Comfortaa"),
                                             ),
                                             SizedBox(
-                                              width: 16.0,
+                                              width: 40.0,
                                             ),
                                             Text(
                                               document['description'].substring(
                                                   0,
                                                   document['description']
                                                               .length <
-                                                          18
+                                                          10
                                                       ? document['description']
                                                           .length
-                                                      : 18),
+                                                      : 10),
                                               style: TextStyle(
                                                   color: Colors.grey[600],
                                                   fontWeight: FontWeight.w500,
@@ -309,7 +309,7 @@ print(currDt.second); // 49 */
                                             ),
                                             Text(
                                               document['description'].length >=
-                                                      18
+                                                      10
                                                   ? "..."
                                                   : "",
                                               style: TextStyle(
