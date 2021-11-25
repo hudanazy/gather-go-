@@ -7,6 +7,7 @@ import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
+import 'package:async/async.dart' show StreamGroup;
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -207,14 +208,30 @@ print(currDt.second); // 49 */
     final user = Provider.of<NewUser?>(context, listen: false);
     // DateTime dt = DateTime.parse();
     //final user = Provider.of<NewUser?>(context, listen: false);
+    // Stream<QuerySnapshot<Map<String, dynamic>>> stream1 = FirebaseFirestore
+    //     .instance
+    //     .collection('events')
+    //     .where('uid', isNotEqualTo: user!.uid)
+    //     .orderBy("uid")
+    //     .where('approved', isEqualTo: true)
+    //     .where('adminCheck', isEqualTo: true)
+    //     .orderBy("timePosted", descending: true)
+    //     .snapshots();
+
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
         FirebaseFirestore.instance
             .collection('events')
-            // .orderBy("timePosted")
-            .where('uid', isNotEqualTo: user?.uid)
+            .where('uid', isNotEqualTo: user!.uid)
+            .orderBy("uid")
             .where('approved', isEqualTo: true)
             .where('adminCheck', isEqualTo: true)
+            // .orderBy("timePosted", descending: true)
             .snapshots();
+    Stream<QuerySnapshot<Map<String, dynamic>>> stream2 = FirebaseFirestore
+        .instance
+        .collection('events')
+        .orderBy("timePosted", descending: true)
+        .snapshots();
 
     return Scaffold(
         backgroundColor: Colors.white10,
@@ -225,7 +242,10 @@ print(currDt.second); // 49 */
           //  width: 340,
           child: //[
               StreamBuilder(
-                  stream: stream1,
+                  stream: StreamGroup.merge([
+                    stream1,
+                    stream2,
+                  ]),
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (!snapshot.hasData) {
@@ -243,6 +263,7 @@ print(currDt.second); // 49 */
 
                       children: snapshot.data.docs.map<Widget>((document) {
                         DocumentSnapshot uid = document;
+
                         return Padding(
                             padding: const EdgeInsets.all(8),
                             //  const EdgeInsets.only(right: 70),

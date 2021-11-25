@@ -61,12 +61,12 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap = FirebaseFirestore
-        .instance
-        .collection('comments')
-        .orderBy("timePosted", descending: true)
-        .where('eventID', isEqualTo: widget.event?.id)
-        .snapshots();
+    Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap =
+        FirebaseFirestore.instance
+            .collection('comments')
+            // .orderBy("timePosted")
+            .where('eventID', isEqualTo: widget.event?.id)
+            .snapshots();
     // var curLat = currentLocation?.latitude ?? 0;
     // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
