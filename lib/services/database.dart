@@ -41,9 +41,16 @@ class DatabaseService {
       String? time,
       String? category,
       double? lat,
+<<<<<<< HEAD
       double? long,
       DateTime browseDate) async {
     List<String> searchDescription = [];
+=======
+      double? long) async {
+        
+      List<String> searchDescription =
+        []; 
+>>>>>>> master
     String temp = "";
     for (var i = 0; i < description!.length; i++) {
       if (description[i] == " ") {
@@ -51,6 +58,17 @@ class DatabaseService {
       } else {
         temp = temp + description[i];
         searchDescription.add(temp.toLowerCase());
+      }
+    }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
       }
     }
     return await eventCollection.doc(uid).set({
@@ -68,7 +86,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "browseDate": browseDate,
     });
@@ -97,6 +115,17 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -112,7 +141,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "browseDate": browseDate,
     });
@@ -150,6 +179,10 @@ class DatabaseService {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
+<<<<<<< HEAD
+=======
+  List<String> nameLowerCase =[];
+>>>>>>> master
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -158,6 +191,16 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    temp="";
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
+    
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -173,7 +216,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "imageUrl": image,
       "browseDate": browseDate

@@ -346,7 +346,7 @@ class _ProfileFormState extends State<ProfileForm> {
             context: context,
             builder: (context) {
               return Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                 child: epForm(),
               );
             });

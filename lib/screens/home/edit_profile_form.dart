@@ -81,6 +81,7 @@ class _epFormState extends State<epForm> {
     bool isBioOnlySpace = false;
 
     return Scaffold(
+<<<<<<< HEAD
         appBar: SecondaryAppBar(
           title: "Edit your profile",
         ),
@@ -106,6 +107,33 @@ class _epFormState extends State<epForm> {
                   // currentBio = document['bio'];
                   // currentStatus = document['status'];
                   //_imageFile;
+=======
+      appBar: SecondaryAppBar(title: "Edit your profile",),
+      body:
+    StreamBuilder<Object>(
+        stream: snap, //DatabaseService(uid: user.uid).profileData,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Loading(),
+              //     child: Text(
+              //   "No New Events", // may be change it to loading , itis appear for a second every time
+              //   textAlign: TextAlign.center,
+              // )
+            );
+          }
+          return Container(
+              // height: 640,
+              // width: 500,
+              child: 
+              ListView(
+            children: snapshot.data.docs.map<Widget>((document) {
+              DocumentSnapshot uid = document;
+              // currentName = document['name'];
+              // currentBio = document['bio'];
+              // currentStatus = document['status'];
+              //_imageFile;
+>>>>>>> master
 
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -138,6 +166,7 @@ class _epFormState extends State<epForm> {
                                       ? Image.file(image!,
                                           width: 160,
                                           height: 160,
+<<<<<<< HEAD
                                           fit: BoxFit.cover)
                                       : document['imageUrl'] != ''
                                           ? Ink.image(
@@ -191,6 +220,136 @@ class _epFormState extends State<epForm> {
                                 setState(() => currentName = val);
                               },
                             ),
+=======
+                                        )
+                                      : Image.asset(
+                                          'images/profile.png',
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        ),
+                            )),
+                            image != null || document['imageUrl'] != ''
+                                ? Positioned(
+                                    bottom: 0,
+                                    right: 4,
+                                    child: buildEditIcon(Colors.blue),
+                                  )
+                                : Positioned(
+                                    bottom: 15,
+                                    right: 15,
+                                    child: buildEditIcon(Colors.blue))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          initialValue: document['name'],
+                          decoration: textInputDecoration.copyWith(
+                            hintText: "What would like us to call you?",
+                            hintStyle: TextStyle(
+                                color: Colors.orange[400],
+                                fontSize: 14,
+                                fontFamily: "Comfortaa"),
+                          ),
+                          style: TextStyle(
+                              color: Colors.orange[400],
+                              fontSize: 14,
+                              fontFamily: "Comfortaa"),
+                          validator: (val) =>
+                              val!.isEmpty ? 'Please enter a name' : null,
+                          onChanged: (val) {
+                            setState(() => currentName = val);
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: 300,
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 0, left: 5),
+                        child: Text(
+                          "Status",
+                          style: TextStyle(
+                              color: Colors.orange[400],
+                              letterSpacing: 2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Comfortaa"),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child:
+                      DropdownButtonFormField(
+                          value: document['status'],
+                          decoration: textInputDecoration,
+                          items: status.map((status) {
+                            return DropdownMenuItem(
+                              value: status,
+                              child: Text(status),
+                            );
+                          }).toList(),
+                          onChanged: (val) =>
+                              setState(() => currentStatus = val as String),
+                          style: TextStyle(
+                            color: Colors.orange[400],
+                            fontFamily: 'Comfortaa',
+                          ))),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          initialValue: document['bio'],
+                          decoration: textInputDecoration.copyWith(
+                            hintText: "Enter your bio.",
+                            hintStyle: TextStyle(
+                                color: Colors.orange[400],
+                                fontSize: 14,
+                                fontFamily: "Comfortaa"),
+                          ),
+                          maxLines: 4,
+                          style: TextStyle(
+                              color: Colors.orange[400],
+                              fontSize: 14,
+                              fontFamily: "Comfortaa"),
+                          validator: (val) =>
+                              val!.isEmpty ? 'Please enter a bio' : null,
+                          onChanged: (val) => setState(() => currentBio = val),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 190,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.orange[400]),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
+                          child: Text(
+                            'Save Changes',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Comfortaa"),
+>>>>>>> master
                           ),
                           SizedBox(
                             height: 20,

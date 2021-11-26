@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter/services.dart';
+=======
+>>>>>>> master
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
 import 'package:gather_go/screens/myAppBar.dart';
@@ -13,11 +16,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../NotifactionManager.dart';
 import 'MyEventsDetails.dart';
 import 'nav.dart';
+<<<<<<< HEAD
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+=======
+>>>>>>> master
 
 class EidtEventForm extends StatefulWidget {
   final DocumentSnapshot? event;
@@ -92,6 +98,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     super.dispose();
   }
 
+<<<<<<< HEAD
   File? image;
   Future pickImage(ImageSource source) async {
     Future<File> saveImagePermanently(String imagePath) async {
@@ -116,6 +123,8 @@ class _eventEditFormState extends State<EidtEventForm> {
   }
 
   dynamic imageFile;
+=======
+>>>>>>> master
   String? currentNameEvent = "";
   String? currentcatogary = "";
   String? currentDescrption = "";
@@ -176,6 +185,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
+<<<<<<< HEAD
                         Stack(
                           children: [
                             Card(
@@ -222,6 +232,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                     child: buildEditIcon(Colors.black)),
                           ],
                         ),
+=======
+>>>>>>> master
                         /* Text(
                           "Edit your event",
                           style: TextStyle(
@@ -486,6 +498,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                             ),
                             onPressed: () async {
                               // print("hi im here 1 $Name");
+<<<<<<< HEAD
                               if (image == null &&
                                   widget.event?.get('imageUrl') == '') {
                                 imageFile = widget.event?.get('imageUrl');
@@ -504,6 +517,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                               } else {
                                 imageFile = '';
                               }
+=======
+>>>>>>> master
 
                               ///print
                               if (_formKey.currentState!.validate()) {
@@ -580,7 +595,10 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       "approved": false,
                                       "nameLowerCase": nameLowerCase,
                                       "searchDescription": searchDescription,
+<<<<<<< HEAD
                                       "browseDate": currdate
+=======
+>>>>>>> master
                                     });
 
                                     // date
@@ -610,6 +628,7 @@ class _eventEditFormState extends State<EidtEventForm> {
         )));
   }
 
+<<<<<<< HEAD
   Widget buildEditIcon(Color color) => InkWell(
       onTap: () {
         //imagePicker();
@@ -640,6 +659,8 @@ class _eventEditFormState extends State<EidtEventForm> {
           child: child,
         ),
       );
+=======
+>>>>>>> master
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     // _location.onLocationChanged.listen((l) {

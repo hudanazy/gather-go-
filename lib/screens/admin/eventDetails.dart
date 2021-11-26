@@ -244,7 +244,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
+                                  MaterialStateProperty.all(Colors.red[300]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -298,7 +298,7 @@ class _eventDetails extends State<eventDetails> {
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.purple[300]),
+                                MaterialStateProperty.all(Colors.green[300]),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(

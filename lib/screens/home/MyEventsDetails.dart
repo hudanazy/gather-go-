@@ -79,14 +79,18 @@ class _MyEventsDetails extends State<MyEventsDetails> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
+<<<<<<< HEAD
             appBar: SecondaryAppBar(
               title: 'Event Details',
             ),
+=======
+>>>>>>> master
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5.0),
+<<<<<<< HEAD
                     //  child: ArcBannerImage(),
                   ),
                   Row(children: [
@@ -117,6 +121,35 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                         backgroundColor: Colors.orange[200],
                       ),
                     ),
+=======
+                    child: ArcBannerImage(),
+                  ),
+                  Row(children: [
+                    IconButton(
+                      icon: new Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => adminEvent()));
+                      },
+                    ),
+                    Flexible(
+                      child: Text(widget.event?.get('name') + '   ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Comfortaa',
+                              fontSize: 18)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Chip(
+                        label: Text(category,
+                            style: TextStyle(color: Colors.black)),
+                        backgroundColor: Colors.deepOrange[100],
+                      ),
+                    ),
+>>>>>>> master
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Chip(
@@ -143,6 +176,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       ],
                     ),
                   ),
+<<<<<<< HEAD
                   // Padding(
                   //   padding: const EdgeInsets.only(left: 20.0),
                   //   child: Row(
@@ -152,6 +186,17 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                   //     ],
                   //   ),
                   // ),
+=======
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.location_pin),
+                        Text("   to be added later"),
+                      ],
+                    ),
+                  ),
+>>>>>>> master
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Row(children: <Widget>[
@@ -168,6 +213,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             icon: Icon(
                               Icons.location_pin,
                               color: Colors.black,
+<<<<<<< HEAD
                             ),
                             label: Text("see the location",
                                 style: TextStyle(
@@ -206,6 +252,40 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
                               // minimumSize: Size.fromWidth(180),
+=======
+                            ),
+                            label: Text("see the location",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                            ),
+                            //color: Colors.deepOrange,
+                            onPressed: () {
+                              showMapdialogAdmin(context, myMarker);
+                            },
+                            //child: Text("see the location"),
+                          ),
+                        ],
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.message,
+                              color: Colors.black,
+                            ),
+                            label: Text(nComments + " comments",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+>>>>>>> master
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
@@ -230,7 +310,11 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
+<<<<<<< HEAD
                                         Colors.deepPurple),
+=======
+                                        Colors.orangeAccent),
+>>>>>>> master
                                   ),
                                   child: Text('Delete Event',
                                       style: TextStyle(
@@ -271,7 +355,11 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
+<<<<<<< HEAD
                                         Colors.deepPurple),
+=======
+                                        Colors.orangeAccent),
+>>>>>>> master
                                   ),
                                   child: Text('Edit Event',
                                       style: TextStyle(

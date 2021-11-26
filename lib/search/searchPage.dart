@@ -261,8 +261,12 @@ class _SearchListState extends State<SearchList> {
                 .collection('events')
                 .where('approved', isEqualTo: true)
                 //.where('uid', isNotEqualTo: uuuu)
+<<<<<<< HEAD
                 .where('nameLowerCase',
                     arrayContains: searchInput.toLowerCase())
+=======
+                 .where('nameLowerCase', arrayContains: searchInput.toLowerCase())
+>>>>>>> master
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -335,6 +339,7 @@ class _SearchListState extends State<SearchList> {
           );
   }
 
+<<<<<<< HEAD
   Widget buildSearchByName(String searchInput, BuildContext context) {
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
@@ -408,6 +413,9 @@ class _SearchListState extends State<SearchList> {
           );
         });
   }
+=======
+  
+>>>>>>> master
 
   Widget buildCategory(context) {
 // SizedBox(

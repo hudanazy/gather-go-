@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
+import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 //import 'package:gather_go/shared/loading.dart';
 
@@ -40,243 +42,256 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
+      appBar: SecondaryAppBar(
+        title: "Comments",
+      ),
       body: Column(
         children: [
+          // SizedBox(height: 5,),
+          // SizedBox(
+          //   height: 45,
+          //   child: Text(
+          //     widget.event?.get('name'),
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 20,
+          //       color: Colors.purple[600]),
+          //   ),
+          // ),
           Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Row(children: [
-                  IconButton(
-                    icon: new Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => eventDetailsForUesers(
-                                    event: widget.event,
-                                  )));
-                    },
-                  ),
-                  Flexible(
-                    child: Text(widget.event?.get('name') + ' comments  ',
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontFamily: 'Comfortaa',
-                            fontSize: 26)),
-                  ),
-                ]),
-                Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: 350),
-                          StreamBuilder(
-                              stream: snapshot,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic> snapshot) {
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: Text("No comments yet."),
-                                  );
-                                }
+              alignment: Alignment.center,
+              child:
+                  // color: Colors.white,
+                  // child: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // children: [
+                  // SizedBox(
+                  //   height: 40,
+                  // ),
+                  //   Row(children: [
+                  // IconButton(
+                  //   icon: new Icon(Icons.arrow_back_ios),
+                  //   onPressed: () {
+                  //     Navigator.pop(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => eventDetailsForUesers(
+                  //                   event: widget.event,
+                  //                 )));
+                  //   },
+                  // ),
+                  // Flexible(
+                  //   child: Text(widget.event?.get('name') + ' comments  ',
+                  //       style: TextStyle(
+                  //           color: Colors.deepOrange,
+                  //           fontFamily: 'Comfortaa',
+                  //           fontSize: 26)),
+                  // ),
+                  //   ]),
+                  //   Column(
+                  //   children: [
+                  // Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  // SizedBox(height: 10),
+                  StreamBuilder(
+                      stream: snapshot,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: Loading(),
+                          );
+                        }
+                        if (snapshot.data.size == 0)
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: Text(
+                              "No comments yet.",
+                              textAlign: TextAlign.center,
+                            ),
+                          );
 
-                                return Padding(
-                                  padding: EdgeInsets.only(top: 10, right: 20),
-                                  child: Container(
-                                    height: height / 1.4,
-                                    width: width / 1.2,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        //reverse: true,
-                                        children: snapshot.data.docs
-                                            .map<Widget>((document) {
-                                          DocumentSnapshot uid = document;
-                                          final now = DateTime.now();
-                                          final past =
-                                              document['timePosted'].toDate();
-                                          final differenceDays =
-                                              now.difference(past).inDays;
-                                          final differenceHours =
-                                              now.difference(past).inHours;
-                                          final differenceMinutes =
-                                              now.difference(past).inMinutes;
-                                          final differenceSeconds =
-                                              now.difference(past).inSeconds;
-                                          final differenceMS = now
-                                              .difference(past)
-                                              .inMilliseconds;
-                                          String ago = "";
-                                          if (differenceDays == 0) {
-                                            if (differenceHours == 0) {
-                                              if (differenceMinutes == 0) {
-                                                if (differenceSeconds == 0) {
-                                                  if (differenceMS == 0) {
-                                                    ago = "now";
-                                                  } else {
-                                                    ago = differenceMS
-                                                            .toString() +
-                                                        "ms";
-                                                  }
-                                                } else {
-                                                  ago = differenceSeconds
-                                                          .toString() +
-                                                      "s";
-                                                }
-                                              } else {
-                                                ago = differenceMinutes
-                                                        .toString() +
-                                                    "m";
-                                              }
-                                            } else {
-                                              ago = differenceHours.toString() +
-                                                  "h";
-                                            }
-                                          } else {
-                                            ago =
-                                                differenceDays.toString() + "d";
-                                          }
-                                          //to get commenters current profile image
-                                          // commenter(document['uid']);
-                                          return Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Row(children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                child: Center(
-                                                  child: Stack(
-                                                    children: [
-                                                      ClipOval(
-                                                        child: Material(
-                                                          color: Colors
-                                                              .transparent,
-                                                          child: document[
-                                                                      'imageUrl'] ==
-                                                                  ""
-                                                              ? Image.asset(
-                                                                  'images/profile.png',
-                                                                  width: 70,
-                                                                  height: 70,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                )
-                                                              : Ink.image(
-                                                                  image: NetworkImage(
-                                                                      document[
-                                                                          'imageUrl']),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 10,
-                                                      left: 20,
-                                                      right: 10),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(.3),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        // Container(
-                                                        //   width: width / 1.5,
-                                                        //   child: Text(
-                                                        //       document['name']),
-                                                        // ),
-                                                        Container(
-                                                          width: width / 1.5,
-                                                          child: Text(
-                                                            document['name'],
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                        .orange[
-                                                                    700]),
+                        return //Padding(
+
+                            // child:
+                            Container(
+                          padding: EdgeInsets.only(
+                            top: 10,
+                          ), //right: 20
+                          height: (height / 1.5) + 25,
+                          width: width / 1.2,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              //reverse: true,
+                              children:
+                                  snapshot.data.docs.map<Widget>((document) {
+                                DocumentSnapshot uid = document;
+                                final now = DateTime.now();
+                                final past = document['timePosted'].toDate();
+
+                                final differenceDays =
+                                    now.difference(past).inDays;
+                                final differenceHours =
+                                    now.difference(past).inHours;
+                                final differenceMinutes =
+                                    now.difference(past).inMinutes;
+                                final differenceSeconds =
+                                    now.difference(past).inSeconds;
+                                final differenceMS =
+                                    now.difference(past).inMilliseconds;
+                                String ago = "";
+
+                                if (differenceDays == 0) {
+                                  if (differenceHours == 0) {
+                                    if (differenceMinutes == 0) {
+                                      if (differenceSeconds == 0) {
+                                        if (differenceMS == 0) {
+                                          ago = "now";
+                                        } else {
+                                          ago = differenceMS.toString() + "ms";
+                                        }
+                                      } else {
+                                        ago =
+                                            differenceSeconds.toString() + "s";
+                                      }
+                                    } else {
+                                      ago = differenceMinutes.toString() + "m";
+                                    }
+                                  } else {
+                                    ago = differenceHours.toString() + "h";
+                                  }
+                                } else {
+                                  var months;
+                                  if (differenceDays > 30) {
+                                    months = differenceDays / 30;
+                                    ago = ((months).floor()).toString() + "mo";
+                                    var year;
+                                    if (months >= 12) {
+                                      year = months / 12;
+                                      ago = year.floor().toString() + "y";
+                                    }
+                                  } else {
+                                    ago = differenceDays.toString() + "d";
+                                  }
+                                }
+                                //to get commenters current profile image
+                                // commenter(document['uid']);
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Center(
+                                        child: Stack(
+                                          children: [
+                                            ClipOval(
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child:
+                                                    document['imageUrl'] == ""
+                                                        ? Image.asset(
+                                                            'images/profile.png',
+                                                            width: 70,
+                                                            height: 70,
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Ink.image(
+                                                            image: NetworkImage(
+                                                                document[
+                                                                    'imageUrl']),
+                                                            fit: BoxFit.cover,
+                                                            width: 60,
+                                                            height: 60,
                                                           ),
-                                                        ),
-                                                        Container(
-                                                          width: width / 1.5,
-                                                          child: Text(
-                                                              document['text']),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Text(ago),
-                                                            IconButton(
-                                                              onPressed:
-                                                                  () async {},
-                                                              icon: Icon(Icons
-                                                                  .thumb_up_alt_rounded),
-                                                              color:
-                                                                  Colors.grey,
-                                                              iconSize: 20,
-                                                            ),
-                                                            Text('0'),
-                                                            IconButton(
-                                                              onPressed:
-                                                                  () async {},
-                                                              icon: Icon(Icons
-                                                                  .thumb_down_alt_rounded),
-                                                              color:
-                                                                  Colors.grey,
-                                                              iconSize: 20,
-                                                            ),
-                                                            Text('0'),
-                                                            IconButton(
-                                                              onPressed:
-                                                                  () async {},
-                                                              icon: Icon(
-                                                                  Icons.report),
-                                                              color:
-                                                                  Colors.grey,
-                                                              iconSize: 20,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ]),
-                                                ),
                                               ),
-                                            ]),
-                                          );
-                                          //       },
-                                          //     )));
-                                        }).toList(), //docmnt
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            top: 10, left: 20, right: 10),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(.3),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              // Container(
+                                              //   width: width / 1.5,
+                                              //   child: Text(
+                                              //       document['name']),
+                                              // ),
+                                              Container(
+                                                width: width / 1.5,
+                                                child: Text(
+                                                  document['name'],
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.orange[700]),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: width / 1.5,
+                                                child: Text(document['text']),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(ago),
+                                                  IconButton(
+                                                    onPressed: () async {},
+                                                    icon: Icon(Icons
+                                                        .thumb_up_alt_rounded),
+                                                    color: Colors.grey,
+                                                    iconSize: 20,
+                                                  ),
+                                                  Text('0'),
+                                                  IconButton(
+                                                    onPressed: () async {},
+                                                    icon: Icon(Icons
+                                                        .thumb_down_alt_rounded),
+                                                    color: Colors.grey,
+                                                    iconSize: 20,
+                                                  ),
+                                                  Text('0'),
+                                                  IconButton(
+                                                    onPressed: () async {},
+                                                    icon: Icon(Icons.report),
+                                                    color: Colors.grey,
+                                                    iconSize: 20,
+                                                  ),
+                                                ],
+                                              ),
+                                            ]),
+                                      ),
+                                    ),
+                                  ]),
                                 );
-                              })
-                        ]),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                                //       },
+                                //     )));
+                              }).toList(), //docmnt
+                            ),
+                          ),
+                          //  ),
+                        );
+                      })
+              //   ]
+              //),
+              //],
+              // ),
+              // ],
+              //   ),
+              ),
         ],
       ),
       bottomNavigationBar: NewMessage(

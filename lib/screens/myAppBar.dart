@@ -15,6 +15,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 Widget MyAppBarWidget(title) {
   return AppBar(
+<<<<<<< HEAD
       title: Text(title,
           style: TextStyle(
               color: Colors.black,
@@ -27,6 +28,28 @@ Widget MyAppBarWidget(title) {
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       iconTheme: IconThemeData(
+=======
+     title: Text(title,
+      style: TextStyle(
+          color: Colors.black, 
+          fontFamily: 'Comfortaa', 
+          fontSize: 28, 
+          fontWeight: FontWeight.bold)),
+    elevation: 6,
+    toolbarHeight:100,
+    backgroundColor: Colors.orange[400],
+    automaticallyImplyLeading: false,
+    iconTheme: IconThemeData(
+      color: Colors.black,),
+    //centerTitle: true,
+    actions: <Widget>[
+      IconButton(
+        padding: const EdgeInsets.only( right: 10),//top:22
+        iconSize: 45,
+        // padding: EdgeInsets.only(left: 270, top: 40),
+        icon: Icon(
+        Icons.logout_outlined,
+>>>>>>> master
         color: Colors.black,
       ),
       //centerTitle: true,
