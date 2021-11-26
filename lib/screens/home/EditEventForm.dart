@@ -37,7 +37,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     'Academic',
     'Culture',
     'Video Games',
-    'Activities',
+    'Outdoor Activities',
     'Beauty',
     'Health',
     'Career',

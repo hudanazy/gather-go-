@@ -39,7 +39,7 @@ class _Eventform extends State<createEvent> {
     'Academic',
     'Culture',
     'Video Games',
-    'Activities',
+    'Outdoor Activities',
     'Beauty',
     'Health',
     'Career',
