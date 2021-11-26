@@ -80,7 +80,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
     if (bookedNum < attendeeNum && !list.contains(currentUser))
-      buttonColor = Colors.orange[400];
+      buttonColor = Colors.deepPurple;
     else
       buttonColor = Colors.grey;
 
@@ -264,6 +264,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             label: Text("see the location",
                                 style: TextStyle(
                                   color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
@@ -289,6 +291,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             label: Text(nComments + " comments",
                                 style: TextStyle(
                                   color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
@@ -314,11 +318,14 @@ class _eventDetails extends State<eventDetailsForUesers> {
                           ElevatedButton.icon(
                             icon: Icon(
                               Icons.book,
-                              color: Colors.black,
+                              color: Colors.white70,
                             ),
                             label: Text('Book event',
                                 style: TextStyle(
-                                  color: Colors.black87,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 14,
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: buttonColor,

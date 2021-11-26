@@ -261,12 +261,7 @@ class _SearchListState extends State<SearchList> {
                 .collection('events')
                 .where('approved', isEqualTo: true)
                 //.where('uid', isNotEqualTo: uuuu)
-<<<<<<< HEAD
-                .where('nameLowerCase',
-                    arrayContains: searchInput.toLowerCase())
-=======
                  .where('nameLowerCase', arrayContains: searchInput.toLowerCase())
->>>>>>> master
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
@@ -339,83 +334,7 @@ class _SearchListState extends State<SearchList> {
           );
   }
 
-<<<<<<< HEAD
-  Widget buildSearchByName(String searchInput, BuildContext context) {
-    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
-        .instance
-        .collection('events')
-        .where('approved', isEqualTo: true)
-        .where('nameLowerCase',
-            isGreaterThanOrEqualTo: searchInput.toLowerCase())
-        .where('nameLowerCase', isLessThan: searchInput.toLowerCase() + 'z')
-        .snapshots();
-
-    return StreamBuilder<Object>(
-        stream: snap,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: Loading());
-          }
-          if (snapshot.data.size == 0 && searchInput.length != 0) {
-            return Center(
-              child: Text(
-                  "We're sorry. We were not able to find a match\nTry Another Saerch"),
-              heightFactor: 30,
-            );
-          }
-          return ListView(
-            children: snapshot.data.docs.map<Widget>((document) {
-              DocumentSnapshot uid = document;
-              return Padding(
-                  padding: const EdgeInsets.all(10),
-                  //  const EdgeInsets.only(right: 70),
-                  child: Card(
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(width: 0.5, color: Colors.amber)),
-                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      //color: Colors.orangeAccent,
-                      child: ListTile(
-                        title: Center(
-                            child: Text(
-                          document['name'],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.amber,
-                              fontFamily: 'Comfortaa',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )),
-                        /*  subtitle: Text(
-                                                  document['date'].toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.amber[600],
-                                                      fontFamily: 'Comfortaa',
-                                                      fontSize: 14),
-                                                ), */
-                        // 00:000
-                        trailing: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Colors.purple[300],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => eventDetailsForUesers(
-                                        event: uid,
-                                        // change to move to details and booked
-                                      )));
-                        },
-                      )));
-            }).toList(), //docmnt
-          );
-        });
-  }
-=======
   
->>>>>>> master
 
   Widget buildCategory(context) {
 // SizedBox(
