@@ -37,7 +37,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
         .snapshots();
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white10,
         appBar: SecondaryAppBar(
           title: "All $category Events",
         ),
@@ -100,7 +100,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
                                   document['name'],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.grey[800],
                                       fontFamily: 'Comfortaa',
                                       fontSize: 16),
                                 )),
@@ -113,7 +113,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
                                 // ),
                                 trailing: Icon(
                                   Icons.arrow_forward_ios,
-                                  color: Colors.purple[300],
+                                  color: Colors.orange[400],
                                 ),
                                 onTap: () {
                                   // Navigator.push(
