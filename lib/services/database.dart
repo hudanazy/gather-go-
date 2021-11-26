@@ -41,7 +41,8 @@ class DatabaseService {
       String? time,
       String? category,
       double? lat,
-      double? long) async {
+      double? long,
+      DateTime browseDate) async {
     List<String> searchDescription = [];
     String temp = "";
     for (var i = 0; i < description!.length; i++) {
@@ -69,6 +70,7 @@ class DatabaseService {
       "long": long,
       "nameLowerCase": name?.toLowerCase(),
       "searchDescription": searchDescription,
+      "browseDate": browseDate,
     });
   }
 
@@ -82,7 +84,8 @@ class DatabaseService {
       String? time,
       String? category,
       double? lat,
-      double? long) async {
+      double? long,
+      DateTime browseDate) async {
     List<String> searchDescription = [];
     String temp = "";
 
@@ -111,6 +114,7 @@ class DatabaseService {
       "long": long,
       "nameLowerCase": name?.toLowerCase(),
       "searchDescription": searchDescription,
+      "browseDate": browseDate,
     });
   }
 
@@ -141,7 +145,8 @@ class DatabaseService {
       bool adminCheck,
       double lat,
       double long,
-      String image) {
+      String image,
+      DateTime browseDate) {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
@@ -170,7 +175,8 @@ class DatabaseService {
       "long": long,
       "nameLowerCase": name.toLowerCase(),
       "searchDescription": searchDescription,
-      "imageUrl": image
+      "imageUrl": image,
+      "browseDate": browseDate
     });
   }
 
@@ -264,7 +270,8 @@ class DatabaseService {
         time: snapshot.get('time'),
         approved: snapshot.get('approved'),
         adminCheck: snapshot.get('adminCheck'),
-        imageUrl: snapshot.get("imageUrl"));
+        imageUrl: snapshot.get("imageUrl"),
+        browseDate: snapshot.get("browseDate"));
   }
 
   Future updateUesrData(
@@ -315,7 +322,8 @@ class DatabaseService {
           /* location: doc.get('location') ?? ''*/
           approved: doc.get('approved') ?? '',
           adminCheck: doc.get('adminCheck') ?? '',
-          imageUrl: doc.get('imageUrl') ?? '');
+          imageUrl: doc.get('imageUrl') ?? '',
+          browseDate: doc.get('browseDate') ?? '');
     }).toList();
   }
 }

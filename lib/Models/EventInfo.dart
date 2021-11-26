@@ -13,6 +13,7 @@ class EventInfo {
   bool approved = false;
   bool adminCheck = false;
   final String imageUrl;
+  DateTime browseDate;
   //int attendeeNumber;
 
   EventInfo(
@@ -30,7 +31,8 @@ class EventInfo {
       required this.location*/
       required this.approved,
       required this.adminCheck,
-      required this.imageUrl
+      required this.imageUrl,
+      required this.browseDate
       // required this.attendeeNumber,
       });
 }

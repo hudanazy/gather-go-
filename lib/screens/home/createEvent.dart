@@ -486,7 +486,8 @@ class _Eventform extends State<createEvent> {
                                                 false,
                                                 saveLat,
                                                 saveLong,
-                                                imageFile);
+                                                imageFile,
+                                                dateo!);
                                         var userID = user.uid;
                                         await FirebaseMessaging.instance
                                             .subscribeToTopic('event_$userID');

@@ -580,6 +580,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       "approved": false,
                                       "nameLowerCase": nameLowerCase,
                                       "searchDescription": searchDescription,
+                                      "browseDate": currdate
                                     });
 
                                     // date

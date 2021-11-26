@@ -224,31 +224,27 @@ print(currDt.second); // 49 */
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 =
         FirebaseFirestore.instance
             .collection('events')
-            .where('uid', isNotEqualTo: user!.uid)
-            .orderBy("uid")
+            // .where('uid', isNotEqualTo: user!.uid)
             .where('approved', isEqualTo: true)
             .where('adminCheck', isEqualTo: true)
-            // .orderBy("timePosted", descending: true)
+            // .orderBy("uid", descending: true)
+            .orderBy("timePosted", descending: true)
             .snapshots();
-    Stream<QuerySnapshot<Map<String, dynamic>>> stream2 = FirebaseFirestore
-        .instance
-        .collection('events')
-        .orderBy("timePosted", descending: true)
-        .snapshots();
 
     return Scaffold(
         backgroundColor: Colors.white10,
-        appBar: MyAppBar(title: 'Browse Events'),
+        appBar: MyAppBar(title: 'Upcoming Events'),
         body: Container(
           alignment: Alignment.center,
           // height: 600,
           //  width: 340,
           child: //[
               StreamBuilder(
-                  stream: StreamGroup.merge([
-                    stream1,
-                    stream2,
-                  ]),
+                  stream:
+                      //StreamGroup.merge([
+                      stream1,
+                  // stream2,
+                  //  ]),
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (!snapshot.hasData) {
@@ -266,14 +262,40 @@ print(currDt.second); // 49 */
 
                       children: snapshot.data.docs.map<Widget>((document) {
                         DocumentSnapshot uid = document;
+                        if (document['uid'] == user?.uid) {
+                          return Padding(padding: EdgeInsets.all(0));
+                        }
+                        //print(document["timePosted"]);
+                        // String dateWithT =
+                        //     document["timePosted"].substring(0, 8) +
+                        //         document["timePosted"].substring(8);
+                        // DateTime dateTime = DateTime.parse(dateWithT);
+                        if (document["browseDate"]
+                            .toDate()
+                            .isBefore(DateTime.now())) {
+                          return Padding(padding: EdgeInsets.all(0));
+                        }
 
                         namep = FutureBuilder<String?>(
                             future: pos(document["lat"], document["long"]),
                             // initalData: 0,
-                            builder: (context, snapshot) {
-                              return Text(
-                                snapshot.data.toString(),
-                              );
+                            builder:
+                                (context, AsyncSnapshot<dynamic> snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(snapshot.data.toString(),
+                                    style: TextStyle(
+                                        color: Colors.orange[400],
+                                        fontWeight: FontWeight.w600,
+                                        //fontSize: 16,
+                                        fontFamily: "Comfortaa"));
+                              } else {
+                                return Text("Tap to see location",
+                                    style: TextStyle(
+                                        color: Colors.orange[400],
+                                        fontWeight: FontWeight.w600,
+                                        //fontSize: 16,
+                                        fontFamily: "Comfortaa"));
+                              }
                             });
 
                         //  namep = FutureProvider<String?>(
@@ -341,12 +363,6 @@ print(currDt.second); // 49 */
                                             onPressed: () {},
                                           ),
                                           namep,
-                                          Text("",
-                                              style: TextStyle(
-                                                  color: Colors.orange[400],
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                  fontFamily: "Comfortaa"))
                                         ],
                                       ),
                                       Row(
@@ -586,7 +602,16 @@ Future<String?> pos(lat, long) async {
   String address =
       "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
 
-  print(locality);
-
-  return locality;
+  String? location;
+  String? area;
+  int index;
+  if (locality != "") {
+    location = locality.toString();
+  } else {
+    // area = administrativeArea.toString();
+    // index = area.indexOf(' ');
+//    location = area.substring(0, index);
+    location = administrativeArea.toString();
+  }
+  return location;
 }
