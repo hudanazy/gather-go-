@@ -37,7 +37,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
         .snapshots();
 
     return Scaffold(
-        backgroundColor: Colors.white10,
+        backgroundColor: Colors.white,
         appBar: SecondaryAppBar(
           title: "All $category Events",
         ),
