@@ -115,7 +115,7 @@ class _Eventform extends State<createEvent> {
     final user = Provider.of<NewUser?>(context, listen: false);
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white10,
         appBar: MyAppBar(
           title: "Create An Event",
         ),
