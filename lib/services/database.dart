@@ -164,8 +164,8 @@ class DatabaseService {
     String time,
     bool approved,
     bool adminCheck,
-    double lat,
-    double long,
+    double? lat,
+    double? long,
   ) {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 import '../myAppBar.dart';
 import 'createEvent.dart';
@@ -15,6 +16,7 @@ class _selectLocation extends State<selectLocation> {
   var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
   double saveLat = 0;
   double saveLong = 0;
+  late LatLng aa;
   List<Marker> myMarker = [];
    late GoogleMapController _controller;
   @override
@@ -62,15 +64,21 @@ class _selectLocation extends State<selectLocation> {
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: (){
-                            print("the 777777777777777777777 resssssult is lat : $saveLat , long: $saveLong");
-  
-                          Navigator.of(context).push(
+                            
+                            print("the 777777777777777777777 resssssult is lat : $saveLat , long: $saveLong , fffffff $aa");
+                            
+  //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>  createEvent(saveLat: saveLat, saveLong: saveLong, )), (Route route) => true);
+    Navigator.of(context).pop(
                                             
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    createEvent(saveLat: saveLat, saveLong: saveLong, 
+                                                    createEvent(saveLat1: saveLat, saveLong1: saveLong,
                                                       
                                                     )));
+    //Navigator.popUntil(context, (route) => route.isFirst);
+
+                          
+                                                    
                                                     },
      ) )]),],));
                         
@@ -88,6 +96,7 @@ class _selectLocation extends State<selectLocation> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
+          aa= tappedPoint;
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
   selected= true;

@@ -3,11 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
-import 'package:gather_go/search/searchPage.dart';
 import 'package:gather_go/shared/num_button.dart';
-
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:gather_go/shared/num_button.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
@@ -19,15 +16,18 @@ import 'package:gather_go/screens/home/nav.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
-
-
-
+// geo code 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
-  final double saveLat;
-  final double saveLong;
- 
-  createEvent({required this.saveLat, required this.saveLong, });
+  final double saveLat1;
+  final double saveLong1;
+   LatLng? location2 = LatLng(0, 0);
+//  void setLocation(LatLng x){
+//    print("it is working 22222222222   $x");
+//    location2=x;
+//     print("it is working 22222222222  Location2  $location2");
+//   }
+   createEvent({required this.saveLat1, required this.saveLong1, });
   @override
   _Eventform createState() => _Eventform();
 }
@@ -79,18 +79,25 @@ class _Eventform extends State<createEvent> {
   String viewDate = "Date ";
   String viewTime = "Time ";
   String viewLocation = "Location  ";
+ 
 var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
-  // double saveLat = 0;
-  // double saveLong = 0;
-
+ 
+bool selected=false;
+ 
   //DateTime date;
   @override
   Widget build(BuildContext context) {
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
-   
-double v =widget.saveLat;
-print("hhhhhhhhhhhhhhhhhhhhffffff $v");
+   bool SelectLocationTime= false;
+// double v =widget.saveLat;
+
+
+   double? saveLat = widget.saveLat1 ;
+   double? saveLong = widget.saveLong1;
+ 
+// if (v==0)
+ print("hhhhhhhhhhhhhhhhhhhhffffff $saveLat");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Create An Event",),
@@ -106,19 +113,6 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      
-        //               AppBar(
-                      
-        //   toolbarHeight: 100,
-        //   backgroundColor: Colors.white,
-        //   title: Text(
-        //     "Create An Event",
-        //     textAlign: TextAlign.center,
-        //     style: TextStyle(
-        //         color: Colors.black, fontFamily: 'Comfortaa', fontSize: 24),
-        //   ),
-        // ),
-                      //   GradientAppBar(),
                       Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(top: 20, left: 20),
@@ -332,13 +326,14 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                                 //Location()
                                 //selectLocation
                            onPressed: () {
-                                        Navigator.push(
-                                            context,
+                                         Navigator.of(context).push(
+                                            
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    selectLocation(
-                                                     
+                                                    selectLocation( 
+                          
                                                     )));
+                                    
                                       },
                
               ),
@@ -383,7 +378,7 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: () async {
-                            print("hhhhhhhhhhh $v");
+                            print("hhhhhhhhhhh $saveLat");
                             //update db here using stream provider and database class
                             if (item == null) {
                               item = 'Other';
@@ -392,8 +387,8 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                               if (_formKey.currentState!.validate()) {
                                 if (dateo == null &&
                                     ttime == null &&
-                                    widget.saveLat == 0 &&
-                                    widget.saveLong == 0) {
+                                    saveLat == 0 &&
+                                    saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg:
                                         "Date and time and location have to be selected.",
@@ -409,7 +404,7 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                                     msg: "Time has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
                                   );
-                                } else if (widget.saveLat == 0 && widget.saveLong == 0) {
+                                } else if (saveLat == 0 &&saveLong == 0) {
                                   Fluttertoast.showToast(
                                     msg: "Location has to be selected.",
                                     toastLength: Toast.LENGTH_LONG,
@@ -437,8 +432,8 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                                       ttime.toString(),
                                       approved,
                                       false,
-                                      widget.saveLat,
-                                      widget.saveLong,
+                                    saveLat,
+                                      saveLong,
                                     );
                                     var userID = user.uid;
                                     await FirebaseMessaging.instance.subscribeToTopic('event_$userID');
@@ -461,12 +456,13 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
                     ],
                   )));
         }));
+                         
   }
 
-  // void _onMapCreated(GoogleMapController _cntlr) {
-  //   _controller = _cntlr;
+  void _onMapCreated(GoogleMapController _cntlr) {
+    _controller = _cntlr;
     
-  // }
+  }
 
   // void _handleTap(LatLng tappedPoint) {
   //   setState(() {
@@ -483,6 +479,7 @@ print("hhhhhhhhhhhhhhhhhhhhffffff $v");
   
   //               });
   // }
+  
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.now().add(Duration(days: 1));
