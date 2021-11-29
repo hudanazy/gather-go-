@@ -23,7 +23,7 @@ class MyEventsDetails extends StatefulWidget {
   @override
   _MyEventsDetails createState() => new _MyEventsDetails();
 }
-
+ 
 // ignore: camel_case_types
 class _MyEventsDetails extends State<MyEventsDetails> {
   @override
@@ -179,7 +179,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker);
+                              showMapdialogAdmin(context, myMarker, markerPosition);
                             },
                             //child: Text("see the location"),
                           ),

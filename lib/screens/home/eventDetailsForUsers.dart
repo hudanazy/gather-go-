@@ -232,7 +232,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker);
+                              showMapdialogAdmin(context, myMarker , markerPosition);
                             },
                             //child: Text("see the location"),
                           ),
