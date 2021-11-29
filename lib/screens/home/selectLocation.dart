@@ -68,13 +68,14 @@ class _selectLocation extends State<selectLocation> {
                             print("the 777777777777777777777 resssssult is lat : $saveLat , long: $saveLong , fffffff $aa");
                             
   //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>  createEvent(saveLat: saveLat, saveLong: saveLong, )), (Route route) => true);
-    Navigator.of(context).pop(
+   Navigator.pop(context,true);
+    // Navigator.of(context).pop(
                                             
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    createEvent(saveLat1: saveLat, saveLong1: saveLong,
+    //                                         MaterialPageRoute(
+    //                                             builder: (context) =>
+    //                                                 createEvent(saveLat1: saveLat, saveLong1: saveLong,
                                                       
-                                                    )));
+    //                                                 )));
     //Navigator.popUntil(context, (route) => route.isFirst);
 
                           

@@ -201,8 +201,7 @@ Future<bool> showMapdialogAdmin(
                   mapType: MapType.normal,
                   markers: Set.from(myMarker),
                   myLocationEnabled: true,
-                   indoorViewEnabled:true,
-   
+                  indoorViewEnabled:true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   mapToolbarEnabled: true,
