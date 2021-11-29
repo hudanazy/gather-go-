@@ -100,8 +100,9 @@ bool selected=false;
  
 // if (v==0)
  print("hhhhhhhhhhhhhhhhhhhhffffff $saveLat  $selectLocationTime");
+//shahadabdullahd@gmail.com
 
-    return Scaffold(
+    return selectLocationTime? Scaffold() :Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Create An Event",),
       body:
