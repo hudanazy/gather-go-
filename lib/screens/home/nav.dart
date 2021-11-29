@@ -24,7 +24,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 
     //search(),
 
-    createEvent(saveLat1: 0, saveLong1: 0),
+    createEvent(),
     ProfileForm(),
   ];
 

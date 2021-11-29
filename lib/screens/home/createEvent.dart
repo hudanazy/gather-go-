@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/num_button.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // geo code 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
-  String a ='';
-  final double saveLat1;
-  final double saveLong1;
-   createEvent({required this.saveLat1, required this.saveLong1, });
+  
  
   @override
   _Eventform createState() => _Eventform();
@@ -477,6 +475,8 @@ double saveLong=0 ;
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
       selected=true;
+      pos(saveLat, saveLong);
+      
                 });
   }
   
@@ -574,7 +574,7 @@ Widget showMap(BuildContext context) {
     ),),),
     !selected?Container():Flex(
       direction:Axis.horizontal,
-      children: <Widget>[Padding(
+      children: <Widget>[Expanded(child: Text('$address ')), Padding(
                                 padding: const EdgeInsets.all(8),
                                 child:ElevatedButton(
                           style: ButtonStyle(
@@ -592,7 +592,7 @@ Widget showMap(BuildContext context) {
                                 fontFamily: "Comfortaa"),
                           ),
                           onPressed: (){
-                            print("saveLat = $saveLat");
+                           
                            setState(() {
                              selectLocationTime =false;
                            });
@@ -602,11 +602,44 @@ Widget showMap(BuildContext context) {
                           
                                                     
                                                     },
-     ) )]),],));
+     ) ),  ]),],));
                         
 
 
   
   }
+  String address='';
+  String areaName='';
+  Future<String?> pos(lat, long) async {
+  List<Placemark> newPlace = await placemarkFromCoordinates(lat, long);
+
+  Placemark placeMark = newPlace[0];
+  String? name = placeMark.name;
+  String? subLocality = placeMark.subLocality;
+  String? locality = placeMark.locality;
+  String? administrativeArea = placeMark.administrativeArea;
+  String? postalCode = placeMark.postalCode;
+  String? country = placeMark.country;
+  setState(() {
+   
+   address =
+      "$name, $subLocality, $locality, $administrativeArea, $postalCode, $country";
+ 
+  areaName="$locality , $subLocality";
+   viewLocation= areaName;
+  }); 
+  String? location;
+  String? area;
+  int index;
+  if (locality != "") {
+    location = locality.toString();
+  } else {
+    // area = administrativeArea.toString();
+    // index = area.indexOf(' ');
+//    location = area.substring(0, index);
+    location = administrativeArea.toString();
+  }
+  return location;
+}
 
 }
