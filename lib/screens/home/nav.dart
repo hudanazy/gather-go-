@@ -51,7 +51,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
         backgroundColor: Colors.orange[400],
         selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.orange[300],
         //unselectedItemColor: Colors.green,
         type: BottomNavigationBarType.fixed,
         unselectedIconTheme: IconThemeData(color: Colors.white70),

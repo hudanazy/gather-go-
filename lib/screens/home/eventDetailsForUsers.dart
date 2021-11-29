@@ -325,7 +325,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Comfortaa',
-                                  fontSize: 14,
+                                  fontSize: 12,
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: buttonColor,

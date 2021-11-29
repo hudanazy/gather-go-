@@ -96,29 +96,27 @@ class _viewProfile extends State<viewProfile> {
                         height: 30,
                       ),
                       Center(
-                        child: Stack(
-                          children: [
-                            ClipOval(
-                              child: Material(
-                                color: Colors.transparent,
-                                child: widget.user?.get('imageUrl') == ''
-                                    ? Image.asset(
-                                        'images/profile.png',
-                                        width: 130,
-                                        height: 130,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Ink.image(
-                                        image: NetworkImage(
-                                            widget.user?.get('imageUrl')),
-                                        fit: BoxFit.cover,
-                                        width: 130,
-                                        height: 130,
-                                      ),
-                              ),
+                        child: Stack(children: [
+                          ClipOval(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: widget.user?.get('imageUrl') == ''
+                                  ? Image.asset(
+                                      'images/profile.png',
+                                      width: 130,
+                                      height: 130,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Ink.image(
+                                      image: NetworkImage(
+                                          widget.user?.get('imageUrl')),
+                                      fit: BoxFit.cover,
+                                      width: 130,
+                                      height: 130,
+                                    ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ]),
                       ),
                       SizedBox(
                         height: 20,

@@ -170,6 +170,24 @@ class _epFormState extends State<epForm> {
                           SizedBox(
                             height: 30,
                           ),
+
+                          Container(
+                            width: 300,
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(top: 0, left: 5),
+                            child: Text(
+                              "Your name",
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           SizedBox(
                             width: 300,
                             child: TextFormField(
@@ -231,6 +249,23 @@ class _epFormState extends State<epForm> {
                                   ))),
                           SizedBox(
                             height: 30,
+                          ),
+                          Container(
+                            width: 300,
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(top: 0, left: 5),
+                            child: Text(
+                              "Bio",
+                              style: TextStyle(
+                                  color: Colors.orange[400],
+                                  letterSpacing: 2,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Comfortaa"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           SizedBox(
                             width: 300,
@@ -385,6 +420,23 @@ class _epFormState extends State<epForm> {
                 }).toList(),
               ));
             }));
+  }
+
+  Widget buildImage() {
+    final image = NetworkImage("https://picsum.photos/200/300");
+
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: image,
+          fit: BoxFit.cover,
+          width: 128,
+          height: 128,
+          child: InkWell(onTap: () {}),
+        ),
+      ),
+    );
   }
 
   Widget buildEditIcon(Color color) => InkWell(
