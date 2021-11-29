@@ -5,6 +5,7 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/screens/comment_screen.dart';
+import 'package:gather_go/screens/home/Brows.dart';
 import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
@@ -108,15 +109,54 @@ class _eventDetails extends State<eventDetailsForUesers> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
-            appBar: SecondaryAppBar(
-              title: 'Event Details',
-            ),
+            // appBar: SecondaryAppBar(
+            //   title: 'Event Details',
+            // ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    //  child: ArcBannerImage(),
+                  // Padding(
+                  //padding: const EdgeInsets.only(bottom: 10.0),
+                  ClipPath(
+                    child: Stack(children: [
+                      widget.event?.get('imageUrl') != ''
+                          ? Ink.image(
+                              image: NetworkImage(
+                                widget.event?.get('imageUrl'),
+                              ),
+                              height: 230,
+                              width: 400,
+                              fit: BoxFit.cover,
+                              //width: 160,
+                            )
+                          : Image.asset(
+                              'images/evv.jpg',
+                              //   width: 200,
+                              height: 230,
+                              width: 400,
+                              fit: BoxFit.cover,
+                            ),
+                      IconButton(
+                        color: widget.event?.get('imageUrl') != ''
+                            ? Colors.white
+                            : Colors.black,
+                        icon: new Icon(Icons.arrow_back_ios),
+                        iconSize: 30,
+                        onPressed: () {
+                          Navigator.pop(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        },
+                      ),
+                    ]),
+
+                    // Image.asset(
+                    //   'images/logo1.png',
+                    //   width: 400,
+                    //   height: 230.0,
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                   Row(children: [
                     // IconButton(
@@ -278,7 +318,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                           ElevatedButton.icon(
                             icon: Icon(
                               Icons.book,
-                              color: Colors.white,
+                              color: Colors.white70,
                             ),
                             label: Text('Book event',
                                 style: TextStyle(
@@ -438,6 +478,32 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
     setState(() => _textFromFile = uesrName);
   }
+}
+
+class ArcClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height);
+
+    var firstControlPoint = Offset(size.width / 4, size.height);
+    var firstPoint = Offset(size.width / 2, size.height);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstPoint.dx, firstPoint.dy);
+
+    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
+    var secondPoint = Offset(size.width, size.height - 30);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondPoint.dx, secondPoint.dy);
+
+    path.lineTo(size.width, 0.0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 // Set<Polyline> _polylines = Set<Polyline>();

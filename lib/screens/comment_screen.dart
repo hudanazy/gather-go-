@@ -41,7 +41,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white10,
       appBar: SecondaryAppBar(
         title: "Comments",
       ),

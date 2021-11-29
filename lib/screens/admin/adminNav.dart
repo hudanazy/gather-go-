@@ -34,7 +34,7 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.white10,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _pageIndex,
             backgroundColor: Colors.orange[200],

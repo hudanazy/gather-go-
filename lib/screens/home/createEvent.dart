@@ -13,6 +13,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/home/nav.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'dart:async';
+
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
   @override
@@ -27,7 +38,7 @@ class _Eventform extends State<createEvent> {
     'Academic',
     'Culture',
     'Video Games',
-    'Activities',
+    'Outdoor Activities',
     'Beauty',
     'Health',
     'Career',
@@ -71,6 +82,30 @@ class _Eventform extends State<createEvent> {
   double saveLat = 0;
   double saveLong = 0;
 
+  File? image;
+  Future pickImage(ImageSource source) async {
+    Future<File> saveImagePermanently(String imagePath) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final name = basename(imagePath);
+      final image = File('${directory.path}/$name');
+      return File(imagePath).copy(image.path);
+    }
+
+    try {
+      final image =
+          await ImagePicker().pickImage(source: source, imageQuality: 50);
+      if (image == null) return;
+
+      // final imageTemporary = File(image.path);
+      final imagePermanent = await saveImagePermanently(image.path);
+      setState(() => this.image = imagePermanent);
+    } on PlatformException catch (e) {
+      print("Permission to access camera or gallery denied.");
+      // TODO
+    }
+  }
+
+  dynamic imageFile;
   //DateTime date;
   @override
   Widget build(BuildContext context) {
@@ -78,7 +113,7 @@ class _Eventform extends State<createEvent> {
     final user = Provider.of<NewUser?>(context, listen: false);
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white10,
         // appBar: MyAppBar(
         //   title: "Create An Event",
         // ),
@@ -108,6 +143,41 @@ class _Eventform extends State<createEvent> {
                                   fontSize: 26,
                                   fontWeight: FontWeight.w500),
                             ),
+                          ),
+                          Stack(
+                            children: [
+                              Card(
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: image != null
+                                    ? Image.file(image!,
+                                        height: 160, fit: BoxFit.fill)
+                                    : Image.asset(
+                                        'images/evv.jpg',
+                                        height: 200,
+                                        fit: BoxFit.fill,
+                                      ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                elevation: 5,
+                                margin: EdgeInsets.all(10),
+                              ),
+                              image != null
+                                  ? Positioned(
+                                      left: 0,
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      child: buildEditIcon(Colors.white70),
+                                    )
+                                  : Positioned(
+                                      left: 0,
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      child: buildEditIcon(Colors.black)),
+                            ],
                           ),
                           SizedBox(height: 15),
                           SizedBox(
@@ -328,6 +398,22 @@ class _Eventform extends State<createEvent> {
                                   item = 'Other';
                                 } else {
                                   timeAgo = DateTime.now().toString();
+
+//image upload to storage
+                                  if (image != null) {
+                                    final ref = FirebaseStorage.instance
+                                        .ref()
+                                        .child('event_image')
+                                        .child(image.toString() + '.jpg');
+
+                                    await ref.putFile(image!);
+
+                                    final url = await ref.getDownloadURL();
+                                    imageFile = url;
+                                  } else {
+                                    imageFile = '';
+                                  }
+
                                   if (_formKey.currentState!.validate()) {
                                     if (dateo == null &&
                                         ttime == null &&
@@ -365,20 +451,22 @@ class _Eventform extends State<createEvent> {
                                       if (result == true) {
                                         await DatabaseService(uid: user?.uid)
                                             .addEventData(
-                                          user!.uid,
-                                          Name!,
-                                          item!,
-                                          Description!,
-                                          timeAgo!,
-                                          _currentValue =
-                                              int.parse(attendeeNum),
-                                          dateo.toString(),
-                                          ttime.toString(),
-                                          approved,
-                                          false,
-                                          saveLat,
-                                          saveLong,
-                                        );
+                                                user!.uid,
+                                                Name!,
+                                                item!,
+                                                Description!,
+                                                timeAgo!,
+                                                _currentValue =
+                                                    int.parse(attendeeNum),
+                                                dateo.toString(),
+                                                ttime.toString(),
+                                                approved,
+                                                false,
+                                                saveLat,
+                                                saveLong,
+                                                imageFile,
+                                                dateo!);
+
                                         var userID = user.uid;
                                         await FirebaseMessaging.instance
                                             .subscribeToTopic('event_$userID');
@@ -403,6 +491,37 @@ class _Eventform extends State<createEvent> {
                       )));
             }));
   }
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () {
+        //imagePicker();
+        pickImage(ImageSource.gallery);
+      },
+      child: buildCircle(
+        color: Colors.transparent,
+        all: 3,
+        child: buildCircle(
+          color: Colors.transparent,
+          all: 8,
+          child: Icon(
+            Icons.camera_alt_sharp,
+            color: color.withOpacity(0.4),
+            size: 50,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
