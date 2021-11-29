@@ -491,13 +491,14 @@ class _eventEditFormState extends State<EidtEventForm> {
                                     });
 
                                     // date
-
-                                    Navigator.pop(context);
-                                    Fluttertoast.showToast(
-                                      msg: widget.event?.get('name') +
-                                          " Event update successfully",
-                                      toastLength: Toast.LENGTH_LONG,
-                                    );
+                                       int count = 2;
+                                      Navigator.of(context)
+                                          .popUntil((_) => count-- <= 0);
+                                      //   Navigator.pop(context);
+                                      Fluttertoast.showToast(
+                                        msg: "Your Event update successfully",
+                                        toastLength: Toast.LENGTH_LONG,
+                                      );
                                   } catch (e) {
                                     // fail msg
                                     Fluttertoast.showToast(
