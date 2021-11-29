@@ -22,12 +22,14 @@ class createEvent extends StatefulWidget {
   final double saveLat1;
   final double saveLong1;
    LatLng? location2 = LatLng(0, 0);
-//  void setLocation(LatLng x){
-//    print("it is working 22222222222   $x");
-//    location2=x;
-//     print("it is working 22222222222  Location2  $location2");
-//   }
+ void setLocation(){
+   print("it is working 22222222222   $saveLong1");
+   //location2=x;
+    print("it is working 22222222222  Location2  $location2");
+  }
+  
    createEvent({required this.saveLat1, required this.saveLong1, });
+  
   @override
   _Eventform createState() => _Eventform();
 }
@@ -89,7 +91,7 @@ bool selected=false;
   Widget build(BuildContext context) {
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
-   bool SelectLocationTime= false;
+   bool selectLocationTime= false;
 // double v =widget.saveLat;
 
 
@@ -97,7 +99,8 @@ bool selected=false;
    double? saveLong = widget.saveLong1;
  
 // if (v==0)
- print("hhhhhhhhhhhhhhhhhhhhffffff $saveLat");
+ print("hhhhhhhhhhhhhhhhhhhhffffff $saveLat  $selectLocationTime");
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(title: "Create An Event",),
@@ -108,7 +111,8 @@ bool selected=false;
           if (snapshot.hasData) {
             eventData = snapshot.data as EventInfo;
           }
-          return SingleChildScrollView(
+          return selectLocationTime? Scaffold():
+          SingleChildScrollView(
               child: Form(
                   key: _formKey,
                   child: Column(
@@ -326,13 +330,18 @@ bool selected=false;
                                 //Location()
                                 //selectLocation
                            onPressed: () {
-                                         Navigator.of(context).push(
+                             print ("location has been pressed");
+                             
+                             setState(() {
+                               selectLocationTime=true;
+                             }); 
+                                        //  Navigator.of(context).push(
                                             
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    selectLocation( 
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             selectLocation( 
                           
-                                                    )));
+                                        //             )));
                                     
                                       },
                
