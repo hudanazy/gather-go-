@@ -166,7 +166,7 @@ LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
 // }
 
 Future<bool> showMapdialogAdmin(
-    BuildContext context, List<Marker> myMarker) async {
+    BuildContext context, List<Marker> myMarker, LatLng markerPosition ) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -198,16 +198,18 @@ Future<bool> showMapdialogAdmin(
                 width: 450,
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
+                  mapType: MapType.normal,
                   markers: Set.from(myMarker),
                   myLocationEnabled: true,
+                  indoorViewEnabled:true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   mapToolbarEnabled: true,
                   trafficEnabled: false,
                   zoomGesturesEnabled: true,
                   initialCameraPosition: CameraPosition(
-                    target: _initialcameraposition,
-                    zoom: 10.0,
+                    target: markerPosition,
+                    zoom: 15.0,
                   ),
                 ),
               ),

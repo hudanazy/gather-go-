@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/shared/num_button.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'dart:io';
 
+// geo code 
 import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -26,11 +30,16 @@ import 'dart:async';
 
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
+  
+ 
   @override
   _Eventform createState() => _Eventform();
+    
+
 }
 
 class _Eventform extends State<createEvent> {
+   
   final category = [
     'Educational',
     'Sports',
@@ -52,7 +61,9 @@ class _Eventform extends State<createEvent> {
   //DateTime _dateTime = DateTime.now();
   TextEditingController eventName = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
+   TextEditingController attendeeNumber = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
+  
   var attendeeNum;
   //int _currentStep = 0;
   DateTime? dateo;
@@ -60,7 +71,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController? description;
   String? Name;
   String? Description;
-  int? attendeeNumber;
+  //int? attendeeNumber;
   TimeOfDay? ttime;
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
@@ -69,18 +80,19 @@ class _Eventform extends State<createEvent> {
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
-
+bool selectLocationTime= false;
   List<Marker> myMarker = [];
   LatLng saveLatLng = LatLng(24.708481, 46.752108);
   String? StringLatLng;
   String viewDate = "Date ";
   String viewTime = "Time ";
   String viewLocation = "Location  ";
-  var googleMap = GoogleMap(
-      initialCameraPosition:
-          CameraPosition(target: LatLng(24.708481, 46.752108)));
-  double saveLat = 0;
-  double saveLong = 0;
+ 
+var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
+ 
+bool selected=false;
+ double saveLat =0;
+double saveLong=0 ;
 
   File? image;
   Future pickImage(ImageSource source) async {
@@ -111,12 +123,14 @@ class _Eventform extends State<createEvent> {
   Widget build(BuildContext context) {
     EventInfo? eventData;
     final user = Provider.of<NewUser?>(context, listen: false);
-
-    return Scaffold(
+   
+// double v =widget.saveLat;
+//selectLocationTime?showMap(context):Scaffold(
+    return selectLocationTime?showMap(context):Scaffold(
         backgroundColor: Colors.white10,
-        // appBar: MyAppBar(
-        //   title: "Create An Event",
-        // ),
+        appBar: MyAppBar(
+          title: "Create An Event",
+        ),
         body: StreamBuilder<Object>(
             stream: DatabaseService(uid: user?.uid).eventss,
             builder: (context, snapshot) {
@@ -131,19 +145,19 @@ class _Eventform extends State<createEvent> {
                           SizedBox(
                             height: 30,
                           ),
-                          AppBar(
-                            toolbarHeight: 80,
-                            backgroundColor: Colors.white,
-                            title: Text(
-                              "Create Event",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey[850],
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                          // AppBar(
+                          //   toolbarHeight: 80,
+                          //   backgroundColor: Colors.white,
+                          //   title: Text(
+                          //     "Create Event",
+                          //     textAlign: TextAlign.center,
+                          //     style: TextStyle(
+                          //         color: Colors.grey[850],
+                          //         fontFamily: 'Comfortaa',
+                          //         fontSize: 26,
+                          //         fontWeight: FontWeight.w500),
+                          //   ),
+                          // ),
                           Stack(
                             children: [
                               Card(
@@ -184,7 +198,7 @@ class _Eventform extends State<createEvent> {
                             width: 350,
                             height: 50,
                             child: TextFormField(
-                              // controller: eventName,
+                               controller: eventName,
                               maxLines: 1,
                               // initialValue: eventData?.name,
                               decoration: InputDecoration(
@@ -264,7 +278,7 @@ class _Eventform extends State<createEvent> {
                             height: 50,
                             child: TextFormField(
                               maxLines: 1,
-
+ controller: attendeeNumber,
                               decoration: InputDecoration(
                                 labelText: "Attendee Number",
                                 labelStyle: (TextStyle(
@@ -355,7 +369,9 @@ class _Eventform extends State<createEvent> {
                                   ),
                                   //Location()
                                   onPressed: () =>
-                                      showMapdialogToSelectLocation(context),
+                                     setState(() {
+                                       this.selectLocationTime=true;
+                                     })
                                 ),
                                 Text(
                                   viewLocation,
@@ -539,8 +555,12 @@ class _Eventform extends State<createEvent> {
           }));
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
-    });
+      selected=true;
+      pos(saveLat, saveLong);
+      
+                });
   }
+  
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.now().add(Duration(days: 1));
@@ -585,49 +605,43 @@ class _Eventform extends State<createEvent> {
       child: Text(item,
           style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
 
-  Future<bool> showMapdialogToSelectLocation(BuildContext context) async {
-    return await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text("SELECT LOCATION",
-                  style: TextStyle(color: Colors.grey, fontSize: 10)),
-              content: SizedBox(
-                height: 400,
-                width: 450,
-                child: GoogleMap(
-                  initialCameraPosition:
-                      CameraPosition(target: _initialcameraposition, zoom: 5),
-                  mapType: MapType.normal,
-                  onMapCreated: _onMapCreated,
-                  rotateGesturesEnabled: true,
-                  scrollGesturesEnabled: true,
-                  zoomControlsEnabled: true,
-                  zoomGesturesEnabled: true,
-                  liteModeEnabled: false,
-                  tiltGesturesEnabled: true,
-                  myLocationEnabled: true,
-                  markers: Set.from(myMarker),
-                  onTap: _handleTap,
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Done"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      viewLocation = "Selected";
-                      SizedBox(
-                          height: 300,
-                          width: 450,
-                          child: googleMap = GoogleMap(
+
+
+Widget showMap(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+     title: Text("Select Location",
+     
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Comfortaa',
+            fontSize: 28,
+            fontWeight: FontWeight.w500)),
+    elevation: 6,
+    toolbarHeight: 100,
+    backgroundColor: Colors.white,
+    iconTheme: IconThemeData(
+      color: Colors.black,
+    ),
+      actions:[IconButton(
+            icon: const Icon(Icons.cancel,
+                                color: Colors.black, size: 27), 
+            onPressed: () {
+              setState(() {
+                selectLocationTime =false;
+              });
+            }),],
+    
+  )
+      ,
+
+    body: Column(mainAxisSize: MainAxisSize.max,children: [
+       Expanded(child: Container(
+                     height: 450,
+   child: GoogleMap(
                             initialCameraPosition:
-                                CameraPosition(target: _initialcameraposition),
+                                CameraPosition(target: !selected? LatLng(24.708481, 46.752108) : LatLng(saveLat, saveLong), zoom: 15),
                             mapType: MapType.normal,
                             onMapCreated: _onMapCreated,
                             rotateGesturesEnabled: true,
@@ -635,25 +649,80 @@ class _Eventform extends State<createEvent> {
                             zoomControlsEnabled: true,
                             zoomGesturesEnabled: true,
                             liteModeEnabled: false,
+                            indoorViewEnabled: true,
                             tiltGesturesEnabled: true,
                             myLocationEnabled: true,
                             markers: Set.from(myMarker),
                             onTap: _handleTap,
-                          ));
-                    });
-                    if (saveLat != 0 && saveLat != 0)
-                      Fluttertoast.showToast(
-                        msg: "Location selected.",
-                        toastLength: Toast.LENGTH_LONG,
-                      );
-                  },
-                  child: Text("Click here to update the location "),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
+    ),),),
+    !selected?Container():Flex(
+      direction:Axis.horizontal,
+      children: <Widget>[Expanded(child: Text('$address ')), Padding(
+                                padding: const EdgeInsets.all(8),
+                                child:ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.orange[400]),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
+                          child: Text(
+                                'Ok',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "Comfortaa"),
+                          ),
+                          onPressed: (){
+                           
+                           setState(() {
+                             selectLocationTime =false;
+                           });
+                           
+                          
+
+                          
+                                                    
+                                                    },
+     ) ),  ]),],));
+                        
+
+
+  
   }
+  String address='';
+  String areaName='';
+  Future<String?> pos(lat, long) async {
+  List<Placemark> newPlace = await placemarkFromCoordinates(lat, long);
+
+  Placemark placeMark = newPlace[0];
+  String? name = placeMark.name;
+  String? subLocality = placeMark.subLocality;
+  String? locality = placeMark.locality;
+  String? administrativeArea = placeMark.administrativeArea;
+  String? postalCode = placeMark.postalCode;
+  String? country = placeMark.country;
+  setState(() {
+   
+   address =
+      "$name, $subLocality, $locality, $administrativeArea, $postalCode, $country";
+ 
+  areaName="$locality , $subLocality";
+   viewLocation= areaName;
+  }); 
+  String? location;
+  String? area;
+  int index;
+  if (locality != "") {
+    location = locality.toString();
+  } else {
+    // area = administrativeArea.toString();
+    // index = area.indexOf(' ');
+//    location = area.substring(0, index);
+    location = administrativeArea.toString();
+  }
+  return location;
+}
+
 }
