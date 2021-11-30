@@ -6,14 +6,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final title;
   @override
   Widget build(BuildContext context) {
-    return MyAppBarWidget(title);
+    return MyAppBarWidget(title, context);
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(100);
 }
 
-Widget MyAppBarWidget(title) {
+Widget MyAppBarWidget(title, context) {
   return AppBar(
       title: Text(title,
           style: TextStyle(
@@ -40,6 +40,7 @@ Widget MyAppBarWidget(title) {
             color: Colors.black,
           ),
           onPressed: () {
+            Navigator.popUntil(context, (route) => route.isFirst);
             FirebaseAuth.instance.signOut();
           },
         ),

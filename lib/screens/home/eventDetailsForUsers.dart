@@ -73,13 +73,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
     int bookedNum = widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
-
+    var eventDate = widget.event?.get("browseDate");
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
-    if (bookedNum < attendeeNum && !list.contains(currentUser))
+    if (bookedNum < attendeeNum && !list.contains(currentUser) && eventDate.toDate().isAfter(DateTime.now()))
       buttonColor = Colors.deepPurple;
     else
       buttonColor = Colors.grey;
@@ -332,8 +332,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             onPressed: () async {
                               List list = widget.event?.get('attendeesList');
+                              var eventDate = widget.event?.get("browseDate");
                               if (list.contains(currentUser)) {
                                 eventBookedDialog();
+                              } else if (eventDate
+                            .toDate()
+                            .isBefore(DateTime.now())){
+                                eventOldCantBookDialog();
                               } else {
                                 if (bookedNum < attendeeNum) {
                                   // StreamBuilder<Object>(
@@ -465,6 +470,35 @@ class _eventDetails extends State<eventDetailsForUesers> {
         });
   }
 
+  eventOldCantBookDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Old event',
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      ),
+      content: Text(
+        'You can\'t book this event, its time has passed.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
   String _textFromFile = "";
   late DocumentSnapshot documentList;
   // will return eventCreator name

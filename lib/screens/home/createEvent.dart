@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
-import 'package:gather_go/shared/num_button.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/Models/EventInfo.dart';
-import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/home/nav.dart';
@@ -165,10 +162,10 @@ double saveLong=0 ;
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: image != null
                                     ? Image.file(image!,
-                                        height: 160, fit: BoxFit.fill)
+                                        height: 140, fit: BoxFit.fill)
                                     : Image.asset(
                                         'images/evv.jpg',
-                                        height: 200,
+                                        height: 140,
                                         fit: BoxFit.fill,
                                       ),
                                 shape: RoundedRectangleBorder(
@@ -220,7 +217,7 @@ double saveLong=0 ;
                             width: 350,
                             child: TextFormField(
                               controller: eventDescription,
-                              minLines: 3,
+                              minLines: 1,
                               maxLines: 5,
                               initialValue: eventData?.description,
                               decoration: InputDecoration(
