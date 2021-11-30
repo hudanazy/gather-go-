@@ -53,6 +53,17 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -68,7 +79,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "browseDate": browseDate,
     });
@@ -97,6 +108,17 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -112,7 +134,7 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name?.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "browseDate": browseDate,
     });
@@ -158,6 +180,17 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
+    List<String> nameLowerCase =[];
+
+    temp="";
+    for (var i = 0; i < name!.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        nameLowerCase.add(temp.toLowerCase());
+      }
+    }
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -173,7 +206,7 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-      "nameLowerCase": name.toLowerCase(),
+      "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "imageUrl": image,
       "browseDate": browseDate

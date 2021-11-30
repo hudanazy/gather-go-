@@ -61,7 +61,9 @@ class _Eventform extends State<createEvent> {
   //DateTime _dateTime = DateTime.now();
   TextEditingController eventName = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
+   TextEditingController attendeeNumber = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
+  
   var attendeeNum;
   //int _currentStep = 0;
   DateTime? dateo;
@@ -69,7 +71,7 @@ class _Eventform extends State<createEvent> {
   TextEditingController? description;
   String? Name;
   String? Description;
-  int? attendeeNumber;
+  //int? attendeeNumber;
   TimeOfDay? ttime;
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
@@ -126,9 +128,9 @@ double saveLong=0 ;
 //selectLocationTime?showMap(context):Scaffold(
     return selectLocationTime?showMap(context):Scaffold(
         backgroundColor: Colors.white10,
-        // appBar: MyAppBar(
-        //   title: "Create An Event",
-        // ),
+        appBar: MyAppBar(
+          title: "Create An Event",
+        ),
         body: StreamBuilder<Object>(
             stream: DatabaseService(uid: user?.uid).eventss,
             builder: (context, snapshot) {
@@ -143,19 +145,19 @@ double saveLong=0 ;
                           SizedBox(
                             height: 30,
                           ),
-                          AppBar(
-                            toolbarHeight: 80,
-                            backgroundColor: Colors.white,
-                            title: Text(
-                              "Create Event",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey[850],
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                          // AppBar(
+                          //   toolbarHeight: 80,
+                          //   backgroundColor: Colors.white,
+                          //   title: Text(
+                          //     "Create Event",
+                          //     textAlign: TextAlign.center,
+                          //     style: TextStyle(
+                          //         color: Colors.grey[850],
+                          //         fontFamily: 'Comfortaa',
+                          //         fontSize: 26,
+                          //         fontWeight: FontWeight.w500),
+                          //   ),
+                          // ),
                           Stack(
                             children: [
                               Card(
@@ -196,7 +198,7 @@ double saveLong=0 ;
                             width: 350,
                             height: 50,
                             child: TextFormField(
-                              // controller: eventName,
+                               controller: eventName,
                               maxLines: 1,
                               // initialValue: eventData?.name,
                               decoration: InputDecoration(
@@ -276,7 +278,7 @@ double saveLong=0 ;
                             height: 50,
                             child: TextFormField(
                               maxLines: 1,
-
+ controller: attendeeNumber,
                               decoration: InputDecoration(
                                 labelText: "Attendee Number",
                                 labelStyle: (TextStyle(
