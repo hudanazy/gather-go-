@@ -3,11 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/screens/home/selectLocation.dart';
 import 'package:gather_go/screens/myAppBar.dart';
-<<<<<<< HEAD
 import 'package:gather_go/shared/num_button.dart';
 import 'package:geocoding/geocoding.dart';
-=======
->>>>>>> master
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:gather_go/services/database.dart';
 import 'package:provider/provider.dart';
@@ -21,9 +18,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'dart:io';
 
-<<<<<<< HEAD
 // geo code 
-=======
 import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +28,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'dart:async';
 
->>>>>>> master
 // ignore: camel_case_types
 class createEvent extends StatefulWidget {
   
@@ -91,20 +85,12 @@ bool selectLocationTime= false;
   String viewDate = "Date ";
   String viewTime = "Time ";
   String viewLocation = "Location  ";
-<<<<<<< HEAD
  
 var googleMap=GoogleMap(initialCameraPosition: CameraPosition(target:LatLng(24.708481, 46.752108) ));
  
 bool selected=false;
  double saveLat =0;
 double saveLong=0 ;
-=======
-  var googleMap = GoogleMap(
-      initialCameraPosition:
-          CameraPosition(target: LatLng(24.708481, 46.752108)));
-  double saveLat = 0;
-  double saveLong = 0;
->>>>>>> master
 
   File? image;
   Future pickImage(ImageSource source) async {
@@ -137,46 +123,8 @@ double saveLong=0 ;
     final user = Provider.of<NewUser?>(context, listen: false);
    
 // double v =widget.saveLat;
-
-<<<<<<< HEAD
-
-  //   saveLat = widget.saveLat1 ;
-  //   saveLong = widget.saveLong1;
-  // saveLongAsString = widget.saveLong1.toString();
-
-  
-
-
+//selectLocationTime?showMap(context):Scaffold(
     return selectLocationTime?showMap(context):Scaffold(
-      
-      backgroundColor: Colors.white,
-      appBar: MyAppBar(title: "Create An Event",),
-      body:
-     StreamBuilder<Object>(
-        stream: DatabaseService(uid: user?.uid).eventss,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            eventData = snapshot.data as EventInfo;
-          }
-          return 
-          SingleChildScrollView(
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Name",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-=======
-    return Scaffold(
         backgroundColor: Colors.white10,
         // appBar: MyAppBar(
         //   title: "Create An Event",
@@ -194,7 +142,6 @@ double saveLong=0 ;
                         children: <Widget>[
                           SizedBox(
                             height: 30,
->>>>>>> master
                           ),
                           AppBar(
                             toolbarHeight: 80,
@@ -360,137 +307,6 @@ double saveLong=0 ;
                                   ),
                                   onPressed: () => pickDate(context),
                                 ),
-<<<<<<< HEAD
-                                //Location()
-                                //selectLocation
-                           onPressed: () {
-                             setState(() {
-                               this.selectLocationTime=true;
-                             }); 
-                            
-                                      },
-               
-              ),
-                            ),
-                            TextSpan(
-                              text: viewLocation,
-                              style: TextStyle(
-                                  color: Colors.orange[400],
-                                  letterSpacing: 2,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Comfortaa"),
-                            ),
-                            
-                            
-                          ],
-                        ),
-                      ),
-                      ],
-                      ),),
-                  
-                      
-                     SizedBox(height: 10),
-                     
-
-                      SizedBox(
-                        height: 50,
-                        width: 180,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              padding: MaterialStateProperty.all(
-                                  EdgeInsets.fromLTRB(35, 15, 35, 15))),
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Comfortaa"),
-                          ),
-                          onPressed: () async {
-                         //update db here using stream provider and database class
-                            if (item == null) {
-                              item = 'Other';
-                            } else {
-                              timeAgo = DateTime.now().toString();
-                              if (_formKey.currentState!.validate()) {
-                                if (dateo == null &&
-                                    ttime == null &&
-                                    saveLat == 0 &&
-                                    saveLong == 0) {
-                                  Fluttertoast.showToast(
-                                    msg:
-                                        "Date and time and location have to be selected.",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                } else if (dateo == null) {
-                                  Fluttertoast.showToast(
-                                    msg: "Date has to be selected.",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                } else if (ttime == null) {
-                                  Fluttertoast.showToast(
-                                    msg: "Time has to be selected.",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                } else if (saveLat == 0 &&saveLong == 0) {
-                                  Fluttertoast.showToast(
-                                    msg: "Location has to be selected.",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                } else if (_currentValue == 0){
-                                  Fluttertoast.showToast(
-                                    msg: "Attendee number can't be 0 ",
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                }else{
-                                  // print(ttime);
-                                  var result = await showMyDialog(context);
-
-                                  if (result == true) {
-                                   
-                                    await DatabaseService(uid: user?.uid)
-                                        .addEventData(
-                                      user!.uid,
-                                      Name!,
-                                      item!,
-                                      Description!,
-                                      timeAgo!,
-                                      _currentValue,
-                                      dateo.toString(),
-                                      ttime.toString(),
-                                      approved,
-                                      false,
-                                    saveLat,
-                                      saveLong,
-                                    );
-                                    var userID = user.uid;
-                                    await FirebaseMessaging.instance.subscribeToTopic('event_$userID');
-                                    Fluttertoast.showToast(
-                                      msg: "Event successfully sent to admin.",
-                                      toastLength: Toast.LENGTH_LONG,
-                                    );
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyBottomBarDemo()));
-                                  }
-                                }
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                    ],
-                  )));
-        }));
-                         
-=======
                                 Text(
                                   viewDate,
                                   textAlign: TextAlign.start,
@@ -551,7 +367,9 @@ double saveLong=0 ;
                                   ),
                                   //Location()
                                   onPressed: () =>
-                                      showMapdialogToSelectLocation(context),
+                                     setState(() {
+                                       this.selectLocationTime=true;
+                                     })
                                 ),
                                 Text(
                                   viewLocation,
@@ -686,7 +504,6 @@ double saveLong=0 ;
                         ],
                       )));
             }));
->>>>>>> master
   }
 
   Widget buildEditIcon(Color color) => InkWell(
@@ -736,14 +553,10 @@ double saveLong=0 ;
           }));
       saveLat = tappedPoint.latitude;
       saveLong = tappedPoint.longitude;
-<<<<<<< HEAD
       selected=true;
       pos(saveLat, saveLong);
       
                 });
-=======
-    });
->>>>>>> master
   }
   
 
@@ -790,7 +603,6 @@ double saveLong=0 ;
       child: Text(item,
           style: TextStyle(/*fontWeight: FontWeight.bold,*/ fontSize: 20)));
 
-<<<<<<< HEAD
 
 
 Widget showMap(BuildContext context) {
@@ -798,16 +610,18 @@ Widget showMap(BuildContext context) {
       backgroundColor: Colors.white,
       appBar: AppBar(
      title: Text("Select Location",
-      style: TextStyle(
-          color: Colors.black, 
-          fontFamily: 'Comfortaa', 
-          fontSize: 28, 
-          fontWeight: FontWeight.bold)),
+     
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Comfortaa',
+            fontSize: 28,
+            fontWeight: FontWeight.w500)),
     elevation: 6,
-    toolbarHeight:100,
-    backgroundColor: Colors.orange[400],
+    toolbarHeight: 100,
+    backgroundColor: Colors.white,
     iconTheme: IconThemeData(
-      color: Colors.black,),
+      color: Colors.black,
+    ),
       actions:[IconButton(
             icon: const Icon(Icons.cancel,
                                 color: Colors.black, size: 27), 
@@ -826,51 +640,6 @@ Widget showMap(BuildContext context) {
    child: GoogleMap(
                             initialCameraPosition:
                                 CameraPosition(target: !selected? LatLng(24.708481, 46.752108) : LatLng(saveLat, saveLong), zoom: 15),
-=======
-  Future<bool> showMapdialogToSelectLocation(BuildContext context) async {
-    return await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text("SELECT LOCATION",
-                  style: TextStyle(color: Colors.grey, fontSize: 10)),
-              content: SizedBox(
-                height: 400,
-                width: 450,
-                child: GoogleMap(
-                  initialCameraPosition:
-                      CameraPosition(target: _initialcameraposition, zoom: 5),
-                  mapType: MapType.normal,
-                  onMapCreated: _onMapCreated,
-                  rotateGesturesEnabled: true,
-                  scrollGesturesEnabled: true,
-                  zoomControlsEnabled: true,
-                  zoomGesturesEnabled: true,
-                  liteModeEnabled: false,
-                  tiltGesturesEnabled: true,
-                  myLocationEnabled: true,
-                  markers: Set.from(myMarker),
-                  onTap: _handleTap,
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text("Done"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      viewLocation = "Selected";
-                      SizedBox(
-                          height: 300,
-                          width: 450,
-                          child: googleMap = GoogleMap(
-                            initialCameraPosition:
-                                CameraPosition(target: _initialcameraposition),
->>>>>>> master
                             mapType: MapType.normal,
                             onMapCreated: _onMapCreated,
                             rotateGesturesEnabled: true,
@@ -878,15 +647,11 @@ Widget showMap(BuildContext context) {
                             zoomControlsEnabled: true,
                             zoomGesturesEnabled: true,
                             liteModeEnabled: false,
-<<<<<<< HEAD
                             indoorViewEnabled: true,
-=======
->>>>>>> master
                             tiltGesturesEnabled: true,
                             myLocationEnabled: true,
                             markers: Set.from(myMarker),
                             onTap: _handleTap,
-<<<<<<< HEAD
     ),),),
     !selected?Container():Flex(
       direction:Axis.horizontal,
@@ -901,11 +666,11 @@ Widget showMap(BuildContext context) {
                               padding: MaterialStateProperty.all(
                                   EdgeInsets.fromLTRB(35, 15, 35, 15))),
                           child: Text(
-                            'Ok',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Comfortaa"),
+                                'Ok',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "Comfortaa"),
                           ),
                           onPressed: (){
                            
@@ -958,23 +723,4 @@ Widget showMap(BuildContext context) {
   return location;
 }
 
-=======
-                          ));
-                    });
-                    if (saveLat != 0 && saveLat != 0)
-                      Fluttertoast.showToast(
-                        msg: "Location selected.",
-                        toastLength: Toast.LENGTH_LONG,
-                      );
-                  },
-                  child: Text("Click here to update the location "),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
->>>>>>> master
 }

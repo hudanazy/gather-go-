@@ -133,21 +133,6 @@ class DatabaseService {
   }
 
   addEventData(
-<<<<<<< HEAD
-    String uid,
-    String name,
-    String category,
-    String description,
-    String timePosted,
-    int attendees,
-    String date,
-    String time,
-    bool approved,
-    bool adminCheck,
-    double? lat,
-    double? long,
-  ) {
-=======
       String uid,
       String name,
       String category,
@@ -162,7 +147,6 @@ class DatabaseService {
       double long,
       String image,
       DateTime browseDate) {
->>>>>>> master
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
