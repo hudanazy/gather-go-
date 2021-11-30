@@ -121,6 +121,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   String? currentDescrption = "";
   int? currattend = 0;
   String? currdate = "";
+  DateTime? browseDate;
   String? currtime = "";
   double? currentlat = 0.0;
   double? currentlong = 0.0;
@@ -582,18 +583,18 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       "approved": false,
                                       "nameLowerCase": nameLowerCase,
                                       "searchDescription": searchDescription,
-                                      "browseDate": currdate
+                                      "browseDate": browseDate
                                     });
 
                                     // date
-                                       int count = 2;
-                                      Navigator.of(context)
-                                          .popUntil((_) => count-- <= 0);
-                                      //   Navigator.pop(context);
-                                      Fluttertoast.showToast(
-                                        msg: "Your Event update successfully",
-                                        toastLength: Toast.LENGTH_LONG,
-                                      );
+                                    int count = 2;
+                                    Navigator.of(context)
+                                        .popUntil((_) => count-- <= 0);
+                                    //   Navigator.pop(context);
+                                    Fluttertoast.showToast(
+                                      msg: "Your Event update successfully",
+                                      toastLength: Toast.LENGTH_LONG,
+                                    );
                                   } catch (e) {
                                     // fail msg
                                     Fluttertoast.showToast(
@@ -688,6 +689,8 @@ class _eventEditFormState extends State<EidtEventForm> {
       toastLength: Toast.LENGTH_LONG,
     );
     setState(() => currdate = newDate.toString());
+    setState(() => browseDate = newDate);
+
     viewDate = currdate.toString().substring(0, 10);
   }
 
