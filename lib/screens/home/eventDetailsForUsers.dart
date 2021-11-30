@@ -12,6 +12,7 @@ import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../NotifactionManager.dart';
+import 'Rating_view.dart';
 
 // ignore: camel_case_types
 class eventDetailsForUesers extends StatefulWidget {
@@ -143,8 +144,17 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             style: TextStyle(color: Colors.black)),
                         backgroundColor: Colors.grey[350],
                       ),
-                    )
+                    ),
                   ]),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Chip(
+                      label: Text('Rating number ${bookedNum}',
+                          style: TextStyle(color: Colors.black)),
+                      backgroundColor: Colors.grey[350],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Edescription(widget.event?.get('description')),
@@ -382,7 +392,35 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             },
                           ),
                         ],
-                      ))
+                      )),
+
+                  //try rating
+                  Padding(
+                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.star_rate,
+                              color: Colors.yellow,
+                            ),
+                            label: Text("Rate event !",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              // minimumSize: Size.fromWidth(180),
+                            ),
+                            onPressed: () {
+                              RatingDialog(context);
+                            },
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
@@ -395,6 +433,18 @@ class _eventDetails extends State<eventDetailsForUesers> {
   // void _onMapCreated(GoogleMapController _cntlr) {
   //   _controller = _cntlr;
   // }
+
+  RatingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: RatingView(),
+        );
+      },
+    );
+  }
+
   eventBookedDialog() {
     AlertDialog alert = AlertDialog(
       title: Text(

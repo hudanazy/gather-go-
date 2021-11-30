@@ -68,6 +68,19 @@ class _MyEventsDetails extends State<MyEventsDetails> {
         icon: BitmapDescriptor.defaultMarker,
       ));
     });
+    var collection;
+    var documentList;
+    var uid;
+    void DeletComment(String uid, String img, String? name) async {
+      collection = await FirebaseFirestore.instance
+          .collection('comments')
+          .where("uid", isEqualTo: uid);
+      documentList = await collection.get();
+
+      for (var doc in documentList.docs) {
+        await doc.reference.delete({"name": name, "imageUrl": img});
+      }
+    }
 
     if (adminCheck == false) {
       state = "Waiting";
@@ -232,33 +245,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                           ),
                         ],
                       )),
-//try rating
-                  Padding(
-                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          ElevatedButton.icon(
-                            icon: Icon(
-                              Icons.star_rate,
-                              color: Colors.yellow,
-                            ),
-                            label: Text("Rate event !",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Comfortaa',
-                                )),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              // minimumSize: Size.fromWidth(180),
-                            ),
-                            onPressed: () {
-                              RatingDialog(context);
-                            },
-                          ),
-                        ],
-                      )),
 
 //Start
                   Row(
@@ -286,6 +272,17 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                             .collection('events')
                                             .doc(widget.event?.id)
                                             .delete();
+                                        //delete comment within event
+                                        collection = await FirebaseFirestore
+                                            .instance
+                                            .collection('comments')
+                                            .where('eventID',
+                                                isEqualTo: widget.event?.id);
+                                        documentList = await collection.get();
+
+                                        for (var doc in documentList.docs) {
+                                          await doc.reference.delete();
+                                        }
                                         Fluttertoast.showToast(
                                           msg: widget.event?.get('name') +
                                               " delete successfully",
@@ -335,17 +332,6 @@ class _MyEventsDetails extends State<MyEventsDetails> {
             ),
           );
         });
-  }
-
-  RatingDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          child: RatingView(),
-        );
-      },
-    );
   }
 
   String _textFromFile = "";
