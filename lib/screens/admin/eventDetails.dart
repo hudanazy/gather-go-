@@ -219,6 +219,7 @@ class _eventDetails extends State<eventDetails> {
                                   category,
                                   widget.event?.get('lat'),
                                   widget.event?.get('long'),
+                                  widget.event?.get('browseDate'),
                                 );
                                 // success msg + redirect to adminEvent
 
@@ -275,6 +276,7 @@ class _eventDetails extends State<eventDetails> {
                                 category,
                                 widget.event?.get('lat'),
                                 widget.event?.get('long'),
+                                widget.event?.get('browseDate'),
                               );
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +

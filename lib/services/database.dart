@@ -41,10 +41,9 @@ class DatabaseService {
       String? time,
       String? category,
       double? lat,
-      double? long) async {
-        
-      List<String> searchDescription =
-        []; 
+      double? long,
+      DateTime browseDate) async {
+    List<String> searchDescription = [];
     String temp = "";
     for (var i = 0; i < description!.length; i++) {
       if (description[i] == " ") {
@@ -52,17 +51,6 @@ class DatabaseService {
       } else {
         temp = temp + description[i];
         searchDescription.add(temp.toLowerCase());
-      }
-    }
-    List<String> nameLowerCase =[];
-
-    temp="";
-    for (var i = 0; i < name!.length; i++) {
-      if (name[i] == " ") {
-        temp = "";
-      } else {
-        temp = temp + name[i];
-        nameLowerCase.add(temp.toLowerCase());
       }
     }
     return await eventCollection.doc(uid).set({
@@ -80,8 +68,9 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": nameLowerCase,
+      "nameLowerCase": name?.toLowerCase(),
       "searchDescription": searchDescription,
+      "browseDate": browseDate,
     });
   }
 
@@ -95,9 +84,9 @@ class DatabaseService {
       String? time,
       String? category,
       double? lat,
-      double? long) async {
-      List<String> searchDescription =
-        []; 
+      double? long,
+      DateTime browseDate) async {
+    List<String> searchDescription = [];
     String temp = "";
 
     for (var i = 0; i < description!.length; i++) {
@@ -106,17 +95,6 @@ class DatabaseService {
       } else {
         temp = temp + description[i];
         searchDescription.add(temp.toLowerCase());
-      }
-    }
-    List<String> nameLowerCase =[];
-
-    temp="";
-    for (var i = 0; i < name!.length; i++) {
-      if (name[i] == " ") {
-        temp = "";
-      } else {
-        temp = temp + name[i];
-        nameLowerCase.add(temp.toLowerCase());
       }
     }
     return await eventCollection.doc(uid).set({
@@ -134,8 +112,9 @@ class DatabaseService {
       "adminCheck": true,
       "lat": lat,
       "long": long,
-      "nameLowerCase": nameLowerCase,
+      "nameLowerCase": name?.toLowerCase(),
       "searchDescription": searchDescription,
+      "browseDate": browseDate,
     });
   }
 
@@ -154,6 +133,7 @@ class DatabaseService {
   }
 
   addEventData(
+<<<<<<< HEAD
     String uid,
     String name,
     String category,
@@ -167,10 +147,25 @@ class DatabaseService {
     double? lat,
     double? long,
   ) {
+=======
+      String uid,
+      String name,
+      String category,
+      String description,
+      String timePosted,
+      int attendees,
+      String date,
+      String time,
+      bool approved,
+      bool adminCheck,
+      double lat,
+      double long,
+      String image,
+      DateTime browseDate) {
+>>>>>>> master
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
-  List<String> nameLowerCase =[];
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -179,16 +174,6 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    temp="";
-    for (var i = 0; i < name.length; i++) {
-      if (name[i] == " ") {
-        temp = "";
-      } else {
-        temp = temp + name[i];
-        nameLowerCase.add(temp.toLowerCase());
-      }
-    }
-    
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -204,8 +189,10 @@ class DatabaseService {
       "adminCheck": adminCheck,
       "lat": lat,
       "long": long,
-      "nameLowerCase": nameLowerCase,
+      "nameLowerCase": name.toLowerCase(),
       "searchDescription": searchDescription,
+      "imageUrl": image,
+      "browseDate": browseDate
     });
   }
 
@@ -231,7 +218,6 @@ class DatabaseService {
 
   //user booked events
 
-
   // addBookedEventToProfile(
   //   String eventUid
   //   ) {
@@ -239,7 +225,6 @@ class DatabaseService {
   //     "eventUid": eventUid,
   //   });
   // }
-
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
@@ -285,24 +270,24 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
-  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(
-      //  uid: snapshot.get('uid'),
-      uid: snapshot.get('uid'),
-      name: snapshot.get('name'),
-      category: snapshot.get('category'),
-      description: snapshot.get('description'),
-      timePosted: snapshot.get('timePosted'),
-      //  imageUrl: snapshot.get('imageUrl'),
-      attendees: snapshot.get('attendees'),
-      // comments: snapshot.get('comments'),
-      date: snapshot.get('date'),
-      time: snapshot.get('time'),
-      approved: snapshot.get('approved'),
-      adminCheck: snapshot.get('adminCheck'),
-    );
+        //  uid: snapshot.get('uid'),
+        uid: snapshot.get('uid'),
+        name: snapshot.get('name'),
+        category: snapshot.get('category'),
+        description: snapshot.get('description'),
+        timePosted: snapshot.get('timePosted'),
+        //  imageUrl: snapshot.get('imageUrl'),
+        attendees: snapshot.get('attendees'),
+        // comments: snapshot.get('comments'),
+        date: snapshot.get('date'),
+        time: snapshot.get('time'),
+        approved: snapshot.get('approved'),
+        adminCheck: snapshot.get('adminCheck'),
+        imageUrl: snapshot.get("imageUrl"),
+        browseDate: snapshot.get("browseDate"));
   }
 
   Future updateUesrData(
@@ -352,7 +337,9 @@ class DatabaseService {
           time: doc.get('time') ?? '',
           /* location: doc.get('location') ?? ''*/
           approved: doc.get('approved') ?? '',
-          adminCheck: doc.get('adminCheck') ?? '');
+          adminCheck: doc.get('adminCheck') ?? '',
+          imageUrl: doc.get('imageUrl') ?? '',
+          browseDate: doc.get('browseDate') ?? '');
     }).toList();
   }
 }
