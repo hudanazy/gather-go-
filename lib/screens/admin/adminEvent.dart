@@ -30,8 +30,10 @@ class _adminEvent extends State<adminEvent> {
         //     ? Loading()
         //     :
         Scaffold(
-          backgroundColor: Colors.white,
-          appBar: MyAppBar(title: "All New Events",),
+            backgroundColor: Colors.white10,
+            appBar: MyAppBar(
+              title: "All New Events",
+            ),
             resizeToAvoidBottomInset: false,
             body: Column(
               children: [
@@ -85,7 +87,7 @@ class _adminEvent extends State<adminEvent> {
                     // }
 
                     return Container(
-                      padding: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         height: 540, // fix black yellow
                         width: 500,
                         child: ListView(
@@ -94,15 +96,15 @@ class _adminEvent extends State<adminEvent> {
                             return Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Card(
-                                  elevation: 6,
+                                    elevation: 6,
                                     shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
-                                            side:
-                                  BorderSide(width: 0.5, color: Colors.orange.shade400)),
+                                        borderRadius: BorderRadius.circular(10),
+                                        side: BorderSide(
+                                            width: 0.5,
+                                            color: Colors.orange.shade400)),
                                     margin:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  //  color: Colors.grey[200],
+                                    //  color: Colors.grey[200],
                                     child: ListTile(
                                       title: Center(
                                           child: Text(

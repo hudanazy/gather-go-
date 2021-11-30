@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gather_go/Models/EventInfo.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
 import 'package:gather_go/screens/myAppBar.dart';
@@ -12,6 +13,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../NotifactionManager.dart';
 import 'MyEventsDetails.dart';
 import 'nav.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class EidtEventForm extends StatefulWidget {
   final DocumentSnapshot? event;
@@ -31,7 +37,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     'Academic',
     'Culture',
     'Video Games',
-    'Activities',
+    'Outdoor Activities',
     'Beauty',
     'Health',
     'Career',
@@ -86,6 +92,30 @@ class _eventEditFormState extends State<EidtEventForm> {
     super.dispose();
   }
 
+  File? image;
+  Future pickImage(ImageSource source) async {
+    Future<File> saveImagePermanently(String imagePath) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final name = basename(imagePath);
+      final image = File('${directory.path}/$name');
+      return File(imagePath).copy(image.path);
+    }
+
+    try {
+      final image =
+          await ImagePicker().pickImage(source: source, imageQuality: 50);
+      if (image == null) return;
+
+      // final imageTemporary = File(image.path);
+      final imagePermanent = await saveImagePermanently(image.path);
+      setState(() => this.image = imagePermanent);
+    } on PlatformException catch (e) {
+      print("Permission to access camera or gallery denied.");
+      // TODO
+    }
+  }
+
+  dynamic imageFile;
   String? currentNameEvent = "";
   String? currentcatogary = "";
   String? currentDescrption = "";
@@ -147,6 +177,52 @@ class _eventEditFormState extends State<EidtEventForm> {
                     key: _formKey,
                     child: Column(
                       children: <Widget>[
+                        Stack(
+                          children: [
+                            Card(
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: image != null
+                                  ? Image.file(image!,
+                                      height: 160, fit: BoxFit.fill)
+                                  : widget.event?.get('imageUrl') != ''
+                                      ? Ink.image(
+                                          image: NetworkImage(
+                                            widget.event?.get('imageUrl'),
+                                          ),
+                                          height: 160,
+                                          width: 160,
+                                          fit: BoxFit.fill,
+                                          //width: 160,
+                                        )
+                                      : Image.asset(
+                                          'images/evv.jpg',
+                                          //   width: 200,
+                                          height: 200,
+                                          fit: BoxFit.fill,
+                                        ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              elevation: 5,
+                              margin: EdgeInsets.all(10),
+                            ),
+                            image != null || widget.event?.get('imageUrl') != ''
+                                ? Positioned(
+                                    left: 0,
+                                    top: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    child: buildEditIcon(Colors.white70),
+                                  )
+                                : Positioned(
+                                    left: 0,
+                                    top: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    child: buildEditIcon(Colors.black)),
+                          ],
+                        ),
                         /* Text(
                           "Edit your event",
                           style: TextStyle(
@@ -412,6 +488,24 @@ class _eventEditFormState extends State<EidtEventForm> {
                             ),
                             onPressed: () async {
                               // print("hi im here 1 $Name");
+                              if (image == null &&
+                                  widget.event?.get('imageUrl') == '') {
+                                imageFile = widget.event?.get('imageUrl');
+                              }
+                              //image upload to storage
+                              else if (image != null) {
+                                final ref = FirebaseStorage.instance
+                                    .ref()
+                                    .child('event_image')
+                                    .child(image.toString() + '.jpg');
+
+                                await ref.putFile(image!);
+
+                                final url = await ref.getDownloadURL();
+                                imageFile = url;
+                              } else {
+                                imageFile = '';
+                              }
 
                               ///print
                               if (_formKey.currentState!.validate()) {
@@ -488,6 +582,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       "approved": false,
                                       "nameLowerCase": nameLowerCase,
                                       "searchDescription": searchDescription,
+                                      "browseDate": currdate
                                     });
 
                                     // date
@@ -517,6 +612,37 @@ class _eventEditFormState extends State<EidtEventForm> {
           ],
         )));
   }
+
+  Widget buildEditIcon(Color color) => InkWell(
+      onTap: () {
+        //imagePicker();
+        pickImage(ImageSource.gallery);
+      },
+      child: buildCircle(
+        color: Colors.transparent,
+        all: 3,
+        child: buildCircle(
+          color: Colors.transparent,
+          all: 8,
+          child: Icon(
+            Icons.camera_alt_sharp,
+            color: color.withOpacity(0.4),
+            size: 50,
+          ),
+        ),
+      ));
+  Widget buildCircle({
+    required Widget child,
+    required double all,
+    required Color color,
+  }) =>
+      ClipOval(
+        child: Container(
+          padding: EdgeInsets.all(all),
+          color: color,
+          child: child,
+        ),
+      );
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;

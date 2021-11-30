@@ -79,13 +79,15 @@ class _MyEventsDetails extends State<MyEventsDetails> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
-            appBar: SecondaryAppBar(title: 'Event Details',),
+            appBar: SecondaryAppBar(
+              title: 'Event Details',
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5.0),
-                  //  child: ArcBannerImage(),
+                    //  child: ArcBannerImage(),
                   ),
                   Row(children: [
                     // IconButton(
@@ -98,7 +100,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                     //   },
                     // ),
                     Flexible(
-                      child: Padding(
+                        child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
@@ -203,7 +205,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                 )),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
-                             // minimumSize: Size.fromWidth(180),
+                              // minimumSize: Size.fromWidth(180),
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
