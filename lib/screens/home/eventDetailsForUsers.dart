@@ -10,9 +10,13 @@ import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../NotifactionManager.dart';
 import 'Rating_view.dart';
+
+//bool israting = false;
+//var _rating = 0;
 
 // ignore: camel_case_types
 class eventDetailsForUesers extends StatefulWidget {
@@ -25,6 +29,7 @@ class eventDetailsForUesers extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetailsForUesers> {
+  double rating = 0;
   // LocationData? currentLocation;
   // var location = new Location();
   // String error = "";
@@ -61,6 +66,27 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   @override
   Widget build(BuildContext context) {
+    /*  Widget buildRating() => RatingBar.builder(
+          // initialRating: widget.event?.get('Rating'),
+          initialRating: rating,
+          minRating: 0,
+          itemSize: 20,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          updateOnDrag: true,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+          itemBuilder: (context, _) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (rating) {
+            setState(() {
+              this.rating = rating;
+            });
+            print(rating);
+          },
+        ); */
     Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap =
         FirebaseFirestore.instance
             .collection('comments')
@@ -108,6 +134,28 @@ class _eventDetails extends State<eventDetailsForUesers> {
           } else {
             nComments = snapshot.data.docs.length.toString();
           }
+
+          /*      Widget buildRating() => RatingBar.builder(
+                // initialRating: widget.event?.get('Rating'),
+                initialRating: rating,
+                minRating: 0,
+                itemSize: 30,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                updateOnDrag: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    this.rating = rating;
+                  });
+                  print(rating);
+                },
+              ); */
           return Scaffold(
             appBar: SecondaryAppBar(
               title: 'Event Details',
@@ -147,14 +195,44 @@ class _eventDetails extends State<eventDetailsForUesers> {
                     ),
                   ]),
 
+                  const SizedBox(height: 5),
+                  //buildRating(),
+
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Chip(
-                      label: Text('Rating number ${bookedNum}',
-                          style: TextStyle(color: Colors.black)),
-                      backgroundColor: Colors.grey[350],
-                    ),
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Row(children: <Widget>[
+                      //Icon(Icons.people_alt_rounded),
+                      Text(
+                        "  Rating event is",
+                      )
+                    ]),
                   ),
+                  //----------------- i want save like icon star and retreve from db
+
+                  buildRating(),
+
+                  //--------------------
+                  /*   RatingBar.builder(
+                    // initialRating: widget.event?.get('Rating'),
+                    initialRating: rating,
+                    minRating: 0,
+                    itemSize: 20,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    updateOnDrag: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        this.rating = rating;
+                      });
+                      print(rating);
+                    },
+                  ), */
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Edescription(widget.event?.get('description')),
@@ -395,6 +473,25 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       )),
 
                   //try rating
+
+                  /* Container(
+                      width: 210,
+                      height: 94,
+                      //color: Colors.blue.withOpacity(0.5),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                israting = true;
+                              });
+                            },
+                          )
+                        ],
+                      ))
+ */
+
+                  //   buildRating(),
                   Padding(
                       padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
                       child: Wrap(
@@ -425,21 +522,75 @@ class _eventDetails extends State<eventDetailsForUesers> {
               ),
             ),
           );
+
+          // ignore: dead_code
         });
   }
+
+  Widget buildRating() => RatingBar.builder(
+        // initialRating: widget.event?.get('Rating'),
+        initialRating: rating,
+        minRating: 0,
+        itemSize: 30,
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        updateOnDrag: true,
+        itemCount: 5,
+        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (rating) {
+          setState(() {
+            this.rating = rating;
+          });
+          print(rating);
+        },
+      );
 
   // Location _location = Location();
   // late GoogleMapController _controller;
   // void _onMapCreated(GoogleMapController _cntlr) {
   //   _controller = _cntlr;
   // }
+//-----------------------------------------------------------
+
+  //------------------------
 
   RatingDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          child: RatingView(),
+        return AlertDialog(
+          title: Text("Rate This Event"),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'We would like to get your feedback about this event',
+                style: TextStyle(fontSize: 15),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              buildRating(),
+            ],
+          ),
+          actions: [
+            TextButton(
+                child: Text("Ok", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+
+                    /* eventDetailsForUesers(
+                                event: widget.event,
+                              ) */
+                  );
+                }),
+          ],
         );
       },
     );
