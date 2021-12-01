@@ -57,13 +57,11 @@ class _eventEditFormState extends State<EidtEventForm> {
   DateTime? dateo;
   TextEditingController? name;
   TextEditingController? description;
-  var attendeeNum;
   String? Description;
   TimeOfDay? ttime;
   GeoPoint? location;
   DateRangePickerController Datee = DateRangePickerController();
   String? timeAgo;
-  int _currentValue = 5;
   bool approved = false;
   LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
   late GoogleMapController _controller;
@@ -122,6 +120,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   int? currattend = 0;
   String? currdate = "";
   DateTime? browseDate;
+  String? browseDateString;
   String? currtime = "";
   double? currentlat = 0.0;
   double? currentlong = 0.0;
@@ -132,6 +131,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   String viewLocation = "Location";
   String viewDate = " Date ";
   String ViewTime = " Time ";
+  String attendeeNum = "noting";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -139,7 +139,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   Widget build(BuildContext context) {
     bool adminCheck = widget.event?.get('adminCheck');
     bool approved = widget.event?.get('approved'); //111111111
-    var attendeeNum = widget.event?.get('attendees');
+
     String userID = widget.event?.get('uid');
     String oldTime = widget.event?.get('time');
 
@@ -292,11 +292,12 @@ class _eventEditFormState extends State<EidtEventForm> {
                             icon: Icon(Icons.arrow_drop_down,
                                 color: Colors.blueGrey),
                             items: category.map(buildMenuItem).toList(),
-                            onChanged: (value) =>
-                                setState(() => this.item = value),
+                            onChanged: (value) => setState(
+                                () => currentcatogary = value as String),
                             style: TextStyle(
                               color: Colors.grey[850],
                               fontFamily: 'Comfortaa',
+                              fontSize: 10,
                             ),
                             hint: Text("Select Event Category",
                                 style: TextStyle(
@@ -467,6 +468,9 @@ class _eventEditFormState extends State<EidtEventForm> {
 
                               ///print
                               if (_formKey.currentState!.validate()) {
+                                // if (browseDateString == "") {
+                                //   browseDate = widget.event?.get('browseDate');
+                                // }
                                 if (currentNameEvent == "") {
                                   currentNameEvent = widget.event?.get('name');
                                 }
@@ -479,9 +483,9 @@ class _eventEditFormState extends State<EidtEventForm> {
                                   currentcatogary =
                                       widget.event?.get('category');
                                 }
-                                if (attendeeNum == 0) {
-                                  attendeeNum = widget.event?.get('attendees');
-                                }
+                                // if (attendeeNum == "noting") {
+                                //   attendeeNum = widget.event?.get('attendees');
+                                // }
 
                                 if (currdate == "") {
                                   currdate = widget.event?.get('date');
@@ -524,24 +528,38 @@ class _eventEditFormState extends State<EidtEventForm> {
                                         nameLowerCase.add(temp.toLowerCase());
                                       }
                                     }
-                                    FirebaseFirestore.instance
-                                        .collection("events")
-                                        .doc(widget.event?.id)
-                                        .update({
-                                      "name": currentNameEvent,
-                                      "description": currentDescrption,
-                                      "category": currentcatogary,
-                                      "attendees": _currentValue,
-                                      "date": currdate,
-                                      "time": currtime,
-                                      "lat": currentlat,
-                                      "long": currentlong,
-                                      "adminCheck": false,
-                                      "approved": false,
-                                      "nameLowerCase": nameLowerCase,
-                                      "searchDescription": searchDescription,
-                                      "browseDate": browseDate
-                                    });
+                                    if (browseDate == null) {
+                                      FirebaseFirestore.instance
+                                          .collection("events")
+                                          .doc(widget.event?.id)
+                                          .update({
+                                        "name": currentNameEvent,
+                                        "description": currentDescrption,
+                                        "category": currentcatogary,
+                                        "time": currtime,
+                                        "lat": currentlat,
+                                        "long": currentlong,
+                                        "nameLowerCase": nameLowerCase,
+                                        "searchDescription": searchDescription,
+                                      });
+                                    } else {
+                                      FirebaseFirestore.instance
+                                          .collection("events")
+                                          .doc(widget.event?.id)
+                                          .update({
+                                        "name": currentNameEvent,
+                                        "description": currentDescrption,
+                                        "category": currentcatogary,
+                                        // "attendees": int.parse(attendeeNum),
+                                        "date": currdate,
+                                        "time": currtime,
+                                        "lat": currentlat,
+                                        "long": currentlong,
+                                        "nameLowerCase": nameLowerCase,
+                                        "searchDescription": searchDescription,
+                                        "browseDate": browseDate
+                                      });
+                                    }
 
                                     // date
                                     int count = 2;
@@ -647,6 +665,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     );
     setState(() => currdate = newDate.toString());
     setState(() => browseDate = newDate);
+    browseDateString = newDate.toString();
 
     viewDate = currdate.toString().substring(0, 10);
   }
