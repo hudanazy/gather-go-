@@ -57,7 +57,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   DateTime? dateo;
   TextEditingController? name;
   TextEditingController? description;
-
+  var attendeeNum;
   String? Description;
   TimeOfDay? ttime;
   GeoPoint? location;
@@ -131,7 +131,7 @@ class _eventEditFormState extends State<EidtEventForm> {
           CameraPosition(target: LatLng(24.708481, 46.752108)));
   String viewLocation = "Location";
   String viewDate = " Date ";
-  String viewTime = "";
+  String ViewTime = " Time ";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -139,7 +139,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   Widget build(BuildContext context) {
     bool adminCheck = widget.event?.get('adminCheck');
     bool approved = widget.event?.get('approved'); //111111111
-    int attendeeNum = widget.event?.get('attendees');
+    var attendeeNum = widget.event?.get('attendees');
     String userID = widget.event?.get('uid');
     String oldTime = widget.event?.get('time');
 
@@ -233,255 +233,212 @@ class _eventEditFormState extends State<EidtEventForm> {
                               fontWeight: FontWeight.w600,
                               fontFamily: "Comfortaa"),
                         ), */
-
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Name",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(height: 5),
                         SizedBox(
                           width: 350,
+                          height: 50,
                           child: TextFormField(
-                            maxLines: 1,
                             initialValue: widget.event?.get('name'),
-
-                            decoration: textInputDecoration.copyWith(
-                              hintText: "Event name..",
-                              hintStyle: TextStyle(
-                                  color: Colors.orange[400],
-                                  fontFamily: "Comfortaa"),
-                            ),
-
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Comfortaa',
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              labelText: "Event Name",
+                              labelStyle: (TextStyle(
+                                  color: Colors.grey[850],
+                                  fontFamily: "Comfortaa"
+                                  //
+                                  )),
                             ),
                             validator: (val) => val!.trim().isEmpty
-                                ? 'Please enter a name'
-                                : null,
-                            onChanged: (val) {
-                              setState(() => currentNameEvent = val);
-                            }, //name event
+                                ? "The event needs a name."
+                                : eventData?.name,
+                            onChanged: (val) =>
+                                setState(() => currentNameEvent = val),
                           ),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Category",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: 350,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          child: DropdownButtonFormField(
-                              value: widget.event?.get('category'),
-                              decoration: textInputDecoration,
-                              items: category.map((category) {
-                                return DropdownMenuItem(
-                                  value: category,
-                                  child: Text(category),
-                                );
-                              }).toList(),
-                              onChanged: (val) => setState(
-                                  () => currentcatogary = val as String),
-                              style: TextStyle(
-                                color: Colors.orange[600],
-                                fontFamily: 'Comfortaa',
-                              )),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            "Event Description",
-                            style: TextStyle(
-                                color: Colors.orange[400],
-                                letterSpacing: 2,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "Comfortaa"),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: 5),
                         SizedBox(
                           width: 350,
                           child: TextFormField(
+                            controller: eventDescription,
+                            minLines: 3,
                             maxLines: 5,
-                            initialValue: widget.event?.get('description'),
-                            decoration: textInputDecoration.copyWith(
-                                hintText: "Tell us more about your event...",
-                                hintStyle: TextStyle(
-                                    color: Colors.orange[400],
-                                    fontFamily: "Comfortaa")),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Comfortaa',
+                            initialValue: eventData?.description,
+                            decoration: InputDecoration(
+                              labelText: "Event Description",
+                              labelStyle: (TextStyle(
+                                  color: Colors.grey[850],
+                                  // letterSpacing: 2,
+                                  // fontSize: 13,
+                                  // fontWeight: FontWeight.w600,
+                                  fontFamily: "Comfortaa"
+                                  //
+                                  )),
                             ),
                             validator: (val) => val!.trim().isEmpty
-                                ? 'Please enter a descrption about event '
-                                : null,
-                            onChanged: (val) {
-                              setState(() => currentDescrption = val);
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              padding: EdgeInsets.only(top: 10, left: 20),
-                              child: Text(
-                                "Attendee Number",
-                                style: TextStyle(
-                                    color: Colors.orange[400],
-                                    letterSpacing: 2,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "Comfortaa"),
-                              ),
-                            ),
-                            NumericStepButton(
-                                minValue: 1,
-                                maxValue: 500,
-                                onChanged: (value) {
-                                  setState(() => this._currentValue = value);
-                                }),
-                          ],
-                        ),
-
-                        //-------------------------------------------time
-                        SizedBox(height: 5),
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.calendar_today_rounded,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        onPressed: () => pickDate(context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: viewDate,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.access_time,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        onPressed: () => pickTime(context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          viewTime.isEmpty ? oldTime : viewTime,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.location_on_outlined,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.orange[400],
-                                          size: 25,
-                                        ),
-                                        //Location()
-
-                                        onPressed: () =>
-                                            showMapdialogToSelectLocation(
-                                                context),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: viewLocation,
-                                      style: TextStyle(
-                                          color: Colors.orange[400],
-                                          letterSpacing: 2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Comfortaa"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                ? "Description can't be empty."
+                                : eventData?.description,
+                            onChanged: (val) =>
+                                setState(() => currentDescrption = val),
                           ),
                         ),
                         SizedBox(height: 20),
-
-                        SizedBox(
+                        Container(
+                          width: 360,
                           height: 50,
-                          width: 115,
+                          padding: EdgeInsets.all(5),
+                          child: DropdownButton<String>(
+                            value: widget.event?.get('category'),
+                            focusColor: Colors.black,
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.blueGrey),
+                            items: category.map(buildMenuItem).toList(),
+                            onChanged: (value) =>
+                                setState(() => this.item = value),
+                            style: TextStyle(
+                              color: Colors.grey[850],
+                              fontFamily: 'Comfortaa',
+                            ),
+                            hint: Text("Select Event Category",
+                                style: TextStyle(
+                                    color: Colors.grey[850],
+                                    fontFamily: "Comfortaa",
+                                    fontSize: 16)),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: 350,
+                          height: 50,
+                          child: TextFormField(
+                            maxLines: 1,
+                            initialValue:
+                                widget.event?.get('attendees').toString(),
+                            decoration: InputDecoration(
+                              labelText: "Attendee Number",
+                              labelStyle: (TextStyle(
+                                  color: Colors.grey[850],
+                                  fontFamily: "Comfortaa"
+                                  //
+                                  )),
+                            ),
+                            keyboardType: TextInputType.datetime,
+                            validator: (val) => val!.trim().isEmpty
+                                ? "Attendess number can't be empty."
+                                : eventData?.description,
+                            onChanged: (val) =>
+                                setState(() => attendeeNum = val),
+                            // maxLength: 4,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                            width: 370,
+                            height: 50,
+                            alignment: Alignment.bottomLeft,
+                            child: Row(children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.calendar_today_rounded,
+                                  color: Colors.grey[850],
+                                  size: 21,
+                                ),
+                                onPressed: () => pickDate(context),
+                              ),
+                              Text(
+                                viewDate,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.grey[850],
+                                    fontSize: 16,
+                                    fontFamily: "Comfortaa"),
+                              ),
+                            ])),
+                        SizedBox(
+                            width: 350,
+                            height: 4,
+                            child: Divider(
+                              color: Colors.grey[500],
+                              thickness: 1.2,
+                            )),
+                        SizedBox(height: 5),
+                        Container(
+                            width: 370,
+                            height: 50,
+                            alignment: Alignment.bottomLeft,
+                            child: Row(children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.access_time,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.grey[850],
+                                  size: 22,
+                                ),
+                                onPressed: () => pickTime(context),
+                              ),
+                              Text(
+                                ViewTime,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.grey[850],
+                                    fontSize: 16,
+                                    fontFamily: "Comfortaa"),
+                              ),
+                            ])),
+                        SizedBox(
+                            width: 350,
+                            height: 4,
+                            child: Divider(
+                              color: Colors.grey[500],
+                              thickness: 1.2,
+                            )),
+                        Container(
+                            width: 370,
+                            height: 50,
+                            alignment: Alignment.bottomLeft,
+                            child: Row(children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.location_on_outlined,
+                                  textDirection: TextDirection.ltr,
+                                  color: Colors.grey[850],
+                                  size: 22,
+                                ),
+                                //Location()
+                                onPressed: () =>
+                                    showMapdialogToSelectLocation(context),
+                              ),
+                              Text(
+                                viewLocation,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.grey[850],
+                                    fontSize: 16,
+                                    fontFamily: "Comfortaa"),
+                              ),
+                            ])),
+                        SizedBox(
+                            width: 350,
+                            height: 4,
+                            child: Divider(
+                              color: Colors.grey[500],
+                              thickness: 1.2,
+                            )),
+                        SizedBox(height: 20),
+                        Center(),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 48,
+                          width: 360,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    Colors.orange[400]),
+                                    Colors.orange[300]),
                                 foregroundColor:
                                     MaterialStateProperty.all(Colors.white),
                                 padding: MaterialStateProperty.all(
                                     EdgeInsets.fromLTRB(35, 15, 35, 15))),
                             child: Text(
-                              'Save',
+                              'Save Changes',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
@@ -710,7 +667,7 @@ class _eventEditFormState extends State<EidtEventForm> {
       msg: "Time selected.",
       toastLength: Toast.LENGTH_LONG,
     );
-    viewTime = currtime.toString().substring(10, 15);
+    ViewTime = currtime.toString().substring(10, 15);
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
