@@ -74,6 +74,7 @@ class DatabaseService {
       "date": date, //DateTime.parse(date!),
       "time": time, //DateTime.parse(time!),
       "category": category,
+
       'approved': false,
       "adminCheck": true,
       "lat": lat,
@@ -287,6 +288,7 @@ class DatabaseService {
       uid: snapshot.get('uid'),
       name: snapshot.get('name'),
       category: snapshot.get('category'),
+      // Rate: snapshot.get('Rate'),
       description: snapshot.get('description'),
       timePosted: snapshot.get('timePosted'),
       //  imageUrl: snapshot.get('imageUrl'),
@@ -337,6 +339,7 @@ class DatabaseService {
           uid: doc.get('uid') ?? '',
           name: doc.get('name') ?? '',
           category: doc.get('category') ?? '',
+          //Rate: doc.get('Rate') ?? 0,
           description: doc.get('description') ?? '',
           timePosted: doc.get('timePosted') ?? '',
           // imageUrl: doc.get('imageUrl') ?? '',

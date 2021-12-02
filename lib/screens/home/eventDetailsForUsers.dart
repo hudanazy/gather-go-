@@ -545,7 +545,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
           setState(() {
             this.rating = rating;
           });
-          print(rating);
+          print("$rating heeeeeeeeeeeeeeeeer");
         },
       );
 
