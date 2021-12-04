@@ -44,9 +44,10 @@ class _Eventform extends State<createEvent> {
     'Health',
     'Career',
     'Personal Growth',
-    'Other'
+    'Other',
+    'Select Event Category'
   ];
-  String? item = 'Other';
+  String? item = 'Select Event Category';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -251,6 +252,7 @@ class _Eventform extends State<createEvent> {
                                 //         Border.all(color: Colors.grey, width: 1)),
 
                                 child: DropdownButton<String>(
+                                  value: item,
                                   focusColor: Colors.black,
                                   isExpanded: true,
                                   icon: Icon(Icons.arrow_drop_down,
@@ -452,6 +454,13 @@ class _Eventform extends State<createEvent> {
                                             saveLong == 0) {
                                           Fluttertoast.showToast(
                                             msg: "Location has to be selected.",
+                                            toastLength: Toast.LENGTH_LONG,
+                                          );
+                                        } else if (item ==
+                                            "Select Event Category") {
+                                          Fluttertoast.showToast(
+                                            msg:
+                                                "Event categoryhas to be selected.",
                                             toastLength: Toast.LENGTH_LONG,
                                           );
                                         } else if (attendeeNum == "0") {
