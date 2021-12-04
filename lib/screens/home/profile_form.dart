@@ -54,7 +54,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
     //final AuthService _auth = AuthService();
     return Scaffold(
-        backgroundColor: Colors.white10,
+        backgroundColor: Colors.white10 ,
         appBar: MyAppBar(
           title: '\tProfile',
         ),
@@ -73,7 +73,7 @@ class _ProfileFormState extends State<ProfileForm> {
               return Container(
                   //  height: 640,
                   // width: 500,
-                  color: Colors.white,
+                  color: Colors.white10,
                   child: ListView(
                     children: snapshot.data.docs.map<Widget>((document) {
                       DocumentSnapshot uid = document;

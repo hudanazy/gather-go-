@@ -111,9 +111,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
-            // appBar: SecondaryAppBar(
-            //   title: 'Event Details',
-            // ),
+            appBar: SecondaryAppBar(
+              title: 'Event Details',
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -138,19 +138,19 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               width: 400,
                               fit: BoxFit.cover,
                             ),
-                      IconButton(
-                        color: widget.event?.get('imageUrl') != ''
-                            ? Colors.white
-                            : Colors.black,
-                        icon: new Icon(Icons.arrow_back_ios),
-                        iconSize: 30,
-                        onPressed: () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        },
-                      ),
+                      // IconButton(
+                      //   color: widget.event?.get('imageUrl') != ''
+                      //       ? Colors.white
+                      //       : Colors.black,
+                      //   icon: new Icon(Icons.arrow_back_ios),
+                      //   iconSize: 30,
+                      //   onPressed: () {
+                      //     Navigator.pop(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => HomeScreen()));
+                      //   },
+                      // ),
                     ]),
 
                     // Image.asset(

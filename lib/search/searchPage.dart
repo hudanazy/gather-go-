@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/home/MyEventsDetails.dart';
+import 'package:gather_go/screens/myAppBar.dart';
 
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -22,13 +23,15 @@ class _SearchListState extends State<SearchList> {
   String searchInput = "";
   //bool searchInputBool=false ; // to avoid display result when the input is empty
   Color backColor = Colors.amber;
-  Widget appBarTitle = new Text('\nSearch for Events',
+  Widget appBarTitle = new Text('\nSearch',
       style: TextStyle(
           color: Colors.black,
           fontFamily: 'Comfortaa',
           fontSize: 24,
           fontWeight: FontWeight.bold));
-  Icon actionIcon = new Icon(Icons.search, color: Colors.black, size: 40);
+  //Icon actionIcon = new Icon(Icons.search, color: Colors.black, size: 40);
+  bool isSearchByCategory = true;
+  Color appBarColor = Colors.transparent;
   TabBar tabs = TabBar(
     tabs: [],
   );
@@ -41,29 +44,29 @@ class _SearchListState extends State<SearchList> {
     String? UId = user?.uid;
 
     //var _controller = TextEditingController();
-    return MaterialApp(
-        home: DefaultTabController(
+    return //MaterialApp(
+        //home: 
+        DefaultTabController(
             length: tabNum,
             child: Scaffold(
+            appBar: MyAppBar(title: 'Search for events',),
+            body: Scaffold(
               backgroundColor: Colors.white10,
               resizeToAvoidBottomInset: false,
               appBar: new AppBar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: appBarColor,
+                  elevation: 0,
                   //centerTitle: true,
                   bottom: tabs,
-                  title: appBarTitle,
-                  actions: <Widget>[
-                    new IconButton(
-                      padding: const EdgeInsets.only(right: 10, top: 22),
-                      //iconSize: 40,
-                      icon: actionIcon,
-                      onPressed: () {
-                        setState(() {
-                          if (this.actionIcon.icon == Icons.search) {
-                            tabNum = 2;
+                  title: TextField(
+                    onTap: (){
+                      setState(() {
+                        isSearchByCategory=false;
+                        appBarColor= Colors.white;
+                        tabNum = 2;
                             isNotSearching = false;
                             this.tabs = new TabBar(
-                              indicatorColor: Colors.purple[600],
+                              indicatorColor: Colors.orange[300],
                               labelColor: Colors.black,
                               labelStyle: TextStyle(
                                 fontFamily: 'Comfortaa',
@@ -78,18 +81,20 @@ class _SearchListState extends State<SearchList> {
                                 ),
                               ],
                             );
-                            this.actionIcon = new Icon(Icons.cancel,
-                                color: Colors.black, size: 27);
-                            this.appBarTitle = TextField(
+                            //this.actionIcon = 
+                      });
+                    },
                               decoration: InputDecoration(
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 15),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide(
-                                        color: Colors.purple.shade600,
+                                        color: Colors.orange.shade300,
                                         width: 2),
                                   ),
                                   enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 2),
                                   ),
@@ -107,8 +112,21 @@ class _SearchListState extends State<SearchList> {
                                   searchInput = val;
                                 });
                               },
-                            );
-                          } else {
+                            ),
+                  actions: isSearchByCategory? null: <Widget>[ 
+                    new IconButton(
+                      padding: const EdgeInsets.only(right: 10, top: 22),
+                      //iconSize: 40,
+                      icon: new Icon(Icons.cancel,
+                                color: Colors.black, size: 27),
+                      onPressed: () {
+                        setState(() {
+                          // if (this.actionIcon.icon == Icons.search) {
+                          //   //this.appBarTitle = 
+                          // } else {
+                            FocusScope.of(context).unfocus();
+                            appBarColor= Colors.transparent;
+                            isSearchByCategory=true;
                             searchInput = "";
                             tabNum = 0;
                             isNotSearching = true;
@@ -121,27 +139,30 @@ class _SearchListState extends State<SearchList> {
                               ),
                               tabs: [],
                             );
-                            this.actionIcon = new Icon(Icons.search,
-                                color: Colors.black, size: 40);
-                            this.appBarTitle = new Text('\nSearch for events',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Comfortaa',
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold));
+                            // this.actionIcon = new Icon(Icons.search,
+                            //     color: Colors.black, size: 40);
+                            // this.appBarTitle = new Text('\nSearch ',
+                            //     style: TextStyle(
+                            //         color: Colors.black,
+                            //         fontFamily: 'Comfortaa',
+                            //         fontSize: 24,
+                            //         fontWeight: FontWeight.bold));
                           }
-                        });
+                        //}
+                        );
                       },
                     ),
                   ]),
-              body: isNotSearching
+              body: Container(child: isNotSearching
                   ? buildCategory(
                       context) // we can put catogory here and add new stream for description search
                   : TabBarView(children: [
                       buildResult(searchInput, context, UId),
                       buildSearchByDescription(searchInput, context, UId),
                     ]),
-            )));
+                     )
+            ))//)
+            );
   }
 
   Widget buildSearchByDescription(
@@ -215,7 +236,7 @@ class _SearchListState extends State<SearchList> {
                             // 00:000
                             trailing: Icon(
                               Icons.arrow_forward_ios_sharp,
-                              color: Colors.purple[300],
+                              color: Colors.orange[300],
                             ),
                             onTap: () {
                               if (document['uid'] == uuuu) {
@@ -308,7 +329,7 @@ class _SearchListState extends State<SearchList> {
                                   )),
                                   trailing: Icon(
                                     Icons.arrow_forward_ios,
-                                    color: Colors.purple[300],
+                                    color: Colors.orange[300],
                                   ),
                                   onTap: () {
                                     if (document['uid'] == uuuu) {
