@@ -79,7 +79,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     final buttonColor;
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
-    if (bookedNum < attendeeNum && !list.contains(currentUser) && eventDate.toDate().isAfter(DateTime.now()))
+    if (bookedNum < attendeeNum &&
+        !list.contains(currentUser) &&
+        eventDate.toDate().isAfter(DateTime.now()))
       buttonColor = Colors.orange[300];
     else
       buttonColor = Colors.grey[600];
@@ -171,7 +173,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
@@ -224,7 +226,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ElevatedButton(
                         child: Text(" $_textFromFile ",
                             style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontWeight: FontWeight.bold,
                             )),
@@ -272,7 +274,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker , markerPosition);
+                              showMapdialogAdmin(
+                                  context, myMarker, markerPosition);
                             },
                             //child: Text("see the location"),
                           ),
@@ -336,8 +339,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               if (list.contains(currentUser)) {
                                 eventBookedDialog();
                               } else if (eventDate
-                            .toDate()
-                            .isBefore(DateTime.now())){
+                                  .toDate()
+                                  .isBefore(DateTime.now())) {
                                 eventOldCantBookDialog();
                               } else {
                                 if (bookedNum < attendeeNum) {
@@ -499,6 +502,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
           return alert;
         });
   }
+
   String _textFromFile = "";
   late DocumentSnapshot documentList;
   // will return eventCreator name

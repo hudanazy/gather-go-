@@ -164,7 +164,7 @@ class _eventEditFormState extends State<EidtEventForm> {
         //     "Edit your Event",
         //     textAlign: TextAlign.center,
         //     style: TextStyle(
-        //         color: Colors.orange[400],
+        //         color: Colors.orange[300],
         //         fontFamily: 'Comfortaa',
         //         fontSize: 24),
         //   ),

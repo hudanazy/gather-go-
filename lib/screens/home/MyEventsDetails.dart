@@ -104,7 +104,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),

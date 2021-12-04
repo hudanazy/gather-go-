@@ -210,7 +210,7 @@ class _ProfileFormState extends State<ProfileForm> {
                                 //   document['status'],
                                 //   textAlign: TextAlign.center,
                                 //   style: TextStyle(
-                                //       color: Colors.orange[400],
+                                //       color: Colors.orange[300],
                                 //       fontFamily: 'Comfortaa',
                                 //       fontWeight: FontWeight.w600,
                                 //       fontSize: 15),
@@ -249,7 +249,7 @@ class _ProfileFormState extends State<ProfileForm> {
                                       )),
                                       trailing: Icon(
                                         Icons.arrow_forward_ios,
-                                        color: Colors.orange[400],
+                                        color: Colors.orange[300],
                                       ),
                                       onTap: () {
                                         Navigator.of(context).push(
@@ -285,7 +285,7 @@ class _ProfileFormState extends State<ProfileForm> {
                                       )),
                                       trailing: Icon(
                                         Icons.arrow_forward_ios,
-                                        color: Colors.orange[400],
+                                        color: Colors.orange[300],
                                       ),
                                       onTap: () {
                                         Navigator.of(context).push(

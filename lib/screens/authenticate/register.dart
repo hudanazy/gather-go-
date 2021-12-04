@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
                 style: TextStyle(
                     fontFamily: 'Comfortaa',
                     fontSize: 27,
-                    color: Colors.orange[400],
+                    color: Colors.orange[300],
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -156,9 +156,9 @@ class _RegisterState extends State<Register> {
                       Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
                         child: Text("Register",
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.bold)),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
@@ -188,7 +188,7 @@ class _RegisterState extends State<Register> {
                         },
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.orange[400]),
+                              MaterialStateProperty.all(Colors.orange[300]),
                           foregroundColor:
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
@@ -199,9 +199,9 @@ class _RegisterState extends State<Register> {
                       Text('Already have an account?'),
                       ElevatedButton(
                         child: Text('Login now',
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.bold)),
                         onPressed: () {
                           widget.toggleView();
                           // Navigator.push(

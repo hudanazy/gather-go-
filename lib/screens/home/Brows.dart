@@ -284,14 +284,14 @@ print(currDt.second); // 49 */
                               if (snapshot.hasData) {
                                 return Text(snapshot.data.toString(),
                                     style: TextStyle(
-                                        color: Colors.orange[400],
+                                        color: Colors.orange[300],
                                         fontWeight: FontWeight.w600,
                                         //fontSize: 16,
                                         fontFamily: "Comfortaa"));
                               } else {
                                 return Text("Tap to see location",
                                     style: TextStyle(
-                                        color: Colors.orange[400],
+                                        color: Colors.orange[300],
                                         fontWeight: FontWeight.w600,
                                         //fontSize: 16,
                                         fontFamily: "Comfortaa"));
@@ -355,7 +355,7 @@ print(currDt.second); // 49 */
                                             icon: Icon(
                                               Icons.location_on_outlined,
                                               textDirection: TextDirection.ltr,
-                                              color: Colors.orange[400],
+                                              color: Colors.orange[300],
                                               size: 25,
                                             ),
                                             //Location()

@@ -113,7 +113,7 @@ class _MyEventsByCategory extends State<MyEventsByCategory> {
                                 // ),
                                 trailing: Icon(
                                   Icons.arrow_forward_ios,
-                                  color: Colors.orange[400],
+                                  color: Colors.orange[300],
                                 ),
                                 onTap: () {
                                   // Navigator.push(
