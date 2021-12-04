@@ -131,7 +131,8 @@ class _eventEditFormState extends State<EidtEventForm> {
   String viewLocation = "Location";
   String viewDate = " Date ";
   String ViewTime = " Time ";
-  String attendeeNum = "noting";
+  int attendeeNum = 0;
+  String attendeeNumString = "";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
@@ -326,9 +327,9 @@ class _eventEditFormState extends State<EidtEventForm> {
                             validator: (val) => val!.trim().isEmpty
                                 ? "Attendess number can't be empty."
                                 : eventData?.description,
-                            onChanged: (val) =>
-                                setState(() => attendeeNum = val),
-                            // maxLength: 4,
+                            onChanged: (value) =>
+                                setState(() => attendeeNumString = value),
+                            // maxLength: 4, attendeeNum
                           ),
                         ),
                         SizedBox(height: 5),
@@ -483,9 +484,12 @@ class _eventEditFormState extends State<EidtEventForm> {
                                   currentcatogary =
                                       widget.event?.get('category');
                                 }
-                                // if (attendeeNum == "noting") {
-                                //   attendeeNum = widget.event?.get('attendees');
-                                // }
+                                if (attendeeNumString == "") {
+                                  attendeeNum = widget.event?.get('attendees');
+                                }
+                                if (attendeeNumString != "") {
+                                  attendeeNum = int.parse(attendeeNumString);
+                                }
 
                                 if (currdate == "") {
                                   currdate = widget.event?.get('date');
@@ -541,6 +545,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                         "long": currentlong,
                                         "nameLowerCase": nameLowerCase,
                                         "searchDescription": searchDescription,
+                                        "attendees": attendeeNum,
                                       });
                                     } else {
                                       FirebaseFirestore.instance
@@ -550,7 +555,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                         "name": currentNameEvent,
                                         "description": currentDescrption,
                                         "category": currentcatogary,
-                                        // "attendees": int.parse(attendeeNum),
+                                        "attendees": attendeeNum,
                                         "date": currdate,
                                         "time": currtime,
                                         "lat": currentlat,
