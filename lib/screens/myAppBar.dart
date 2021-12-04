@@ -19,8 +19,8 @@ Widget MyAppBarWidget(title, context) {
           style: TextStyle(
               color: Colors.black,
               fontFamily: 'Comfortaa',
-              fontSize: 28,
-              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
               letterSpacing: 2)),
       elevation: 4,
       toolbarHeight: 100,
@@ -65,8 +65,8 @@ Widget MySecondaryAppBarWidget(title) {
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'Comfortaa',
-            fontSize: 28,
-            fontWeight: FontWeight.w500)),
+            fontSize: 20,
+            fontWeight: FontWeight.bold)),
     elevation: 6,
     toolbarHeight: 100,
     backgroundColor: Colors.white,

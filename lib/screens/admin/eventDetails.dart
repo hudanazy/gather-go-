@@ -83,7 +83,7 @@ class _eventDetails extends State<eventDetails> {
                 child: Text(
                   widget.event?.get('name') + '   ',
                   style: TextStyle(
-                      color: Colors.orange[400],
+                      color: Colors.orange[300],
                       fontFamily: 'Comfortaa',
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
@@ -199,7 +199,7 @@ class _eventDetails extends State<eventDetails> {
                         child: ElevatedButton(
                           child: Text('Disapprove',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16)),
@@ -244,7 +244,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.red[300]),
+                                  MaterialStateProperty.all(Colors.orange[300]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -256,7 +256,7 @@ class _eventDetails extends State<eventDetails> {
                       child: ElevatedButton(
                         child: Text('Approve',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Comfortaa',
                                 fontSize: 16)),
@@ -298,7 +298,7 @@ class _eventDetails extends State<eventDetails> {
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.green[300]),
+                                MaterialStateProperty.all(Colors.orange[300]),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(

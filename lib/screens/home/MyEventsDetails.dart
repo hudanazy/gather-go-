@@ -231,7 +231,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.deepPurple),
+                                        Colors.orange[300]),
                                   ),
                                   child: Text('Delete Event',
                                       style: TextStyle(
@@ -288,7 +288,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.deepPurple),
+                                        Colors.orange[300]),
                                   ),
                                   child: Text('Edit Event',
                                       style: TextStyle(

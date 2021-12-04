@@ -37,9 +37,9 @@ class _adminBottomBarDemoState extends State<adminBottomBarDemo> {
           backgroundColor: Colors.white10,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _pageIndex,
-            backgroundColor: Colors.orange[200],
+            backgroundColor: Colors.white,
             selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
-            selectedItemColor: Colors.black,
+            selectedItemColor: Colors.orange[300],
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,
             showUnselectedLabels: false,
