@@ -209,7 +209,7 @@ Future<bool> showMapdialogAdmin(
                   zoomGesturesEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: markerPosition,
-                    zoom: 15.0,
+                    zoom: 7.0,
                   ),
                 ),
               ),
