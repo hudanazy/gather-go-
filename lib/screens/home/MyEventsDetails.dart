@@ -421,7 +421,8 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                                 event: widget.event)));
                                   })))
                     ],
-                  )
+                  ),
+                  SizedBox(height: 40),
                 ],
               ),
             ),
