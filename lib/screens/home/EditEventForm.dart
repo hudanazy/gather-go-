@@ -146,9 +146,10 @@ class _eventEditFormState extends State<EidtEventForm> {
     String oldCategory = widget.event?.get('category');
     String oldTime = widget.event?.get('time').substring(10, 15);
     String oldDate = widget.event?.get('date').substring(0, 10);
+    if (!selected){
      double oldLat = widget.event?.get('lat');
    double oldLong = widget.event?.get('long');
-    pos(oldLat, oldLong);
+    pos(oldLat, oldLong);}
     viewLocation= areaName;
  
     return selectLocationTime
@@ -250,7 +251,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                             initialValue: widget.event?.get('name'),
                             maxLines: 1,
                             decoration: InputDecoration(
-                              labelText: "Event Name",
+                              labelText: "Event Name ",
                               labelStyle: (TextStyle(
                                   color: Colors.grey[850],
                                   fontFamily: "Comfortaa"
@@ -666,6 +667,8 @@ class _eventEditFormState extends State<EidtEventForm> {
       saveLong = tappedPoint.longitude;
       selected=true;
       pos(saveLat, saveLong);
+
+   
       
     });
   }
@@ -728,7 +731,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     return Scaffold(
        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Select Location",
+          title: Text("Select Location ",
               style: TextStyle(
             color: Colors.black,
             fontFamily: 'Comfortaa',
@@ -781,7 +784,7 @@ class _eventEditFormState extends State<EidtEventForm> {
               ),
             ),
              Flex(direction: Axis.horizontal, children: <Widget>[
-                    Expanded(child: Text('$address ')),
+                    Expanded(child: Text(address )),
                     Padding(
                         padding: const EdgeInsets.all(8),
                         child: ElevatedButton(
@@ -793,7 +796,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                               padding: MaterialStateProperty.all(
                                   EdgeInsets.fromLTRB(35, 15, 35, 15))),
                           child: Text(
-                            'Ok',
+                            'Ok ',
                             style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w600,
