@@ -66,6 +66,48 @@ class _eventDetails extends State<eventDetails> {
               padding: const EdgeInsets.only(bottom: 5.0),
               //   child: ArcBannerImage(),
             ),
+
+            ClipPath(
+              child: Stack(children: [
+                widget.event?.get('imageUrl') != ''
+                    ? Ink.image(
+                        image: NetworkImage(
+                          widget.event?.get('imageUrl'),
+                        ),
+                        height: 230,
+                        width: 400,
+                        fit: BoxFit.cover,
+                        //width: 160,
+                      )
+                    : Image.asset(
+                        'images/evv.jpg',
+                        //   width: 200,
+                        height: 230,
+                        width: 400,
+                        fit: BoxFit.cover,
+                      ),
+                // IconButton(
+                //   color: widget.event?.get('imageUrl') != ''
+                //       ? Colors.white
+                //       : Colors.black,
+                //   icon: new Icon(Icons.arrow_back_ios),
+                //   iconSize: 30,
+                //   onPressed: () {
+                //     Navigator.pop(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => HomeScreen()));
+                //   },
+                // ),
+              ]),
+
+              // Image.asset(
+              //   'images/logo1.png',
+              //   width: 400,
+              //   height: 230.0,
+              //   fit: BoxFit.cover,
+              // ),
+            ),
             Row(children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
