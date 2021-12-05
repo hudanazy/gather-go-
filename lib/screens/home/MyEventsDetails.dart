@@ -23,7 +23,7 @@ class MyEventsDetails extends StatefulWidget {
   @override
   _MyEventsDetails createState() => new _MyEventsDetails();
 }
- 
+
 // ignore: camel_case_types
 class _MyEventsDetails extends State<MyEventsDetails> {
   @override
@@ -104,7 +104,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
@@ -181,7 +181,8 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker, markerPosition);
+                              showMapdialogAdmin(
+                                  context, myMarker, markerPosition);
                             },
                             //child: Text("see the location"),
                           ),
@@ -230,7 +231,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.deepPurple),
+                                        Colors.orange[300]),
                                   ),
                                   child: Text('Delete Event',
                                       style: TextStyle(
@@ -247,6 +248,22 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                                             .collection('events')
                                             .doc(widget.event?.id)
                                             .delete();
+
+                                        var collection;
+                                        var documentList;
+                                        // will return eventCreator name
+
+                                        collection = await FirebaseFirestore
+                                            .instance
+                                            .collection('comments')
+                                            .where('eventID',
+                                                isEqualTo: widget.event?.id);
+                                        documentList = await collection.get();
+
+                                        for (var doc in documentList.docs) {
+                                          await doc.reference.delete();
+                                        }
+
                                         Fluttertoast.showToast(
                                           msg: widget.event?.get('name') +
                                               " delete successfully",
@@ -271,7 +288,7 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Colors.deepPurple),
+                                        Colors.orange[300]),
                                   ),
                                   child: Text('Edit Event',
                                       style: TextStyle(

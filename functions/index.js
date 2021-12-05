@@ -7,7 +7,7 @@ exports.myFunction = functions.firestore
     .onUpdate((change, context) => {
       const userId = change.after.data().uid.toString();
       let message = "";
-      if ( change.after.data().adminCheck) {
+      if ( change.after.data().adminCheck && !change.before.data().adminCheck) {
         const isApproved = change.after.data().approved;
         if (isApproved) {
           message = "Your event "+

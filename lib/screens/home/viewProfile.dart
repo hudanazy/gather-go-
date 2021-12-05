@@ -61,7 +61,7 @@ class _viewProfile extends State<viewProfile> {
         appBar: SecondaryAppBar(
           title: 'Profile',
         ),
-        body: Column(children: [
+        body: //Column(children: [
           // AppBar(
           //   leading: IconButton(
           //     icon: new Icon(
@@ -86,8 +86,8 @@ class _viewProfile extends State<viewProfile> {
           //   // ),
           // ),
           Container(
-              height: 590,
-              width: 500,
+           //   height: 590,
+           //   width: 500,
               child: ListView(children: [
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 35),
@@ -208,7 +208,7 @@ class _viewProfile extends State<viewProfile> {
                                             // ),
                                             trailing: Icon(
                                               Icons.arrow_forward_ios,
-                                              color: Colors.purple[300],
+                                              color: Colors.orange[300] ,
                                             ),
                                             onTap: () {
                                               Navigator.push(
@@ -253,7 +253,8 @@ class _viewProfile extends State<viewProfile> {
                       ),
                     ]))
               ]))
-        ]));
+       // ])
+        );
   }
 }
 

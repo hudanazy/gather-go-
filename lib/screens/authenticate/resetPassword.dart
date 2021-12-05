@@ -7,7 +7,6 @@ import 'package:gather_go/shared/contants.dart';
 import 'package:gather_go/shared/loading.dart';
 
 class resetPassword extends StatefulWidget {
-
   @override
   _resetPasswordState createState() => _resetPasswordState();
 }
@@ -23,11 +22,13 @@ class _resetPasswordState extends State<resetPassword> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading() 
+        ? Loading()
         : Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            appBar: SecondaryAppBar(title: "Reset Password",),
+            appBar: SecondaryAppBar(
+              title: "Reset Password",
+            ),
             // AppBar(
             //   leading: IconButton(
             //     color: Colors.amber,
@@ -49,96 +50,101 @@ class _resetPasswordState extends State<resetPassword> {
             //   ),
             // ),
             body: Container(
-                width: double.infinity,
-                 padding: EdgeInsets.symmetric(vertical: 150, horizontal: 50),
-                height: 800,
-                child: Form(
-                  key: _formKey, 
-
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autofocus: true,
-                          decoration:
-                              textInputDecoration.copyWith(hintText: "Email"),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter your email";
-                            }
-                            if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value.trim())) {
-                              return "Enter valid email ";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() => email = value.trim());
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                            child: Text("Submit",
-                            style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)
-                          ),
-                          onPressed: () async {
-                            setState(() {error='';});
-                            if (_formKey.currentState!.validate()) {
-                              setState(() {
-                                loading = true;
-                              });
-                               await _auth.sendPasswordResetEmail(email: email).then((value) {
-                                    if (loading)
-                                      setState(() {
-                                        loading=false;
-                                      });
-                                    Navigator.of(context).pop();
-                                    Fluttertoast.showToast(msg: 'Password reset link has been sent to $email');
-                                  }).catchError((onError){
-                                    if (onError.toString().contains("An internal error has occurred")){
-                                      setState(() {
-                                        error = onError;
-                                        loading = false;
-                                      });
-                                    }else {
-                                      setState(() {
-                                        error ='The email is not registered';
-                                        loading = false;
-                                      });}
-                                  });
-                            }
-
-                             },
-
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.orange[400]),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 50)),),
-                        ),
-                        SizedBox(
-                          height: 12.0,
-                        ),
-                        Text(error, style: TextStyle(color: Colors.red))
-                      ],
-                    )),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image:  AssetImage('images/Picture1.png'), 
-                        fit: BoxFit.contain,
-                        alignment: Alignment.bottomCenter,)
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 150, horizontal: 50),
+              height: 800,
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
+                      TextFormField(
+                        autofocus: true,
+                        decoration:
+                            textInputDecoration.copyWith(hintText: "Email"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter your email";
+                          }
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                              .hasMatch(value.trim())) {
+                            return "Enter valid email ";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() => email = value.trim());
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        child: Text("Submit",
+                            style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.bold)),
+                        onPressed: () async {
+                          setState(() {
+                            error = '';
+                          });
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              loading = true;
+                            });
+                            await _auth
+                                .sendPasswordResetEmail(email: email)
+                                .then((value) {
+                              if (loading)
+                                setState(() {
+                                  loading = false;
+                                });
+                              Navigator.of(context).pop();
+                              Fluttertoast.showToast(
+                                  msg:
+                                      'Password reset link has been sent to $email');
+                            }).catchError((onError) {
+                              if (onError
+                                  .toString()
+                                  .contains("An internal error has occurred")) {
+                                setState(() {
+                                  error = onError;
+                                  loading = false;
+                                });
+                              } else {
+                                setState(() {
+                                  error = 'The email is not registered';
+                                  loading = false;
+                                });
+                              }
+                            });
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.orange[300]),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 50)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      Text(error, style: TextStyle(color: Colors.red))
+                    ],
+                  )),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage('images/Picture1.png'),
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
+              )),
+            ),
           );
   }
 }

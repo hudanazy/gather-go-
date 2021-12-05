@@ -178,7 +178,7 @@ class _epFormState extends State<epForm> {
                             child: Text(
                               "Your name",
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.black,
                                   letterSpacing: 2,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
@@ -195,12 +195,12 @@ class _epFormState extends State<epForm> {
                               decoration: textInputDecoration.copyWith(
                                 hintText: "What would like us to call you?",
                                 hintStyle: TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.black,
                                     fontSize: 14,
                                     fontFamily: "Comfortaa"),
                               ),
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.black,
                                   fontSize: 14,
                                   fontFamily: "Comfortaa"),
                               validator: (val) =>
@@ -220,7 +220,7 @@ class _epFormState extends State<epForm> {
                             child: Text(
                               "Status",
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.black,
                                   letterSpacing: 2,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
@@ -244,7 +244,7 @@ class _epFormState extends State<epForm> {
                                   onChanged: (val) => setState(
                                       () => currentStatus = val as String),
                                   style: TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.black,
                                     fontFamily: 'Comfortaa',
                                   ))),
                           SizedBox(
@@ -257,7 +257,7 @@ class _epFormState extends State<epForm> {
                             child: Text(
                               "Bio",
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.black,
                                   letterSpacing: 2,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
@@ -274,13 +274,13 @@ class _epFormState extends State<epForm> {
                               decoration: textInputDecoration.copyWith(
                                 hintText: "Enter your bio.",
                                 hintStyle: TextStyle(
-                                    color: Colors.orange[400],
+                                    color: Colors.black,
                                     fontSize: 14,
                                     fontFamily: "Comfortaa"),
                               ),
                               maxLines: 4,
                               style: TextStyle(
-                                  color: Colors.orange[400],
+                                  color: Colors.black,
                                   fontSize: 14,
                                   fontFamily: "Comfortaa"),
                               validator: (val) =>
@@ -298,9 +298,9 @@ class _epFormState extends State<epForm> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Colors.orange[400]),
+                                      Colors.orange[300]),
                                   foregroundColor:
-                                      MaterialStateProperty.all(Colors.black),
+                                      MaterialStateProperty.all(Colors.white),
                                   padding: MaterialStateProperty.all(
                                       EdgeInsets.fromLTRB(35, 15, 35, 15))),
                               child: Text(

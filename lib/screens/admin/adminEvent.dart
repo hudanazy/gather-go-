@@ -117,7 +117,7 @@ class _adminEvent extends State<adminEvent> {
                                       )),
                                       trailing: Icon(
                                         Icons.arrow_forward_ios,
-                                        color: Colors.purple[300],
+                                        color: Colors.orange[300],
                                       ),
                                       onTap: () {
                                         Navigator.push(

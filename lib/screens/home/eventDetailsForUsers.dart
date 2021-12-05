@@ -73,16 +73,18 @@ class _eventDetails extends State<eventDetailsForUesers> {
     int bookedNum = widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
-
+    var eventDate = widget.event?.get("browseDate");
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
-    if (bookedNum < attendeeNum && !list.contains(currentUser))
-      buttonColor = Colors.deepPurple;
+    if (bookedNum < attendeeNum &&
+        !list.contains(currentUser) &&
+        eventDate.toDate().isAfter(DateTime.now()))
+      buttonColor = Colors.orange[300];
     else
-      buttonColor = Colors.grey;
+      buttonColor = Colors.grey[600];
 
     List<Marker> myMarker = [];
     eventCreator(userID);
@@ -109,9 +111,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
             nComments = snapshot.data.docs.length.toString();
           }
           return Scaffold(
-            // appBar: SecondaryAppBar(
-            //   title: 'Event Details',
-            // ),
+            appBar: SecondaryAppBar(
+              title: 'Event Details',
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -136,19 +138,19 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               width: 400,
                               fit: BoxFit.cover,
                             ),
-                      IconButton(
-                        color: widget.event?.get('imageUrl') != ''
-                            ? Colors.white
-                            : Colors.black,
-                        icon: new Icon(Icons.arrow_back_ios),
-                        iconSize: 30,
-                        onPressed: () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        },
-                      ),
+                      // IconButton(
+                      //   color: widget.event?.get('imageUrl') != ''
+                      //       ? Colors.white
+                      //       : Colors.black,
+                      //   icon: new Icon(Icons.arrow_back_ios),
+                      //   iconSize: 30,
+                      //   onPressed: () {
+                      //     Navigator.pop(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => HomeScreen()));
+                      //   },
+                      // ),
                     ]),
 
                     // Image.asset(
@@ -171,7 +173,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
@@ -224,7 +226,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ElevatedButton(
                         child: Text(" $_textFromFile ",
                             style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontWeight: FontWeight.bold,
                             )),
@@ -272,7 +274,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker , markerPosition);
+                              showMapdialogAdmin(
+                                  context, myMarker, markerPosition);
                             },
                             //child: Text("see the location"),
                           ),
@@ -318,7 +321,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                           ElevatedButton.icon(
                             icon: Icon(
                               Icons.book,
-                              color: Colors.white70,
+                              color: Colors.white,
                             ),
                             label: Text('Book event',
                                 style: TextStyle(
@@ -332,8 +335,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             onPressed: () async {
                               List list = widget.event?.get('attendeesList');
+                              var eventDate = widget.event?.get("browseDate");
                               if (list.contains(currentUser)) {
                                 eventBookedDialog();
+                              } else if (eventDate
+                                  .toDate()
+                                  .isBefore(DateTime.now())) {
+                                eventOldCantBookDialog();
                               } else {
                                 if (bookedNum < attendeeNum) {
                                   // StreamBuilder<Object>(
@@ -445,6 +453,36 @@ class _eventDetails extends State<eventDetailsForUesers> {
       ),
       content: Text(
         'You already booked this event.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
+  eventOldCantBookDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Old event',
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      ),
+      content: Text(
+        'You can\'t book this event, its time has passed.',
         style: TextStyle(
           fontSize: 18,
         ),
