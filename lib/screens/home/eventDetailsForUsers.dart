@@ -13,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../NotifactionManager.dart';
+import 'MyEvents.dart';
 import 'Rating_view.dart';
 
 //bool israting = false;
@@ -66,6 +67,27 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   @override
   Widget build(BuildContext context) {
+    //loop
+    //Future<void> onDataChange(dataSnapshot) async {//metod rating change
+//-----------------------------------------
+    int sumRating = 0;
+    List<int> listRating = [1, 4, 2, 5, 2, 1]; //list rating from doc db
+
+    for (var i = 0; i < listRating.length; i++) {
+      sumRating += listRating[i];
+    }
+
+    var averageRating = (sumRating / listRating.length); // This is average
+    //------------------------------------------------------------------
+    //var result = values.map((m) => m['rating']!).average; // prints 3.75
+
+    //print(result);
+    //double sum = ratings.fold(0, (p, c) => p + c);
+//if (sum > 0) {
+    //  double average = sum / ratings.length;
+    // }
+
+    // double Rating = double.parse(source);
     /*  Widget buildRating() => RatingBar.builder(
           // initialRating: widget.event?.get('Rating'),
           initialRating: rating,
@@ -97,6 +119,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
     int bookedNum = widget.event!.get('bookedNumber');
+    //double RatingNum =   widget.event!.get('RatingNum');
+    var rating = '';
+    //-------------------her rating
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
 
@@ -512,8 +537,61 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               primary: Colors.white,
                               // minimumSize: Size.fromWidth(180),
                             ),
-                            onPressed: () {
-                              RatingDialog(context);
+                            onPressed: () async {
+                              var result = await showRatingDialog(context);
+                              if (result == true) {
+                                try {
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id);
+                                  // .update();
+
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " Rate event successfully",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyEvents()));
+                                } catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: "somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                }
+                                /* if (result == true) {
+                                try {
+                                  List list =
+                                      widget.event?.get('attendeesList');
+                                  list.add(currentUser);
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "bookedNumber": bookedNum + 1,
+                                    "attendeesList": list
+                                  });
+                                  // DatabaseService()
+                                  //     .addBookedEventToProfile(widget.event!.id);
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " booked successfully, you can view it in your profile",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                } catch (e) {
+                                  // fail msg
+                                  Fluttertoast.showToast(
+                                    msg: "Somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                } */
+                              }
                             },
                           ),
                         ],
@@ -558,7 +636,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   //------------------------
 
-  RatingDialog(BuildContext context) {
+  /*  RatingDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -580,6 +658,20 @@ class _eventDetails extends State<eventDetailsForUesers> {
           ),
           actions: [
             TextButton(
+                child: Text("cancel",
+                    //             Text('Are you sure you want to continue?"'),,
+                    style: TextStyle(color: Colors.grey)),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                }),
+            TextButton(
+                child: Text("Ok", style: TextStyle(color: Colors.blue)),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                })
+          ],
+          /*    actions: [
+            TextButton(
                 child: Text("Ok", style: TextStyle(color: Colors.blue)),
                 onPressed: () {
                   Navigator.pop(
@@ -590,9 +682,46 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               ) */
                   );
                 }),
-          ],
+          ], */
         );
       },
+    );
+  } */
+
+  Future<bool> showRatingDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Rate This Event"),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'We would like to get your feedback about this event',
+              style: TextStyle(fontSize: 15),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            buildRating(),
+          ],
+        ),
+        actions: [
+          TextButton(
+              child: Text("cancel",
+                  //             Text('Are you sure you want to continue?"'),,
+                  style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                Navigator.pop(context, false);
+              }),
+          TextButton(
+              child: Text("Ok", style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, true);
+              })
+        ],
+      ),
     );
   }
 
@@ -639,7 +768,23 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
     setState(() => _textFromFile = uesrName);
   }
+
+//update rating
+  var collection;
+  void UpdateRating(String uid, String img, String? name) async {
+    collection = await FirebaseFirestore.instance
+        .collection('events')
+        .where("uid", isEqualTo: uid);
+    documentList = await collection.get();
+
+    /*  for (var doc in documentList.docs()) {
+      await doc.reference.update({"name": name, "imageUrl": img});
+    } */
+  }
 }
+
+
+
 
 // Set<Polyline> _polylines = Set<Polyline>();
 // List<LatLng> polylineCoordinates = [];
@@ -668,3 +813,4 @@ class _eventDetails extends State<eventDetailsForUesers> {
 //         points: polylineCoordinates));
 //   }
 // }
+
