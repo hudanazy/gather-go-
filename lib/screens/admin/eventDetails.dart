@@ -250,19 +250,8 @@ class _eventDetails extends State<eventDetails> {
                             if (result == true) {
                               try {
                                 await DatabaseService(uid: widget.event?.id)
-                                    .disapproveEvent(
-                                  userID,
-                                  widget.event?.get('name'),
-                                  widget.event?.get('description'),
-                                  widget.event?.get('timePosted'),
-                                  attendeeNum,
-                                  widget.event?.get('date'),
-                                  widget.event?.get('time'),
-                                  category,
-                                  widget.event?.get('lat'),
-                                  widget.event?.get('long'),
-                                  widget.event?.get('browseDate'),
-                                );
+                                 .disapproveEvent();
+                                
                                 // success msg + redirect to adminEvent
 
                                 Fluttertoast.showToast(
@@ -307,19 +296,9 @@ class _eventDetails extends State<eventDetails> {
                           if (result == true) {
                             try {
                               await DatabaseService(uid: widget.event?.id)
-                                  .approveEvent(
-                                userID,
-                                widget.event?.get('name'),
-                                widget.event?.get('description'),
-                                widget.event?.get('timePosted'),
-                                attendeeNum,
-                                widget.event?.get('date'),
-                                widget.event?.get('time'),
-                                category,
-                                widget.event?.get('lat'),
-                                widget.event?.get('long'),
-                                widget.event?.get('browseDate'),
-                              );
+                             
+                                  .approveEvent();
+                             
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",

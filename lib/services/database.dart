@@ -30,8 +30,23 @@ class DatabaseService {
       //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
-
-  Future disapproveEvent(
+Future? disapproveEvent(
+  
+) async {
+  return await eventCollection.doc(uid).update({
+                                      'approved': false,
+                                      "adminCheck": true,
+                                      });
+}
+Future? approveEvent(
+  
+) async {
+  return await eventCollection.doc(uid).update({
+                                      'approved': true,
+                                      "adminCheck": true,
+                                      });
+}
+  Future disapproveEvent2(
       String? userID,
       String? name,
       String? description,
@@ -85,7 +100,7 @@ class DatabaseService {
     });
   }
 
-  Future approveEvent(
+  Future approveEvent2(
       String? userID,
       String? name,
       String? description,
