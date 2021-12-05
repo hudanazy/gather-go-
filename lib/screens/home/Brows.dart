@@ -266,11 +266,11 @@ print(currDt.second); // 49 */
                           return Padding(padding: EdgeInsets.all(0));
                         }
 
-                        // if (document["browseDate"]
-                        //     .toDate()
-                        //     .isBefore(DateTime.now())) {
-                        //   return Padding(padding: EdgeInsets.all(0));
-                        // }
+                        if (document["browseDate"]
+                            .toDate()
+                            .isBefore(DateTime.now())) {
+                          return Padding(padding: EdgeInsets.all(0));
+                        }
 
                         namep = FutureBuilder<String?>(
                             future: pos(document["lat"], document["long"]),
