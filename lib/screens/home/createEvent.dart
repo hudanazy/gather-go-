@@ -620,15 +620,15 @@ class _Eventform extends State<createEvent> {
         appBar: AppBar(
           title: Text("Select Location",
               style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Comfortaa',
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500)),
-          elevation: 6,
-          toolbarHeight: 100,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
             color: Colors.black,
+            fontFamily: 'Comfortaa',
+            fontSize: 20,
+            fontWeight: FontWeight.bold)),
+    elevation: 6,
+    toolbarHeight: 100,
+    backgroundColor: Colors.white,
+    iconTheme: IconThemeData(
+      color: Colors.black,
           ),
           actions: [
             IconButton(
@@ -724,9 +724,7 @@ class _Eventform extends State<createEvent> {
     if (locality != "") {
       location = locality.toString();
     } else {
-      // area = administrativeArea.toString();
-      // index = area.indexOf(' ');
-//    location = area.substring(0, index);
+      
       location = administrativeArea.toString();
     }
     return location;
