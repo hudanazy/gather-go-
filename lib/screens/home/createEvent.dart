@@ -460,7 +460,7 @@ class _Eventform extends State<createEvent> {
                                             "Select Event Category") {
                                           Fluttertoast.showToast(
                                             msg:
-                                                "Event categoryhas to be selected.",
+                                                "Event category has to be selected.",
                                             toastLength: Toast.LENGTH_LONG,
                                           );
                                         } else if (attendeeNum == "0") {

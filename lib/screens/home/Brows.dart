@@ -265,11 +265,7 @@ print(currDt.second); // 49 */
                         if (document['uid'] == user?.uid) {
                           return Padding(padding: EdgeInsets.all(0));
                         }
-                        //print(document["timePosted"]);
-                        // String dateWithT =
-                        //     document["timePosted"].substring(0, 8) +
-                        //         document["timePosted"].substring(8);
-                        // DateTime dateTime = DateTime.parse(dateWithT);
+
                         if (document["browseDate"]
                             .toDate()
                             .isBefore(DateTime.now())) {

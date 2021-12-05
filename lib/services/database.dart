@@ -53,9 +53,9 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
 
-    temp="";
+    temp = "";
     for (var i = 0; i < name!.length; i++) {
       if (name[i] == " ") {
         temp = "";
@@ -108,9 +108,9 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
 
-    temp="";
+    temp = "";
     for (var i = 0; i < name!.length; i++) {
       if (name[i] == " ") {
         temp = "";
@@ -180,10 +180,10 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
 
-    temp="";
-    for (var i = 0; i < name!.length; i++) {
+    temp = "";
+    for (var i = 0; i < name.length; i++) {
       if (name[i] == " ") {
         temp = "";
       } else {

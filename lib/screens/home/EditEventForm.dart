@@ -2,17 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gather_go/Models/EventInfo.dart';
-import 'package:gather_go/screens/home/MyEvents.dart';
+
 import 'package:gather_go/screens/myAppBar.dart';
-import 'package:gather_go/shared/contants.dart';
+
 import 'package:gather_go/shared/dialogs.dart';
-import 'package:gather_go/shared/num_button.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../NotifactionManager.dart';
-import 'MyEventsDetails.dart';
-import 'nav.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -121,7 +119,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   String? currdate = "";
   DateTime? browseDate;
   String? browseDateString;
-  String? currtime = "";
+  String currtime = "";
   double? currentlat = 0.0;
   double? currentlong = 0.0;
   EventInfo? eventData;
@@ -129,20 +127,22 @@ class _eventEditFormState extends State<EidtEventForm> {
       initialCameraPosition:
           CameraPosition(target: LatLng(24.708481, 46.752108)));
   String viewLocation = "Location";
-  String viewDate = " Date ";
-  String ViewTime = " Time ";
+  String viewDate = "";
+
   int attendeeNum = 0;
   String attendeeNumString = "";
+  bool ViewOrNot = true;
+  bool ViewOrNot2 = true;
+
+  String ViewTime = "";
 
   //final user = Provider.of<NewUser?>(context, listen: false);
   //DateTime date;
   @override
   Widget build(BuildContext context) {
-    bool adminCheck = widget.event?.get('adminCheck');
-    bool approved = widget.event?.get('approved'); //111111111
-
-    String userID = widget.event?.get('uid');
-    String oldTime = widget.event?.get('time');
+    String oldCategory = widget.event?.get('category');
+    String oldTime = widget.event?.get('time').substring(10, 15);
+    String oldDate = widget.event?.get('date').substring(0, 10);
 
     return Scaffold(
         appBar: SecondaryAppBar(
@@ -347,7 +347,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 onPressed: () => pickDate(context),
                               ),
                               Text(
-                                viewDate,
+                                ViewOrNot2 ? oldDate : viewDate,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.grey[850],
@@ -378,13 +378,14 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 onPressed: () => pickTime(context),
                               ),
                               Text(
-                                ViewTime,
+                                // 'hi',
+                                ViewOrNot ? oldTime : ViewTime,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     color: Colors.grey[850],
                                     fontSize: 16,
                                     fontFamily: "Comfortaa"),
-                              ),
+                              )
                             ])),
                         SizedBox(
                             width: 350,
@@ -673,6 +674,7 @@ class _eventEditFormState extends State<EidtEventForm> {
     browseDateString = newDate.toString();
 
     viewDate = currdate.toString().substring(0, 10);
+    ViewOrNot2 = false;
   }
 
   Future pickTime(BuildContext context) async {
@@ -692,6 +694,7 @@ class _eventEditFormState extends State<EidtEventForm> {
       toastLength: Toast.LENGTH_LONG,
     );
     ViewTime = currtime.toString().substring(10, 15);
+    ViewOrNot = false;
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
