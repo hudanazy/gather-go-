@@ -681,6 +681,7 @@ class _eventEditFormState extends State<EidtEventForm> {
       saveLong = tappedPoint.longitude;
       selected = true;
       pos(saveLat, saveLong);
+      viewLocation = areaName;
     });
   }
 
