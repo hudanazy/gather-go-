@@ -100,7 +100,7 @@ class _adminEvent extends State<adminEvent> {
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 = FirebaseFirestore
         .instance
         .collection('events')
-        .orderBy("timePosted")
+        .orderBy("timePosted", descending: true)
         .where('approved', isEqualTo: false)
         .where('adminCheck', isEqualTo: false)
         .snapshots();

@@ -30,7 +30,9 @@ class _BookedEvents extends State<BookedEvents> {
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
-        .where('attendeesList', arrayContainsAny: [user!.uid]).snapshots();
+        .where('attendeesList', arrayContainsAny: [user!.uid])
+        .orderBy('timePosted', descending: true)
+        .snapshots();
 //'events.uid', arrayContainsAny:
 
     return Scaffold(

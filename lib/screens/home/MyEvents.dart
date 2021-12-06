@@ -225,6 +225,7 @@ print(currDt.second); // 49 */
     Stream<QuerySnapshot<Map<String, dynamic>>> stream1 = FirebaseFirestore
         .instance
         .collection('events')
+        .orderBy('timePosted', descending: true)
         .where('uid', isEqualTo: user!.uid)
         .snapshots();
 
