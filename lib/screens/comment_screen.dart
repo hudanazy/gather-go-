@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 ///import 'package:gather_go/services/database.dart';
 import 'package:gather_go/screens/comments/new_message.dart';
+import "package:like_button/like_button.dart";
 
 class CommentScreen extends StatefulWidget {
   // const CommentScreen({Key? key}) : super(key: key);
@@ -29,6 +30,9 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
+    bool isLiked = false;
+    int likeCount = 17;
+
     // commenter(widget.user!.id);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -248,22 +252,15 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(ago),
-                                                  IconButton(
-                                                    onPressed: () async {},
-                                                    icon: Icon(Icons
-                                                        .thumb_up_alt_rounded),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
+                                                  Text(' '),
+                                                  LikeButton(
+                                                    size: 20,
+                                                    isLiked: isLiked,
+                                                    likeCount: likeCount,
+                                                    countBuilder: (likeCount,
+                                                        isLiked, text) {},
                                                   ),
-                                                  Text('0'),
-                                                  IconButton(
-                                                    onPressed: () async {},
-                                                    icon: Icon(Icons
-                                                        .thumb_down_alt_rounded),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
-                                                  ),
-                                                  Text('0'),
+                                                  // Text('0'),
                                                   IconButton(
                                                     onPressed: () async {},
                                                     icon: Icon(Icons.report),

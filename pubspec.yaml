@@ -53,6 +53,7 @@ dependencies:
   firebase_storage: ^10.0.6
 
   flutter_update_dialog: ^2.0.0
+  like_button: ^2.0.3
 
 
   #rxdart: ^0.27.2
