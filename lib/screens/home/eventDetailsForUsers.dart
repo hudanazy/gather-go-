@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gather_go/Models/NewUser.dart';
 import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
@@ -11,6 +12,7 @@ import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../NotifactionManager.dart';
 import 'MyEvents.dart';
@@ -31,6 +33,8 @@ class eventDetailsForUesers extends StatefulWidget {
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetailsForUesers> {
   double rating = 0;
+  int ratingCounter = 0;
+  double ratingAVG = 0;
   // LocationData? currentLocation;
   // var location = new Location();
   // String error = "";
@@ -67,6 +71,46 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   @override
   Widget build(BuildContext context) {
+    /*  Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RatingBar.builder(
+          // initialRating: widget.event?.get('Rating'),
+          initialRating: rating,
+          minRating: 0,
+          itemSize: 20,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          updateOnDrag: true,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+          itemBuilder: (context, _) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (rating) {
+            setState(() {
+              this.rating = rating;
+            });
+            print(rating);
+          },
+        ),
+        Text('  ${rating == 0 ? '' : rating}',
+            style: TextStyle(
+              //  color: TEXTCOLOR,
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+            )),
+        Text(
+          ' *',
+          style: TextStyle(color: Colors.red),
+        )
+      ],
+    );
+    SizedBox(
+      height: MediaQuery.of(context).size.height * 0.02,
+    ); */
+
     //loop
     //Future<void> onDataChange(dataSnapshot) async {//metod rating change
 //-----------------------------------------
@@ -109,6 +153,14 @@ class _eventDetails extends State<eventDetailsForUesers> {
             print(rating);
           },
         ); */
+    final user = Provider.of<NewUser?>(context);
+    //---------------------
+    Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
+        .instance
+        .collection('events')
+        .where('uid', isEqualTo: user!.uid)
+        .snapshots();
+    //---------------------------------
     Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap =
         FirebaseFirestore.instance
             .collection('comments')
@@ -119,8 +171,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
     int bookedNum = widget.event!.get('bookedNumber');
+
     //double RatingNum =   widget.event!.get('RatingNum');
-    var rating = '';
+    // var rating = '';
     //-------------------her rating
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
@@ -236,7 +289,94 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
                   buildRating(),
 
+                  Padding(
+                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.star_rate,
+                              color: Colors.yellow,
+                            ),
+                            label: Text("Rate!",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                              primary: Colors.white,
+
+                              // minimumSize: Size.fromWidth(180),
+                            ),
+                            onPressed: () async {
+                              var result = await showRatingDialog(context);
+                              if (result == true) {
+                                try {
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "rating": rating,
+                                  });
+
+                                  Fluttertoast.showToast(
+                                    msg: " Thanks for your feedback for event" +
+                                        widget.event?.get('name'),
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyEvents()));
+                                } catch (e) {
+                                  Fluttertoast.showToast(
+                                    msg: "somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                }
+                                /* if (result == true) {
+                                try {
+                                  List list =
+                                      widget.event?.get('attendeesList');
+                                  list.add(currentUser);
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "bookedNumber": bookedNum + 1,
+                                    "attendeesList": list
+                                  });
+                                  // DatabaseService()
+                                  //     .addBookedEventToProfile(widget.event!.id);
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " booked successfully, you can view it in your profile",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                } catch (e) {
+                                  // fail msg
+                                  Fluttertoast.showToast(
+                                    msg: "Somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                } */
+                              }
+                            },
+                          ),
+                        ],
+                      )),
+
                   //--------------------
+
                   /*   RatingBar.builder(
                     // initialRating: widget.event?.get('Rating'),
                     initialRating: rating,
@@ -527,7 +667,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               Icons.star_rate,
                               color: Colors.yellow,
                             ),
-                            label: Text("Rate event !",
+                            label: Text("Rate!",
                                 style: TextStyle(
                                   color: Colors.black87,
                                   fontWeight: FontWeight.bold,
@@ -543,12 +683,14 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                 try {
                                   FirebaseFirestore.instance
                                       .collection('events')
-                                      .doc(widget.event?.id);
-                                  // .update();
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "rating": rating,
+                                  });
 
                                   Fluttertoast.showToast(
-                                    msg: widget.event?.get('name') +
-                                        " Rate event successfully",
+                                    msg: " Thanks for your feedback for event" +
+                                        widget.event?.get('name'),
                                     toastLength: Toast.LENGTH_LONG,
                                   );
                                   Navigator.pop(
@@ -608,7 +750,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
   Widget buildRating() => RatingBar.builder(
         // initialRating: widget.event?.get('Rating'),
         initialRating: rating,
-        minRating: 0,
+        glow: true,
+        //ignoreGestures: true,
+        //glowColor: ,
+        minRating: 1,
         itemSize: 30,
         direction: Axis.horizontal,
         allowHalfRating: true,
@@ -619,9 +764,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
           Icons.star,
           color: Colors.amber,
         ),
-        onRatingUpdate: (rating) {
+        onRatingUpdate: (value) {
           setState(() {
-            this.rating = rating;
+            rating = value;
           });
           print("$rating heeeeeeeeeeeeeeeeer");
         },
@@ -701,10 +846,52 @@ class _eventDetails extends State<eventDetailsForUesers> {
               'We would like to get your feedback about this event',
               style: TextStyle(fontSize: 15),
             ),
-            SizedBox(
+            /* SizedBox(
               height: 25,
+            ), */
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
-            buildRating(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RatingBar.builder(
+                  // initialRating: widget.event?.get('Rating'),
+                  initialRating: rating,
+                  minRating: 1,
+                  itemSize: 20,
+                  glow: true,
+                  //direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  updateOnDrag: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (value) {
+                    setState(() {
+                      rating = value;
+                    });
+                    // print(rating);
+                  },
+                ),
+                Text('  ${rating == 0 ? '' : rating}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    )),
+                Text(
+                  ' *',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
           ],
         ),
         actions: [
@@ -770,21 +957,52 @@ class _eventDetails extends State<eventDetailsForUesers> {
   }
 
 //update rating
-  var collection;
-  void UpdateRating(String uid, String img, String? name) async {
-    collection = await FirebaseFirestore.instance
-        .collection('events')
-        .where("uid", isEqualTo: uid);
+  /* var collection;
+  RatingArg() async {
+    collection = await FirebaseFirestore.instance.collection('events');
+    // .doc(widget.event?.id);
     documentList = await collection.get();
 
     /*  for (var doc in documentList.docs()) {
-      await doc.reference.update({"name": name, "imageUrl": img});
+      // await doc.reference.update({"name": name, "imageUrl": img});
+    } */
+  } */
+
+  /* QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("collection").get();
+    var list = querySnapshot.docs; */
+  Future getDocs() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection("events").get();
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      var a = querySnapshot.docs[i];
+      // print(a.documentID);
+    }
+  }
+
+// her
+  var collection;
+  RatingArg() async {
+    collection = await FirebaseFirestore.instance
+        .collection('events')
+        .where('eventID', isEqualTo: widget.event?.id)
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          ratingAVG += double.parse(element.data()['rating'].toString());
+          print('rating');
+          ratingCounter = event.docs.length;
+        });
+      });
+    });
+
+    //documentList = await collection.get();
+
+    /*  for (var doc in documentList.docs()) {
+      // await doc.reference.update({"name": name, "imageUrl": img});
     } */
   }
 }
-
-
-
 
 // Set<Polyline> _polylines = Set<Polyline>();
 // List<LatLng> polylineCoordinates = [];
