@@ -571,6 +571,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "searchDescription":
                                                 searchDescription,
                                             "attendees": attendeeNum,
+                                            "adminCheck": false
                                           });
                                         } else {
                                           FirebaseFirestore.instance
@@ -588,7 +589,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "nameLowerCase": nameLowerCase,
                                             "searchDescription":
                                                 searchDescription,
-                                            "browseDate": browseDate
+                                            "browseDate": browseDate,
+                                            "adminCheck": false
                                           });
                                         }
 

@@ -33,6 +33,7 @@ class createEvent extends StatefulWidget {
 
 class _Eventform extends State<createEvent> {
   final category = [
+    'Select Event Category',
     'Educational',
     'Sports',
     'Arts',
@@ -45,7 +46,6 @@ class _Eventform extends State<createEvent> {
     'Career',
     'Personal Growth',
     'Other',
-    'Select Event Category'
   ];
   String? item = 'Select Event Category';
 
@@ -620,15 +620,15 @@ class _Eventform extends State<createEvent> {
         appBar: AppBar(
           title: Text("Select Location",
               style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Comfortaa',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
+          elevation: 6,
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
             color: Colors.black,
-            fontFamily: 'Comfortaa',
-            fontSize: 20,
-            fontWeight: FontWeight.bold)),
-    elevation: 6,
-    toolbarHeight: 100,
-    backgroundColor: Colors.white,
-    iconTheme: IconThemeData(
-      color: Colors.black,
           ),
           actions: [
             IconButton(
@@ -724,7 +724,6 @@ class _Eventform extends State<createEvent> {
     if (locality != "") {
       location = locality.toString();
     } else {
-      
       location = administrativeArea.toString();
     }
     return location;

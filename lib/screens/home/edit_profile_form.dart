@@ -294,7 +294,7 @@ class _epFormState extends State<epForm> {
                           ),
                           SizedBox(
                             height: 50,
-                            width: 190,
+                            width: 300,
                             child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
