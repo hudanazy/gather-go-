@@ -5,6 +5,7 @@ import 'package:gather_go/screens/admin/adminEvent.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/admin/eventdetailsLogo.dart';
 import 'package:gather_go/screens/comment_screen.dart';
+import 'package:gather_go/screens/home/Brows.dart';
 import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
@@ -72,16 +73,18 @@ class _eventDetails extends State<eventDetailsForUesers> {
     int bookedNum = widget.event!.get('bookedNumber');
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
-
+    var eventDate = widget.event?.get("browseDate");
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
     List list = widget.event?.get('attendeesList');
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
-    if (bookedNum < attendeeNum && !list.contains(currentUser))
-      buttonColor = Colors.deepPurple;
+    if (bookedNum < attendeeNum &&
+        !list.contains(currentUser) &&
+        eventDate.toDate().isAfter(DateTime.now()))
+      buttonColor = Colors.orange[300];
     else
-      buttonColor = Colors.grey;
+      buttonColor = Colors.grey[600];
 
     List<Marker> myMarker = [];
     eventCreator(userID);
@@ -114,9 +117,48 @@ class _eventDetails extends State<eventDetailsForUesers> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    //  child: ArcBannerImage(),
+                  // Padding(
+                  //padding: const EdgeInsets.only(bottom: 10.0),
+                  ClipPath(
+                    child: Stack(children: [
+                      widget.event?.get('imageUrl') != ''
+                          ? Ink.image(
+                              image: NetworkImage(
+                                widget.event?.get('imageUrl'),
+                              ),
+                              height: 230,
+                              width: 400,
+                              fit: BoxFit.cover,
+                              //width: 160,
+                            )
+                          : Image.asset(
+                              'images/evv.jpg',
+                              //   width: 200,
+                              height: 230,
+                              width: 400,
+                              fit: BoxFit.cover,
+                            ),
+                      // IconButton(
+                      //   color: widget.event?.get('imageUrl') != ''
+                      //       ? Colors.white
+                      //       : Colors.black,
+                      //   icon: new Icon(Icons.arrow_back_ios),
+                      //   iconSize: 30,
+                      //   onPressed: () {
+                      //     Navigator.pop(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => HomeScreen()));
+                      //   },
+                      // ),
+                    ]),
+
+                    // Image.asset(
+                    //   'images/logo1.png',
+                    //   width: 400,
+                    //   height: 230.0,
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                   Row(children: [
                     // IconButton(
@@ -131,7 +173,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(widget.event?.get('name') + '   ',
                           style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
@@ -184,7 +226,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ElevatedButton(
                         child: Text(" $_textFromFile ",
                             style: TextStyle(
-                              color: Colors.orange[400],
+                              color: Colors.orange[300],
                               fontFamily: 'Comfortaa',
                               fontWeight: FontWeight.bold,
                             )),
@@ -232,7 +274,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             //color: Colors.deepOrange,
                             onPressed: () {
-                              showMapdialogAdmin(context, myMarker);
+                              showMapdialogAdmin(
+                                  context, myMarker, markerPosition);
                             },
                             //child: Text("see the location"),
                           ),
@@ -292,8 +335,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             ),
                             onPressed: () async {
                               List list = widget.event?.get('attendeesList');
+                              var eventDate = widget.event?.get("browseDate");
                               if (list.contains(currentUser)) {
                                 eventBookedDialog();
+                              } else if (eventDate
+                                  .toDate()
+                                  .isBefore(DateTime.now())) {
+                                eventOldCantBookDialog();
                               } else {
                                 if (bookedNum < attendeeNum) {
                                   // StreamBuilder<Object>(
@@ -425,6 +473,36 @@ class _eventDetails extends State<eventDetailsForUesers> {
         });
   }
 
+  eventOldCantBookDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Old event',
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      ),
+      content: Text(
+        'You can\'t book this event, its time has passed.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
   String _textFromFile = "";
   late DocumentSnapshot documentList;
   // will return eventCreator name
@@ -438,6 +516,32 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
     setState(() => _textFromFile = uesrName);
   }
+}
+
+class ArcClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height);
+
+    var firstControlPoint = Offset(size.width / 4, size.height);
+    var firstPoint = Offset(size.width / 2, size.height);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstPoint.dx, firstPoint.dy);
+
+    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
+    var secondPoint = Offset(size.width, size.height - 30);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondPoint.dx, secondPoint.dy);
+
+    path.lineTo(size.width, 0.0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 // Set<Polyline> _polylines = Set<Polyline>();

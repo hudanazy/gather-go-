@@ -37,7 +37,7 @@ class _SignInState extends State<SignIn> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: //SecondaryAppBar(title: "Login",),
-            AppBar(
+                AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: Text(
@@ -45,7 +45,7 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(
                     fontFamily: 'Comfortaa',
                     fontSize: 27,
-                    color: Colors.orange[400],
+                    color: Colors.orange[300],
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -58,7 +58,7 @@ class _SignInState extends State<SignIn> {
                   key: _fromkey,
                   child: Column(
                     children: [
-                        ClipPath(
+                      ClipPath(
                         clipper: ArcClipper(),
                         child: Image.asset(
                           'images/logo1.png',
@@ -99,7 +99,8 @@ class _SignInState extends State<SignIn> {
                         child: Text(
                           'Forgot password?',
                           style: TextStyle(
-                              color: Colors.purple[300], fontSize: 16,
+                              color: Colors.purple[300],
+                              fontSize: 16,
                               fontFamily: 'Comfortaa',
                               fontWeight: FontWeight.bold),
                         ),
@@ -110,9 +111,9 @@ class _SignInState extends State<SignIn> {
                       Text(error, style: TextStyle(color: Colors.red)),
                       ElevatedButton(
                         child: Text("Login",
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.bold)),
                         onPressed: () async {
                           if (_fromkey.currentState!.validate()) {
                             setState(() {
@@ -131,7 +132,7 @@ class _SignInState extends State<SignIn> {
                         },
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.orange[400]),
+                              MaterialStateProperty.all(Colors.orange[300]),
                           foregroundColor:
                               MaterialStateProperty.all(Colors.white),
                           padding: MaterialStateProperty.all(
@@ -142,9 +143,9 @@ class _SignInState extends State<SignIn> {
                       Text('Don’t have an account?'),
                       ElevatedButton(
                         child: Text('Register now',
-                        style: TextStyle(
-                    fontFamily: 'Comfortaa',
-                    fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontFamily: 'Comfortaa',
+                                fontWeight: FontWeight.bold)),
                         onPressed: () {
                           widget.toggleView();
                           // Navigator.push(
