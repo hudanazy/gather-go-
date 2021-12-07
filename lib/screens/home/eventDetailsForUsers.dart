@@ -10,6 +10,7 @@ import 'package:gather_go/screens/home/home.dart';
 import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,9 @@ import 'Rating_view.dart';
 // ignore: camel_case_types
 class eventDetailsForUesers extends StatefulWidget {
   final DocumentSnapshot? event;
+
+  //final DocumentSnapshot? ratingCounter;\\required this.ratingCounter
+
   eventDetailsForUesers({required this.event});
 
   @override
@@ -32,9 +36,26 @@ class eventDetailsForUesers extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetailsForUesers> {
+  // late  _controller;
   double rating = 0;
   int ratingCounter = 0;
   double ratingAVG = 0;
+  bool rated = false;
+
+  @override
+  void initState() {
+    getAVGrating();
+
+    super.initState();
+  }
+
+//----------------------dipose
+  /*  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  } */
+//---------------------------dispos
   // LocationData? currentLocation;
   // var location = new Location();
   // String error = "";
@@ -114,14 +135,14 @@ class _eventDetails extends State<eventDetailsForUesers> {
     //loop
     //Future<void> onDataChange(dataSnapshot) async {//metod rating change
 //-----------------------------------------
-    int sumRating = 0;
+    /*  int sumRating = 0;
     List<int> listRating = [1, 4, 2, 5, 2, 1]; //list rating from doc db
 
     for (var i = 0; i < listRating.length; i++) {
       sumRating += listRating[i];
     }
 
-    var averageRating = (sumRating / listRating.length); // This is average
+    var averageRating = (sumRating / listRating.length); */ // This is average
     //------------------------------------------------------------------
     //var result = values.map((m) => m['rating']!).average; // prints 3.75
 
@@ -153,13 +174,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
             print(rating);
           },
         ); */
-    final user = Provider.of<NewUser?>(context);
+    /* final user = Provider.of<NewUser?>(context);
     //---------------------
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
         .instance
         .collection('events')
         .where('uid', isEqualTo: user!.uid)
-        .snapshots();
+        .snapshots(); */
     //---------------------------------
     Stream<QuerySnapshot<Map<String, dynamic>>> commentSnap =
         FirebaseFirestore.instance
@@ -172,7 +193,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     int attendeeNum = widget.event?.get('attendees');
     int bookedNum = widget.event!.get('bookedNumber');
 
-    //double RatingNum =   widget.event!.get('RatingNum');
+    double RatingNum = widget.event!.get('rating');
+    bool ratedis = widget.event!.get('rated');
+    // print(RatingNum);
     // var rating = '';
     //-------------------her rating
     String userID = widget.event?.get('uid');
@@ -192,6 +215,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
     eventCreator(userID);
     LatLng markerPosition = LatLng(widget.event?.get('lat'),
         widget.event?.get('long')); // event location from DB
+
+    // RetAVGrating();
 
     setState(() {
       myMarker.add(Marker(
@@ -234,6 +259,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                   print(rating);
                 },
               ); */
+
           return Scaffold(
             appBar: SecondaryAppBar(
               title: 'Event Details',
@@ -242,7 +268,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.only(bottom: 5.0),
                     //  child: ArcBannerImage(),
                   ),
                   Row(children: [
@@ -263,6 +289,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     )),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Chip(
@@ -271,25 +298,90 @@ class _eventDetails extends State<eventDetailsForUesers> {
                         backgroundColor: Colors.grey[350],
                       ),
                     ),
+                    //-----------
                   ]),
 
-                  const SizedBox(height: 5),
-                  //buildRating(),
+                  Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: <Widget>[
+                          //  if (ratingCounter > 0)
+                          RatingBar.builder(
+                            itemSize: 15,
+                            initialRating: ratingAVG / ratingCounter,
+                            glow: true,
+                            ignoreGestures: true,
+                            minRating: 1,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (value) {},
+                          ),
+                          if (ratingCounter > 0)
+                            InkWell(
+                              child: Text(
+                                '($ratingCounter)',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            )
+                        ],
+                      )),
 
+//--------------
+                  /* Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (ratingCounter > 0)
+                          RatingBar.builder(
+                            itemSize: 10,
+                            initialRating: ratingAVG / ratingCounter,
+                            glow: true,
+                            ignoreGestures: true,
+                            // glowColor: kPrimaryColor,
+                            // unratedColor: kPrimaryLightColor,
+                            minRating: 1,
+
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (value) {},
+                          ),
+                        if (ratingCounter > 0)
+                          InkWell(
+                            child: Text(
+                              '($ratingCounter)',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          )
+                      ],
+                    ), */
+
+                  // SizedBox(height: 5),
+                  //buildRating(),
+/* 
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Row(children: <Widget>[
                       //Icon(Icons.people_alt_rounded),
                       Text(
                         "  Rating event is",
-                      )
+                      ),
                     ]),
-                  ),
+                  ), */
+
                   //----------------- i want save like icon star and retreve from db
 
-                  buildRating(),
-
-                  Padding(
+                  //  buildRating(),
+//===-------------------------rate button
+                  /*  Padding(
                       padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
@@ -373,8 +465,44 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             },
                           ),
                         ],
-                      )),
+                      )), */
+                  //-----------------------another rate button
+/* 
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ), */
+                  //مكان ثاني للعرض تحت
+                  /* Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (ratingCounter > 0)
+                        RatingBar.builder(
+                          itemSize: 10,
+                          initialRating: ratingAVG / ratingCounter,
+                          glow: true,
+                          ignoreGestures: true,
+                          // glowColor: kPrimaryColor,
+                          // unratedColor: kPrimaryLightColor,
+                          minRating: 1,
 
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (value) {},
+                        ),
+                      if (ratingCounter > 0)
+                        InkWell(
+                          child: Text(
+                            '($ratingCounter)',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        )
+                    ],
+                  ), */
                   //--------------------
 
                   /*   RatingBar.builder(
@@ -427,6 +555,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       Text("   Max attendee number is $attendeeNum  ")
                     ]),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
                     child: Row(children: <Widget>[
@@ -657,6 +786,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
  */
 
                   //   buildRating(),
+
                   Padding(
                       padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
                       child: Wrap(
@@ -678,30 +808,36 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               // minimumSize: Size.fromWidth(180),
                             ),
                             onPressed: () async {
-                              var result = await showRatingDialog(context);
-                              if (result == true) {
-                                try {
-                                  FirebaseFirestore.instance
-                                      .collection('events')
-                                      .doc(widget.event?.id)
-                                      .update({
-                                    "rating": rating,
-                                  });
+                              if (ratedis == true) {
+                                showisRatedDialog();
+                              } else {
+                                var result = await showRatingDialog(context);
+                                if (result == true) {
+                                  try {
+                                    FirebaseFirestore.instance
+                                        .collection('events')
+                                        .doc(widget.event?.id)
+                                        .update({
+                                      "rating": rating,
+                                      "rated": true,
+                                    });
 
-                                  Fluttertoast.showToast(
-                                    msg: " Thanks for your feedback for event" +
-                                        widget.event?.get('name'),
-                                    toastLength: Toast.LENGTH_LONG,
-                                  );
-                                  Navigator.pop(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MyEvents()));
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                    msg: "somthing went wrong ",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                  );
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          " Thanks for your feedback for event" +
+                                              widget.event?.get('name'),
+                                      toastLength: Toast.LENGTH_LONG,
+                                    );
+                                    Navigator.pop(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MyEvents()));
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: "somthing went wrong ",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                    );
+                                  }
                                 }
                                 /* if (result == true) {
                                 try {
@@ -747,9 +883,49 @@ class _eventDetails extends State<eventDetailsForUesers> {
         });
   }
 
+  var exists;
+
+  getAVGrating() async {
+    print("hetttttttttttttttttttttavg");
+    exists = await FirebaseFirestore.instance
+        .collection('events')
+        //.where('uid', isEqualTo: widget.event?.id)
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          ratingAVG += double.parse(element.data()['rating'].toString());
+
+          print('rating: $ratingAVG');
+
+          ratingCounter = event.docs.length;
+          print("9999999 avh");
+        });
+      });
+    });
+  }
+  // RetAVGratingi() async {
+  //  print("hetttttttttttttttttttttavg");
+  /// exists = await FirebaseFirestore.instance
+  //   .collection('events')
+
+  // .where('uid', isEqualTo: widget.event?.id)
+  // .snapshots()
+  /*   .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          ratingAVG += double.parse(element.data()['rating'].toString());
+          print('rating: $ratingAVG');
+          print("9999999");
+          ratingCounter = event.docs.length;
+        });
+      });
+    }); */
+  //}
+
   Widget buildRating() => RatingBar.builder(
         // initialRating: widget.event?.get('Rating'),
-        initialRating: rating,
+        initialRating: ratingAVG / ratingCounter,
         glow: true,
         //ignoreGestures: true,
         //glowColor: ,
@@ -873,6 +1049,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                   onRatingUpdate: (value) {
                     setState(() {
                       rating = value;
+                      rated = true;
                     });
                     // print(rating);
                   },
@@ -942,6 +1119,36 @@ class _eventDetails extends State<eventDetailsForUesers> {
         });
   }
 
+  showisRatedDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Rating Event',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      content: Text(
+        'You already rated this event.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
   String _textFromFile = "";
   late DocumentSnapshot documentList;
   // will return eventCreator name
@@ -970,18 +1177,18 @@ class _eventDetails extends State<eventDetailsForUesers> {
 
   /* QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("collection").get();
     var list = querySnapshot.docs; */
-  Future getDocs() async {
+  /* Future getDocs() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection("events").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
       // print(a.documentID);
     }
-  }
+  } */
 
 // her
-  var collection;
-  RatingArg() async {
+  /* var collection;
+  RetAVGrating() async {
     collection = await FirebaseFirestore.instance
         .collection('events')
         .where('eventID', isEqualTo: widget.event?.id)
@@ -996,12 +1203,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
       });
     });
 
-    //documentList = await collection.get();
-
-    /*  for (var doc in documentList.docs()) {
-      // await doc.reference.update({"name": name, "imageUrl": img});
-    } */
+   
   }
+ */
+
 }
 
 // Set<Polyline> _polylines = Set<Polyline>();
