@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/services/database.dart';
+import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/loading.dart';
 
 class Comments extends StatefulWidget {
@@ -47,51 +50,51 @@ class _CommentsState extends State<Comments> {
                   final now = DateTime.now();
                   final past = document['timePosted'].toDate();
 
-                  final differenceDays =
-                      now.difference(past).inDays;
-                  final differenceHours =
-                      now.difference(past).inHours;
-                  final differenceMinutes =
-                      now.difference(past).inMinutes;
-                  final differenceSeconds =
-                      now.difference(past).inSeconds;
-                  final differenceMS =
-                      now.difference(past).inMilliseconds;
-                  String ago = "";
+                                final differenceDays =
+                                    now.difference(past).inDays;
+                                final differenceHours =
+                                    now.difference(past).inHours;
+                                final differenceMinutes =
+                                    now.difference(past).inMinutes;
+                                final differenceSeconds =
+                                    now.difference(past).inSeconds;
+                                final differenceMS =
+                                    now.difference(past).inMilliseconds;
+                                String ago = "";
 
-                  if (differenceDays == 0) {
-                    if (differenceHours == 0) {
-                      if (differenceMinutes == 0) {
-                        if (differenceSeconds == 0) {
-                          if (differenceMS == 0) {
-                            ago = "now";
-                          } else {
-                            ago = differenceMS.toString() + "ms";
-                          }
-                        } else {
-                          ago =
-                              differenceSeconds.toString() + "s";
-                        }
-                      } else {
-                        ago = differenceMinutes.toString() + "m";
-                      }
-                    } else {
-                      ago = differenceHours.toString() + "h";
-                    }
-                  } else {
-                    var months;
-                    if (differenceDays > 30) {
-                      months = differenceDays / 30;
-                      ago = ((months).floor()).toString() + "mo";
-                      var year;
-                      if (months >= 12) {
-                        year = months / 12;
-                        ago = year.floor().toString() + "y";
-                      }
-                    } else {
-                      ago = differenceDays.toString() + "d";
-                    }
-                  }
+                                if (differenceDays == 0) {
+                                  if (differenceHours == 0) {
+                                    if (differenceMinutes == 0) {
+                                      if (differenceSeconds == 0) {
+                                        if (differenceMS == 0) {
+                                          ago = "now";
+                                        } else {
+                                          ago = differenceMS.toString() + "ms";
+                                        }
+                                      } else {
+                                        ago =
+                                            differenceSeconds.toString() + "s";
+                                      }
+                                    } else {
+                                      ago = differenceMinutes.toString() + "m";
+                                    }
+                                  } else {
+                                    ago = differenceHours.toString() + "h";
+                                  }
+                                } else {
+                                  var months;
+                                  if (differenceDays > 30) {
+                                    months = differenceDays / 30;
+                                    ago = ((months).floor()).toString() + "mo";
+                                    var year;
+                                    if (months >= 12) {
+                                      year = months / 12;
+                                      ago = year.floor().toString() + "y";
+                                    }
+                                  } else {
+                                    ago = differenceDays.toString() + "d";
+                                  }
+                                }
         return Padding(
           padding: const EdgeInsets.all(8),
           //  const EdgeInsets.only(right: 70),
@@ -186,26 +189,48 @@ class _CommentsState extends State<Comments> {
                         ),
                       ]),
                                 Container(
-                                  padding: EdgeInsets.only(top: 5),
+                                  padding: EdgeInsets.only(top: 5, bottom: 9),
                                   //width: MediaQuery.of(context).size.width ,// /2,
                                 child: Row( children:[
                                 Expanded(
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
-                                  child: Text("Delete Comment",
+                                  child: Text("Delete ",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),),
-                                  onPressed: (){},
+                                   onPressed: ()async{
+                               
+                                     var result = await showAdminDeleteCommentDialog( context,   document['name']);
+                                      try {
+                                     if(result){
+                                     await DatabaseService(uid:doc.id)
+                                    .deleteReportedComment();
+
+                                    Fluttertoast.showToast(
+                                msg:  document['name'] +
+                                    "'s commente deleted successfully   ",
+                                toastLength: Toast.LENGTH_LONG,
+                              );}
+                              } catch (e) {
+                              // fail msg
+                              Fluttertoast.showToast(
+                                msg: "Somthing went wrong ",
+                                toastLength: Toast.LENGTH_SHORT,
+                              );
+                            }
+                                      
+
+                                  },
                                   style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.orange[300]),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(
-                                EdgeInsets.fromLTRB(15, 15, 15, 15))),))),
+                                EdgeInsets.fromLTRB(35, 10, 35, 10))),))),
                                    Expanded(
                     child: Align(
                         alignment: Alignment.bottomCenter,
@@ -215,7 +240,29 @@ class _CommentsState extends State<Comments> {
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),),
-                                  onPressed: (){},
+                                  onPressed: ()async{
+                                   
+                                     var result = await showAdminIgnoreCommentDialog( context,   document['name']);
+                                      try {
+                                     if(result){
+                                     await DatabaseService(uid:doc.id)
+                                    .ignoreReportedComment();
+
+                                    Fluttertoast.showToast(
+                                msg:  document['name'] +
+                                    "'s comment ignored successfully ",
+                                toastLength: Toast.LENGTH_LONG,
+                              );}
+                              } catch (e) {
+                              // fail msg
+                              Fluttertoast.showToast(
+                                msg: "Somthing went wrong ",
+                                toastLength: Toast.LENGTH_SHORT,
+                              );
+                            }
+                                      
+
+                                  },
                                   style: ButtonStyle(
                                     
                             backgroundColor:
@@ -223,9 +270,9 @@ class _CommentsState extends State<Comments> {
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(
-                                EdgeInsets.fromLTRB(35, 15, 35, 15))),)))]))
+                                EdgeInsets.fromLTRB(35, 10, 35, 10))),)))]))
                              // ],
-                            //),
+                            //),xikzeR8uFYZBM6fbKQcYXqlZ8483
           ]),
                     ),
                 );

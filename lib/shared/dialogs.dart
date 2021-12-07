@@ -74,96 +74,11 @@ Future<bool> showDispproveDialog(BuildContext context) async {
     ),
   );
 }
-
-// return showDialog<void>(
-//   context: context,
-//   barrierDismissible: false, // user must tap button!
-//   builder: (BuildContext context) {
-//     return AlertDialog(
-//       title: const Text('Send event?'),
-//       content: SingleChildScrollView(
-//         child: ListBody(
-//           children: const <Widget>[
-//             Text("The event request will now be sent for approval."),
-//             Text('Are you sure you want to continue?"'),
-//           ],
-//         ),
-//       ),
-//       actions: <Widget>[
-//         TextButton(
-//           child: const Text('No'),
-//           onPressed: () {
-//             Navigator.pop(context, false);
-//           },
-//         ),
-//         TextButton(
-//           child: const Text('Send event'),
-//           onPressed: () {
-//             Navigator.pop(context, true);
-//           },
-//         ),
-//       ],
-//     );
-//   },
-// );
-//late GoogleMapController _controller;
 void _onMapCreated(GoogleMapController _cntlr) {
   GoogleMapController _controller = _cntlr;
 }
 
-LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
-// Future<bool> showMapdialog(BuildContext context, List<Marker> myMarker,
-//     Set<Polyline> _polylines) async {
-//   return await showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           content: Stack(
-//             overflow: Overflow.visible,
-//             children: <Widget>[
-//               Positioned(
-//                 right: -40.0,
-//                 top: -40.0,
-//                 child: InkResponse(
-//                   onTap: () {
-//                     Navigator.of(context, rootNavigator: true).pop('dialog');
-//                   },
-//                   child: InkWell(
-//                     onTap: () {
-//                       Navigator.of(context, rootNavigator: true)
-//                           .pop('dialog'); //do what you want here
-//                     },
-//                     child: CircleAvatar(
-//                       child: Icon(Icons.close),
-//                       backgroundColor: Colors.deepOrange,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 500,
-//                 width: 450,
-//                 child: GoogleMap(
-//                   onMapCreated: _onMapCreated,
-//                   markers: Set.from(myMarker),
-//                   polylines: Set<Polyline>.of(_polylines), //_polylines,
-//                   myLocationEnabled: true,
-//                   compassEnabled: true,
-//                   zoomControlsEnabled: true,
-//                   mapToolbarEnabled: true,
-//                   trafficEnabled: false,
-//                   zoomGesturesEnabled: true,
-//                   initialCameraPosition: CameraPosition(
-//                     target: _initialcameraposition,
-//                     zoom: 10.0,
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       });
-// }
+
 
 Future<bool> showMapdialogAdmin(
     BuildContext context, List<Marker> myMarker, LatLng markerPosition ) async {
@@ -333,6 +248,49 @@ Future<bool> showEditEventApproved(BuildContext context) async {
     ),
   );
 }
+Future<bool> showAdminIgnoreCommentDialog(BuildContext context, String name) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Ignore comment"),
+      content: Text("Are you sure you want to ignore $name's comment ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+Future<bool> showAdminDeleteCommentDialog(BuildContext context, String name) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Ignore comment"),
+      content: Text("Are you sure you want to delete $name's comment ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
 
   // return showDialog<void>(
   //   context: context,
