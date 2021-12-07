@@ -47,13 +47,15 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
         currentIndex: _pageIndex,
         onTap: onTabTapped,
         // backgroundColor: Colors.white,
-        selectedIconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.orange[200],
+        selectedIconTheme: IconThemeData(color: Colors.orange[300]),
+        backgroundColor: Colors.white,
         selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.orange[300],
         //unselectedItemColor: Colors.green,
         type: BottomNavigationBarType.fixed,
+        unselectedIconTheme: IconThemeData(color: Colors.black),
+        unselectedItemColor: Colors.white70,
 
         showSelectedLabels: true,
         showUnselectedLabels: false,
@@ -127,7 +129,7 @@ class _MyBottomBarDemoState extends State<MyBottomBarDemo> {
 //             backgroundColor: Colors.grey[200],
 //             selectedLabelStyle: TextStyle(fontFamily: 'Comfortaa'),
 
-//             selectedItemColor: Colors.deepOrange[400],
+//             selectedItemColor: Colors.deepOrange[300],
 //             //unselectedItemColor: Colors.green,
 //             type: BottomNavigationBarType.fixed,
 

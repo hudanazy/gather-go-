@@ -66,6 +66,48 @@ class _eventDetails extends State<eventDetails> {
               padding: const EdgeInsets.only(bottom: 5.0),
               //   child: ArcBannerImage(),
             ),
+
+            ClipPath(
+              child: Stack(children: [
+                widget.event?.get('imageUrl') != ''
+                    ? Ink.image(
+                        image: NetworkImage(
+                          widget.event?.get('imageUrl'),
+                        ),
+                        height: 230,
+                        width: 400,
+                        fit: BoxFit.cover,
+                        //width: 160,
+                      )
+                    : Image.asset(
+                        'images/evv.jpg',
+                        //   width: 200,
+                        height: 230,
+                        width: 400,
+                        fit: BoxFit.cover,
+                      ),
+                // IconButton(
+                //   color: widget.event?.get('imageUrl') != ''
+                //       ? Colors.white
+                //       : Colors.black,
+                //   icon: new Icon(Icons.arrow_back_ios),
+                //   iconSize: 30,
+                //   onPressed: () {
+                //     Navigator.pop(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => HomeScreen()));
+                //   },
+                // ),
+              ]),
+
+              // Image.asset(
+              //   'images/logo1.png',
+              //   width: 400,
+              //   height: 230.0,
+              //   fit: BoxFit.cover,
+              // ),
+            ),
             Row(children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
@@ -83,7 +125,7 @@ class _eventDetails extends State<eventDetails> {
                 child: Text(
                   widget.event?.get('name') + '   ',
                   style: TextStyle(
-                      color: Colors.orange[400],
+                      color: Colors.orange[300],
                       fontFamily: 'Comfortaa',
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
@@ -185,7 +227,7 @@ class _eventDetails extends State<eventDetails> {
                       ),
                       //color: Colors.deepOrange,
                       onPressed: () {
-                        showMapdialogAdmin(context, myMarker);
+                        showMapdialogAdmin(context, myMarker, markerPosition);
                       },
                       //child: Text("see the location"),
                     ),
@@ -199,7 +241,7 @@ class _eventDetails extends State<eventDetails> {
                         child: ElevatedButton(
                           child: Text('Disapprove',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Comfortaa',
                                   fontSize: 16)),
@@ -208,18 +250,8 @@ class _eventDetails extends State<eventDetails> {
                             if (result == true) {
                               try {
                                 await DatabaseService(uid: widget.event?.id)
-                                    .disapproveEvent(
-                                  userID,
-                                  widget.event?.get('name'),
-                                  widget.event?.get('description'),
-                                  widget.event?.get('timePosted'),
-                                  attendeeNum,
-                                  widget.event?.get('date'),
-                                  widget.event?.get('time'),
-                                  category,
-                                  widget.event?.get('lat'),
-                                  widget.event?.get('long'),
-                                );
+                                 .disapproveEvent();
+                                
                                 // success msg + redirect to adminEvent
 
                                 Fluttertoast.showToast(
@@ -243,7 +275,7 @@ class _eventDetails extends State<eventDetails> {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.red[300]),
+                                  MaterialStateProperty.all(Colors.orange[300]),
                               foregroundColor:
                                   MaterialStateProperty.all(Colors.white),
                               padding: MaterialStateProperty.all(
@@ -255,7 +287,7 @@ class _eventDetails extends State<eventDetails> {
                       child: ElevatedButton(
                         child: Text('Approve',
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Comfortaa',
                                 fontSize: 16)),
@@ -264,18 +296,9 @@ class _eventDetails extends State<eventDetails> {
                           if (result == true) {
                             try {
                               await DatabaseService(uid: widget.event?.id)
-                                  .approveEvent(
-                                userID,
-                                widget.event?.get('name'),
-                                widget.event?.get('description'),
-                                widget.event?.get('timePosted'),
-                                attendeeNum,
-                                widget.event?.get('date'),
-                                widget.event?.get('time'),
-                                category,
-                                widget.event?.get('lat'),
-                                widget.event?.get('long'),
-                              );
+                             
+                                  .approveEvent();
+                             
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",
@@ -296,7 +319,7 @@ class _eventDetails extends State<eventDetails> {
                         },
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.green[300]),
+                                MaterialStateProperty.all(Colors.orange[300]),
                             foregroundColor:
                                 MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(

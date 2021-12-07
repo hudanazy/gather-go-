@@ -4,7 +4,7 @@ import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/loading.dart';
 
 class Comments extends StatefulWidget {
-  const Comments({ Key? key }) : super(key: key);
+  const Comments({Key? key}) : super(key: key);
 
   @override
   _CommentsState createState() => _CommentsState();
