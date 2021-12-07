@@ -189,48 +189,44 @@ class _CommentsState extends State<Comments> {
                                   padding: EdgeInsets.only(top: 5),
                                   //width: MediaQuery.of(context).size.width ,// /2,
                                 child: Row( children:[
-                                ElevatedButton(
+                                Expanded(
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
                                   child: Text("Delete Comment",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),),
                                   onPressed: (){},
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.only(top: 15, bottom: 15),
-                                   primary: Colors.orange[400],
-                                   shape: RoundedRectangleBorder(
-                                     side: BorderSide(
-                                       width: 0.5,
-                                       color: Colors.white),
-                                    borderRadius:
-                                        BorderRadius.only(topLeft: Radius.circular(15),
-                                        bottomLeft:  Radius.circular(10),) ,
-                                    ),
-                                    ),),
-                                    ElevatedButton(
+                                  style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.orange[300]),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(15, 15, 15, 15))),))),
+                                   Expanded(
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child:   ElevatedButton(
                                   child: Text("Ignore",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),),
                                   onPressed: (){},
-                                  style: ElevatedButton.styleFrom(
-                                    //minimumSize: Size.infinite,
-                                    padding: EdgeInsets.only(top: 15, bottom: 15),
-                                   primary: Colors.orange[400],
-                                   shape: RoundedRectangleBorder(
-                                     side: BorderSide(
-                                       width: 0.5,
-                                       color: Colors.white),
-                                    borderRadius:
-                                        BorderRadius.only(topRight: Radius.circular(15), 
-                                        bottomRight:  Radius.circular(10),) ,
-                                    ),
-                                    ),)]))
+                                  style: ButtonStyle(
+                                    
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.orange[300]),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(35, 15, 35, 15))),)))]))
                              // ],
                             //),
-                ]),
+          ]),
                     ),
                 );
               }
