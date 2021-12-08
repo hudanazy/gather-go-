@@ -16,6 +16,7 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   var _enteredMessage = "";
+  List likeList = [];
 
   dynamic _controller;
   @override
@@ -75,7 +76,7 @@ class _NewMessageState extends State<NewMessage> {
                             imageUrl,
                             widget.event!.id,
                             0,
-                            0,
+                            likeList,
                             DateTime.now());
                         _controller.clear();
                         setState(() {

@@ -30,22 +30,21 @@ class DatabaseService {
       //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
-Future? disapproveEvent(
-  
-) async {
-  return await eventCollection.doc(uid).update({
-                                      'approved': false,
-                                      "adminCheck": true,
-                                      });
-}
-Future? approveEvent(
-  
-) async {
-  return await eventCollection.doc(uid).update({
-                                      'approved': true,
-                                      "adminCheck": true,
-                                      });
-}
+
+  Future? disapproveEvent() async {
+    return await eventCollection.doc(uid).update({
+      'approved': false,
+      "adminCheck": true,
+    });
+  }
+
+  Future? approveEvent() async {
+    return await eventCollection.doc(uid).update({
+      'approved': true,
+      "adminCheck": true,
+    });
+  }
+
   Future disapproveEvent2(
       String? userID,
       String? name,
@@ -156,7 +155,7 @@ Future? approveEvent(
   }
 
   addCommentData(String text, String uid, String name, String imageUrl,
-      String eventID, int likes, int dislikes, DateTime timePosted) {
+      String eventID, int likes, List likeList, DateTime timePosted) {
     commentCollection.add({
       "text": text,
       "uid": uid,
@@ -164,7 +163,7 @@ Future? approveEvent(
       "imageUrl": imageUrl,
       "eventID": eventID,
       "likes": likes,
-      "dislikes": dislikes,
+      "likeList": likeList,
       "timePosted": timePosted
     });
   }
