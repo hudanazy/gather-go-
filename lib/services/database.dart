@@ -42,9 +42,7 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
-        
-      List<String> searchDescription =
-        []; 
+    List<String> searchDescription = [];
     String temp = "";
     for (var i = 0; i < description!.length; i++) {
       if (description[i] == " ") {
@@ -54,9 +52,9 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
 
-    temp="";
+    temp = "";
     for (var i = 0; i < name!.length; i++) {
       if (name[i] == " ") {
         temp = "";
@@ -96,8 +94,7 @@ class DatabaseService {
       String? category,
       double? lat,
       double? long) async {
-      List<String> searchDescription =
-        []; 
+    List<String> searchDescription = [];
     String temp = "";
 
     for (var i = 0; i < description!.length; i++) {
@@ -108,9 +105,9 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
 
-    temp="";
+    temp = "";
     for (var i = 0; i < name!.length; i++) {
       if (name[i] == " ") {
         temp = "";
@@ -140,7 +137,7 @@ class DatabaseService {
   }
 
   addCommentData(String text, String uid, String name, String imageUrl,
-      String eventID, int likes, int dislikes, DateTime timePosted) {
+      String eventID, int likes, List likeList, DateTime timePosted) {
     commentCollection.add({
       "text": text,
       "uid": uid,
@@ -148,7 +145,7 @@ class DatabaseService {
       "imageUrl": imageUrl,
       "eventID": eventID,
       "likes": likes,
-      "dislikes": dislikes,
+      "likeList": likeList,
       "timePosted": timePosted
     });
   }
@@ -170,7 +167,7 @@ class DatabaseService {
     List<String> searchDescription =
         []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
     String temp = "";
-  List<String> nameLowerCase =[];
+    List<String> nameLowerCase = [];
     for (var i = 0; i < description.length; i++) {
       if (description[i] == " ") {
         temp = "";
@@ -179,7 +176,7 @@ class DatabaseService {
         searchDescription.add(temp.toLowerCase());
       }
     }
-    temp="";
+    temp = "";
     for (var i = 0; i < name.length; i++) {
       if (name[i] == " ") {
         temp = "";
@@ -188,7 +185,7 @@ class DatabaseService {
         nameLowerCase.add(temp.toLowerCase());
       }
     }
-    
+
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -231,7 +228,6 @@ class DatabaseService {
 
   //user booked events
 
-
   // addBookedEventToProfile(
   //   String eventUid
   //   ) {
@@ -239,7 +235,6 @@ class DatabaseService {
   //     "eventUid": eventUid,
   //   });
   // }
-
 
 //get user stream
   Stream<List<ProfileOnScreen>?> get profiles {
@@ -285,7 +280,6 @@ class DatabaseService {
       imageUrl: snapshot.get('imageUrl') ?? '',
     );
   }
-  
 
   EventInfo _eventDataFromSnapshot(DocumentSnapshot snapshot) {
     return EventInfo(

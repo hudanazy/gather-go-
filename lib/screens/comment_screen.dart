@@ -30,8 +30,7 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<NewUser?>(context);
-    bool isLiked = false;
-    int likeCount = 17;
+    final user2 = Provider.of<NewUser?>(context, listen: false);
 
     // commenter(widget.user!.id);
     double width = MediaQuery.of(context).size.width;
@@ -133,6 +132,13 @@ class _CommentScreenState extends State<CommentScreen> {
                               children:
                                   snapshot.data.docs.map<Widget>((document) {
                                 DocumentSnapshot uid = document;
+                                int likeCount = document['likes'];
+                                List list = document['likeList'];
+                                bool isLiked = false;
+                                if (list.contains(user!.uid)) {
+                                  isLiked = true;
+                                }
+
                                 final now = DateTime.now();
                                 final past = document['timePosted'].toDate();
 
@@ -254,13 +260,54 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   Text(ago),
                                                   Text(' '),
                                                   LikeButton(
-                                                    size: 20,
-                                                    isLiked: isLiked,
-                                                    likeCount: likeCount,
-                                                    countBuilder: (likeCount,
-                                                        isLiked, text) {},
-                                                  ),
-                                                  // Text('0'),
+                                                      size: 20,
+                                                      isLiked: isLiked,
+                                                      likeCount: likeCount,
+                                                      countBuilder: (likeCount,
+                                                          isLiked, text) {
+                                                        return Text(
+                                                          text,
+                                                          style: TextStyle(
+                                                            color: isLiked
+                                                                ? Colors.black
+                                                                : Colors.grey,
+                                                          ),
+                                                        );
+                                                      },
+                                                      onTap: (isLiked) async {
+                                                        if (!isLiked) {
+                                                          list.add(user.uid);
+                                                          likeCount++;
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "comments")
+                                                              .doc(uid.id)
+                                                              .update({
+                                                            "likeList": list,
+                                                            "likes": likeCount,
+                                                            "text": "add"
+                                                          });
+                                                          isLiked = true;
+                                                          return true;
+                                                        }
+                                                        if (isLiked) {
+                                                          list.remove(user.uid);
+                                                          likeCount--;
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "comments")
+                                                              .doc(uid.id)
+                                                              .update({
+                                                            "likeList": list,
+                                                            "likes": likeCount,
+                                                            "text": "remove"
+                                                          });
+                                                          isLiked = false;
+                                                          return false;
+                                                        }
+                                                      }),
                                                   IconButton(
                                                     onPressed: () async {},
                                                     icon: Icon(Icons.report),
