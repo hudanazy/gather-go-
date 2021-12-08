@@ -11,8 +11,10 @@ import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../NotifactionManager.dart';
+import 'MyEvents.dart';
 
 // ignore: camel_case_types
 class eventDetailsForUesers extends StatefulWidget {
@@ -25,6 +27,12 @@ class eventDetailsForUesers extends StatefulWidget {
 
 // ignore: camel_case_types
 class _eventDetails extends State<eventDetailsForUesers> {
+  double rating = 0;
+  bool ratedBefore = false;
+  int ratingCounter = 0;
+  double ratingAVG = 0;
+  bool rated = false;
+
   // LocationData? currentLocation;
   // var location = new Location();
   // String error = "";
@@ -67,6 +75,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
             // .orderBy("timePosted")
             .where('eventID', isEqualTo: widget.event?.id)
             .snapshots();
+
     // var curLat = currentLocation?.latitude ?? 0;
     // var curLong = currentLocation?.longitude ?? 0;
     int attendeeNum = widget.event?.get('attendees');
@@ -74,6 +83,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
     var eventDate = widget.event?.get("browseDate");
+    // double RatingNum = widget.event!.get('rating');
+    bool ratedis = widget.event!.get('rated');
+
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
@@ -187,6 +199,38 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       ),
                     )
                   ]),
+                  Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: <Widget>[
+                          //  if (ratingCounter > 0)
+                          RatingBar.builder(
+                            itemSize: 15,
+                            initialRating: ratingAVG / ratingCounter,
+                            glow: true,
+                            ignoreGestures: true,
+                            minRating: 1,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (value) {},
+                          ),
+                          if (ratingCounter > 0)
+                            InkWell(
+                              child: Text(
+                                '($ratingCounter)',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            )
+                        ],
+                      )),
+
+//--------------
+
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Edescription(widget.event?.get('description')),
@@ -430,12 +474,146 @@ class _eventDetails extends State<eventDetailsForUesers> {
                             },
                           ),
                         ],
-                      ))
+                      )),
+
+                  Padding(
+                      padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.star_rate,
+                              color: Colors.yellow,
+                            ),
+                            label: Text("Rate!",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfortaa',
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              // minimumSize: Size.fromWidth(180),
+                            ),
+                            onPressed: () async {
+                              //----------------
+                              //  var ISRATED = getRated(userID);
+                              if (ratedis == false) {
+                                // ==currantuser
+                                //  if (rated == true)
+                                showisRatedDialog();
+                              }
+                              /*  if (!rated==false) {
+                                Fluttertoast.showToast(
+                                  msg: " Please rate this event" +
+                                      widget.event?.get('name'),
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                               // Navigator.pop(context);  } */
+                              else {
+                                var result = await showRatingDialog(context);
+                                if (result == true) {
+                                  try {
+                                    FirebaseFirestore.instance
+                                        .collection('events')
+                                        .doc(widget.event?.id)
+                                        .update({
+                                      "rating": rating,
+                                      "rated": true,
+                                    });
+/* 
+                                    if (!rated) {
+                                      Fluttertoast.showToast(
+                                        msg: " Please rate this event" +
+                                            widget.event?.get('name'),
+                                        toastLength: Toast.LENGTH_LONG,
+                                      );
+                                      Navigator.pop(context); */
+
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          " Thanks for your feedback for event" +
+                                              widget.event?.get('name'),
+                                      toastLength: Toast.LENGTH_LONG,
+                                    );
+                                    Navigator.pop(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MyEvents()));
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: "somthing went wrong ",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                    );
+                                  }
+                                }
+                              }
+
+                              /* if (result == true) {
+                                try {
+                                  List list =
+                                      widget.event?.get('attendeesList');
+                                  list.add(currentUser);
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "bookedNumber": bookedNum + 1,
+                                    "attendeesList": list
+                                  });
+                                  // DatabaseService()
+                                  //     .addBookedEventToProfile(widget.event!.id);
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " booked successfully, you can view it in your profile",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                } catch (e) {
+                                  // fail msg
+                                  Fluttertoast.showToast(
+                                    msg: "Somthing went wrong ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                  );
+                                } */
+                            },
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
           );
+
+          // ignore: dead_code
         });
+  }
+
+  var exists;
+
+  getAVGrating() async {
+    print("hetttttttttttttttttttttavg");
+    exists = await FirebaseFirestore.instance
+        .collection('events')
+        //.where('uid', isEqualTo: widget.event?.id)
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          ratingAVG += double.parse(element.data()['rating'].toString());
+
+          print('rating: $ratingAVG');
+
+          ratingCounter = event.docs.length;
+          print("9999999 avh");
+          print('heerrrrrrrrrrrrAvg');
+        });
+      });
+    });
   }
 
   // Location _location = Location();
@@ -443,6 +621,104 @@ class _eventDetails extends State<eventDetailsForUesers> {
   // void _onMapCreated(GoogleMapController _cntlr) {
   //   _controller = _cntlr;
   // }
+
+  Future<bool> showRatingDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Rate This Event"),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'We would like to get your feedback about this event',
+              style: TextStyle(fontSize: 15),
+            ),
+            /* SizedBox(
+              height: 25,
+            ), */
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RatingBar.builder(
+                  itemSize: 30,
+                  initialRating: rating,
+                  glow: true,
+                  ignoreGestures: false,
+                  minRating: 1,
+                  updateOnDrag: true,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (value) {
+                    setState(() {
+                      rating = value;
+                      rated = true;
+                    });
+                  },
+                ),
+                //-----------------------
+                Text('  ${rating == 0 ? '' : rating}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    )),
+                /* Text(
+                  ' *',
+                  style: TextStyle(color: Colors.red),
+                ) */
+                //-----------------
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              child: Text("cancel",
+                  //             Text('Are you sure you want to continue?"'),,
+                  style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                Navigator.pop(context, false);
+              }),
+          TextButton(
+              child: Text("Ok", style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                if (!rated) {
+                  Fluttertoast.showToast(
+                    msg:
+                        " Please rate this event  " + widget.event?.get('name'),
+                    toastLength: Toast.LENGTH_LONG,
+                  );
+                } else
+                  Navigator.pop(context, true);
+              })
+        ],
+      ),
+    );
+  }
+
+  Future<bool> getRated(id) async {
+    var rated = await FirebaseFirestore.instance
+        .collection('events')
+        .doc('${FirebaseAuth.instance.currentUser!.uid}')
+        .get()
+        .then((value) {
+      return value.data()!['rated'];
+    });
+    return rated;
+  }
+
   eventBookedDialog() {
     AlertDialog alert = AlertDialog(
       title: Text(
@@ -453,6 +729,36 @@ class _eventDetails extends State<eventDetailsForUesers> {
       ),
       content: Text(
         'You already booked this event.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+      actions: [
+        TextButton(
+            child: Text("Ok", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            }),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
+  showisRatedDialog() {
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Rating Event',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      content: Text(
+        'You already rated this event.',
         style: TextStyle(
           fontSize: 18,
         ),
