@@ -41,7 +41,7 @@ class _CommentScreenState extends State<CommentScreen> {
         .snapshots();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: SecondaryAppBar(
         title: "Comments",
@@ -333,7 +333,7 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
         ],
       ),
-      bottomNavigationBar: NewMessage(
+      bottomSheet: NewMessage(
         event: widget.event,
         user: widget.user,
       ),

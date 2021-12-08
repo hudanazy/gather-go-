@@ -21,12 +21,24 @@ class DatabaseService {
 
   Future updateProfileData(String uid, String name, String status, String bio,
       String imageUrl) async {
+    List<String> searchName =
+        []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
+    String temp = "";
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        searchName.add(temp.toLowerCase());
+      }
+    }
     return await userCollection.doc(uid).set({
       "uid": uid,
       "name": name,
       "bio": bio,
       "status": status,
       "imageUrl": imageUrl,
+      "searchName": searchName
       //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }

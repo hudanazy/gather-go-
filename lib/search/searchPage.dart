@@ -45,123 +45,132 @@ class _SearchListState extends State<SearchList> {
 
     //var _controller = TextEditingController();
     return //MaterialApp(
-        //home: 
+        //home:
         DefaultTabController(
             length: tabNum,
             child: Scaffold(
-            appBar: MyAppBar(title: 'Search for events',),
-            body: Scaffold(
-              backgroundColor: Colors.white10,
-              resizeToAvoidBottomInset: false,
-              appBar: new AppBar(
-                  backgroundColor: appBarColor,
-                  elevation: 0,
-                  //centerTitle: true,
-                  bottom: tabs,
-                  title: TextField(
-                    onTap: (){
-                      setState(() {
-                        isSearchByCategory=false;
-                        appBarColor= Colors.white;
-                        tabNum = 2;
-                            isNotSearching = false;
-                            this.tabs = new TabBar(
-                              indicatorColor: Colors.orange[300],
-                              labelColor: Colors.black,
-                              labelStyle: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                fontSize: 22,
-                              ),
-                              tabs: [
-                                Tab(
-                                  text: "Name",
+                appBar: MyAppBar(
+                  title: 'Search',
+                ),
+                body: Scaffold(
+                    backgroundColor: Colors.white10,
+                    resizeToAvoidBottomInset: false,
+                    appBar: new AppBar(
+                        backgroundColor: appBarColor,
+                        elevation: 0,
+                        //centerTitle: true,
+                        bottom: tabs,
+                        title: TextField(
+                          onTap: () {
+                            setState(() {
+                              isSearchByCategory = false;
+                              appBarColor = Colors.white;
+                              tabNum = 3;
+                              isNotSearching = false;
+                              this.tabs = new TabBar(
+                                indicatorColor: Colors.orange[300],
+                                labelColor: Colors.black,
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 18,
                                 ),
-                                Tab(
-                                  text: "Description",
-                                ),
-                              ],
-                            );
-                            //this.actionIcon = 
-                      });
-                    },
-                              decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 15),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.orange.shade300,
-                                        width: 2),
+                                tabs: [
+                                  Tab(
+                                    text: "Event Name",
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 2),
+                                  Tab(
+                                    text: "Event Description",
                                   ),
-                                  hintText: "Search",
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Comfortaa',
+                                  Tab(
+                                    text: "User",
                                   ),
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: Colors.black,
-                                  )),
-                              onChanged: (val) {
-                                setState(() {
-                                  searchInput = val;
-                                });
-                              },
-                            ),
-                  actions: isSearchByCategory? null: <Widget>[ 
-                    new IconButton(
-                      padding: const EdgeInsets.only(right: 10, top: 22),
-                      //iconSize: 40,
-                      icon: new Icon(Icons.cancel,
-                                color: Colors.black, size: 27),
-                      onPressed: () {
-                        setState(() {
-                          // if (this.actionIcon.icon == Icons.search) {
-                          //   //this.appBarTitle = 
-                          // } else {
-                            FocusScope.of(context).unfocus();
-                            appBarColor= Colors.transparent;
-                            isSearchByCategory=true;
-                            searchInput = "";
-                            tabNum = 0;
-                            isNotSearching = true;
-                            this.tabs = new TabBar(
-                              indicatorColor: Colors.purple[600],
-                              labelColor: Colors.black,
-                              labelStyle: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                fontSize: 22,
+                                ],
+                              );
+                              //this.actionIcon =
+                            });
+                          },
+                          decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    color: Colors.orange.shade300, width: 2),
                               ),
-                              tabs: [],
-                            );
-                            // this.actionIcon = new Icon(Icons.search,
-                            //     color: Colors.black, size: 40);
-                            // this.appBarTitle = new Text('\nSearch ',
-                            //     style: TextStyle(
-                            //         color: Colors.black,
-                            //         fontFamily: 'Comfortaa',
-                            //         fontSize: 24,
-                            //         fontWeight: FontWeight.bold));
-                          }
-                        //}
-                        );
-                      },
-                    ),
-                  ]),
-              body: Container(child: isNotSearching
-                  ? buildCategory(
-                      context) // we can put catogory here and add new stream for description search
-                  : TabBarView(children: [
-                      buildResult(searchInput, context, UId),
-                      buildSearchByDescription(searchInput, context, UId),
-                    ]),
-                     )
-            ))//)
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 2),
+                              ),
+                              hintText: "Search",
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Comfortaa',
+                              ),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                              )),
+                          onChanged: (val) {
+                            setState(() {
+                              searchInput = val;
+                            });
+                          },
+                        ),
+                        actions: isSearchByCategory
+                            ? null
+                            : <Widget>[
+                                new IconButton(
+                                  padding:
+                                      const EdgeInsets.only(right: 10, top: 22),
+                                  //iconSize: 40,
+                                  icon: new Icon(Icons.cancel,
+                                      color: Colors.black, size: 27),
+                                  onPressed: () {
+                                    setState(() {
+                                      // if (this.actionIcon.icon == Icons.search) {
+                                      //   //this.appBarTitle =
+                                      // } else {
+                                      FocusScope.of(context).unfocus();
+                                      appBarColor = Colors.transparent;
+                                      isSearchByCategory = true;
+                                      searchInput = "";
+                                      tabNum = 0;
+                                      isNotSearching = true;
+                                      this.tabs = new TabBar(
+                                        indicatorColor: Colors.purple[600],
+                                        labelColor: Colors.black,
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'Comfortaa',
+                                          fontSize: 22,
+                                        ),
+                                        tabs: [],
+                                      );
+                                      // this.actionIcon = new Icon(Icons.search,
+                                      //     color: Colors.black, size: 40);
+                                      // this.appBarTitle = new Text('\nSearch ',
+                                      //     style: TextStyle(
+                                      //         color: Colors.black,
+                                      //         fontFamily: 'Comfortaa',
+                                      //         fontSize: 24,
+                                      //         fontWeight: FontWeight.bold));
+                                    }
+                                        //}
+                                        );
+                                  },
+                                ),
+                              ]),
+                    body: Container(
+                      child: isNotSearching
+                          ? buildCategory(
+                              context) // we can put catogory here and add new stream for description search
+                          : TabBarView(children: [
+                              buildResult(searchInput, context, UId),
+                              buildSearchByDescription(
+                                  searchInput, context, UId),
+                              buildUserResult(searchInput, context, UId)
+                            ]),
+                    ))) //)
             );
   }
 
@@ -196,7 +205,7 @@ class _SearchListState extends State<SearchList> {
                 return Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Text(
-                    "Sorry. We were not able to find a match\nTry Another Saerch",
+                    "Sorry. We were not able to find a match\nTry Another Search",
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -293,7 +302,7 @@ class _SearchListState extends State<SearchList> {
                 return Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Text(
-                    "Sorry. We were not able to find a match\nTry Another Saerch",
+                    "Sorry. We were not able to find a match\nTry Another Search",
                     textAlign: TextAlign.center,
                   ),
                   //heightFactor: 30,
@@ -327,6 +336,118 @@ class _SearchListState extends State<SearchList> {
                                       fontSize: 16,
                                     ),
                                   )),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.orange[300],
+                                  ),
+                                  onTap: () {
+                                    if (document['uid'] == uuuu) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyEventsDetails(
+                                                    event: uid,
+                                                  )));
+                                    } else
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  eventDetailsForUesers(
+                                                    event: uid,
+                                                  )));
+                                  },
+                                )));
+                      }).toList(),
+                    );
+            },
+          );
+  }
+
+  Widget buildUserResult(
+    String searchInput,
+    context,
+    String? UId,
+  ) {
+    String uuuu = FirebaseAuth.instance.currentUser!.uid;
+    bool isOnlySpace = false;
+    int j = 0; // counter of spaces number in searchInput
+    for (int i = 0; i < searchInput.length; i++) {
+      if (searchInput.substring(i, i + 1) == " ") j++;
+    }
+    if (j == searchInput.length) isOnlySpace = true;
+    searchInput = searchInput.trimLeft();
+    return isOnlySpace
+        ? Scaffold()
+        : StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('uesrInfo')
+                //  .where('approved', isEqualTo: true)
+                //.where('uid', isNotEqualTo: uuuu)
+                .where('searchName', arrayContains: searchInput.toLowerCase())
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: Loading());
+              }
+              if (snapshot.data.size == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Text(
+                    "Sorry. We were not able to find a match\nTry Another Search",
+                    textAlign: TextAlign.center,
+                  ),
+                  //heightFactor: 30,
+                );
+              }
+
+              return isOnlySpace
+                  ? Scaffold()
+                  : // to avoid search when the input space
+                  ListView(
+                      children: snapshot.data.docs.map<Widget>((document) {
+                        DocumentSnapshot uid = document;
+                        return Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(
+                                        width: 0.5, color: Colors.amber)),
+                                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                //color: Colors.grey[200],
+                                child: ListTile(
+                                  leading: ClipOval(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: document['imageUrl'] == ''
+                                          ? Image.asset(
+                                              'images/profile.png',
+                                              // width: 200,
+                                              //height: 200,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Ink.image(
+                                              image: NetworkImage(
+                                                  document['imageUrl']),
+                                              fit: BoxFit.cover,
+                                              // width: 160,
+                                              // height: 160,
+                                            ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    document['name'],
+                                    // textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Comfortaa',
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  subtitle: Text(document['bio']),
                                   trailing: Icon(
                                     Icons.arrow_forward_ios,
                                     color: Colors.orange[300],

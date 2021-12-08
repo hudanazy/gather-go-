@@ -468,7 +468,7 @@ class _eventEditFormState extends State<EidtEventForm> {
                                 onPressed: () async {
                                   // print("hi im here 1 $Name");
                                   if (image == null &&
-                                      widget.event?.get('imageUrl') == '') {
+                                      widget.event?.get('imageUrl') != '') {
                                     imageFile = widget.event?.get('imageUrl');
                                   }
                                   //image upload to storage
@@ -571,7 +571,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "searchDescription":
                                                 searchDescription,
                                             "attendees": attendeeNum,
-                                            "adminCheck": false
+                                            "adminCheck": false,
+                                            "imageUrl": imageFile
                                           });
                                         } else {
                                           FirebaseFirestore.instance
@@ -590,7 +591,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "searchDescription":
                                                 searchDescription,
                                             "browseDate": browseDate,
-                                            "adminCheck": false
+                                            "adminCheck": false,
+                                            "imageUrl": imageFile
                                           });
                                         }
 
