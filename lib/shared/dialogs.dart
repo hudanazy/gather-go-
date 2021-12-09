@@ -361,37 +361,71 @@ Future<bool> showEditEventApproved(BuildContext context) async {
   );
 }
 
-  // return showDialog<void>(
-  //   context: context,
-  //   barrierDismissible: false, // user must tap button!
-  //   builder: (BuildContext context) {
-  //     return AlertDialog(
-  //       title: const Text('Send event?'),
-  //       content: SingleChildScrollView(
-  //         child: ListBody(
-  //           children: const <Widget>[
-  //             Text("The event request will now be sent for approval."),
-  //             Text('Are you sure you want to continue?"'),
-  //           ],
-  //         ),
-  //       ),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           child: const Text('No'),
-  //           onPressed: () {
-  //             Navigator.pop(context, false);
-  //           },
-  //         ),
-  //         TextButton(
-  //           child: const Text('Send event'),
-  //           onPressed: () {
-  //             Navigator.pop(context, true);
-  //           },
-  //         ),
-  //       ],
-  //     );
-  //   },
-  // );
+Future<bool> showAdminIgnoreCommentDialog(
+    BuildContext context, String name) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Ignore comment"),
+      content: Text("Are you sure you want to ignore $name's comment ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
 
+Future<bool> showAdminDeleteCommentDialog(
+    BuildContext context, String name) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Ignore comment"),
+      content: Text("Are you sure you want to delete $name's comment ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
 
-
+Future<bool> showUserDeleteCommentDialog(
+    BuildContext context, String comment) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Delete comment"),
+      content: Text("Are you sure you want to delete '$comment' comment ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}

@@ -10,6 +10,7 @@ import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/services/database.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -191,8 +192,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                 //to get commenters current profile image
                                 // commenter(document['uid']);
 
-                                var currentUserID = FirebaseAuth.instance.currentUser!.uid;
-                                List userReported= uid.get('userReported');
+                                var currentUserID =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                List userReported = uid.get('userReported');
                                 if (userReported.contains(currentUserID))
                                   return Padding(padding: EdgeInsets.all(0));
 
@@ -315,36 +317,86 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           return false;
                                                         }
                                                       }),
-                                                       (document['uid']==currentUserID)?
-                                                        IconButton(
-                                                          icon: Icon(Icons.delete),
+                                                  (document['uid'] ==
+                                                          currentUserID)
+                                                      ? IconButton(
+                                                          icon: Icon(
+                                                              Icons.delete),
+                                                          color: Colors.grey,
+                                                          iconSize: 20,
+
+                                                          onPressed: () async {
+                                                            var result =
+                                                                await showUserDeleteCommentDialog(
+                                                                    context,
+                                                                    document[
+                                                                        'text']);
+                                                            try {
+                                                              if (result) {
+                                                                await DatabaseService(
+                                                                        uid: uid
+                                                                            .id)
+                                                                    .deleteReportedComment();
+
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                  msg:
+                                                                      "your comment deleted successfully   ",
+                                                                  toastLength: Toast
+                                                                      .LENGTH_LONG,
+                                                                );
+                                                              }
+                                                            } catch (e) {
+                                                              // fail msg
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                msg:
+                                                                    "Somthing went wrong ",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                              );
+                                                            }
+                                                          }, //delete code will be here
+                                                        )
+                                                      : IconButton(
+                                                          icon: Icon(
+                                                              Icons.report),
                                                           color: Colors.grey,
                                                           iconSize: 20,
                                                           onPressed: () async {
-                                                            //delete code will be here
-                                                          }
-                                                    ):IconButton(
-                                                    icon: Icon(Icons.report),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
-                                                    onPressed: () async {
-                                                      var result = await showReportCommentDialog(context);
-                                                      if (result == true) {
-                                                      int reportNumber= uid.get('reportNumber');
-                                                      
-                                                      userReported.add(user.uid);
-                                                      FirebaseFirestore.instance.collection('comments').doc(uid.id).update({
-                                                        'userReported': userReported,
-                                                        'reportNumber': reportNumber+1,
-                                                      });
-                                                      Fluttertoast.showToast(
-                                                        msg: 
-                                                            "Comment reported successfully",
-                                                        toastLength: Toast.LENGTH_LONG,
-                                                      );
-                                                      }
-                                                    },
-                                                  ),
+                                                            var result =
+                                                                await showReportCommentDialog(
+                                                                    context);
+                                                            if (result ==
+                                                                true) {
+                                                              int reportNumber =
+                                                                  uid.get(
+                                                                      'reportNumber');
+
+                                                              userReported.add(
+                                                                  user.uid);
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'comments')
+                                                                  .doc(uid.id)
+                                                                  .update({
+                                                                'userReported':
+                                                                    userReported,
+                                                                'reportNumber':
+                                                                    reportNumber +
+                                                                        1,
+                                                              });
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                msg:
+                                                                    "Comment reported successfully",
+                                                                toastLength: Toast
+                                                                    .LENGTH_LONG,
+                                                              );
+                                                            }
+                                                          },
+                                                        ),
                                                 ],
                                               ),
                                             ]),

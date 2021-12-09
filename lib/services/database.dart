@@ -393,4 +393,15 @@ class DatabaseService {
           browseDate: doc.get('browseDate') ?? '');
     }).toList();
   }
+
+  Future ignoreReportedComment() async {
+    return await commentCollection.doc(uid).update({
+      'reportNumber': 0,
+      'userReported': [],
+    });
+  }
+
+  Future deleteReportedComment() async {
+    return await commentCollection.doc(uid).delete();
+  }
 }
