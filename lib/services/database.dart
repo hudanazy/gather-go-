@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
@@ -90,6 +92,7 @@ class DatabaseService {
         nameLowerCase.add(temp.toLowerCase());
       }
     }
+
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -177,8 +180,8 @@ class DatabaseService {
       "likes": likes,
       "likeList": likeList,
       "timePosted": timePosted,
-      "userReported":[],
-      "reportNumber":0
+      "userReported": [],
+      "reportNumber": 0
     });
   }
 
@@ -219,6 +222,8 @@ class DatabaseService {
         nameLowerCase.add(temp.toLowerCase());
       }
     }
+    Random random = new Random();
+    int eventID = random.nextInt(90) + 1000;
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -237,7 +242,8 @@ class DatabaseService {
       "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "imageUrl": image,
-      "browseDate": browseDate
+      "browseDate": browseDate,
+      "eventID": eventID
     });
   }
 
