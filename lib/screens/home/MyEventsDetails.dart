@@ -245,29 +245,29 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       Icon(
                         Icons.person_rounded,
                       ),
-                      Text("   Created by "),
-                      ElevatedButton(
-                        child: Text(" $_textFromFile ",
-                            style: TextStyle(
-                              color: Colors.orange[300],
-                              fontFamily: 'Comfortaa',
-                              fontWeight: FontWeight.bold,
-                            )),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                        ),
-                        //color: Colors.deepOrange,
-                        onPressed: () {
-                          // ProfileForm();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => viewProfile(
-                                        user: documentList,
-                                      )));
-                        },
-                        //child: Text("see the location"),
-                      )
+                      Text("   Created by $_textFromFile (you) "),
+                      // ElevatedButton(
+                      //   child: Text(" $_textFromFile ",
+                      //       style: TextStyle(
+                      //         color: Colors.orange[300],
+                      //         fontFamily: 'Comfortaa',
+                      //         fontWeight: FontWeight.bold,
+                      //       )),
+                      //   style: ElevatedButton.styleFrom(
+                      //     primary: Colors.white,
+                      //   ),
+                      //   //color: Colors.deepOrange,
+                      //   onPressed: () {
+                      //     // ProfileForm();
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => viewProfile(
+                      //                   user: documentList,
+                      //                 )));
+                      //   },
+                      //   //child: Text("see the location"),
+                      // )
                     ]),
                   ),
 
