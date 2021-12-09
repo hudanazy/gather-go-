@@ -51,7 +51,7 @@ class _eventEditFormState extends State<EidtEventForm> {
   TextEditingController eventName = TextEditingController(); // 1
   TextEditingController eventDescription = TextEditingController();
   DateRangePickerController eventDate = DateRangePickerController();
-
+  TextEditingController eventAttendee = TextEditingController();
   //int _currentStep = 0;
   DateTime? dateo;
   TextEditingController? name;
@@ -77,6 +77,10 @@ class _eventEditFormState extends State<EidtEventForm> {
 
     eventDescription = TextEditingController.fromValue(
       TextEditingValue(text: widget.event?.get('description')),
+    );
+
+    eventAttendee = TextEditingController.fromValue(
+      TextEditingValue(text: widget.event!.get('attendees').toString()),
     );
   }
 
@@ -253,7 +257,9 @@ class _eventEditFormState extends State<EidtEventForm> {
                               width: 350,
                               height: 50,
                               child: TextFormField(
-                                initialValue: widget.event?.get('name'),
+                                controller: eventName,
+                                initialValue: eventData?.name,
+                                // initialValue: widget.event?.get('name'),
                                 maxLines: 1,
                                 decoration: InputDecoration(
                                   labelText: "Event Name ",
@@ -330,9 +336,10 @@ class _eventEditFormState extends State<EidtEventForm> {
                               width: 350,
                               height: 50,
                               child: TextFormField(
+                                controller: eventAttendee,
                                 maxLines: 1,
-                                initialValue:
-                                    widget.event?.get('attendees').toString(),
+                                initialValue: eventData?.attendees.toString(),
+                                // widget.event?.get('attendees').toString(),
                                 decoration: InputDecoration(
                                   labelText: "Attendee Number",
                                   labelStyle: (TextStyle(
