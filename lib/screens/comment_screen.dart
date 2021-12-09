@@ -256,6 +256,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(ago),
+                                                  SizedBox(
+                                                    width: 7,
+                                                  ),
                                                   LikeButton(
                                                       size: 20,
                                                       isLiked: isLiked,

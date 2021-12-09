@@ -345,7 +345,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                     ),
                                   ),
                                   content: Text(
-                                    'Do you want to unbook this event?',
+                                    'Are you sure you want to cancel your booking for this event?',
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -369,12 +369,12 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                             });
                                             Fluttertoast.showToast(
                                               msg: widget.event?.get('name') +
-                                                  " unbooked successfully",
+                                                  " Booking successfully canceled",
                                               toastLength: Toast.LENGTH_LONG,
                                             );
                                             Fluttertoast.showToast(
                                               msg: widget.event?.get('name') +
-                                                  " unbooked successfully",
+                                                  " Booking successfully canceled",
                                               toastLength: Toast.LENGTH_LONG,
                                             );
                                             Navigator.pop(
