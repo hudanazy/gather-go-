@@ -176,7 +176,9 @@ class DatabaseService {
       "eventID": eventID,
       "likes": likes,
       "likeList": likeList,
-      "timePosted": timePosted
+      "timePosted": timePosted,
+      "userReported":[],
+      "reportNumber":0
     });
   }
 

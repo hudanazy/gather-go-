@@ -3,11 +3,14 @@
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gather_go/Models/NewUser.dart';
 
 import 'package:gather_go/screens/home/eventDetailsForUsers.dart';
 import 'package:gather_go/screens/myAppBar.dart';
+import 'package:gather_go/shared/dialogs.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:provider/provider.dart';
 //import 'package:gather_go/shared/loading.dart';
@@ -187,6 +190,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                 }
                                 //to get commenters current profile image
                                 // commenter(document['uid']);
+
+                                var currentUserID = FirebaseAuth.instance.currentUser!.uid;
+                                List userReported= uid.get('userReported');
+                                if (userReported.contains(currentUserID))
+                                  return Padding(padding: EdgeInsets.all(0));
+
                                 return Card(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
@@ -306,11 +315,35 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           return false;
                                                         }
                                                       }),
-                                                  IconButton(
-                                                    onPressed: () async {},
+                                                       (document['uid']==currentUserID)?
+                                                        IconButton(
+                                                          icon: Icon(Icons.delete),
+                                                          color: Colors.grey,
+                                                          iconSize: 20,
+                                                          onPressed: () async {
+                                                            //delete code will be here
+                                                          }
+                                                    ):IconButton(
                                                     icon: Icon(Icons.report),
                                                     color: Colors.grey,
                                                     iconSize: 20,
+                                                    onPressed: () async {
+                                                      var result = await showReportCommentDialog(context);
+                                                      if (result == true) {
+                                                      int reportNumber= uid.get('reportNumber');
+                                                      
+                                                      userReported.add(user.uid);
+                                                      FirebaseFirestore.instance.collection('comments').doc(uid.id).update({
+                                                        'userReported': userReported,
+                                                        'reportNumber': reportNumber+1,
+                                                      });
+                                                      Fluttertoast.showToast(
+                                                        msg: 
+                                                            "Comment reported successfully",
+                                                        toastLength: Toast.LENGTH_LONG,
+                                                      );
+                                                      }
+                                                    },
                                                   ),
                                                 ],
                                               ),
