@@ -15,6 +15,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 Widget MyAppBarWidget(title, context) {
   return AppBar(
+      bottom: PreferredSize(
+          child: Container(
+            color: Colors.grey[300],
+            height: 1.0,
+          ),
+          preferredSize: Size.fromHeight(4.0)),
       title: Text(title,
           style: TextStyle(
               color: Colors.black,
@@ -22,7 +28,7 @@ Widget MyAppBarWidget(title, context) {
               fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 2)),
-      elevation: 4,
+      elevation: 0,
       toolbarHeight: 100,
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
@@ -61,13 +67,19 @@ class SecondaryAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 Widget MySecondaryAppBarWidget(title) {
   return AppBar(
+    bottom: PreferredSize(
+        child: Container(
+          color: Colors.grey[300],
+          height: 1.0,
+        ),
+        preferredSize: Size.fromHeight(4.0)),
     title: Text(title,
         style: TextStyle(
             color: Colors.black,
             fontFamily: 'Comfortaa',
             fontSize: 20,
             fontWeight: FontWeight.bold)),
-    elevation: 6,
+    elevation: 0,
     toolbarHeight: 100,
     backgroundColor: Colors.white,
     iconTheme: IconThemeData(

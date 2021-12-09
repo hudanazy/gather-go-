@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gather_go/Models/NewUser.dart';
+import 'package:gather_go/screens/authenticate/resetPassword.dart';
 import 'package:gather_go/screens/home/MyEventsDetails.dart';
+import 'package:gather_go/screens/home/profile_form.dart';
+import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 
 import 'package:gather_go/shared/loading.dart';
@@ -60,62 +63,67 @@ class _SearchListState extends State<SearchList> {
                         elevation: 0,
                         //centerTitle: true,
                         bottom: tabs,
-                        title: TextField(
-                          onTap: () {
-                            setState(() {
-                              isSearchByCategory = false;
-                              appBarColor = Colors.white;
-                              tabNum = 3;
-                              isNotSearching = false;
-                              this.tabs = new TabBar(
-                                indicatorColor: Colors.orange[300],
-                                labelColor: Colors.black,
-                                labelStyle: TextStyle(
-                                  fontFamily: 'Comfortaa',
-                                  fontSize: 18,
+                        title: Padding(
+                          padding: EdgeInsets.only(top: 16.0, bottom: 5.0),
+                          child: TextField(
+                            onTap: () {
+                              setState(() {
+                                isSearchByCategory = false;
+                                appBarColor = Colors.white;
+                                tabNum = 3;
+                                isNotSearching = false;
+                                this.tabs = new TabBar(
+                                  indicatorColor: Colors.orange[300],
+                                  labelColor: Colors.black,
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 12,
+                                  ),
+                                  tabs: [
+                                    Tab(
+                                      text: "Event Name",
+                                    ),
+                                    Tab(
+                                      text: "Event Description",
+                                    ),
+                                    Tab(
+                                      text: "User",
+                                    ),
+                                  ],
+                                );
+                                //this.actionIcon =
+                              });
+                            },
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 15),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey[200]!, width: 2),
                                 ),
-                                tabs: [
-                                  Tab(
-                                    text: "Event Name",
-                                  ),
-                                  Tab(
-                                    text: "Event Description",
-                                  ),
-                                  Tab(
-                                    text: "User",
-                                  ),
-                                ],
-                              );
-                              //this.actionIcon =
-                            });
-                          },
-                          decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.symmetric(vertical: 15),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide(
-                                    color: Colors.orange.shade300, width: 2),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2),
-                              ),
-                              hintText: "Search",
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Comfortaa',
-                              ),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.black,
-                              )),
-                          onChanged: (val) {
-                            setState(() {
-                              searchInput = val;
-                            });
-                          },
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey[200]!, width: 1),
+                                ),
+                                hintText: "Search",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontFamily: 'Comfortaa',
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.grey[800],
+                                )),
+                            onChanged: (val) {
+                              setState(() {
+                                searchInput = val;
+                              });
+                            },
+                          ),
                         ),
                         actions: isSearchByCategory
                             ? null
@@ -408,69 +416,65 @@ class _SearchListState extends State<SearchList> {
                   ListView(
                       children: snapshot.data.docs.map<Widget>((document) {
                         DocumentSnapshot uid = document;
+                        if (document['uid'] == uuuu) {
+                          return Padding(
+                            padding: const EdgeInsets.all(0),
+                          );
+                        }
                         return Padding(
                             padding: const EdgeInsets.all(10),
                             child: Card(
-                                elevation: 6,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: BorderSide(
-                                        width: 0.5, color: Colors.amber)),
+                                // elevation: 6,
+                                // shape: RoundedRectangleBorder(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     side: BorderSide(
+                                //         width: 0.5, color: Colors.amber)),
                                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 //color: Colors.grey[200],
                                 child: ListTile(
-                                  leading: ClipOval(
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: document['imageUrl'] == ''
-                                          ? Image.asset(
-                                              'images/profile.png',
-                                              // width: 200,
-                                              //height: 200,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Ink.image(
-                                              image: NetworkImage(
-                                                  document['imageUrl']),
-                                              fit: BoxFit.cover,
-                                              // width: 160,
-                                              // height: 160,
-                                            ),
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                    leading: ClipOval(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: document['imageUrl'] == ''
+                                            ? Image.asset(
+                                                'images/profile.png',
+                                                width: 65,
+                                                height: 65,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Ink.image(
+                                                image: NetworkImage(
+                                                    document['imageUrl']),
+                                                fit: BoxFit.cover,
+                                                width: 60,
+                                                height: 60,
+                                              ),
+                                      ),
                                     ),
-                                  ),
-                                  title: Text(
-                                    document['name'],
-                                    // textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Comfortaa',
-                                      fontSize: 16,
+                                    title: Text(
+                                      document['name'],
+                                      // textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Comfortaa',
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                  subtitle: Text(document['bio']),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.orange[300],
-                                  ),
-                                  onTap: () {
-                                    if (document['uid'] == uuuu) {
+                                    subtitle: Text(document['bio']),
+                                    trailing: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.grey[400],
+                                    ),
+                                    onTap: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MyEventsDetails(
-                                                    event: uid,
+                                              builder: (context) => viewProfile(
+                                                    user: uid,
                                                   )));
-                                    } else
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  eventDetailsForUesers(
-                                                    event: uid,
-                                                  )));
-                                  },
-                                )));
+                                    })));
                       }).toList(),
                     );
             },
