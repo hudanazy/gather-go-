@@ -166,7 +166,7 @@ LatLng _initialcameraposition = LatLng(24.708481, 46.752108);
 // }
 
 Future<bool> showMapdialogAdmin(
-    BuildContext context, List<Marker> myMarker, LatLng markerPosition ) async {
+    BuildContext context, List<Marker> myMarker, LatLng markerPosition) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -201,7 +201,7 @@ Future<bool> showMapdialogAdmin(
                   mapType: MapType.normal,
                   markers: Set.from(myMarker),
                   myLocationEnabled: true,
-                  indoorViewEnabled:true,
+                  indoorViewEnabled: true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   mapToolbarEnabled: true,
@@ -247,8 +247,58 @@ Future<bool> showBookDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
+      title: Text(
+        'Event booked',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      content:
+          Text("Are you sure you want to cancel your booking for this event?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
+Future<bool> showUnbookDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
       title: Text("Book event"),
       content: Text("Are you sure you want to book this event ?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
+Future<bool> showReportCommentDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Report Comment"),
+      content: Text("Are you sure you want to report this comment?"),
       actions: [
         TextButton(
             child: Text("No", style: TextStyle(color: Colors.grey)),
@@ -304,8 +354,7 @@ Future<bool> showEditEventApproved(BuildContext context) async {
         TextButton(
             child: Text("Ok", style: TextStyle(color: Colors.blue)),
             onPressed: () {
-              Navigator.pop(
-                  context);
+              Navigator.pop(context);
             }),
       ],
     ),
@@ -343,5 +392,6 @@ Future<bool> showEditEventApproved(BuildContext context) async {
   //     );
   //   },
   // );
+
 
 

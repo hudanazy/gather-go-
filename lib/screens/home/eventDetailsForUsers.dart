@@ -337,77 +337,95 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               List list = widget.event?.get('attendeesList');
                               var eventDate = widget.event?.get("browseDate");
                               if (list.contains(currentUser)) {
-                                AlertDialog alert = AlertDialog(
-                                  title: Text(
-                                    'Event booked',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  content: Text(
-                                    'Are you sure you want to cancel your booking for this event?',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        child: Text("Yes",
-                                            style:
-                                                TextStyle(color: Colors.blue)),
-                                        onPressed: () {
-                                          try {
-                                            List list = widget.event
-                                                ?.get('attendeesList');
-                                            list.remove(currentUser);
-                                            FirebaseFirestore.instance
-                                                .collection('events')
-                                                .doc(widget.event?.id)
-                                                .update({
-                                              "bookedNumber": bookedNum - 1,
-                                              "attendeesList": list
-                                            });
-                                            Fluttertoast.showToast(
-                                              msg: widget.event?.get('name') +
-                                                  " Booking successfully canceled",
-                                              toastLength: Toast.LENGTH_LONG,
-                                            );
-                                            Fluttertoast.showToast(
-                                              msg: widget.event?.get('name') +
-                                                  " Booking successfully canceled",
-                                              toastLength: Toast.LENGTH_LONG,
-                                            );
-                                            Navigator.pop(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Home()));
-                                          } catch (e) {
-                                            // fail msg
-                                            Fluttertoast.showToast(
-                                              msg: "Somthing went wrong ",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                            );
-                                          }
-                                        }),
-                                    TextButton(
-                                        child: Text("No",
-                                            style:
-                                                TextStyle(color: Colors.blue)),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Home()));
-                                        })
-                                  ],
-                                );
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return alert;
-                                    });
+                                var result = await showUnbookDialog(context);
+                                if (result == true) {
+                                  List list =
+                                      widget.event?.get('attendeesList');
+                                  list.remove(currentUser);
+                                  FirebaseFirestore.instance
+                                      .collection('events')
+                                      .doc(widget.event?.id)
+                                      .update({
+                                    "bookedNumber": bookedNum - 1,
+                                    "attendeesList": list
+                                  });
+                                  // DatabaseService()
+                                  //     .addBookedEventToProfile(widget.event!.id);
+                                  Fluttertoast.showToast(
+                                    msg: widget.event?.get('name') +
+                                        " Booking successfully canceled",
+                                    toastLength: Toast.LENGTH_LONG,
+                                  );
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                }
+
+                                // AlertDialog alert = AlertDialog(
+                                //   title: Text(
+                                //     'Event booked',
+                                //     style: TextStyle(
+                                //       color: Colors.red,
+                                //     ),
+                                //   ),
+                                //   content: Text(
+                                //     'Are you sure you want to cancel your booking for this event?',
+                                //     style: TextStyle(
+                                //       fontSize: 18,
+                                //     ),
+                                //   ),
+                                //   actions: [
+                                //     TextButton(
+                                //         child: Text("No",
+                                //             style:
+                                //                 TextStyle(color: Colors.grey)),
+                                //         onPressed: () {
+                                //           Navigator.pop(context, false);
+                                //         }),
+                                //     TextButton(
+                                //         child: Text("Yes",
+                                //             style:
+                                //                 TextStyle(color: Colors.blue)),
+                                //         onPressed: () {
+                                //           // try {
+                                //             List list = widget.event
+                                //                 ?.get('attendeesList');
+                                //             list.remove(currentUser);
+                                //             FirebaseFirestore.instance
+                                //                 .collection('events')
+                                //                 .doc(widget.event?.id)
+                                //                 .update({
+                                //               "bookedNumber": bookedNum - 1,
+                                //               "attendeesList": list
+                                //             });
+
+                                //             Fluttertoast.showToast(
+                                //               msg: widget.event?.get('name') +
+                                //                   " Booking successfully canceled",
+                                //               toastLength: Toast.LENGTH_LONG,
+                                //             );
+                                //             Navigator.pop(
+                                //                 context,
+                                //                 MaterialPageRoute(
+                                //                     builder: (context) =>
+                                //                         Home()));
+                                //             // Navigator.pop(context, true);
+                                //           // } catch (e) {
+                                //           //   // fail msg
+                                //           //   Fluttertoast.showToast(
+                                //           //     msg: "Somthing went wrong ",
+                                //           //     toastLength: Toast.LENGTH_SHORT,
+                                //           //   );
+                                //           // }
+                                //         }),
+                                //   ],
+                                // );
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (BuildContext context) {
+                                //       return alert;
+                                //     });
                               } else if (eventDate
                                   .toDate()
                                   .isBefore(DateTime.now())) {
