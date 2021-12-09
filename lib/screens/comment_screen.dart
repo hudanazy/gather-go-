@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 
 ///import 'package:gather_go/services/database.dart';
 import 'package:gather_go/screens/comments/new_message.dart';
+import "package:like_button/like_button.dart";
 
 class CommentScreen extends StatefulWidget {
   // const CommentScreen({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _CommentScreenState extends State<CommentScreen> {
         .snapshots();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: SecondaryAppBar(
         title: "Comments",
@@ -120,7 +121,6 @@ class _CommentScreenState extends State<CommentScreen> {
 
                             // child:
                             Container(
-                              
                           padding: EdgeInsets.only(
                             top: 10,
                           ), //right: 20
@@ -133,6 +133,13 @@ class _CommentScreenState extends State<CommentScreen> {
                               children:
                                   snapshot.data.docs.map<Widget>((document) {
                                 DocumentSnapshot uid = document;
+                                int likeCount = document['likes'];
+                                List list = document['likeList'];
+                                bool isLiked = false;
+                                if (list.contains(user!.uid)) {
+                                  isLiked = true;
+                                }
+
                                 final now = DateTime.now();
                                 final past = document['timePosted'].toDate();
 
@@ -183,11 +190,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                 }
                                 //to get commenters current profile image
                                 // commenter(document['uid']);
-                                var currentUserID = FirebaseAuth.instance.currentUser!.uid;
-                                List userReported= uid.get('userReported');
+
+                                var currentUserID =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                List userReported = uid.get('userReported');
                                 if (userReported.contains(currentUserID))
                                   return Padding(padding: EdgeInsets.all(0));
-                                
+
                                 return Card(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
@@ -257,52 +266,105 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(ago),
-                                                  IconButton(
-                                                    onPressed: () async {},
-                                                    icon: Icon(Icons
-                                                        .thumb_up_alt_rounded),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
+                                                  SizedBox(
+                                                    width: 7,
                                                   ),
-                                                  Text('0'),
-                                                  IconButton(
-                                                    onPressed: () async {},
-                                                    icon: Icon(Icons
-                                                        .thumb_down_alt_rounded),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
-                                                  ),
-                                                  Text('0'),
-                                                  (document['uid']==currentUserID)?
-                                                  IconButton(
-                                                    icon: Icon(Icons.delete),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
-                                                    onPressed: () async {
-                                                      //delete code will be here
-                                                    }
-                                                    ):IconButton(
-                                                    icon: Icon(Icons.report),
-                                                    color: Colors.grey,
-                                                    iconSize: 20,
-                                                    onPressed: () async {
-                                                      var result = await showReportCommentDialog(context);
-                                                      if (result == true) {
-                                                      int reportNumber= uid.get('reportNumber');
-                                                      
-                                                      userReported.add(user!.uid);
-                                                      FirebaseFirestore.instance.collection('comments').doc(uid.id).update({
-                                                        'userReported': userReported,
-                                                        'reportNumber': reportNumber+1,
-                                                      });
-                                                      Fluttertoast.showToast(
-                                                        msg: 
-                                                            "Comment reported successfully",
-                                                        toastLength: Toast.LENGTH_LONG,
-                                                      );
-                                                      }
-                                                    },
-                                                  ),
+                                                  LikeButton(
+                                                      size: 20,
+                                                      isLiked: isLiked,
+                                                      likeCount: likeCount,
+                                                      countBuilder: (likeCount,
+                                                          isLiked, text) {
+                                                        return Text(
+                                                          text,
+                                                          style: TextStyle(
+                                                            color: isLiked
+                                                                ? Colors.black
+                                                                : Colors.grey,
+                                                          ),
+                                                        );
+                                                      },
+                                                      onTap: (isLiked) async {
+                                                        if (!isLiked) {
+                                                          list.add(user.uid);
+                                                          likeCount++;
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "comments")
+                                                              .doc(uid.id)
+                                                              .update({
+                                                            "likeList": list,
+                                                            "likes": likeCount,
+                                                          });
+                                                          isLiked = true;
+                                                          return true;
+                                                        }
+                                                        if (isLiked) {
+                                                          list.remove(user.uid);
+                                                          likeCount--;
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "comments")
+                                                              .doc(uid.id)
+                                                              .update({
+                                                            "likeList": list,
+                                                            "likes": likeCount,
+                                                          });
+                                                          isLiked = false;
+                                                          return false;
+                                                        }
+                                                      }),
+                                                  (document['uid'] ==
+                                                          currentUserID)
+                                                      ? IconButton(
+                                                          icon: Icon(
+                                                              Icons.delete),
+                                                          color: Colors.grey,
+                                                          iconSize: 20,
+                                                          onPressed: () async {
+                                                            //delete code will be here
+                                                          })
+                                                      : IconButton(
+                                                          icon: Icon(
+                                                              Icons.report),
+                                                          color: Colors.grey,
+                                                          iconSize: 20,
+                                                          onPressed: () async {
+                                                            var result =
+                                                                await showReportCommentDialog(
+                                                                    context);
+                                                            if (result ==
+                                                                true) {
+                                                              int reportNumber =
+                                                                  uid.get(
+                                                                      'reportNumber');
+
+                                                              userReported.add(
+                                                                  user.uid);
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'comments')
+                                                                  .doc(uid.id)
+                                                                  .update({
+                                                                'userReported':
+                                                                    userReported,
+                                                                'reportNumber':
+                                                                    reportNumber +
+                                                                        1,
+                                                              });
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                msg:
+                                                                    "Comment reported successfully",
+                                                                toastLength: Toast
+                                                                    .LENGTH_LONG,
+                                                              );
+                                                            }
+                                                          },
+                                                        ),
                                                 ],
                                               ),
                                             ]),
@@ -327,7 +389,7 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
         ],
       ),
-      bottomNavigationBar: NewMessage(
+      bottomSheet: NewMessage(
         event: widget.event,
         user: widget.user,
       ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gather_go/Models/UesrInfo.dart';
 import 'package:gather_go/Models/EventInfo.dart';
@@ -21,31 +23,42 @@ class DatabaseService {
 
   Future updateProfileData(String uid, String name, String status, String bio,
       String imageUrl) async {
+    List<String> searchName =
+        []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
+    String temp = "";
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == " ") {
+        temp = "";
+      } else {
+        temp = temp + name[i];
+        searchName.add(temp.toLowerCase());
+      }
+    }
     return await userCollection.doc(uid).set({
       "uid": uid,
       "name": name,
       "bio": bio,
       "status": status,
       "imageUrl": imageUrl,
+      "searchName": searchName
       //"bookedEvents": FirebaseFirestore.instance.collection('bookedEvents'),
     });
   }
-Future? disapproveEvent(
-  
-) async {
-  return await eventCollection.doc(uid).update({
-                                      'approved': false,
-                                      "adminCheck": true,
-                                      });
-}
-Future? approveEvent(
-  
-) async {
-  return await eventCollection.doc(uid).update({
-                                      'approved': true,
-                                      "adminCheck": true,
-                                      });
-}
+
+  Future? disapproveEvent() async {
+    return await eventCollection.doc(uid).update({
+      'approved': false,
+      "adminCheck": true,
+    });
+  }
+
+  Future? approveEvent() async {
+    return await eventCollection.doc(uid).update({
+      'approved': true,
+      "adminCheck": true,
+    });
+  }
+
   Future disapproveEvent2(
       String? userID,
       String? name,
@@ -79,6 +92,7 @@ Future? approveEvent(
         nameLowerCase.add(temp.toLowerCase());
       }
     }
+
     return await eventCollection.doc(uid).set({
       "uid": userID,
       "name": name,
@@ -156,7 +170,7 @@ Future? approveEvent(
   }
 
   addCommentData(String text, String uid, String name, String imageUrl,
-      String eventID, int likes, int dislikes, DateTime timePosted) {
+      String eventID, int likes, List likeList, DateTime timePosted) {
     commentCollection.add({
       "text": text,
       "uid": uid,
@@ -164,10 +178,10 @@ Future? approveEvent(
       "imageUrl": imageUrl,
       "eventID": eventID,
       "likes": likes,
-      "dislikes": dislikes,
+      "likeList": likeList,
       "timePosted": timePosted,
-      "userReported":[],
-      "reportNumber":0
+      "userReported": [],
+      "reportNumber": 0
     });
   }
 
@@ -208,6 +222,8 @@ Future? approveEvent(
         nameLowerCase.add(temp.toLowerCase());
       }
     }
+    Random random = new Random();
+    int eventID = random.nextInt(90) + 1000;
     eventCollection.add({
       "uid": uid,
       "name": name,
@@ -226,7 +242,8 @@ Future? approveEvent(
       "nameLowerCase": nameLowerCase,
       "searchDescription": searchDescription,
       "imageUrl": image,
-      "browseDate": browseDate
+      "browseDate": browseDate,
+      "eventID": eventID
     });
   }
 
@@ -376,13 +393,14 @@ Future? approveEvent(
           browseDate: doc.get('browseDate') ?? '');
     }).toList();
   }
-  Future ignoreReportedComment(
-  ) async {
+
+  Future ignoreReportedComment() async {
     return await commentCollection.doc(uid).update({
-    'reportNumber':0,});
+      'reportNumber': 0,
+    });
   }
-Future deleteReportedComment(
-  ) async {
-    return await commentCollection.doc(uid) .delete();
+
+  Future deleteReportedComment() async {
+    return await commentCollection.doc(uid).delete();
   }
 }

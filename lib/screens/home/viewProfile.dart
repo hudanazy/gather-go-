@@ -12,8 +12,10 @@ import 'MyEvents.dart';
 // ignore: camel_case_types
 class viewProfile extends StatefulWidget {
   final DocumentSnapshot? user;
-  final DocumentSnapshot? event;
-  viewProfile({required this.user, required this.event});
+  //final DocumentSnapshot? event;
+  viewProfile({
+    required this.user,
+  });
   @override
   _viewProfile createState() => _viewProfile();
 }

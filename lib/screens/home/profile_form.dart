@@ -54,7 +54,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
     //final AuthService _auth = AuthService();
     return Scaffold(
-        backgroundColor: Colors.white10 ,
+        backgroundColor: Colors.white10,
         appBar: MyAppBar(
           title: '\tProfile',
         ),

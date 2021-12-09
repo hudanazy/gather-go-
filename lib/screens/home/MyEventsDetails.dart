@@ -263,8 +263,8 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => viewProfile(
-                                      user: documentList,
-                                      event: widget.event)));
+                                        user: documentList,
+                                      )));
                         },
                         //child: Text("see the location"),
                       )

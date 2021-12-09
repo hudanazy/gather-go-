@@ -393,17 +393,31 @@ class _epFormState extends State<epForm> {
                                     );
                                     return;
                                   }
-
-                                  dynamic db = await DatabaseService(
-                                          uid: user?.uid.toString())
-                                      .updateProfileData(
-                                          user!.uid,
-                                          currentName!,
-                                          currentStatus!,
-                                          currentBio!,
-                                          imageFile);
+                                  List<String> searchName =
+                                      []; //https://stackoverflow.com/questions/50870652/flutter-firebase-basic-query-or-basic-search-code
+                                  String temp = "";
+                                  for (var i = 0;
+                                      i < currentName!.length;
+                                      i++) {
+                                    if (currentName![i] == " ") {
+                                      temp = "";
+                                    } else {
+                                      temp = temp + currentName![i];
+                                      searchName.add(temp.toLowerCase());
+                                    }
+                                  }
+                                  FirebaseFirestore.instance
+                                      .collection("uesrInfo")
+                                      .doc(user?.uid)
+                                      .update({
+                                    "name": currentName,
+                                    "bio": currentBio,
+                                    "status": currentStatus,
+                                    "imageUrl": imageFile,
+                                    "searchName": searchName
+                                  });
                                   updateComment(
-                                      user.uid, imageFile, currentName);
+                                      user!.uid, imageFile, currentName);
                                   Navigator.pop(context);
                                   Fluttertoast.showToast(
                                     msg: "Profile successfully updated.",

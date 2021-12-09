@@ -81,7 +81,7 @@ void _onMapCreated(GoogleMapController _cntlr) {
 
 
 Future<bool> showMapdialogAdmin(
-    BuildContext context, List<Marker> myMarker, LatLng markerPosition ) async {
+    BuildContext context, List<Marker> myMarker, LatLng markerPosition) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -116,7 +116,7 @@ Future<bool> showMapdialogAdmin(
                   mapType: MapType.normal,
                   markers: Set.from(myMarker),
                   myLocationEnabled: true,
-                  indoorViewEnabled:true,
+                  indoorViewEnabled: true,
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   mapToolbarEnabled: true,
@@ -159,6 +159,34 @@ Future<bool> showDdeleteDialog(BuildContext context) async {
 }
 
 Future<bool> showBookDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(
+        'Event booked',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      content:
+          Text("Are you sure you want to cancel your booking for this event?"),
+      actions: [
+        TextButton(
+            child: Text("No", style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.pop(context, false);
+            }),
+        TextButton(
+            child: Text("Yes", style: TextStyle(color: Colors.blue)),
+            onPressed: () {
+              Navigator.pop(context, true);
+            })
+      ],
+    ),
+  );
+}
+
+Future<bool> showUnbookDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -241,8 +269,7 @@ Future<bool> showEditEventApproved(BuildContext context) async {
         TextButton(
             child: Text("Ok", style: TextStyle(color: Colors.blue)),
             onPressed: () {
-              Navigator.pop(
-                  context);
+              Navigator.pop(context);
             }),
       ],
     ),
@@ -344,5 +371,6 @@ Future<bool> showUserDeleteCommentDialog(BuildContext context, String comment) a
   //     );
   //   },
   // );
+
 
 
