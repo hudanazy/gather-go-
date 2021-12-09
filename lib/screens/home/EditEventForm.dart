@@ -512,6 +512,18 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       attendeeNum =
                                           int.parse(attendeeNumString);
                                     }
+                                    if (widget.event
+                                            ?.get('browseDate')
+                                            .toDate()
+                                            .isBefore(DateTime.now()) &&
+                                        browseDate == null) {
+                                      Fluttertoast.showToast(
+                                        msg:
+                                            "You're date is in the past, you must change it ",
+                                        toastLength: Toast.LENGTH_LONG,
+                                      );
+                                      return;
+                                    }
 
                                     if (currdate == "") {
                                       currdate = widget.event?.get('date');
@@ -521,7 +533,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                       currtime = widget.event?.get('time');
                                     }
 
-                                    if (currentlat == 0 || currentlong == 0) {
+                                    if (currentlat == 0.0 ||
+                                        currentlong == 0.0) {
                                       currentlat = widget.event?.get('lat');
                                       currentlong = widget.event?.get('long');
                                     }
@@ -565,8 +578,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "description": currentDescrption,
                                             "category": currentcatogary,
                                             "time": currtime,
-                                            "lat": saveLat,
-                                            "long": saveLong,
+                                            "lat": currentlat,
+                                            "long": currentlong,
                                             "nameLowerCase": nameLowerCase,
                                             "searchDescription":
                                                 searchDescription,
@@ -585,8 +598,8 @@ class _eventEditFormState extends State<EidtEventForm> {
                                             "attendees": attendeeNum,
                                             "date": currdate,
                                             "time": currtime,
-                                            "lat": saveLat,
-                                            "long": saveLong,
+                                            "lat": currentlat,
+                                            "long": currentlong,
                                             "nameLowerCase": nameLowerCase,
                                             "searchDescription":
                                                 searchDescription,
@@ -658,9 +671,9 @@ class _eventEditFormState extends State<EidtEventForm> {
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     if (!selected) {
-      saveLat = widget.event?.get('lat');
-      saveLong = widget.event?.get('long');
-      LatLng markerPosition = LatLng(saveLat, saveLong);
+      currentlat = widget.event?.get('lat');
+      currentlong = widget.event?.get('long');
+      LatLng markerPosition = LatLng(currentlat!, currentlong!);
       myMarker.add(Marker(
           markerId: MarkerId(markerPosition.toString()),
           position: markerPosition,
@@ -681,10 +694,10 @@ class _eventEditFormState extends State<EidtEventForm> {
           onDragEnd: (dragEndPosition) {
             print(dragEndPosition);
           }));
-      saveLat = tappedPoint.latitude;
-      saveLong = tappedPoint.longitude;
+      currentlat = tappedPoint.latitude;
+      currentlong = tappedPoint.longitude;
       selected = true;
-      pos(saveLat, saveLong);
+      pos(currentlat, currentlong);
       viewLocation = areaName;
     });
   }
