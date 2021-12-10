@@ -30,8 +30,15 @@ class _eventDetails extends State<eventDetailsForUesers> {
   double rating = 0;
   bool ratedBefore = false;
   int ratingCounter = 0;
+  int arrayLength = 0;
   double ratingAVG = 0;
   bool rated = false;
+  @override
+  void initState() {
+    getAVGrating();
+
+    super.initState();
+  }
 
   // LocationData? currentLocation;
   // var location = new Location();
@@ -83,13 +90,16 @@ class _eventDetails extends State<eventDetailsForUesers> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
     var eventDate = widget.event?.get("browseDate");
-    // double RatingNum = widget.event!.get('rating');
+    double RatingNum = widget.event!.get('rating');
     bool ratedis = widget.event!.get('rated');
-
+    double theRatingNumber = widget.event?.get('RatingNumber');
+    int Count = (theRatingNumber - 1).floor();
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
     List list = widget.event?.get('attendeesList');
+    List listRating = widget.event?.get('RatingList');
+    //List Rating =  widget.event?.get('Rating'); //is list then cast
     final currentUser = FirebaseAuth.instance.currentUser!.uid;
     if (bookedNum < attendeeNum &&
         !list.contains(currentUser) &&
@@ -203,26 +213,27 @@ class _eventDetails extends State<eventDetailsForUesers> {
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
                         children: <Widget>[
-                          //  if (ratingCounter > 0)
-                          RatingBar.builder(
-                            itemSize: 15,
-                            initialRating: ratingAVG / ratingCounter,
-                            glow: true,
-                            ignoreGestures: true,
-                            minRating: 1,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          if (theRatingNumber > 0)
+                            RatingBar.builder(
+                              itemSize: 15,
+                              initialRating: RatingNum,
+                              glow: true,
+                              ignoreGestures: true,
+                              minRating: 1,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (value) {},
                             ),
-                            onRatingUpdate: (value) {},
-                          ),
-                          if (ratingCounter > 0)
+                          if (theRatingNumber > 0)
                             InkWell(
                               child: Text(
-                                '($ratingCounter)',
+                                '($Count)',
                                 style: TextStyle(fontSize: 10),
                               ),
                             )
@@ -497,11 +508,10 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               // minimumSize: Size.fromWidth(180),
                             ),
                             onPressed: () async {
+                              List listRating = widget.event?.get('RatingList');
                               //----------------
                               //  var ISRATED = getRated(userID);
-                              if (ratedis == false) {
-                                // ==currantuser
-                                //  if (rated == true)
+                              if (listRating.contains(currentUser)) {
                                 showisRatedDialog();
                               }
                               /*  if (!rated==false) {
@@ -515,12 +525,23 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                 var result = await showRatingDialog(context);
                                 if (result == true) {
                                   try {
+                                    List listRating =
+                                        widget.event?.get('RatingList');
+                                    listRating.add(currentUser);
+                                    // List Rating = widget.event!.get('Rating');
+                                    //  Rating.add(rating);
+                                    //  double NUMRate=rating;
+                                    double Avg = RatingNum + rating;
+                                    double result = Avg / theRatingNumber;
                                     FirebaseFirestore.instance
                                         .collection('events')
                                         .doc(widget.event?.id)
                                         .update({
-                                      "rating": rating,
                                       "rated": true,
+                                      "RatingNumber": theRatingNumber + 1,
+                                      "rating": result,
+                                      "RatingList": listRating,
+                                      // "Rating": Rating,
                                     });
 /* 
                                     if (!rated) {
@@ -592,28 +613,106 @@ class _eventDetails extends State<eventDetailsForUesers> {
           // ignore: dead_code
         });
   }
+/* 
+  Stream<List<dynamic>> get myRet {
+    Query query = FirebaseFirestore.instance
+        .collection('event')
+        .where('eventID', isEqualTo: widget.event?.id);
+
+    final Stream<QuerySnapshot> snapshots = query.snapshots();
+
+    return snapshots.map((QuerySnapshot snapshot) {
+      List<dynamic> RateList = snapshot.docs.map((doc) {
+        FirebaseFirestore.instance
+            .collection('events')
+            //  .doc("Rating")
+
+            .get()
+            .then((elemnt) => {
+                  elemnt.docs.forEach((Rating) {
+                    var feedData = Rating.data;
+                  })
+                });
+
+        // return dynamic.fromMap(doc.data, doc.documentID);
+      }).toList();
+
+      return RateList;
+    });
+  } */
+
+  Future getTotal() async {
+    double counter = 0;
+    await FirebaseFirestore.instance.collection('events').snapshots().listen(
+        (data) => data.docs.forEach((doc) => counter += (doc["Rating"])));
+    print("The total is $counter");
+    return counter;
+  }
 
   var exists;
 
   getAVGrating() async {
+    int sumRating = 0;
+
+    // List RatingArr = widget.event!.get("Rating");
+    // print(RatingArr); //list rating from doc db
+    // widget.event?.get('listRating');
+    // for (var i = 0; i < RatingArr.length; i++) {
+    //  sumRating += widget.event!.get("Rating");
+    // }
+    print("Suuuuuuuuuuuum");
+    print(sumRating);
+    // ratingAVG += double.parse(i.RatingArr.toString());
+    // int arrayLength = RatingArr.length;
+    print(arrayLength);
+
+    /*   */
+    /* double counter = 0;
+    await FirebaseFirestore.instance.collection('events').snapshots().listen(
+        (data) => data.docs.forEach((doc) => counter += (doc["Rating"])));
+    print("The total is $counter");
+    return counter;
+ */
+
+    var sum = 0;
+    // List RatingArr = widget.event!.get("Rating");
+
+    //RatingArr.forEach((e) => sum += e);
+
+    // print("Sum : ${sum}");
+    /*  /*  int sumRating = 0;
+    
+    List RatingArr = widget.event!.get("Rating");
+    print(RatingArr); //list rating from doc db
+    // widget.event?.get('listRating');
+    for (var i = 0; i < RatingArr.length; i++) {
+      //sumRating += RatingArr[i];
+      // ratingAVG += double.parse(i.RatingArr.toString());
+      int arrayLength = RatingArr.length;
+      print(arrayLength);
+    }
+
+    double ratingAVG = (sumRating / RatingArr.length); */ // This is average
     print("hetttttttttttttttttttttavg");
-    exists = await FirebaseFirestore.instance
+    print(ratingAVG);
+    print("hetttttttttttttttttttttavg");
+      exists = await FirebaseFirestore.instance
         .collection('events')
-        //.where('uid', isEqualTo: widget.event?.id)
+        // .where('rated', isEqualTo: true)
         .snapshots()
         .listen((event) {
       event.docs.forEach((element) {
         setState(() {
-          ratingAVG += double.parse(element.data()['rating'].toString());
+          ratingAVG += double.parse(element.data()['Rating'].toString());
 
           print('rating: $ratingAVG');
 
-          ratingCounter = event.docs.length;
-          print("9999999 avh");
-          print('heerrrrrrrrrrrrAvg');
-        });
-      });
-    });
+          ratingCounter = event.docs.length; */
+    print("9999999");
+    // print('heerrrrrrrrrrrrAvg');
+    //  });
+    // });
+    // });
   }
 
   // Location _location = Location();
@@ -758,7 +857,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
         ),
       ),
       content: Text(
-        'You already rated this event.',
+        'You already rated this event before,Thank you',
         style: TextStyle(
           fontSize: 18,
         ),
