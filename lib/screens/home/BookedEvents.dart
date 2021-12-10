@@ -11,9 +11,13 @@ import 'package:provider/provider.dart';
 import 'eventDetailsForUsers.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 // ignore: camel_case_types
+
 class BookedEvents extends StatefulWidget {
+  //final DocumentSnapshot? event;
+  BookedEvents();
   @override
   _BookedEvents createState() => _BookedEvents();
 }
@@ -25,6 +29,12 @@ class _BookedEvents extends State<BookedEvents> {
   Widget build(BuildContext context) {
     //final user = Provider.of<NewUser?>(context);
     final user = Provider.of<NewUser?>(context, listen: false);
+    /*   double RatingNum = widget.event!.get('rating');
+    bool ratedis = widget.event!.get('rated');
+    double theRatingNumber = widget.event?.get('RatingNumber');
+    int Count = (theRatingNumber - 1).floor();
+    List listRating = widget.event?.get('RatingList') */
+    ;
     String _address = "";
     FutureBuilder<String?> namep;
     Stream<QuerySnapshot<Map<String, dynamic>>> snap = FirebaseFirestore
@@ -225,6 +235,39 @@ class _BookedEvents extends State<BookedEvents> {
                                           )
                                         ],
                                       ),
+                                      Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              if (document['RatingNumber'] > 0)
+                                                RatingBar.builder(
+                                                  itemSize: 15,
+                                                  initialRating:
+                                                      document['rating'],
+                                                  glow: true,
+                                                  ignoreGestures: true,
+                                                  minRating: 1,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 4.0),
+                                                  itemBuilder: (context, _) =>
+                                                      Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  onRatingUpdate: (value) {},
+                                                ),
+                                              /*  if (theRatingNumber > 0)
+                            InkWell(
+                              child: Text(
+                                '($Count)',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            ) */
+                                            ],
+                                          )),
                                       SizedBox(
                                         height: 16.0,
                                       ),
