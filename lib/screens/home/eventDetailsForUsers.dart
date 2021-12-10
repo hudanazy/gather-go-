@@ -98,6 +98,13 @@ class _eventDetails extends State<eventDetailsForUesers> {
       buttonColor = Colors.orange[300];
     else
       buttonColor = Colors.grey[600];
+    String BookEvent = "Book event";
+    if (bookedNum < attendeeNum &&
+        !list.contains(currentUser) &&
+        eventDate.toDate().isAfter(DateTime.now()))
+      BookEvent = "Book event";
+    else
+      BookEvent = "Cancel booking";
 
     List<Marker> myMarker = [];
     eventCreator(userID);
@@ -369,7 +376,7 @@ class _eventDetails extends State<eventDetailsForUesers> {
                               Icons.book,
                               color: Colors.white,
                             ),
-                            label: Text('Book event',
+                            label: Text(BookEvent,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

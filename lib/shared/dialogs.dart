@@ -248,7 +248,7 @@ Future<bool> showUnbookDialog(BuildContext context) async {
     context: context,
     builder: (context) => AlertDialog(
       title: Text(
-        'Event booked',
+        'Cancel event booking',
         style: TextStyle(
           color: Colors.red,
         ),
