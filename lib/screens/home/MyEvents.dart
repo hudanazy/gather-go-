@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:gather_go/shared/loading.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 const Color KAppColor = Color(0xFFFFB300);
 
@@ -422,6 +423,33 @@ print(currDt.second); // 49 */
                                           )
                                         ],
                                       ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      if (document['RatingNumber'] > 0)
+                                        RatingBar.builder(
+                                          itemSize: 15,
+                                          initialRating: document['rating'],
+                                          glow: true,
+                                          ignoreGestures: true,
+                                          minRating: 1,
+                                          allowHalfRating: true,
+                                          itemCount: 5,
+                                          itemPadding: EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (value) {},
+                                        ),
+                                      /*  if (theRatingNumber > 0)
+                            InkWell(
+                              child: Text(
+                                '($Count)',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            ) */
                                       SizedBox(
                                         height: 16.0,
                                       ),

@@ -11,7 +11,7 @@ import 'package:gather_go/screens/home/viewProfile.dart';
 import 'package:gather_go/screens/myAppBar.dart';
 import 'package:gather_go/shared/dialogs.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gather_go/screens/home/MyEvents.dart';
 import 'package:gather_go/screens/home/EditEventForm.dart';
 
@@ -28,6 +28,12 @@ class MyEventsDetails extends StatefulWidget {
 
 // ignore: camel_case_types
 class _MyEventsDetails extends State<MyEventsDetails> {
+  double rating = 0;
+  bool ratedBefore = false;
+  int ratingCounter = 0;
+  int arrayLength = 0;
+  double ratingAVG = 0;
+  bool rated = false;
   // LocationData? currentLocation;
   // var location = new Location();
   // String error = "";
@@ -77,6 +83,11 @@ class _MyEventsDetails extends State<MyEventsDetails> {
     String userID = widget.event?.get('uid');
     String category = widget.event?.get('category');
     var eventDate = widget.event?.get("browseDate");
+    double RatingNum = widget.event!.get('rating');
+    bool ratedis = widget.event!.get('rated');
+    double theRatingNumber = widget.event?.get('RatingNumber');
+    int Count = (theRatingNumber - 1).floor();
+    List listRating = widget.event?.get('RatingList');
     // final snap = FirebaseFirestore.instance
     // .collection('uesrInfo').doc(userID).collection('bookedEvents').where('uid', isEqualTo: widget.event!.id).snapshots();
     final buttonColor;
@@ -210,6 +221,39 @@ class _MyEventsDetails extends State<MyEventsDetails> {
                       ),
                     )
                   ]),
+                  Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: <Widget>[
+                          if (theRatingNumber > 0)
+                            RatingBar.builder(
+                              itemSize: 15,
+                              initialRating: RatingNum,
+                              glow: true,
+                              ignoreGestures: true,
+                              minRating: 1,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (value) {},
+                            ),
+                          if (theRatingNumber > 0)
+                            InkWell(
+                              child: Text(
+                                '($Count)',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            )
+                        ],
+                      )),
+
+//--------------
+
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Edescription(widget.event?.get('description')),
