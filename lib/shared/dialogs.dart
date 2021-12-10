@@ -243,7 +243,7 @@ Future<bool> showDdeleteDialog(BuildContext context) async {
   );
 }
 
-Future<bool> showBookDialog(BuildContext context) async {
+Future<bool> showUnbookDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -271,7 +271,7 @@ Future<bool> showBookDialog(BuildContext context) async {
   );
 }
 
-Future<bool> showUnbookDialog(BuildContext context) async {
+Future<bool> showBookDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(

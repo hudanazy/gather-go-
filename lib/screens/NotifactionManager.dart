@@ -187,4 +187,9 @@ class NotifactionManager {
     print(schedualDate);
     return schedualDate;
   }
+
+  void cancelNotification(int id) async{
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
 }

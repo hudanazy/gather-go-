@@ -349,6 +349,8 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                     "bookedNumber": bookedNum - 1,
                                     "attendeesList": list
                                   });
+                                  int notificationID = widget.event?.get('eventID'); 
+                                  NotifactionManager().cancelNotification(notificationID);
                                   // DatabaseService()
                                   //     .addBookedEventToProfile(widget.event!.id);
                                   Fluttertoast.showToast(
@@ -448,8 +450,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
                                     // NotifactionManager().showAttendeeNotification(1, "Reminder, your booked event",
                                     //         widget.event?.get('name')+" event starts in 2 hours, don't forget it",
                                     //         eventDate, eventTime);
+                                    int notificationID = widget.event?.get('eventID'); 
                                     NotifactionManager().showAttendeeNotification(
-                                        1,
+                                        notificationID,
                                         "Reminder, your booked event",
                                         widget.event?.get('name') +
                                             " starts tomorrow, don't forget it",
