@@ -389,7 +389,7 @@ Future<bool> showAdminDeleteCommentDialog(
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text("Ignore comment"),
+      title: Text("Delete comment"),
       content: Text("Are you sure you want to delete $name's comment ?"),
       actions: [
         TextButton(
