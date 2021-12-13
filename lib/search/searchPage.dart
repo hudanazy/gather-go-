@@ -225,11 +225,11 @@ class _SearchListState extends State<SearchList> {
                       padding: const EdgeInsets.all(10),
                       //  const EdgeInsets.only(right: 70),
                       child: Card(
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side:
-                                  BorderSide(width: 0.5, color: Colors.amber)),
+                          // elevation: 6,
+                          // shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(10),
+                          //     side:
+                          //         BorderSide(width: 0.5, color: Colors.amber)),
                           margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           //color: Colors.orangeAccent,
                           child: ListTile(
@@ -253,7 +253,7 @@ class _SearchListState extends State<SearchList> {
                             // 00:000
                             trailing: Icon(
                               Icons.arrow_forward_ios_sharp,
-                              color: Colors.orange[300],
+                              color: Colors.grey[400],
                             ),
                             onTap: () {
                               if (document['uid'] == uuuu) {
@@ -326,11 +326,12 @@ class _SearchListState extends State<SearchList> {
                         return Padding(
                             padding: const EdgeInsets.all(10),
                             child: Card(
-                                elevation: 6,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: BorderSide(
-                                        width: 0.5, color: Colors.amber)),
+                                //elevation: 6,
+                                // shape: RoundedRectangleBorder(
+                                //     //   borderRadius: BorderRadius.circular(10),
+                                //     // side: BorderSide(
+                                //     //     width: 0.5, color: Colors.amber)
+                                //     ),
                                 margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 //color: Colors.grey[200],
                                 child: ListTile(
@@ -346,7 +347,7 @@ class _SearchListState extends State<SearchList> {
                                   )),
                                   trailing: Icon(
                                     Icons.arrow_forward_ios,
-                                    color: Colors.orange[300],
+                                    color: Colors.grey[400],
                                   ),
                                   onTap: () {
                                     if (document['uid'] == uuuu) {
