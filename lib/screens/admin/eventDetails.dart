@@ -250,8 +250,8 @@ class _eventDetails extends State<eventDetails> {
                             if (result == true) {
                               try {
                                 await DatabaseService(uid: widget.event?.id)
-                                 .disapproveEvent();
-                                
+                                    .disapproveEvent();
+
                                 // success msg + redirect to adminEvent
 
                                 Fluttertoast.showToast(
@@ -296,9 +296,8 @@ class _eventDetails extends State<eventDetails> {
                           if (result == true) {
                             try {
                               await DatabaseService(uid: widget.event?.id)
-                             
                                   .approveEvent();
-                             
+
                               Fluttertoast.showToast(
                                 msg: widget.event?.get('name') +
                                     " approved successfully",
@@ -327,6 +326,9 @@ class _eventDetails extends State<eventDetails> {
                       )),
                 )
               ],
+            ),
+            SizedBox(
+              height: 20,
             )
           ],
         ),
