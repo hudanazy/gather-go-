@@ -105,6 +105,9 @@ class _eventDetails extends State<eventDetailsForUesers> {
       BookEvent = "Book event";
     else
       BookEvent = "Cancel booking";
+    if (bookedNum >= attendeeNum && !list.contains(currentUser)) {
+      BookEvent = "Book event";
+    }
 
     List<Marker> myMarker = [];
     eventCreator(userID);
